@@ -5,7 +5,7 @@
 	
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.kh</groupId>
-	<artifactId>spring</artifactId>
+	<artifactId>finalProject</artifactId>
 	<name>springProject</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
@@ -196,8 +196,6 @@
 		    <version>5.5.2</version>
 		</dependency>
 			
-			
-		<!-- 4. 파일 업로드를 위한 라이브러리 -->
 		<!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
 		<dependency>
 		    <groupId>commons-fileupload</groupId>
