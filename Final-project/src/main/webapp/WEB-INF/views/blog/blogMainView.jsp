@@ -10,6 +10,6 @@
 
 </head>
 <body>
-
+블로그 메인
 </body>
 </html>

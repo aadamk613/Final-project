@@ -16,13 +16,45 @@
 
 </head>
 
-<style>
-	#headerWrap{width: 100%; height: 80px;}
-</style>
-
 <body>
-	<div id="headerWrap">
-		헤더입니다
-	</div>
+		<div id="headerWrap">
+			<div id="logoWrap">
+				<div id="logo">
+					<a href="main">싹 트 다</a>
+				</div>
+			</div>
+			<div id="menubarWrap">
+				<ul>
+					<li><a href="#">스토어</a></li>
+					<li><a href="#">체험학습</a></li>
+					<li><a href="#">일손모집</a></li>
+					<li><a href="#">커뮤니티</a></li>
+					<li><a href="#">블로그</a></li>
+					<li><a href="#">마이페이지</a></li>
+				</ul>
+			</div>
+			<div id="loginWrap">
+				<ul>
+					<c:choose>
+						<c:when test="${ empty sessionScope.loginUser }" >
+							<li><a id="login" href="#">로그인</a></li>
+						</c:when>
+						<c:otherwise>
+							<li><a id="login" href="#">로그아웃</a></li>
+						</c:otherwise>
+					</c:choose>
+					<li><a href="#"><img src="resources/images/comment.png" /></a></li>
+					<li><a href="#"><img src="resources/images//alarm.png" /></a></li>
+				</ul>
+			</div>
+		</div>
+		
+		<c:if test="${ not empty alertMsg }">
+			<script>
+				alert('alertMsg');
+			</script>
+			<c:remove var="alertMsg" scope="session"/>
+		</c:if>
+		
 </body>
 </html>
