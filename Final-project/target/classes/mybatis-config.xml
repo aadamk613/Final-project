@@ -8,16 +8,17 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<setting name="jdbcTypeForNull" value="NULL"/>
 	</settings>
 
-	<!--  
-	나중에 각자 추가
 	<typeAliases>
-		<typeAlias type="com.kh.spring.member.model.vo.Member" alias="member"/>
-		<typeAlias type="com.kh.spring.board.model.vo.Board" alias="board"/>
-		<typeAlias type="com.kh.spring.board.model.vo.Reply" alias="reply"/>
-		<typeAlias type="com.kh.spring.notice.model.vo.Notice" alias="notice"/>
+		<typeAlias type="com.kh.finalProject.auction.model.vo.Auction" alias="auction"/>
+		<typeAlias type="com.kh.finalProject.blog.model.vo.Blog" alias="blog"/>
+		<typeAlias type="com.kh.finalProject.board.model.vo.Board" alias="board"/>
+		<typeAlias type="com.kh.finalProject.chat.model.vo.Chat" alias="chat"/>
+		<typeAlias type="com.kh.finalProject.common.model.vo.Common" alias="common"/>
+		<typeAlias type="com.kh.finalProject.experience.model.vo.Experience" alias="experience"/>
+		<typeAlias type="com.kh.finalProject.garden.model.vo.Garden" alias="garden"/>
+		<typeAlias type="com.kh.finalProject.member.model.vo.Member" alias="member"/>
+		<typeAlias type="com.kh.finalProject.notice.model.vo.Notice" alias="notice"/>
 	</typeAliases>
-	주의 : 미리 등록을 해두기 위해서는 반드시 해당 클래스가 진짜 존재하고 있어야 함 
-	-->
 	
 	 <mappers>
 	 	<mapper resource="/mapper/auction-mapper.xml" />
