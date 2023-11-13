@@ -29,7 +29,7 @@
 					<li><a href="#">체험학습</a></li>
 					<li><a href="#">일손모집</a></li>
 					<li><a href="#">커뮤니티</a></li>
-					<li><a href="#">블로그</a></li>
+					<li><a href="main.bl">블로그</a></li>
 					<li><a href="#">마이페이지</a></li>
 				</ul>
 			</div>
