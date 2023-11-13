@@ -13,4 +13,5 @@ public class Member {
   private String email;
   private String memImg;
   private String regBusiness;
+  private String memStatus;
 }
