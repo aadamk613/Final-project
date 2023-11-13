@@ -21,35 +21,30 @@
 <body>
 
 	<header id="pageHeader">
-        &lt;header&gt;
-        id=pageHeader
-        여기는 헤더
+		<jsp:include page="../common/header.jsp" />
 	</header> 
 	<main>
 		<aside id="pageAsideLeft" class="aside">
-            &lt;aside1&gt; <br>
-            id=pageAsideLeft <br>
-	            여기는 pageAsideLeft 공백공간 <br>
-	            사이드바 넣을 수도 있음 <br>
-	            필요하면 쓰세요 <br>
-	            중앙정렬되어있어요 <br>
 		</aside>
 		
 		<section id="pageSection">
 			
 			<div id="contentTitle">
-                &lt;div&gt;
-                id=contentTitle 
-				제목(삭제해도 됨)
+				블로그 생성
 			</div>
 			
 			<div id="content">
                 content
 				<article>
 
-					<p>
-                        여기는 article부분 <br>
-                    </p>
+					<div id="createForm">
+						<form>
+							<div>블로그 이름 <input type="text" name="blogTitle"></div>
+							<div>블로그 설명 <input type="text" name=""></div>
+							<div></div><input type="text" name="blogTitle"></div>
+							<div><input type="text" name="blogTitle"></div>
+						</form>
+					</div>
 
 				</article>
 			</div>
@@ -62,12 +57,6 @@
 		</section>
 		
 		<aside id="pageAsideRight" class="aside">
-           &lt;aside&gt; <br>
-           id=pageAsideRight<br>
-	            여기는 pageAsideRight 공백공간 <br>
-	            사이드바 넣을 수도 있음 <br>
-	            필요하면 쓰세요 <br>
-	            중앙정렬되어있어요 <br>
 		</aside>
 		
 	</main>
@@ -75,15 +64,7 @@
 	<br clear="both">
 	
 	<footer id="pageFooter">
-        &lt;footer&gt; <br>
-        id=pageFooter
-	        여기는 푸터 <br>
-	        여기는 푸터 <br>
-	        여기는 푸터 <br>
-	        여기는 푸터 <br>
-	        여기는 푸터 <br>
-	        여기는 푸터 <br>
-	        쓰는만큼 늘어나요<br>
+		<jsp:include page="../common/footer.jsp" />
 	</footer>
 
 
