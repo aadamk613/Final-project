@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>블로그 메인</title>
+<title>블로그 생성 화면</title>
 <link rel="stylesheet" href="resources/css/common/template.css">
 
 </head>
@@ -24,7 +25,12 @@
 	</header> 
 	<main>
 		<aside id="pageAsideLeft" class="aside">
-			<jsp:include page="../common/blogSideBar.jsp" />
+            &lt;aside1&gt; <br>
+            id=pageAsideLeft <br>
+	            여기는 pageAsideLeft 공백공간 <br>
+	            사이드바 넣을 수도 있음 <br>
+	            필요하면 쓰세요 <br>
+	            중앙정렬되어있어요 <br>
 		</aside>
 		
 		<section id="pageSection">
@@ -67,7 +73,7 @@
 	<br clear="both">
 	
 	<footer id="pageFooter">
-		<jsp:include page="../common/footer.jsp" />
+<jsp:include page="../common/footer.jsp" />
 	</footer>
 
 
