@@ -6,6 +6,7 @@ public class MemberServiceImpl implements MemberService {
 
   @Override
   public Member loginMember(Member m) {
+
     return null;
   }
 }
