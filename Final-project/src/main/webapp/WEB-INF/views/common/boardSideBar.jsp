@@ -15,7 +15,7 @@
                 <div id="empty">
                     <table id="user" align="center">
                         <tr>
-                            <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTAzMTlfMjA1%2FMDAxNjE2MDgwOTM1MDIx.JZKXWzM8gscL4K0VtyQuYki9jetacIhoppgLJ0PlxEcg.iqtKX-tjRe6nSqfieZ6uYV1QS-4S2LewzhkIAVyic4kg.PNG.wnsghks1017%2Fimage.png&type=a340" alt="회원사진" id="user_photo" >
+                            <img src="" alt="회원사진" id="user_photo" >
                         </tr>
                     	<c:when test="${ not empty sessionScope.loginUser }">
 		                <tr>
@@ -43,10 +43,10 @@
 	                    </c:otherwise>
                     </c:choose>
                         	<li>
-                                <a href="list.bo?cpage=1&type=10" class="naviText">공지사항</a>
+                                <a href="#" class="naviText">공지사항</a>
                             </li>
                             <li>
-                                <a href="list.bo?cpage=1&type=20" class="naviText">자유게시판</a>
+                                <a href="#" class="naviText">자유게시판</a>
                             </li>
                 </ul>
 

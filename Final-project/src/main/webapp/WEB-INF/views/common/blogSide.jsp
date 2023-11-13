@@ -7,49 +7,76 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
+<style>
+        #mp_navi {
+            width : 225px;
+            height: 700px;
+            border: 2px rgb(230, 230, 230);
+            border-style: solid none;
+        }
+        
+        #userProfile{width: 100%; height: 100%;}
+        
+        #welcomeProfile{width: 100%; height: 100%;}
+        
+        #user_photo{
+            width:100px;
+            height:100px;
+            margin: 20px;
+        }
+        
+        #loginPlz, #loginOk{text-align: center; width: 100%; height: 50px;}
+        
+        #isLogin{
+            background-color: white;
+        }
+        
+        #MyBlogInfo{
+        	width: 100%; height: 100px;
+        }
+        
+        
+        .naviText{color: black;}
+        
+        #loginOk div{float: left;}
+        #myBlogButton, #writeButton{width: 50%; height:100%;}
+        
+</style>
+
 <link rel="stylesheet" href="resources/css/common/template.css">
 
 </head>
 <body>
             <div id="mp_navi">
-                <div id="empty">
-                    <table id="user" align="center">
-                        <tr>
-                            <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTAzMTlfMjA1%2FMDAxNjE2MDgwOTM1MDIx.JZKXWzM8gscL4K0VtyQuYki9jetacIhoppgLJ0PlxEcg.iqtKX-tjRe6nSqfieZ6uYV1QS-4S2LewzhkIAVyic4kg.PNG.wnsghks1017%2Fimage.png&type=a340" alt="회원사진" id="user_photo" >
-                        </tr>
-                    	<c:when test="${ not empty sessionScope.loginUser }">
-		                <tr>
-		                    <div align="center">${ sessionScope.loginUser.memId }님 환영합니다.</div>
-		                </tr>
-		            	</c:when>
-		            	<c:otherwise>
-	                    <tr>
-	                        <div id="loginPlz">로그인을 해주세요.</div>
-	                    </tr>
-						</c:otherwise>
-                    </table>
-                </div>
-                <ul id="navigator">
+            
+                <div id="isLogin">
                 	<c:choose>
-	                	<c:when test="${ empty sessionScope.loginUser }">
-	                		<li><a  href="#" class="btn btn-primary" >게시글 작성</a></li>
-	                    	<li><a href="#" class="btn btn-primary">쪽지함</a></li>
-	                    	<li><a href="#" class="btn btn-light loginMemUser">내가 쓴 글 확인</a>
-	                    </c:when>
-	                    <c:otherwise>
-	                    	<li><a href='javascript:void(0);' onclick="alert('로그인 후 이용 가능한 기능입니다.');" class="btn btn-primary">게시글 작성</a></li>
-	                    	<li><a href='javascript:void(0);' onclick="alert('로그인 후 이용 가능한 기능입니다.');" class="btn btn-primary">쪽지함</a></li>
-	                    	<li><a href='javascript:void(0);' onclick="alert('로그인 후 이용 가능한 기능입니다.');" class="btn btn-light">내가 쓴 글 확인</a></li>
-	                    </c:otherwise>
-                    </c:choose>
-                        	<li>
-                                <a href="<%= contextPath %>/list.bo?cpage=1&type=10" class="naviText">공지사항</a>
-                            </li>
-                            <li>
-                                <a href="<%= contextPath %>/list.bo?cpage=1&type=20" class="naviText">자유게시판</a>
-                            </li>
-                </ul>
-
+                	<c:when test="${ not empty sessionScope.loginUser }" >
+                    <div id="user" align="center">
+                        <div id="userProfile">
+                            <img src="resources/images/defaultProfile.png" alt="회원사진" id="user_photo" >
+                        </div>
+                        
+                        <div id="welcomeProfile">
+		                    <div align="center">${ sessionScope.loginUser.memId }님 환영합니다.</div>
+		                    		<div id="loginOk">
+		                    			<div id="myBlogButton"><a href="#">내 블로그</a></div>
+		                    			<div id="writeButton"><a href="#">글 쓰 기</a></div>
+									</div>
+						</div>
+					</div>
+					</c:when>
+					<c:otherwise>
+						<div id="user" align="center">
+							<a href="creat.bl">블로그 생성</a>
+						</div>
+					</c:otherwise>
+					</c:choose>
+                </div>
+                <div id="MyBlogInfo">
+                    	블로그 소식이 없습니다.
+                </div>    
+                </div>
 
             </div>
 </body>

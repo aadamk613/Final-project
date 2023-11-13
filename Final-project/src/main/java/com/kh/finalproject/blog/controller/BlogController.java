@@ -11,5 +11,10 @@ public class BlogController {
 		return "blog/blogMainView";
 	}
 	
+	@RequestMapping("creat.bl")
+	public String createBlog() {
+		return "blog/createBlogForm";
+	}
+	
 	
 }
