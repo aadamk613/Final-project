@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="memberMapper">
-  <select id="loginMember" parameterType="member" resultType="member">
+	<select id="loginMember" parameterType="member" resultType="member">
 		SELECT
       MEM_NO memNo,
       MEM_STATUS memStatus,
@@ -17,13 +17,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			MEMBER
 		WHERE
 			USER_ID = #{userId}
-			                            <!--  사용자는 DB USER_PWD컬럼에 저장된 암호화된 비밀번호를 알 수 없으므로 비밀번호 조건을 제거 
+				<!--  사용자는 DB USER_PWD컬럼에 저장된 암호화된 비밀번호를 알 수 없으므로 비밀번호 조건을 제거 
 		AND
 			USER_PWD = #{userPwd}
 			-->
 		AND
 			STATUS = 'Y'
-  </select>
+	</select>
 
 
 </mapper>

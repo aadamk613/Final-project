@@ -108,7 +108,7 @@ a{
                 
 				<article>
                 <div id="id_pw_wrap">
-					<form action="" method="post">
+					<form action="login.me" method="post">
 						<div id="logoWrap">
 							싹트다
 						</div>
@@ -124,7 +124,7 @@ a{
 					</form>
 					<ul>
 						<li><a href="#">아이디 찾기</a></li>
-						<li><a href="#">비밀번호 찾기</a></li>
+						<li><a href="insert.me">비밀번호 찾기</a></li>
 						<li><a href="#">회원가입</a></li>
 					</ul>
 					

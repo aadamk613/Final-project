@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -14,12 +15,29 @@ public class MemberController {
 
   @Autowired private BCryptPasswordEncoder bcryptPasswordEncoder;
   @Autowired private MemberService memberService;
-  
+
   @RequestMapping("loginForm.me")
   public String loginForm() {
-	  return "member/loginForm";
+    return "member/loginForm";
   }
+
+  @RequestMapping("insert.me")
+  public String insertMember(Member m, Model model) {
+    System.out.println("평문: 1234");
+    System.out.println(bcryptPasswordEncoder.encode("1234"));
+    // System.out.println("평문" + m.getUserPwd());
+    // String encPwd = bcryptPasswordEncoder.encode(m.getUserPwd());
+    // System.out.println("encrypted: " + encPwd);
+    // // m.setUserPwd(encPwd); // member 객체의 userPwd 필드에 평문이 아닌 암호문을 담아서 DB로 보내기!
+    // if (memberService.insertMember(m) > 0) { // 성공 =>  메인페이지 리디렉션
+    //   return "redirect:/";
+    // } else { // 실패 => 에러메시지 담아서 에러페이지로 포워딩
+    //   model.addAttribute("errorMsg", "회원가입 실패");
+    //   return "common/errorPage";
+    return null;
+    }
   
+
   @RequestMapping("login.me")
   public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv) {
     // login 시 DB에 저장된 암호화된 암호의 솔트값을 알아내면
