@@ -8,6 +8,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -23,8 +25,7 @@ public class MemberController {
 
   @RequestMapping("insert.me")
   public String insertMember(Member m, Model model) {
-    System.out.println("평문: 1234");
-    System.out.println(bcryptPasswordEncoder.encode("1234"));
+    
     // System.out.println("평문" + m.getUserPwd());
     // String encPwd = bcryptPasswordEncoder.encode(m.getUserPwd());
     // System.out.println("encrypted: " + encPwd);
@@ -35,8 +36,7 @@ public class MemberController {
     //   model.addAttribute("errorMsg", "회원가입 실패");
     //   return "common/errorPage";
     return null;
-    }
-  
+  }
 
   @RequestMapping("login.me")
   public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv) {
@@ -53,5 +53,11 @@ public class MemberController {
       mv.setViewName("common/errorPage");
     }
     return mv;
+  }
+
+  @RequestMapping("logout.me")
+  public String logoutMember(HttpSession session) {
+    session.invalidate();
+    return "redirect:/";
   }
 }
