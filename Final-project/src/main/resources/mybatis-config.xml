@@ -9,15 +9,15 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	</settings>
 
 	<typeAliases>
-		<typeAlias type="com.kh.finalProject.auction.model.vo.Auction" alias="auction"/>
-		<typeAlias type="com.kh.finalProject.blog.model.vo.Blog" alias="blog"/>
-		<typeAlias type="com.kh.finalProject.board.model.vo.Board" alias="board"/>
-		<typeAlias type="com.kh.finalProject.chat.model.vo.Chat" alias="chat"/>
-		<typeAlias type="com.kh.finalProject.common.model.vo.Common" alias="common"/>
-		<typeAlias type="com.kh.finalProject.experience.model.vo.Experience" alias="experience"/>
-		<typeAlias type="com.kh.finalProject.garden.model.vo.Garden" alias="garden"/>
-		<typeAlias type="com.kh.finalProject.member.model.vo.Member" alias="member"/>
-		<typeAlias type="com.kh.finalProject.notice.model.vo.Notice" alias="notice"/>
+		<typeAlias type="com.kh.finalproject.auction.model.vo.Auction" alias="auction"/>
+		<typeAlias type="com.kh.finalproject.blog.model.vo.Blog" alias="blog"/>
+		<typeAlias type="com.kh.finalproject.board.model.vo.Board" alias="board"/>
+		<typeAlias type="com.kh.finalproject.chat.model.vo.Chat" alias="chat"/>
+		<typeAlias type="com.kh.finalproject.common.model.vo.Common" alias="common"/>
+		<typeAlias type="com.kh.finalproject.experience.model.vo.Experience" alias="experience"/>
+		<typeAlias type="com.kh.finalproject.garden.model.vo.Garden" alias="garden"/>
+		<typeAlias type="com.kh.finalproject.member.model.vo.Member" alias="member"/>
+		<typeAlias type="com.kh.finalproject.notice.model.vo.Notice" alias="notice"/>
 	</typeAliases>
 	
 	 <mappers>

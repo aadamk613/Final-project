@@ -5,8 +5,8 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.kh</groupId>
-	<artifactId>finalproject</artifactId>
-	<name>springProject</name>
+	<artifactId>finalProject</artifactId>
+	<name>springproject</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 
