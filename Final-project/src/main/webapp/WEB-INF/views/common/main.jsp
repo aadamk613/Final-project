@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>main</title>
-<link rel="stylesheet" href="resources/css/common/template.css">
+
 
 </head>
 <style>
