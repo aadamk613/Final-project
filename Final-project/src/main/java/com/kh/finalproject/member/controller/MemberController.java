@@ -1,13 +1,19 @@
 package com.kh.finalproject.member.controller;
 
-import com.kh.finalproject.member.model.service.MemberService;
-import com.kh.finalproject.member.model.vo.Member;
 import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.finalproject.member.model.service.MemberService;
+import com.kh.finalproject.member.model.vo.Member;
+
 public class MemberController {
-  MemberService memberService;
+
+  @Autowired private MemberService memberService;
+
+  @Autowired private BCryptPasswordEncoder bcryptPasswordEncoder;
 
   @RequestMapping("login.me")
   public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv) {
@@ -16,7 +22,7 @@ public class MemberController {
     // BCryptPasswordEncoder의 matches 메서드를 사용하면 된다. (rawpassword, encodedpassword) 를 넘기면 됨
     Member loginUser = memberService.loginMember(m);
     if (loginUser != null
-        && bcryptPasswordEncoder.matches(m.getUserPwd(), loginUser.getUserPwd())) { // 성공시 :
+        && bcryptPasswordEncoder.matches(m.getMemPwd(), loginUser.getMemPwd())) { // 성공시 :
       session.setAttribute("loginUser", loginUser);
       mv.setViewName("redirect:/");
     } else { // 실패시
