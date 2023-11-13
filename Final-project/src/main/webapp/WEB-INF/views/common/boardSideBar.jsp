@@ -17,7 +17,7 @@
                 <div id="empty">
                     <table id="user" align="center">
                         <tr>
-                            <img src="" alt="회원사진" id="user_photo" >
+                            <img src="" alt="회원사진" id="user_photo" >하하호호
                         </tr>
                         <c:choose>
                     	<c:when test="${ not empty sessionScope.loginUser }">
