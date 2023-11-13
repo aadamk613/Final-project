@@ -1,4 +1,4 @@
-package com.kh.finalProject.common.model.vo;
+package com.kh.finalproject.common.model.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

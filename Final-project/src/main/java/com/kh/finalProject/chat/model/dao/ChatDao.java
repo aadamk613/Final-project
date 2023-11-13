@@ -1,4 +1,4 @@
-package com.kh.finalProject.chat.model.dao;
+package com.kh.finalproject.chat.model.dao;
 
 public class ChatDao {
 

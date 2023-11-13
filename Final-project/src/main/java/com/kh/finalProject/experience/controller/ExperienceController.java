@@ -1,4 +1,4 @@
-package com.kh.finalProject.experience.controller;
+package com.kh.finalproject.experience.controller;
 
 public class ExperienceController {
 

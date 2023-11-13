@@ -1,4 +1,4 @@
-package com.kh.finalProject.auction.controller;
+package com.kh.finalproject.auction.controller;
 
 public class AuctionController {
 

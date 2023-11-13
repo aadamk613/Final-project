@@ -1,6 +1,6 @@
-package com.kh.finalProject.common.teplate;
+package com.kh.finalproject.common.teplate;
 
-import com.kh.finalProject.common.model.vo.PageInfo;
+import com.kh.finalproject.common.model.vo.PageInfo;
 
 public class Pagination {
 

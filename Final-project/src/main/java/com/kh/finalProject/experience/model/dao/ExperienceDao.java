@@ -1,4 +1,4 @@
-package com.kh.finalProject.experience.model.dao;
+package com.kh.finalproject.experience.model.dao;
 
 public class ExperienceDao {
 

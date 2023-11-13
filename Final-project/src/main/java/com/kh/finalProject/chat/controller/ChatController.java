@@ -1,4 +1,4 @@
-package com.kh.finalProject.chat.controller;
+package com.kh.finalproject.chat.controller;
 
 public class ChatController {
 

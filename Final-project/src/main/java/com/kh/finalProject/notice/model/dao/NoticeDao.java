@@ -1,4 +1,4 @@
-package com.kh.finalProject.notice.model.dao;
+package com.kh.finalproject.notice.model.dao;
 
 public class NoticeDao {
 
