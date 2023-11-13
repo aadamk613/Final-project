@@ -1,4 +1,4 @@
-package com.kh.finalProject.chat.model.service;
+package com.kh.finalproject.chat.model.service;
 
 public interface ChatService {
 

@@ -1,4 +1,4 @@
-package com.kh.finalProject.notice.controller;
+package com.kh.finalproject.notice.controller;
 
 public class NoticeController {
 

@@ -1,4 +1,4 @@
-package com.kh.finalProject.notice.model.service;
+package com.kh.finalproject.notice.model.service;
 
 public interface NoticeService {
 

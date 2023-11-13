@@ -1,4 +1,4 @@
-package com.kh.finalProject.notice.model.vo;
+package com.kh.finalproject.notice.model.vo;
 
 public class Notice {
 

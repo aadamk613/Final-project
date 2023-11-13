@@ -1,4 +1,4 @@
-package com.kh.finalProject.experience.model.vo;
+package com.kh.finalproject.experience.model.vo;
 
 public class Experience {
 
