@@ -12,7 +12,7 @@ local.properties
 .loadpath
 .recommenders
 .idea/
- 
+
 # Eclipse Core       
 .project 
 
@@ -169,4 +169,6 @@ replay_pid*
 /Final-project/src/sql/driver/
 Final-project/.classpath
 /Final-project/target
+Final-project/.settings
+.classpath
 
