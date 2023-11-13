@@ -7,16 +7,19 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
+<style>
 <link rel="stylesheet" href="resources/css/common/template.css">
-
+</style>
 </head>
 <body>
+
             <div id="mp_navi">
                 <div id="empty">
                     <table id="user" align="center">
                         <tr>
                             <img src="" alt="회원사진" id="user_photo" >
                         </tr>
+                        <c:choose>
                     	<c:when test="${ not empty sessionScope.loginUser }">
 		                <tr>
 		                    <div align="center">${ sessionScope.loginUser.memId }님 환영합니다.</div>
@@ -27,6 +30,7 @@
 	                        <div id="loginPlz">로그인을 해주세요.</div>
 	                    </tr>
 						</c:otherwise>
+						</c:choose>
                     </table>
                 </div>
                 <ul id="navigator">
@@ -52,5 +56,6 @@
 
 
             </div>
+            
 </body>
 </html>
