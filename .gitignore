@@ -171,4 +171,5 @@ Final-project/.classpath
 /Final-project/target
 Final-project/.settings
 .classpath
+Final-project/src/main/webapp/WEB-INF/lib
 
