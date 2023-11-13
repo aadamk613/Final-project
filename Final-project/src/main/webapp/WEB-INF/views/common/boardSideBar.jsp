@@ -43,10 +43,10 @@
 	                    </c:otherwise>
                     </c:choose>
                         	<li>
-                                <a href="<%= contextPath %>/list.bo?cpage=1&type=10" class="naviText">공지사항</a>
+                                <a href="list.bo?cpage=1&type=10" class="naviText">공지사항</a>
                             </li>
                             <li>
-                                <a href="<%= contextPath %>/list.bo?cpage=1&type=20" class="naviText">자유게시판</a>
+                                <a href="list.bo?cpage=1&type=20" class="naviText">자유게시판</a>
                             </li>
                 </ul>
 

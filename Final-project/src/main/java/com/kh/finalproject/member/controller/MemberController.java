@@ -5,14 +5,21 @@ import com.kh.finalproject.member.model.vo.Member;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+@Controller
 public class MemberController {
 
   @Autowired private BCryptPasswordEncoder bcryptPasswordEncoder;
   @Autowired private MemberService memberService;
-
+  
+  @RequestMapping("loginForm.me")
+  public String loginForm() {
+	  return "member/loginForm";
+  }
+  
   @RequestMapping("login.me")
   public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv) {
     // login 시 DB에 저장된 암호화된 암호의 솔트값을 알아내면
