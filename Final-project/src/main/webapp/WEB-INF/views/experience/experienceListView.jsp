@@ -18,6 +18,15 @@
 	box-sizing: border-box;
 }
 
+ul{
+	list-style : none;
+}
+
+ul > li{
+	float : left;
+	width : 10%;
+}
+
 
 
 
@@ -44,24 +53,37 @@
 		<section id="pageSection">
 		
 			<h1>체험학습</h1>
-			
-			<thead>
+			<div>
 				<table>
-					<tr>번호</tr>
-					<tr>카테고리</tr>
-					<tr>제목</tr>
-					<tr>지역</tr>
-					<tr>모집마감일</tr>
-					<tr>작성자</tr>
-					<tr>
-				
-				
+					<thead>
+						<tr>
+							<th>번호</th>
+							<th>카테고리</th>
+							<th>제목</th>
+							<th>지역</th>
+							<th>모집마감일</th>
+							<th>작성자</th>
+							<th>모집인원</th>
+							<th>상태</th>
+							<th>조회수</th>
+						</tr>
+					</thead>
+					<thead>
+						
+						
+					</thead>
 				</table>
+			</div>
+			<div>
+				<ul>
+					<c:forEach begin="1" end="5" var="p">
+						<li>${ p }</li>
+					</c:forEach>
+				</ul>
+			</div>
 			
 			
-			</thead>
-		
-		
+			
 		
 		
 		
