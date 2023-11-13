@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.kh.final">
+	<logger name="com.kh.finalproject">
 		<level value="info" />
 	</logger>
 	

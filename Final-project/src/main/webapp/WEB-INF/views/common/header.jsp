@@ -40,7 +40,7 @@
 							<li><a id="login" href="loginForm.me">로그인</a></li>
 						</c:when>
 						<c:otherwise>
-							<li><a id="login" href="">로그아웃</a></li>
+							<li><a id="login" href="logout.me">로그아웃</a></li>
 						</c:otherwise>
 					</c:choose>
 					<li><a href="#"><img src="resources/images/comment.png" /></a></li>
