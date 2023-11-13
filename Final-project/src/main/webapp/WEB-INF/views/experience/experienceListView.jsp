@@ -5,9 +5,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>체험학습 목록 조회</title>
 </head>
 <body>
+
+	<h1>체험학습</h1>
 
 </body>
 </html>
