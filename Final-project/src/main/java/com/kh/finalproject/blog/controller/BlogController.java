@@ -47,6 +47,12 @@ public class BlogController {
 		return mv;
 	}
 	
+	@RequestMapping("updateForm.bl")
+	public String updateFormBlog(int blogNo, HttpSession session) {
+		session.setAttribute("blogNo", blogNo);
+		return "blog/updateFormBlog";
+	}
+	
 	
 	
 }

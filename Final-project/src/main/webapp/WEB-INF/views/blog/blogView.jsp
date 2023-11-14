@@ -31,25 +31,19 @@
 }
 
 #plantWrap{
-
     width: 100%;
     height: 100px;
 }
 
 
-#plantWrap > div{
-    width: 100px;
-    height: 100px;
-    padding: 10px;
 
-    
-}
-
-#plantWrap > div > div{
+#plantWrap > div {
     float: left;
     width: 100px;
     height: 100px;
     padding: 10px;
+    margin: 10px;
+    text-align: center;
     
 }
 
@@ -71,6 +65,60 @@ li{list-style-type: none;}
 ul{padding: 10px;}
 
 #blogTitle{font-size: 25px; font-weight: bold; padding: 10px;}
+
+#blogBoardWrap{width: 100%; height: auto;}
+
+#blogBoardWrap div{float: left;}
+
+#boardCategory, #blogBoardTitle, #createDateWrap{
+	width: 100%;
+	height: 30px; 
+	margin: 5px;
+}
+
+#boardCategory{
+	width: 100%;
+	height: 30px; 
+	font-size: 15px; 
+	color: gray;
+	
+}
+
+#blogBoardTitle{
+	width: 100%;
+	height: 30px; 
+	font-size: 20px;
+	font-weight: bold;
+}
+
+#createDateWrap{
+	width: 100%;
+	height: 30px; 
+	font-size: 15px; 
+	color: gray;
+}
+
+#blogBoardContent{
+	width: 100%;
+	height: auto; 
+	font-size: 15px; 
+	margin: 5px;
+	
+}
+
+#likeCommentWrap{
+	width: 100%; 
+	height: auto;
+	
+}
+
+#likeCommentUl{
+	width: 100%;
+	height: 30px;
+	list-style-type: none;
+}
+
+
 </style>
 <body>
 
@@ -80,10 +128,11 @@ ul{padding: 10px;}
 	<main>
 		<aside id="pageAsideLeft" class="aside">
             <div id="blogInfo">
-                <ul>
+                <ul id="blogInfoUl">
                     <li id="blogImg"><img src=""/>사진 공간</li>
                     <li id="memId">닉네임(아이디)</li>
                     <li id="blogIntroduce">${ blog.blogIntroduce }</li>
+                    <li id=""><a href="">글 쓰기</a><a href="updateForm.bl?blogNo=${ blog.blogNo }">블로그 관리</a></li>
                 </ul>
           
             </div>
@@ -109,23 +158,38 @@ ul{padding: 10px;}
 			
 			<div id="content">
                <div id="plantWrap">
-                   <div>
                         <div>사진</div>
                         <div>사진</div>
                         <div>사진</div>
                         <div>사진</div>
                         <div>사진</div>
-
-                   </div>
+                        <div>사진</div>
+                        <div>사진추가 + </div>
                </div>
 				<article>
+					<div id="blogBoardWrap">
+						<div id="boardCategory">
+						 게시글 카테고리
+						</div>
+						<div id="blogBoardTitle">
+						 	블로그 일반 게시글 제목 부분
+						</div>
+						<div id="createDateWrap" >
+							2023/10/31 [15:32]
+						</div>
+						<div id="blogBoardContent">
+							블로그 글 내용입니다.~~~~ <br>
+							우하아하<br>
+							블로그 글 내용입니다.~~~~ <br>
+							우하아하<br>
+							블로그 글 내용입니다.~~~~ <br>
+							우하아하<br>
+							블로그 글 내용입니다.~~~~ <br>
+							우하아하<br>
+						</div>
+					</div>
 
-                    <table>
-                        <tr>
-                            
-                        </tr>
 
-                    </table>
 
 				</article>
 			</div>
@@ -134,6 +198,7 @@ ul{padding: 10px;}
 		</section>
 		
 		<aside id="pageAsideRight" class="aside">
+		 달력 부분
 		</aside>
 		
 	</main>
