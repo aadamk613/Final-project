@@ -132,4 +132,4 @@ Final-project/.classpath
 Final-project/.settings
 .classpath
 Final-project/src/main/webapp/WEB-INF/lib
-Final-project/src/main/webapp/WEB-INF/spring
+Final-project/src/main/webapp/WEB-INF/spring/root-context.xml

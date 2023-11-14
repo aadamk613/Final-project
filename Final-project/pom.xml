@@ -184,7 +184,13 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.6</version>
 		</dependency>
-		
+
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-websocket</artifactId>
+		    <version>${org.springframework-version}</version>
+		</dependency>
+
 		<!-- 다중 트랜잭션(spring container가 관리) 처리 => @Transactional 애노테이션 사용 라이브러리  -->
 		<dependency>
 		    <groupId>org.springframework</groupId>

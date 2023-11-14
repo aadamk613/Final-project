@@ -43,7 +43,7 @@
 							<li><a id="login" href="logout.me">로그아웃</a></li>
 						</c:otherwise>
 					</c:choose>
-					<li><a href="#"><img src="resources/images/comment.png" /></a></li>
+					<li><a href="chatMain.ch"><img src="resources/images/comment.png" /></a></li>
 					<li><a href="#"><img src="resources/images//alarm.png" /></a></li>
 				</ul>
 			</div>
