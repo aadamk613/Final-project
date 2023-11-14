@@ -30,7 +30,14 @@
 					<li><a href="#">일손모집</a></li>
 					<li><a href="#">커뮤니티</a></li>
 					<li><a href="main.bl">블로그</a></li>
-					<li><a href="#">마이페이지</a></li>
+					<c:choose>
+						<c:when test="${sessionScope.loginUser.memStatus eq 'A'}">
+							<li><a href="main.admin">관리자메뉴</a></li>	
+						</c:when>
+						<c:otherwise>
+							<li><a href="#">마이페이지</a></li>
+						</c:otherwise>
+					</c:choose>
 				</ul>
 			</div>
 			<div id="loginWrap">

@@ -5,9 +5,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>화면 틀입니다 복사해서 사용해주세요</title>
+<title>관리자메뉴</title>
 <link rel="stylesheet" href="resources/css/common/template.css">
-
+    <!-- jQuery 라이브러리 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- 부트스트랩에서 제공하고 있는 스타일 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- 부트스트랩에서 제공하고 있는 스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <style>
 
@@ -30,12 +35,11 @@
 	</header> 
 	<main>
 		<aside id="pageAsideLeft" class="aside">
-            &lt;aside1&gt; <br>
-            id=pageAsideLeft <br>
-	            여기는 pageAsideLeft 공백공간 <br>
-	            사이드바 넣을 수도 있음 <br>
-	            필요하면 쓰세요 <br>
-	            중앙정렬되어있어요 <br>
+           <ul class="list-group">
+			  <li class="list-group-item active">Active item</li>
+			  <li class="list-group-item">Second item</li>
+			  <li class="list-group-item">Third item</li>
+			</ul>
 		</aside>
 		
 		<section id="pageSection">

@@ -24,7 +24,6 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="com.kh.finalproject" />
-	
 	<!-- 채팅 기능 구현용 웹소켓 관련  -->
 	<beans:bean class="com.kh.finalproject.chat.WebSocketBasicServer" id="basicServer"/>
 	<beans:bean class="com.kh.finalproject.chat.WebSocketGroupServer" id="groupServer"/>
@@ -32,5 +31,6 @@
 		<websocket:mapping path="sc" handler="basicServer"/>
 		<websocket:mapping path="gp" handler="groupServer"/>
 	</websocket:handlers>
+	
 	
 </beans:beans>
