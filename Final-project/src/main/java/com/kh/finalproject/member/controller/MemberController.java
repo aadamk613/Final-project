@@ -1,16 +1,19 @@
 package com.kh.finalproject.member.controller;
 
-import com.kh.finalproject.member.model.service.MemberService;
-import com.kh.finalproject.member.model.vo.Member;
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.google.gson.Gson;
+import com.kh.finalproject.member.model.service.MemberService;
+import com.kh.finalproject.member.model.vo.Member;
 
 @Controller
 public class MemberController {
@@ -21,6 +24,13 @@ public class MemberController {
   @RequestMapping("loginForm.me")
   public String loginForm() {
     return "member/loginForm";
+  }
+  
+  @ResponseBody
+  @RequestMapping(value="select.me", produces="application/json; charset=UTF-8")
+  public String selectMember(int memNo, HttpSession session,ModelAndView mv) {
+	  return new Gson().toJson(memberService.selectMember(memNo));
+	  
   }
 
   @RequestMapping("insert.me")

@@ -5,6 +5,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.finalproject.blog.model.service.BlogService;
 import com.kh.finalproject.blog.model.vo.Blog;
@@ -34,6 +36,15 @@ public class BlogController {
 		} else {
 			return "blog/blogMainView";
 		}
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="select.bl", produces="application/json; charset=UTF-8")
+	public ModelAndView selectBlog(int blogNo, ModelAndView mv) {
+		Blog blog = (Blog)blogService.selectBlog(blogNo);
+		mv.addObject("blog", blog);
+		mv.setViewName("blog/blogView");
+		return mv;
 	}
 	
 	
