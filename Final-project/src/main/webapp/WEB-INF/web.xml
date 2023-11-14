@@ -2,7 +2,6 @@
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
@@ -15,7 +14,6 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-
 	<!-- Processes application requests -->
 	<servlet>
 		<servlet-name>appServlet</servlet-name>
@@ -31,14 +29,14 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-		<!-- 
+		<!--
 	필터 : 모든 요청 처리 전 공통적으로 필요한 기능들을 클라이언트 요청을 servlet이 받기 전에 먼저 필터링해서 수행할 수 있도록 함.
 	배포서술자(web.xml) 에 작성해서 해당 작성내용이 먼저 수행되도록 만듦.
 	
 	* 스프링에서 기본적으로 제공해주는 인코딩 필터
 	-org.springframework.web.filter.CharacterEncodingFilter
 	-필터 등록시 filter태그와 filter-mapping태그를 함께 써야함!
-	외부에서 제공되는 필터도 있음. 
+	외부에서 제공되는 필터도 있음.
 	 -->
 	<filter>
 		<filter-name>encodingFilter</filter-name>
@@ -58,5 +56,4 @@
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
 </web-app>
