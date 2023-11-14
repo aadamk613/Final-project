@@ -6,5 +6,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="experienceMapper">
 	
 	
+	<select id="selectExperienceList" parameterType="experience">
+		
+	
+	
+	</select>
+	
 	
 </mapper>

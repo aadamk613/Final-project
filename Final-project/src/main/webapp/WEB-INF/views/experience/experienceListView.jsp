@@ -6,7 +6,12 @@
 <head>
 <meta charset="UTF-8">
 <title>체험학습 목록 조회</title>
-<link rel="stylesheet" href="resources/css/common/template.css">
+	<link rel="stylesheet" href="resources/css/common/template.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 
 
@@ -18,16 +23,16 @@
 	box-sizing: border-box;
 }
 
-ul{
-	list-style : none;
+.table table-bordered th, td{
+	text-align : center;
 }
 
-ul > li{
-	float : left;
-	width : 10%;
+.pagination {
+	align : center;
+    display : flex;
+    align-items: center;
+    justify-content: center;
 }
-
-
 
 
 </style>
@@ -50,37 +55,60 @@ ul > li{
 	            중앙정렬되어있어요 <br>
 		</aside>
 		
+		<!-- 게시판 -->
 		<section id="pageSection">
 		
 			<h1>체험학습</h1>
-			<div>
-				<table>
-					<thead>
-						<tr>
-							<th>번호</th>
-							<th>카테고리</th>
-							<th>제목</th>
-							<th>지역</th>
-							<th>모집마감일</th>
-							<th>작성자</th>
-							<th>모집인원</th>
-							<th>상태</th>
-							<th>조회수</th>
-						</tr>
-					</thead>
-					<thead>
-						
-						
-					</thead>
-				</table>
+			
+			<div class="table-sm">
+			<table class="table table-bordered">
+			    <thead>
+			      <tr>
+ 					<th>번호</th>
+					<th>카테고리</th>
+					<th>제목</th>
+					<th>지역</th>
+					<th>모집마감일</th>
+					<th>작성자</th>
+					<th>모집인원</th>
+					<th>상태</th>
+					<th>조회수</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+			      <tr>
+			        <td>John</td>
+			        <td>Doe</td>
+			        <td>john</td>
+			        <td>john@example.com</td>
+			        <td>john@example.com</td>
+			        <td>john@example.com</td>
+			        <td>john@example.com</td>
+			        <td>john@example.com</td>
+			        <td>john@example.com</td>
+			      </tr>
+			    </tbody>
+			  </table>
 			</div>
-			<div>
-				<ul>
-					<c:forEach begin="1" end="5" var="p">
-						<li>${ p }</li>
-					</c:forEach>
+			
+			<!-- 페이징바 -->
+			<div class="ddd">
+				<ul class="pagination">
+				  	<li class="page-item"><a class="page-link" href="#">Previous</a></li>
+					<c:forEach begin="1" end="1" var="p">
+				  	<li class="page-item" onclick="pageClick(this)"><a class="page-link" href="#">1</a></li>
+				  	</c:forEach>
+				  	<li class="page-item"><a class="page-link" href="#">Next</a></li>
 				</ul>
 			</div>
+			
+			<script>
+				function pageClick(e){
+					// const current = ${ reqeustScope.currentPage };
+					// 이렇게 해야 하지 않을까 왜냐면 previous랑 next 클릭 시 안먹음
+					e.setAttribute('class', 'page-item active');
+				}
+			</script>
 			
 			
 			
@@ -113,6 +141,7 @@ ul > li{
 	
 	<br clear="both">
 	
+	<!-- footer -->
 	<footer id="pageFooter">
         &lt;footer&gt; <br>
         id=pageFooter
