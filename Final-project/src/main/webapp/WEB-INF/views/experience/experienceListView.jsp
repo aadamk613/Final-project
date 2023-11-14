@@ -93,37 +93,45 @@
 			  </table>
 			</div>
 			
+			<script>
+			
+				function test(a, b){
+					// a는 매핑값
+					// b는 페이지 뒤에 쿼리스트링 받으면 어떨까?
+				}
+				// 음 페이징바를 js파일로 빼서 공유해보기 => ajax처리? 어떰???
+			</script>
+			
 			<!-- 페이징바 -->
 			<div id="pagingbar">
 				<ul class="pagination">
-				  	<li class="page-item"><a class="page-link" href="#">Previous</a></li>
-					<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
-					
-				  		<li class="page-item" id="${ p }"><a class="page-link" href="#">${ p }</a></li>
-				  	</c:forEach>
-				  	<li class="page-item"><a class="page-link" href="#">Next</a></li>
+					<c:choose>
+						<c:when test="${ pi.currentPage ne 1 }">
+					  		<li class="page-item"><a class="page-link" href="yrlist.exp?page=${ pi.currentPage - 1 }">Previous</a></li>
+					  	</c:when>
+					  	<c:otherwise>
+					  		<li class="page-item"><a class="page-link" href="">Previous</a></li>
+					  	</c:otherwise>
+				  	</c:choose>
+						<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+				  			<li class="page-item"><a class="page-link" href="yrlist.exp?page=${ p }">${ p }</a></li>
+				  		</c:forEach>
+				  	<c:choose>
+					  	<c:when test="${ pi.currentPage ne pi.maxPage }">
+					  		<li class="page-item"><a class="page-link" href="yrlist.exp?page=${ pi.currentPage + 1 }">Next</a></li>
+					  	</c:when>
+					  	<c:otherwise>
+					  		<li class="page-item"><a class="page-link" href="">Next</a></li>
+					  	</c:otherwise>
+				  	</c:choose>
+				  	
 				</ul>
 			</div>
 			
 			<script>
-				//console.log(${ 'experienceList' });
-				function pageClick(e){
-					// const current = ${ reqeustScope.currentPage };
-					// 이렇게 해야 하지 않을까 왜냐면 previous랑 next 클릭 시 안먹음
-					// e.setAttribute('class', 'page-item active');
-					console.log('${ pi.currentPage }');
-				};
-				
+							
 				$(function(){
-					//$('li').val() = '${ p }'
-					console.log($('li > a').text());
-					$("li[val='${ p }']").attr('class', 'page-item active');
-					//$('li["value", "${ p }"]').attr('class', 'page-item active');
-					
-					//$('#pagingbar > ul > li').click(function(){
-						//$(this).attr('class', 'page-item active');
-						// location.href="yrlist.exp?page=" + $(this);
-					//});
+					$('.pagination > li:contains(${ pi.currentPage })').attr('class', 'page-item active');
 					
 				});
 

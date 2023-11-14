@@ -60,6 +60,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 	   (EXP_CATEGORY_NO)
 		 WHERE 
 			   EXP_STATUS = 'Y'
+		 ORDER 
+		    BY
+		       EXP_NO DESC
 	</select>
 	
 	
