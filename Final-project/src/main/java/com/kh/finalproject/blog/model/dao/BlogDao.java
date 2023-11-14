@@ -16,5 +16,9 @@ public class BlogDao {
 		return sqlSession.update("bolgMapper.updateMemberBlogNo", b);
 	}
 
+	public Blog selectBlog(SqlSessionTemplate sqlSession, int blogNo) {
+		return sqlSession.selectOne("bolgMapper.selectBlog", blogNo);
+	}
+
 
 }
