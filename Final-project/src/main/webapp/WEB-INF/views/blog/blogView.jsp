@@ -1,22 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>화면 틀입니다 복사해서 사용해주세요</title>
+<title>블로그 메인</title>
 <link rel="stylesheet" href="resources/css/common/template.css">
 
 </head>
 <style>
 
+
 * {
     border: 1px solid skyblue;
 	box-sizing: border-box;
 }
-
-
 
 #pageAsideLeft{display: block;}
 
@@ -72,8 +71,6 @@ li{list-style-type: none;}
 ul{padding: 10px;}
 
 #blogTitle{font-size: 25px; font-weight: bold; padding: 10px;}
-
-
 </style>
 <body>
 
@@ -86,7 +83,7 @@ ul{padding: 10px;}
                 <ul>
                     <li id="blogImg"><img src=""/>사진 공간</li>
                     <li id="memId">닉네임(아이디)</li>
-                    <li id="blogIntr">블로그 소개 어쩌구저쩌구 블로그입니당 우하하하!</li>
+                    <li id="blogIntroduce">${ blog.blogIntroduce }</li>
                 </ul>
           
             </div>
@@ -107,7 +104,7 @@ ul{padding: 10px;}
 		<section id="pageSection">
 			
 			<div id="blogTitle">
-			    블로그 제목
+			    ${ blog.blogTitle }
 			</div>
 			
 			<div id="content">

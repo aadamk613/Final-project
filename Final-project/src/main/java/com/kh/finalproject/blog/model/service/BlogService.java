@@ -10,6 +10,8 @@ public interface BlogService {
 	
 	// 블로그 정보 수정
 	int updateBlog(Blog b);
+
+	Blog selectBlog(int blogNo);
 	
 	// 블로그 카테고리 생성
 	

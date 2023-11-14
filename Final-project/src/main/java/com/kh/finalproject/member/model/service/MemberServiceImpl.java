@@ -15,4 +15,8 @@ public class MemberServiceImpl implements MemberService {
   public Member loginMember(Member m) {
     return memberDao.loginMember(sqlSession, m);
   }
+  
+  public Member selectMember(int memNo) {
+	  return memberDao.selectMember(sqlSession, memNo);
+  }
 }

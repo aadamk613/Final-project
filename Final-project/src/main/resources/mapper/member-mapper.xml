@@ -28,6 +28,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE
 			MEM_ID = #{memId}
 	</select>
+	
+	<select id="selectMember" parameterType="_int" resultMap="memberResultSet">
+		SELECT
+		      MEM_STATUS,
+		      MEM_ID,
+		      MEM_NICK,
+		      MEM_IMG,
+		      REG_BUSINESS,
+		      BLOG_NO
+		FROM
+			  MEMBER
+		WHERE
+			  MEM_NO = #{memNo}
+	</select>
 
 
 </mapper>

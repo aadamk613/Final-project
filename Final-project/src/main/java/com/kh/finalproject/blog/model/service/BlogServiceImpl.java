@@ -22,9 +22,11 @@ public class BlogServiceImpl implements BlogService{
 	public int insertBlog(Blog b) {
 		
 		blogDao.insertBlog(sqlSession, b);
-		System.out.println(blogDao.insertBlog(sqlSession, b));
-		System.out.println(blogDao.updateMemberBlogNo(sqlSession, b));
 		return blogDao.updateMemberBlogNo(sqlSession, b);
+	}
+	
+	public Blog selectBlog(int blogNo) {
+		return blogDao.selectBlog(sqlSession, blogNo);
 	}
 
 	@Override
