@@ -9,7 +9,11 @@ import com.kh.finalproject.blog.model.vo.Blog;
 public class BlogDao {
 
 	public int insertBlog(SqlSessionTemplate sqlSession, Blog b) {
-		return sqlSession.insert("blogMapper.insertBlog", b);
+		return sqlSession.insert("bolgMapper.insertBlog", b);
+	}
+
+	public int updateMemberBlogNo(SqlSessionTemplate sqlSession, Blog b) {
+		return sqlSession.update("bolgMapper.updateMemberBlogNo", b);
 	}
 
 

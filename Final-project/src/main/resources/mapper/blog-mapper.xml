@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="bolgMapper">
 	
-	<insert id="createBlog" >
+	<insert id="insertBlog" parameterType="blog">
 		INSERT 
 			INTO
     		TB_BLOG
@@ -16,8 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     				BLOG_INTRODUCE,
     				BLOG_IMG,
     				BLOG_INTEREST,
-    				PLANT_PREFER,
-    				BLOG_CREATE_DATE
+    				PLANT_PREFER
     				)
     		VALUES
     				(
@@ -27,9 +26,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     				#{ blogIntroduce },
     				#{ blogImg },
     				#{ blogInterest },
-    				#{ plantPrefer },
-    				SYSDATE
+    				#{ plantPrefer }
     				)
 	</insert>
 	
+	<update id="updateMemberBlogNo" parameterType="blog">
+		UPDATE MEMBER 
+			SET 
+				BLOG_NO = SEQ_BLOG.CURRVAL
+		WHERE 
+			MEM_NO = #{ memNo }
+	
+	</update>
 </mapper>

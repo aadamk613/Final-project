@@ -141,12 +141,13 @@ a{
 			
 			<div id="content">
                <div id="blogInfo">
-                   블로그 관심사와 관심 식물 카테고리를 설정하시면 관련 글을 추천해드립니다
+                   	블로그 관심사와 관심 식물 카테고리를 설정하시면 관련 글을 추천해드립니다
                </div>
 				<article id="pageArticle">
 
 					<div id="createFormWrap">
                         <form action="insert.bl" method="post" >
+                        <input type="hidden" name="memNo" value="${ sessionScope.loginUser.memNo }">
                             <table id="createForm">
                             <tr>
                                     <th>블로그 이름</th>
@@ -154,51 +155,51 @@ a{
                                 </tr>
                                 <tr>
                                     <th>블로그 소개글</th>
-                                    <td><textarea name="blogIntr" id="" placeholder="${ sessionScope.loginUser.memNick }님의 블로그입니다."></textarea>
+                                    <td><textarea name="blogIntroduce" id="" placeholder="${ sessionScope.loginUser.memNick }님의 블로그입니다."></textarea>
                                 </tr>
                                 <tr>
                                     <th>블로그 이미지</th>
-                                    <td><input type="file" name="blogImg" value=""></td>
+                                    <td><input type="text" name="blogImg" value="g"></td>
                                 </tr>
                                 <tr>
                                     <th>블로그 관심사</th>
                                     <td>
                                         <select name="blogInterest">
-                                            <option value="">선택안함</option>
-                                            <option value="">문학&middot;책</option>
-                                            <option value="">영화</option>
-                                            <option value="">미술&middot;디자인</option>
-                                            <option value="">공연&middot;전시</option>
-                                            <option value="">음악</option>
-                                            <option value="">드라마</option>
-                                            <option value="">스타&middot;연예인</option>
-                                            <option value="">만화&middot;애니</option>
-                                            <option value="">방송</option>
-                                            <option value="">일상&middot;생각</option>
-                                            <option value="">육아&middot;결혼</option>
-                                            <option value="">반려동물</option>
-                                            <option value="">패션&middot;미용</option>
-                                            <option value="">인테리어&middot;DIY</option>
-                                            <option value="">요리&middot;레시피</option>
-                                            <option value="">상품리뷰</option>
-                                            <option value="">게임</option>
-                                            <option value="">스포츠</option>
-                                            <option value="">사진</option>
-                                            <option value="">자동차</option>
-                                            <option value="">취미</option>
-                                            <option value="">여행</option>
-                                            <option value="">맛집</option>
-                                            <option value="">IT&middot;컴퓨터</option>
-                                            <option value="">건강</option>
-                                            <option value="">경제</option>
-                                            <option value="">외국어</option>
-                                            <option value="">교육</option>
+                                            <option value="no">선택안함</option>
+                                            <option value="book">문학&middot;책</option>
+                                            <option value="movie">영화</option>
+                                            <option value="art">미술&middot;디자인</option>
+                                            <option value="show">공연&middot;전시</option>
+                                            <option value="music">음악</option>
+                                            <option value="drama">드라마</option>
+                                            <option value="enter">스타&middot;연예인</option>
+                                            <option value="animation">만화&middot;애니</option>
+                                            <option value="broadcast">방송</option>
+                                            <option value="daily">일상&middot;생각</option>
+                                            <option value="parenting">육아&middot;결혼</option>
+                                            <option value="pet">반려동물</option>
+                                            <option value="fasion">패션&middot;미용</option>
+                                            <option value="interior">인테리어&middot;DIY</option>
+                                            <option value="cook">요리&middot;레시피</option>
+                                            <option value="review">상품리뷰</option>
+                                            <option value="game">게임</option>
+                                            <option value="sport">스포츠</option>
+                                            <option value="picture">사진</option>
+                                            <option value="car">자동차</option>
+                                            <option value="hobby">취미</option>
+                                            <option value="travel">여행</option>
+                                            <option value="restaurant">맛집</option>
+                                            <option value="computer">IT&middot;컴퓨터</option>
+                                            <option value="health">건강</option>
+                                            <option value="economy">경제</option>
+                                            <option value="language">외국어</option>
+                                            <option value="edu">교육</option>
                                         </select>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>관심 식물</th>
-                                    <td></td>
+                                    <td><input type="text" name="plantPrefer" value="g"></td>
                                 </tr>
                             </table>
                             <div id="blogButtonWrap">

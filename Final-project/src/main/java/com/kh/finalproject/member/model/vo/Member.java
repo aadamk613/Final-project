@@ -14,4 +14,5 @@ public class Member {
   private String memImg;
   private String regBusiness;
   private String memStatus;
+  private int blogNo;
 }

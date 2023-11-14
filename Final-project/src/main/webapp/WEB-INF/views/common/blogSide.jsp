@@ -51,7 +51,7 @@
             
                 <div id="isLogin">
                 	<c:choose>
-                	<c:when test="${ not empty sessionScope.loginUser }" >
+                	<c:when test="${ (sessionScope.loginUser.blogNo ne null) and (sessionScope.loginUser.blogNo ne 0)}" >
                     <div id="user" align="center">
                         <div id="userProfile">
                             <img src="resources/images/defaultProfile.png" alt="회원사진" id="user_photo" >
@@ -68,7 +68,14 @@
 					</c:when>
 					<c:otherwise>
 						<div id="user" align="center">
-							<a href="insertForm.bl">블로그 생성</a>
+							<c:choose>
+								<c:when test="${ empty sessionScope.loginUser }" >
+									<a href="javascript:alert('로그인 후 이용가능합니다.');" >블로그 생성</a>
+								</c:when>
+								<c:otherwise>
+									<a href="insertForm.bl">블로그 생성</a>
+								</c:otherwise>
+							</c:choose>
 						</div>
 					</c:otherwise>
 					</c:choose>
