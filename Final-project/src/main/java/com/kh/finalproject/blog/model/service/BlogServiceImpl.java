@@ -3,6 +3,7 @@ package com.kh.finalproject.blog.model.service;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.finalproject.blog.model.dao.BlogDao;
 import com.kh.finalproject.blog.model.vo.Blog;
@@ -16,10 +17,14 @@ public class BlogServiceImpl implements BlogService{
 	@Autowired 
 	private SqlSessionTemplate sqlSession;
 	
+	@Transactional
 	@Override
 	public int insertBlog(Blog b) {
 		
-		return blogDao.insertBlog(sqlSession, b);
+		blogDao.insertBlog(sqlSession, b);
+		System.out.println(blogDao.insertBlog(sqlSession, b));
+		System.out.println(blogDao.updateMemberBlogNo(sqlSession, b));
+		return blogDao.updateMemberBlogNo(sqlSession, b);
 	}
 
 	@Override

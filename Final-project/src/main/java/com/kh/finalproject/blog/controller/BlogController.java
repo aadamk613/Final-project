@@ -1,5 +1,7 @@
 package com.kh.finalproject.blog.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +26,14 @@ public class BlogController {
 	}
 	
 	@RequestMapping("insert.bl")
-	public String insertBlog(Blog b) {
-		return "blog/blogMainView";
+	public String insertBlog(Blog b, HttpSession session) {
+		System.out.println(b);
+		if(blogService.insertBlog(b) > 0) {
+			session.setAttribute("alertMsg", "블로그 생성에 실패했습니다.");
+			return "blog/blogMainView";
+		} else {
+			return "blog/blogMainView";
+		}
 	}
 	
 	
