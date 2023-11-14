@@ -29,7 +29,6 @@ public class Experience {
 	private String expContent;
 	private String expCreateDate;
 	private String expWorkDate;
-	private int expWorkTime;
 	private String expEndDate;
 	private String expStatus;
 	private int expCount;
@@ -37,5 +36,7 @@ public class Experience {
 	private String expArea;
 	private String expAddress;
 	private int expCategoryNo;
+	private String expCategoryName;
+	private int expWorkTime;
 
 }
