@@ -18,6 +18,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<typeAlias type="com.kh.finalproject.garden.model.vo.Garden" alias="garden"/>
 		<typeAlias type="com.kh.finalproject.member.model.vo.Member" alias="member"/>
 		<typeAlias type="com.kh.finalproject.notice.model.vo.Notice" alias="notice"/>
+		<typeAlias type="com.kh.finalproject.ticket.model.vo.Ticket" alias="ticket"/>
 	</typeAliases>
 	
 	 <mappers>
@@ -30,6 +31,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	 	<mapper resource="/mapper/garden-mapper.xml" />
 	 	<mapper resource="/mapper/member-mapper.xml" />
 	 	<mapper resource="/mapper/notice-mapper.xml" />
+	 	<mapper resource="/mapper/ticket-mapper.xml" />
 	 </mappers>
 	 
 </configuration>
