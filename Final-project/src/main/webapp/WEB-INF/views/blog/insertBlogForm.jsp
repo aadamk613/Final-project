@@ -69,11 +69,17 @@ textarea{
     border: none;
 }
 
-#buttonWrap > div{
+#blogButtonWrap {
+   width: 100%;
+   height: 100px; 
+}
+
+#blogButtonWrap > div{
    margin-top: 30px;
    float: left;
    width: 50%;
-   padding: 0px 100px;
+   height: 70px;
+   text-align: center;
 }
 
 input[type=text] {
@@ -140,7 +146,7 @@ a{
 				<article id="pageArticle">
 
 					<div id="createFormWrap">
-                        <form>
+                        <form action="insert.bl" method="post" >
                             <table id="createForm">
                             <tr>
                                     <th>블로그 이름</th>
@@ -195,9 +201,9 @@ a{
                                     <td></td>
                                 </tr>
                             </table>
-                            <div id="buttonWrap">
-                                <div><button type="submit" class="button forest">블로그 생성</button></div>
-                                <div><button type="button" class="button beige">돌아가기</button></div>
+                            <div id="blogButtonWrap">
+                                <div><button type="submit" class="button forest" id="blogCreateButton">블로그 생성</button></div>
+                                <div><button type="button" class="button beige" id="goBlogHome">돌아가기</button></div>
                             </div>
                             </form>
 					</div>

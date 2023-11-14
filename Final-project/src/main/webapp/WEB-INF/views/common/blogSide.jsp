@@ -68,7 +68,7 @@
 					</c:when>
 					<c:otherwise>
 						<div id="user" align="center">
-							<a href="creat.bl">블로그 생성</a>
+							<a href="insertForm.bl">블로그 생성</a>
 						</div>
 					</c:otherwise>
 					</c:choose>

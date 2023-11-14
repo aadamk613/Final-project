@@ -5,6 +5,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="bolgMapper">
 	
-	
+	<insert id="createBlog" >
+		INSERT 
+			INTO
+    		TB_BLOG
+    				(
+    				BLOG_NO, 
+    				MEM_NO,
+    				BLOG_TITLE,
+    				BLOG_INTRODUCE,
+    				BLOG_IMG,
+    				BLOG_INTEREST,
+    				PLANT_PREFER,
+    				BLOG_CREATE_DATE
+    				)
+    		VALUES
+    				(
+    				SEQ_BLOG.NEXTVAL,
+    				#{ memNo },
+    				#{ blogTitle },
+    				#{ blogIntroduce },
+    				#{ blogImg },
+    				#{ blogInterest },
+    				#{ plantPrefer },
+    				SYSDATE
+    				)
+	</insert>
 	
 </mapper>
