@@ -28,7 +28,7 @@
 					<li><a href="#">스토어</a></li>
 					<li><a href="yrlist.exp">체험학습</a></li>
 					<li><a href="#">일손모집</a></li>
-					<li><a href="#">커뮤니티</a></li>
+					<li><a href="main.co">커뮤니티</a></li>
 					<li><a href="main.bl">블로그</a></li>
 					<c:choose>
 						<c:when test="${sessionScope.loginUser.memStatus eq 'A'}">

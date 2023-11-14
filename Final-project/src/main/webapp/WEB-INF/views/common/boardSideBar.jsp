@@ -47,7 +47,7 @@
 	                    </c:otherwise>
                     </c:choose>
                         	<li>
-                                <a href="#" class="naviText">공지사항</a>
+                                <a href="main.no" class="naviText">공지사항</a>
                             </li>
                             <li>
                                 <a href="#" class="naviText">자유게시판</a>
