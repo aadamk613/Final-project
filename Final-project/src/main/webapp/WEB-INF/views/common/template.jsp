@@ -48,7 +48,7 @@
 			
 			<div id="content">
                 content
-				<article>
+				<article id="pageArticle">
 
 					<p>
                         여기는 article부분 <br>

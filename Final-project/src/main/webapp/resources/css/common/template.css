@@ -55,7 +55,7 @@ main > section, main > aside, main > div{
 	height : auto;
 }
 
-article{
+#pageArticle{
 	height: auto;
 	margin : 20px;
 }
