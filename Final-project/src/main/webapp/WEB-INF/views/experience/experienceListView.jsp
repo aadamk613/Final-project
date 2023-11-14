@@ -76,17 +76,19 @@
 			      </tr>
 			    </thead>
 			    <tbody>
-			      <tr>
-			        <td>John</td>
-			        <td>Doe</td>
-			        <td>john</td>
-			        <td>john@example.com</td>
-			        <td>john@example.com</td>
-			        <td>john@example.com</td>
-			        <td>john@example.com</td>
-			        <td>john@example.com</td>
-			        <td>john@example.com</td>
-			      </tr>
+			    	<c:forEach items="${ experienceList }" var="el">
+						<tr>
+						  <td>${ el.expNo }</td>
+						  <td>${ el.expCategoryName }</td>
+						  <td>${ el.expTitle }</td>
+						  <td>${ el.expArea }</td>
+						  <td>${ el.expEndDate }</td>
+						  <td>${ el.expWriter }</td>
+						  <td>${ el.expPeople }</td>
+						  <td>${ el.expStatus }</td>
+						  <td>${ el.expCount }</td>
+						</tr>
+			      	</c:forEach>
 			    </tbody>
 			  </table>
 			</div>
@@ -113,13 +115,15 @@
 				};
 				
 				$(function(){
+					//$('li').val() = '${ p }'
+					console.log($('li > a').text());
+					$("li[val='${ p }']").attr('class', 'page-item active');
+					//$('li["value", "${ p }"]').attr('class', 'page-item active');
 					
-					$('#pagingbar > ul > li').click(function(){
-						
-						
-						$(this).attr('class', 'page-item active');
+					//$('#pagingbar > ul > li').click(function(){
+						//$(this).attr('class', 'page-item active');
 						// location.href="yrlist.exp?page=" + $(this);
-					});
+					//});
 					
 				});
 

@@ -21,16 +21,12 @@ public class ExperienceController {
 	
 	@RequestMapping("yrlist.exp")
 	public String seleceExperienceList(@RequestParam(value="page", defaultValue="1") int currentPage, Model model){
-		System.out.println(currentPage);
 		PageInfo pi = Pagination.getPageInfo(experienceService.selectListCount(), currentPage, 5, 5);
 		System.out.println(pi);
-		ArrayList<Experience> list = experienceService.selectExperienceList(pi);
-		System.out.println(list);
-		model.addAttribute("experienceList", list);
+		model.addAttribute("experienceList", experienceService.selectExperienceList(pi));
 		model.addAttribute("pi", pi);
 		return "experience/experienceListView";
 	}
-	
 	
 	
 	
