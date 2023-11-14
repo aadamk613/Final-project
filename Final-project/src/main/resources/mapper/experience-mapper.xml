@@ -5,11 +5,61 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="experienceMapper">
 	
+	<resultMap id="experienceResultSet" type="experience">
+		<result column="EXP_NO" property="expNo" />
+		<result column="EXP_TITLE" property="expTitle" />
+		<result column="EXP_WRITER" property="expWriter" />
+		<result column="EXP_PEOPLE" property="expPeople" />
+		<result column="EXP_CONTENT" property="expContent" />
+		<result column="EXP_CREATE_DATE" property="expCreateDate" />
+		<result column="EXP_WORK_DATE" property="expWorkDate" />
+		<result column="EXP_WORK_TIME" property="expWorkTime" />
+		<result column="EXP_END_DATE" property="expEndDate" />
+		<result column="EXP_STATUS" property="expStatus" />
+		<result column="EXP_COUNT" property="expCount" />
+		<result column="EXP_UPDATE_DATE" property="expUpdateDate" />
+		<result column="EXP_AREA" property="expArea" />
+		<result column="EXP_ADDRESS" property="expAddress" />
+		<result column="EXP_CATEGORY_NO" property="expCategoryNo" />
+		<result column="EXP_CATEGORY_NAME" property="expCategoryName" />
+	</resultMap>
 	
-	<select id="selectExperienceList" parameterType="experience">
-		
 	
+	<select id="selectListCount" resultType="_int">
+		SELECT 
+			   COUNT(*)
+		  FROM 
+			   TB_EXPERIENCE
+		 WHERE 
+		 	   EXP_STATUS = 'Y'
+	</select>
 	
+	<select id="selectExperienceList" resultMap="experienceResultSet">
+		SELECT 
+		       EXP_NO,
+			   EXP_TITLE,
+			   EXP_WRITER,
+			   EXP_PEOPLE,
+			   EXP_CONTENT,
+			   TO_CHAR(EXP_CREATE_DATE),
+			   TO_CHAR(EXP_WORK_DATE),
+			   TO_CHAR(EXP_END_DATE),
+			   EXP_STATUS,
+			   EXP_COUNT,
+			   TO_CHAR(EXP_UPDATE_DATE),
+			   EXP_AREA,
+			   EXP_ADDRESS,
+			   EXP_WORK_TIME,
+			   EXP_CATEGORY_NAME,
+			   EXP_CATEGORY_NO
+		  FROM
+		       TB_EXPERIENCE
+		  JOIN 
+		       TB_EXPERIENCE_CATEGORY
+		 USING 
+		 	   (EXP_CATEGORY_NO)
+		 WHERE 
+			   EXP_STATUS = 'Y'
 	</select>
 	
 	

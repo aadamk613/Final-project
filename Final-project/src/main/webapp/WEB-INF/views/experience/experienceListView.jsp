@@ -92,22 +92,37 @@
 			</div>
 			
 			<!-- 페이징바 -->
-			<div class="ddd">
+			<div id="pagingbar">
 				<ul class="pagination">
 				  	<li class="page-item"><a class="page-link" href="#">Previous</a></li>
-					<c:forEach begin="1" end="1" var="p">
-				  	<li class="page-item" onclick="pageClick(this)"><a class="page-link" href="#">1</a></li>
+					<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+					
+				  		<li class="page-item" id="${ p }"><a class="page-link" href="#">${ p }</a></li>
 				  	</c:forEach>
 				  	<li class="page-item"><a class="page-link" href="#">Next</a></li>
 				</ul>
 			</div>
 			
 			<script>
+				//console.log(${ 'experienceList' });
 				function pageClick(e){
 					// const current = ${ reqeustScope.currentPage };
 					// 이렇게 해야 하지 않을까 왜냐면 previous랑 next 클릭 시 안먹음
-					e.setAttribute('class', 'page-item active');
-				}
+					// e.setAttribute('class', 'page-item active');
+					console.log('${ pi.currentPage }');
+				};
+				
+				$(function(){
+					
+					$('#pagingbar > ul > li').click(function(){
+						
+						
+						$(this).attr('class', 'page-item active');
+						// location.href="yrlist.exp?page=" + $(this);
+					});
+					
+				});
+
 			</script>
 			
 			
