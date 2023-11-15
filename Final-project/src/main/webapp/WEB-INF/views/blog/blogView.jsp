@@ -132,7 +132,11 @@ ul{padding: 10px;}
                     <li id="blogImg"><img src=""/>사진 공간</li>
                     <li id="memId">닉네임(아이디)</li>
                     <li id="blogIntroduce">${ blog.blogIntroduce }</li>
-                    <li id=""><a href="">글 쓰기</a><a href="updateForm.bl?blogNo=${ blog.blogNo }">블로그 관리</a></li>
+                    <li id="">
+	                    <a href="">글 쓰기</a>
+	                    <a href="updateForm.bl?blogNo=${ blog.blogNo }">블로그 관리</a>
+	                    <a href="updateForm.bl_ct?blogNo=${ blog.blogNo }">카테고리 관리</a>
+                    </li>
                 </ul>
           
             </div>
