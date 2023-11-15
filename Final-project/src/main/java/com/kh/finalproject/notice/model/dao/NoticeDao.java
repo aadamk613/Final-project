@@ -17,6 +17,6 @@ public class NoticeDao {
 	}
 	
 	public ArrayList<Notice> selectNoticeList(SqlSessionTemplate sqlSession, RowBounds rowBouds) {
-		return (ArrayList)sqlSession.selectList("noticeMapper.selectNoticeList");
+		return (ArrayList)sqlSession.selectList("noticeMapper.selectNoticeList", null, rowBouds);
 	}
 }

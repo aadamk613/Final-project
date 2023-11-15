@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta charset="UTF-8">
 <title>게시판</title>
@@ -22,8 +23,9 @@
 		<jsp:include page="../common/header.jsp" />
 	</header> 
 	<main>
-
-		<jsp:include page="../common/boardSideBar.jsp" />
+		<aside id="pageAsideLeft" class="aside">
+		<jsp:include page="../common/boardSideBar.jsp"/>
+		</aside>
 
 		
 		<section id="section">
@@ -47,37 +49,21 @@
 					  </thead>
 					  
 					  <tbody>
-					  <c:choose>
-						  <c:when test="${ list eq null }">
+						  <c:if test="${ empty list  }">
 							  <tr>
 							  <td colspan="5" style="text-align: center">작성한 게시글이 없습니다</td>
 							  <tr>
-						  </c:when>
-						  <c:otherwise>
+						  </c:if>
 						  	<c:forEach var="n" items="${ requestScope.list }">
-						  	  <tr>
-						      <td scope="row" style="text-align: center">${ n.noticeNo }</td>
-						      <c:choose>
-							      <c:when test="${ loginUser ne null }">
-							      	<td scope="row" style="text-align: center">
-							      		<a href="detail.bo?boardNo=${ n.noticeNo }&memNo=${ loginUser.memNo }">${ n.noticeTitle }</a>
-							      	</td>
-							      </c:when>
-							      <c:otherwise>
-							      	<td scope="row" style="text-align: center" id="boardTitleTd">
-							      		<a href="detail.bo?boardNo=${ n.noticeNo }&memNo=0">${ n.noticeTitle }</a>
-							      	</td>
-							      </c:otherwise>
-						      </c:choose>
-						       					       
+
+						      <td scope="col" width="10%" style="text-align: center">${ n.noticeNo }</th>
+					          <td scope="col" width="20%" style="text-align: center">${ n.noticeTitle }[${ n.views }]</th>	       
 						      <td scope="row" width="20%" style="text-align: center">${ n.memNo }</td>
 						      <td scope="row" width="20%" style="text-align: center">${ n.noticeCreateDate }</td>
-						      <td scope="row" width="10%" style="text-align: center">${ n.views }</td>
-						      <td scope="row" width="10%" style="text-align: center">${ n.likeCount }</td>
+						      <td scope="row" width="15%" style="text-align: center">${ n.views }</td>
+						      <td scope="row" width="15%" style="text-align: center">${ n.likeCount }</td>
 						    	</tr>
 						    </c:forEach>
-						</c:otherwise>	
-					  </c:choose>
 
 					  </tbody>
 					</table>
@@ -94,13 +80,13 @@
 			
 			<div id="page">
 				<c:if test="${ pi.currentPage ne 1 }">
-		        	<button class="btn btn-light" onclick="location.href='list.no?cpage=${ pi.currentPage - 1 }'">&lt;</button>
+		        	<button class="btn btn-light" onclick="location.href='list.no?cPage=${ pi.currentPage - 1 }'">&lt;</button>
 		        </c:if> 
 		       
 		        <c:forEach var="i" begin="${ pi.startPage }" end="${ pi.endPage }">
 		       		<c:choose>
 			       		<c:when test="${ pi.currentPage ne i }">
-			          		<button class="btn btn-light" onclick="location.href='list.no?cpage=${ i }'">${ i }</button>
+			          		<button class="btn btn-light" onclick="location.href='list.no?cPage=${ i }'">${ i }</button>
 			         	</c:when>
 			         	<c:otherwise>
 			         		<button disabled class="btn btn-default">${ i }</button>
@@ -109,12 +95,17 @@
 		        </c:forEach>
 		        
 		        <c:if test="${ pi.currentPage ne pi.maxPage }">
-		        	<button class="btn btn-light" onclick="location.href='list.no?cpage=${ pi.currentPage + 1 }'">&gt;</button>
+		        	<button class="btn btn-light" onclick="location.href='list.no?cPage=${ pi.currentPage + 1 }'">&gt;</button>
 		        </c:if>
 			</div>
+			
+
+			
+			
+			
 		</section>
 		
-		<aside id="aside2" class="aside">
+		<aside id="pageAsideRight" class="aside">
 		</aside>
 		
 		
