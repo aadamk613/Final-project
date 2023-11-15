@@ -1,7 +1,9 @@
 package com.kh.finalproject.member.controller;
 
+import com.google.gson.Gson;
+import com.kh.finalproject.member.model.service.MemberService;
+import com.kh.finalproject.member.model.vo.Member;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,10 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.google.gson.Gson;
-import com.kh.finalproject.member.model.service.MemberService;
-import com.kh.finalproject.member.model.vo.Member;
 
 @Controller
 public class MemberController {
@@ -25,17 +23,15 @@ public class MemberController {
   public String loginForm() {
     return "member/loginForm";
   }
-  
-  @ResponseBody
-  @RequestMapping(value="select.me", produces="application/json; charset=UTF-8")
-  public String selectMember(int memNo, HttpSession session,ModelAndView mv) {
-	  return new Gson().toJson(memberService.selectMember(memNo));
-	  
-  }
+
+//  @ResponseBody
+//  @RequestMapping(value = "select.me", produces = "application/json; charset=UTF-8")
+//  public String selectMember(int memNo, HttpSession session, ModelAndView mv) {
+//    return new Gson().toJson(memberService.selectMember(memNo));
+//  }
 
   @RequestMapping("insert.me")
   public String insertMember(Member m, Model model) {
-    
     // System.out.println("평문" + m.getUserPwd());
     // String encPwd = bcryptPasswordEncoder.encode(m.getUserPwd());
     // System.out.println("encrypted: " + encPwd);
@@ -56,11 +52,11 @@ public class MemberController {
     Member loginUser = memberService.loginMember(m);
     if (loginUser != null
         && bcryptPasswordEncoder.matches(m.getMemPwd(), loginUser.getMemPwd())) { // 성공시 :
+      memberService.setLastLogin(loginUser);
       session.setAttribute("loginUser", loginUser);
       mv.setViewName("redirect:/");
     } else { // 실패시
       mv.addObject("errorMsg", "로그인 실패....").setViewName("common/errorPage"); // mv 객체는 메소드 체이닝가능
-      mv.setViewName("common/errorPage");
     }
     return mv;
   }
@@ -69,5 +65,27 @@ public class MemberController {
   public String logoutMember(HttpSession session) {
     session.invalidate();
     return "redirect:/";
+  }
+
+  @RequestMapping("joinForm.me")
+  public String joinForm() {
+    return "member/memberJoinForm";
+  }
+
+  @RequestMapping("join.me")
+  public String joinMember(Member m, Model model) {
+    System.out.println(m);
+    System.out.println("평문 : " + m.getMemPwd());
+
+    String encPwd = bcryptPasswordEncoder.encode(m.getMemPwd());
+
+    m.setMemPwd(encPwd); // Member객체의 MemPwd 필드에 평문이 아닌 암호문을 담아서 DB로 보내기
+
+    if (memberService.joinMember(m) > 0) { // 성공하면 메인페이지로
+      return "redirect:/";
+    } else {
+      model.addAttribute("errorMsg", "회원가입 실패");
+      return "../common/errorPage.jsp";
+    }
   }
 }

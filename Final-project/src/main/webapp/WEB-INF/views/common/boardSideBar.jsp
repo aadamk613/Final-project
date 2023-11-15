@@ -36,18 +36,18 @@
                 <ul id="navigator">
                 	<c:choose>
 	                	<c:when test="${ empty sessionScope.loginUser }">
-	                		<li><a  href="#" class="btn btn-primary" >게시글 작성</a></li>
+	                    	<li><a href="#" class="btn btn-primary">게시글작성</a></li>
 	                    	<li><a href="#" class="btn btn-primary">쪽지함</a></li>
 	                    	<li><a href="#" class="btn btn-light loginMemUser">내가 쓴 글 확인</a>
 	                    </c:when>
 	                    <c:otherwise>
-	                    	<li><a href='javascript:void(0);' onclick="alert('로그인 후 이용 가능한 기능입니다.');" class="btn btn-primary">게시글 작성</a></li>
+	                    	<li><a href='javascript:void(0);' onclick="alert('로그인 후 이용 가능한 기능입니다.');" class="btn btn-primary">게시글작성</a></li>
 	                    	<li><a href='javascript:void(0);' onclick="alert('로그인 후 이용 가능한 기능입니다.');" class="btn btn-primary">쪽지함</a></li>
 	                    	<li><a href='javascript:void(0);' onclick="alert('로그인 후 이용 가능한 기능입니다.');" class="btn btn-light">내가 쓴 글 확인</a></li>
 	                    </c:otherwise>
                     </c:choose>
                         	<li>
-                                <a href="main.no" class="naviText">공지사항</a>
+                                <a href="list.no" class="naviText">공지사항</a>
                             </li>
                             <li>
                                 <a href="#" class="naviText">자유게시판</a>

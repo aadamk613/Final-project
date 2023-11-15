@@ -5,6 +5,7 @@ import com.kh.finalproject.member.model.vo.Member;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -15,8 +16,15 @@ public class MemberServiceImpl implements MemberService {
   public Member loginMember(Member m) {
     return memberDao.loginMember(sqlSession, m);
   }
-  
-  public Member selectMember(int memNo) {
-	  return memberDao.selectMember(sqlSession, memNo);
+
+  @Override
+  @Transactional
+  public int joinMember(Member m) {
+    return memberDao.joinMember(sqlSession, m);
+  }
+
+  @Override
+  public int setLastLogin(Member m) {
+    return memberDao.setLastLogin(sqlSession, m);
   }
 }
