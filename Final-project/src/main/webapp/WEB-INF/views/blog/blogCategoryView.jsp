@@ -20,7 +20,7 @@
 
 #content{pagging: 20px;}
 
-#content div{margin: 10px;}
+#content div{padding: 10px;}
 
 
 
@@ -40,6 +40,25 @@
 	cursor: pointer;
 	height: 30px;
 	}
+	
+#category ul{
+	list-style: none; 
+	margin: 0px;
+	padding: 0px;
+	width: 150px;
+}
+
+#categorySettingWrap {
+	width: 100%; 
+	height: auto;
+}
+
+#categorySettingWrap div{
+	width: 100%; 
+	height: auto;
+}
+
+#category{width: 100px;}
 
 </style>
 <body>
@@ -68,27 +87,32 @@
 					</div>
 					
 					<div id="categoryWrap">
+					categoryWrap
 						<div id="categoryInfo">
 							카테고리 관리 설정
 							<ul>
-								<li><a href="insert.bl_ct?blogNo=${ blogNo }"><button>카테고리 추가</button></a></li>
-								<li><a><button>구분선 추가</button></a></li>
+								<li><button onclick="insertBlogCategory(10);">카테고리 추가</button></li>
+								<li><button onclick="insertBlogCategory(99);">구분선 추가</button></li>
 								<li><a href="delete.bl_ct"><button>삭제</button></a></li>
 							</ul>
 							
 							
 						</div>
-						<div id="categorySetting">
+						<div id="categorySettingWrap">
+						categorySettingWrap
 							<div id="category">
-								카테고리<br>
-								카테고리1<br>
-								------1<br>
-								카테고리1<br>
-								카테고리1<br>
-								------<br>
-								카테고리1<br>
+								category	
+								
+							</div>
+							<div id="categorySetting">
+								카테고리 명 : <input type="text">
+								<button>이름 변경</button>
+								<button>삭제하기</button>
+								 
 							</div>
 						</div>
+						
+						<button>뒤로 가기</button>
 					</div>
 
 			</div>
@@ -100,6 +124,62 @@
 		</aside>
 		
 	</main>
+	
+	<script>
+	
+		$(() => {
+			selectBlogCategory();
+		});
+		
+		function selectBlogCategory(){
+			$.ajax({
+				url: 'select.bl_ct',
+				data: {blogNo: ${ blogNo }},
+				success: data => {
+					console.log(data);
+					
+					let value='';
+					for(let i in data){
+						value  += '<ul>'
+						       + '<li><button onclick="selectCategory(data[i].categorySettingNo)">' + data[i].categoryMemName + '</button></li>'
+						       + '</ul>'; 
+					}
+					$('#category').html(value);
+					
+				}, 
+				error: () => {
+					console.log('카테고리 불러오기 실패');
+				}
+			})
+			
+		}
+		
+		function insertBlogCategory(cateNo){
+			
+			$.ajax({
+				url: 'insert.bl_ct',
+				data: {
+					blogNo : ${ blogNo}, 
+					categoryNo : cateNo
+				},
+				success: data => {
+					selectBlogCategory();
+					console.log(data);
+				},
+				error: () => {
+					console.log('카테고리 생성 실패');
+				}
+			})
+			
+		}
+		
+		function selectCategory(catoNo){
+			
+			
+			$('categorySetting').html(value);
+		}
+		
+	</script>
 	
 	<br clear="both">
 	
