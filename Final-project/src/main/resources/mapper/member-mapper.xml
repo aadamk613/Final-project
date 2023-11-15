@@ -31,6 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="selectMember" parameterType="_int" resultMap="memberResultSet">
 		SELECT
+			  MEM_NO,
 		      MEM_STATUS,
 		      MEM_ID,
 		      MEM_NICK,

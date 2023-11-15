@@ -19,6 +19,15 @@ public class BlogDao {
 	public Blog selectBlog(SqlSessionTemplate sqlSession, int blogNo) {
 		return sqlSession.selectOne("bolgMapper.selectBlog", blogNo);
 	}
+	
+	public int updateBlog(SqlSessionTemplate sqlSession, Blog blog) {
+		System.out.println("블로그 업데이트 dao" + blog);
+		return sqlSession.update("bolgMapper.updateBlog", blog);
+	}
 
+	public int insertCategory(SqlSessionTemplate sqlSession, int blogNo) {
+		System.out.println(blogNo);
+		return sqlSession.insert("blogMapper.insertCategory", blogNo);
+	}
 
 }
