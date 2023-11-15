@@ -46,7 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   BY
 			     CATEGORY DESC, NOTICE_NO DESC
 	</select>
-	<select id="selectBestNotice" resultMap="noticeResultSet">
+<!-- 	<select id="selectBestNotice" resultMap="noticeResultSet">
 				SELECT *
 			FROM
 			  (SELECT
@@ -90,6 +90,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			  ORDER BY
 			    LIKE_COUNT DESC, NOTICE_NO DESC) a
 			WHERE ROWNUM <= 5
-	</select>
+	</select> -->
 	
 </mapper>
