@@ -8,7 +8,12 @@
 <title>header</title>
 <link rel="stylesheet" href="resources/css/common/template.css">
 <link rel="stylesheet" href="resources/css/common/header.css">
-
+<!-- jQuery 라이브러리 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- 부트스트랩에서 제공하고 있는 스타일 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- 부트스트랩에서 제공하고 있는 스크립트 -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <!-- Nanum Gothic Regular 400, Bold 700, ExtraBoard 800 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,9 +33,16 @@
 					<li><a href="#">스토어</a></li>
 					<li><a href="yrlist.exp">체험학습</a></li>
 					<li><a href="#">일손모집</a></li>
-					<li><a href="#">커뮤니티</a></li>
+					<li><a href="main.co">커뮤니티</a></li>
 					<li><a href="main.bl">블로그</a></li>
-					<li><a href="#">마이페이지</a></li>
+					<c:choose>
+						<c:when test="${sessionScope.loginUser.memStatus eq 'A'}">
+							<li><a href="main.admin">관리자메뉴</a></li>	
+						</c:when>
+						<c:otherwise>
+							<li><a href="createTicket.tk">마이페이지</a></li>
+						</c:otherwise>
+					</c:choose>
 				</ul>
 			</div>
 			<div id="loginWrap">

@@ -1,5 +1,39 @@
 package com.kh.finalproject.experience.model.service;
 
-public class ExperienceServiceImpl {
+import java.util.ArrayList;
+
+import org.apache.ibatis.session.RowBounds;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.kh.finalproject.common.model.vo.PageInfo;
+import com.kh.finalproject.experience.model.dao.ExperienceDao;
+import com.kh.finalproject.experience.model.vo.Experience;
+
+@Service
+public class ExperienceServiceImpl implements ExperienceService {
+	
+	@Autowired
+	private ExperienceDao experienceDao;
+	@Autowired
+	private SqlSessionTemplate sqlSession;
+
+	@Override
+	public int selectListCount() {
+		return experienceDao.selectListCount(sqlSession);
+	}
+	
+	@Override
+	public ArrayList<Experience> selectExperienceList(PageInfo pi) {
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList<Experience>)experienceDao.selectExperienceList(sqlSession, rowBounds);
+	}
+
+
+	
+	
 
 }

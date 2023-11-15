@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>화면 틀입니다 복사해서 사용해주세요</title>
+<title>Ticket Main</title>
 <link rel="stylesheet" href="resources/css/common/template.css">
 
 </head>
@@ -41,19 +41,40 @@
 		<section id="pageSection">
 			
 			<div id="contentTitle">
-                &lt;div&gt;
-                id=contentTitle 
-				제목(삭제해도 됨)
+                Ticket List
 			</div>
 			
 			<div id="content">
-                content
-				<article>
-
-					<p>
-                        여기는 article부분 <br>
-                    </p>
-
+				<article id="pageArticle">
+					<table id="tb" class="table table-sm table-hover" align="center" style="width: 78%" style="cursor:default">
+						<thead class="thead-light">
+							<tr>
+								<th width="100">번호</th>
+								<th width="300">제목</th>
+								<th width="50">작성자</th>
+								<th width="170">작성일</th>
+							</tr>
+						</thead>
+						<tbody style="cursor:default">
+							<c:choose>
+								<c:when test="${empty requestScope.list}">
+									<tr>
+										<td colspan="5">조회된 게시글이 없습니다..</td>
+									</tr>
+								</c:when>
+								<c:otherwise>
+									<c:forEach items="${requestScope.list}" var="b">
+										<tr>
+											<td>${b.boardNo}</td>
+											<td>${b.title}</td>
+											<td>${b.writer}</td>
+											<td>${b.createDate}</td>
+										</tr>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>
+						</tbody>
+					</table>
 				</article>
 			</div>
 			

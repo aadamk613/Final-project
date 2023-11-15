@@ -125,7 +125,7 @@ a{
 					<ul>
 						<li><a href="#">아이디 찾기</a></li>
 						<li><a href="insert.me">비밀번호 찾기</a></li>
-						<li><a href="#">회원가입</a></li>
+						<li><a href="joinForm.me">회원가입</a></li>
 					</ul>
 					
 				</div>

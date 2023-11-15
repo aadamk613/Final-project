@@ -4,7 +4,66 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="bolgMapper">
+
+	<resultMap type="blog" id="BlogResultSet">
+		<result column="BLOG_NO" property="blogNo"/>
+		<result column="MEM_NO" property="memNo"/>
+		<result column="BLOG_TITLE" property="blogTitle"/>
+		<result column="BLOG_INTRODUCE" property="blogIntroduce"/>
+		<result column="BLOG_IMG" property="blogImg"/>
+		<result column="BLOG_INTEREST" property="blogInterest"/>
+		<result column="PLANT_PREFER" property="plantprefer "/>
+		<result column="BLOG_CREATE_DATE" property="blogCreateDate"/>
+	</resultMap>
 	
+	<insert id="insertBlog" parameterType="blog">
+		INSERT 
+			INTO
+    		TB_BLOG
+    				(
+    				BLOG_NO, 
+    				MEM_NO,
+    				BLOG_TITLE,
+    				BLOG_INTRODUCE,
+    				BLOG_IMG,
+    				BLOG_INTEREST,
+    				PLANT_PREFER
+    				)
+    		VALUES
+    				(
+    				SEQ_BLOG.NEXTVAL,
+    				#{ memNo },
+    				#{ blogTitle },
+    				#{ blogIntroduce },
+    				#{ blogImg },
+    				#{ blogInterest },
+    				#{ plantPrefer }
+    				)
+	</insert>
 	
+	<update id="updateMemberBlogNo" parameterType="blog">
+		UPDATE MEMBER 
+			SET 
+				BLOG_NO = SEQ_BLOG.CURRVAL
+		WHERE 
+			MEM_NO = #{ memNo }
 	
+	</update>
+	
+	<select id="selectBlog" parameterType="_int" resultMap="BlogResultSet" >
+		
+		SELECT 
+				BLOG_NO,
+				MEM_NO,
+				BLOG_TITLE,
+				BLOG_INTRODUCE,
+				BLOG_IMG,
+				BLOG_INTEREST,
+				PLANT_PREFER
+			FROM
+				TB_BLOG
+			WHERE
+				BLOG_NO = #{ blogNo }
+	
+	</select>
 </mapper>

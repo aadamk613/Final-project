@@ -11,6 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="MEM_NICK" property="memNick"/>
 		<result column="MEM_IMG" property="memImg"/>
 		<result column="MEM_BUSINESS" property="memBusiness"/>
+		<result column="BLOG_NO" property="blogNo"/>
 	</resultMap>
 	<select id="loginMember" parameterType="member" resultMap="memberResultSet">
 		SELECT
@@ -20,12 +21,50 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			MEM_PW,
       MEM_NICK,
       MEM_IMG,
-      REG_BUSINESS
+      REG_BUSINESS,
+      BLOG_NO
 		FROM
 			MEMBER
 		WHERE
 			MEM_ID = #{memId}
 	</select>
+	
+	<select id="selectMember" parameterType="_int" resultMap="memberResultSet">
+		SELECT
+		      MEM_STATUS,
+		      MEM_ID,
+		      MEM_NICK,
+		      MEM_IMG,
+		      REG_BUSINESS,
+		      BLOG_NO
+		FROM
+			  MEMBER
+		WHERE
+			  MEM_NO = #{memNo}
+	</select>
+	
+	<insert id="joinMember" parameterType="member">
+		INSERT
+		  INTO
+				MEMBER
+				(
+				MEM_NO,
+				MEM_STATUS,
+				MEM_ID,
+				MEM_PW,
+				MEM_NICK,
+				EMAIL
+				)
+		VALUES
+				(
+				SEQ_MEMBER_NO.NEXTVAL,
+				DEFAULT,
+				#{memId},
+				#{memPwd},
+				#{memNick},
+				#{email}
+				)
+	</insert>
 
 
 </mapper>
