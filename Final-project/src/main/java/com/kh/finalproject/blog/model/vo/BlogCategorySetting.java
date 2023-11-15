@@ -9,6 +9,7 @@ import lombok.ToString;
 public class BlogCategorySetting {
 
 	private int categoryNo;
+	private int categorySettingNo;
 	private int blogNo;
 	private String categoryMemName;
 	

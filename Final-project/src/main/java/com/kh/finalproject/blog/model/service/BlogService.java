@@ -1,6 +1,9 @@
 package com.kh.finalproject.blog.model.service;
 
+import java.util.ArrayList;
+
 import com.kh.finalproject.blog.model.vo.Blog;
+import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
 
 public interface BlogService {
 
@@ -15,8 +18,11 @@ public interface BlogService {
 	// 블로그 정보 수정
 	int updateBlog(Blog b);
 
+	// 블로그 카테고리 select
+	ArrayList<BlogCategorySetting> selectCatogory(int blogNo);
+	
 	// 블로그 카테고리 생성
-	int insertCategory(int blogNo);
+	int insertCategory(BlogCategorySetting blogCateSet);
 	
 	// 블로그 카테고리 수정
 	
