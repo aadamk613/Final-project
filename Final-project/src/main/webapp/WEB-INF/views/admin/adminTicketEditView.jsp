@@ -77,7 +77,7 @@ textarea {
 									</div>
 								</td>
 							</tr>
-							<form action="editResolveTicket.admin" method="post">
+							<form action="" method="post" id="postform">
 							<tr>
 								<td colspan="6">
 									<div class="input-group mb-3">
@@ -100,10 +100,10 @@ textarea {
 								<td colspan="4">
 									<input type="hidden" name="ticketNo" value="${ticket.ticketNo}">
 									<input type="hidden" name="ticketWriter" value="${sessionScope.loginUser.memId}">
-									<button type="submit" class="btn btn-primary btn-block btn-primary">답변수정</button>
+									<a class="btn btn-primary btn-block btn-primary" onclick="postformSubmit(0)">답변수정</a>
 								</td>
 								<td colspan="2">
-									<a href="#" class="btn btn-primary btn-block btn-danger" >답변삭제</a>
+									<a class="btn btn-primary btn-block btn-danger" onclick="postformSubmit(1)">답변삭제</a>
 								</td>
 							</tr>
 						</form>
@@ -124,9 +124,15 @@ textarea {
 		<jsp:include page="../common/footer.jsp" />
 	</footer>
 <script>
-	$(() => {
-		console.log(${ticket});
-	})
+	function postformSubmit(num) {
+		if (num == 0) {
+			// 수정 버튼 클릭시 
+			$('#postform').attr('action', 'editResolvedTicket.admin').submit();
+		} else {
+			//삭제버튼클릭시
+			$('#postform').attr('action', 'deleteResolvedTicketStatus.admin').submit();
+		}
+	};
 </script>
 
 </body>

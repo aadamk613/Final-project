@@ -44,4 +44,9 @@ public ArrayList<Ticket> getResolvedTicketListView() {
 public int editResolvedTicket(Ticket ticket) {
 	return adminDao.editResolvedTicket(sqlSession, ticket);
 }
+
+@Override
+public int deleteResolvedTicketStatus(Ticket ticket) {
+	return adminDao.deleteResolvedTicketStatus(sqlSession, ticket); 
+}
 }

@@ -70,4 +70,14 @@ public class AdminController {
 	  return mv;
   }
   
+  @PostMapping("deleteResolvedTicketStatus.admin")
+  public String deleteResolvedTicketStatus(Ticket ticket, Model m) {
+	  if (adminService.deleteResolvedTicketStatus(ticket) > 0) {
+		  m.addAttribute("alertMsg", "답변을 성공적으로 삭제하였습니다!");
+	  } else {
+		  m.addAttribute("errorMsg", "답변 삭제에 실패하였습니다!");
+	  }
+	  return "redirect:resolvedTicket.admin";
+  }
+  
 }

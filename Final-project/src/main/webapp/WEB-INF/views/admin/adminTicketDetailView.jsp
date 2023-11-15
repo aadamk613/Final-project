@@ -97,16 +97,12 @@ textarea {
 								</td>
 							</tr>
 							<tr>
-								<td colspan="3">
+								<td colspan="6">
 									<input type="hidden" name="ticketNo" value="${ticket.ticketNo}">
 									<input type="hidden" name="ticketWriter" value="${sessionScope.loginUser.memId}">
-									<button type="submit" class="btn btn-primary btn-block btn-primary">답변수정</button>
+									<button type="submit" class="btn btn-primary btn-block btn-primary">답변작성</button>
 								</td>
-								<td colspan="3">
-									<input type="hidden" name="ticketNo" value="${ticket.ticketNo}">
-									<input type="hidden" name="ticketWriter" value="${sessionScope.loginUser.memId}">
-									<button type="submit" class="btn btn-primary btn-block btn-primary">답변삭제</button>
-								</td>
+
 								<!-- <td colspan="2">
 									<a href="#" class="btn btn-primary btn-block btn-danger" >삭제</a>
 								</td> -->

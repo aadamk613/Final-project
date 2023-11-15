@@ -101,7 +101,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE 
 			TICKET_NO = #{ticketNo}
 	</update>
-	<update id="deleteResolvedStatus" parameterType="_int">
+	<update id="deleteResolvedStatus" parameterType="ticket">
 		UPDATE
 			TICKET
 		SET 

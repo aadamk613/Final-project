@@ -89,6 +89,7 @@
 	</footer>
 <script>
 	$(() => {
+		// add event listener로 처리 해보자
 		$('#tb > tbody > tr').click(function() {
 			location.href = "ticketDetailView.admin?bno=" + $(this).children().eq(0).text();
 		})

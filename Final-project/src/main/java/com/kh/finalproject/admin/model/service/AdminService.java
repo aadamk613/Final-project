@@ -16,4 +16,6 @@ public interface AdminService {
   ArrayList<Ticket> getResolvedTicketListView();
 
   int editResolvedTicket(Ticket ticket);
+
+int deleteResolvedTicketStatus(Ticket ticket);
 }

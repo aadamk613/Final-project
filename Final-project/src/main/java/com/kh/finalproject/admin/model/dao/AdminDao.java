@@ -32,4 +32,8 @@ public ArrayList<Ticket> getResolvedTicketListView(SqlSessionTemplate sqlSession
 public int editResolvedTicket(SqlSessionTemplate sqlSession, Ticket ticket) {
 	return sqlSession.update("ticketMapper.resolveTicket", ticket);
 }
+
+public int deleteResolvedTicketStatus(SqlSessionTemplate sqlSession, Ticket ticket) {
+	return sqlSession.update("ticketMapper.deleteResolvedStatus", ticket);
+}
 }
