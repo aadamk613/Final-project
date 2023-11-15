@@ -61,11 +61,11 @@
 			회원가입
 		</div>
 		<br>
-		<form action="join.me" method="post">
+		<form action="join.me" method="post" id="join-form">
 			<div class="idWrap">
 				* 아이디 : 
-				<input type="text" name="memId" onkeydown="inputIdCheck();" class="checkId" maxlength="12" min="4" max="12" autofocus> <!-- 사용자가 키보드의 키를 누를떄 함수 inputIdCheck()가 발생됨 -->
-				<button type="button" onclick="fn_dbCheckId()" name="dbCheckId" class="checkId">중복체크</button>
+				<input type="text" id="memberId" name="memId" onkeydown="inputIdCheck();" class="checkId" maxlength="12" min="4" max="12" autofocus> <!-- 사용자가 키보드의 키를 누를떄 함수 inputIdCheck()가 발생됨 -->
+				<div id="checkResult" style="font-size:0.7em; display:none;"></div>
 			</div>
 			<div class="pwdWrap">
 				* 비밀번호 :
@@ -86,69 +86,54 @@
 			<div class="Qualification">
 				개인/기업
 				<br>
-				<select name="userCheck">
-				<option>개인</option>
-				<option>기업</option>
+				<select name="memStatus">
+				<option value="U">개인</option>
+				<option value="B">기업</option>
 				</select>
 			</div>
-			
-			<br><br>
-			
+			<br>
 			<div class="btns" align="center">
 				<button type="submit" class="btn btn-primary">회원가입</button>			
 				<button type="reset" class="btn btn-danger">다시</button>			
 			</div>
 		</form>
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			<script>
-			$(function inputIdCheck(){
-				$(document).on("keypress keyup keydown", "input[onlyNumber]", function(e){
-					if(/^[ㄱ-ㅎ}ㅏ-ㅣ|가-힣]/g.test(this.value)){ //한글막기
-						e.preventDefault();
-						this.value = "";
-					}
-				)};
-			)
-			</script>
-			
-				
-			<script>
-				function enterFn(){
-					if(window.event.keyCode == 13){
-						passwordCheckFn();
-					};
-				};
-				
-				function checkPasswordMatch() {
-				    var password = document.getElementById("password");
-				    var confirmPassword = document.getElementById("passwordCheck");
-				    var message = document.getElementById("passwordMatchMessage");
-
-				    if (password.value === confirmPassword.value) {
-				        message.
-				       
-				innerHTML = "비밀번호가 일치합니다.";
-				        
-				       
-				// You can add more styling or validation logic here, like enabling a submit button.
-				    } else {
-				        message.
-				       
-				innerHTML = "비밀번호가 일치하지 않습니다.";
-				        // You might want to disable the submit button or give a visual indication that the passwords don't match.
-				    }
-			</script>
-		
-		</div>
 	</div>
+	
+	<script>
+		$(function(){
+			// 자주쓰는, 중복되는 요소는 변수로 지정해놓는게 나아서 해놓음
+			const $idInput = $('.joinFormWrap #memberId');
+			const $checkResult = $('#checkResult');
+			const $joinFormSubmit = $('#join-form : submit');
+			
+			$idInput.keyup(function(){
+				if($idInput.val().length >= 5){
+					$.ajax({
+						url : 'idCheck.me',
+						data :  {checkId : $idInput.val()},
+						success : function(){
+							if(result.substr(4) === 'N'){
+								$checkResult.show().css('color', 'crimson').text('어? 중복된 아이디가 있네요~?');
+								$joyFormSubmit.attr('disabled', true);
+							}
+							else { 
+								$checkResult.show().css('color', 'lightgreen').text('와우~ 아주아주 멋진 아이디인걸요?');
+								$joinFormSubmit.removeAttr('disabled');
+							}
+						},
+						error : function(){
+							console.log('아이디 중복체크용 AJAX 통신실패');
+						}
+					});
+				}
+				else{
+					$checkResult.hide();
+					$joinFormSubmit.attr('disabled', true);
+				}
+				
+			})
+		})
+	</script>
 	</section>
 	<aside id="pageAsideRight" class="aside">
        

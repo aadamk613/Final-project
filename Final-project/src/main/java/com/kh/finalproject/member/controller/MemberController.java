@@ -3,7 +3,6 @@ package com.kh.finalproject.member.controller;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -91,6 +90,11 @@ public class MemberController {
 		  model.addAttribute("errorMsg", "회원가입 실패");
 		  return "../common/errorPage.jsp";
 	  }
-	  
+  }
+  @ResponseBody	// 포워딩 해줄게 아니라서 
+  @RequestMapping
+  public String idCheck(String checkId) {
+	  int count = memberService.idCheck(checkId);
+	  return count > 0 ? "NNNNN" : "NNNNY";
   }
 }

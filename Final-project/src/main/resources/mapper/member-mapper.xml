@@ -58,7 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		VALUES
 				(
 				SEQ_MEMBER_NO.NEXTVAL,
-				DEFAULT,
+				U,
 				#{memId},
 				#{memPwd},
 				#{memNick},
@@ -66,5 +66,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				)
 	</insert>
 
+	<!-- 여기는 아이디 중복체크용 쿼리문입니다 -->
+	
+	<select id="idCheck" parameterType="string" resultType="_int">
+		SELECT
+				COUNT(*)
+		  FROM
+		  		MEMBER
+		 WHERE
+		 		MEM_ID = #{checkId}
+	
+	</select>
 
 </mapper>

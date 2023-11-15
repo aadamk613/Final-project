@@ -23,4 +23,9 @@ public class MemberServiceImpl implements MemberService {
 public int joinMember(Member m) {
 	return memberDao.joinMember(sqlSession, m);
 }
+
+public int idCheck(String checkId) {
+	return memberDao.idCheck(sqlSession, checkId);
+}
+
 }
