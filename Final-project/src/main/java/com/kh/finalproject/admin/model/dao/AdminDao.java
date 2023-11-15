@@ -25,15 +25,15 @@ public class AdminDao {
     return sqlSession.update("ticketMapper.resolveTicket", ticket);
   }
 
-public ArrayList<Ticket> getResolvedTicketListView(SqlSessionTemplate sqlSession) {
-	return (ArrayList)sqlSession.selectList("ticketMapper.getResolvedTicketListView");
-}
+  public ArrayList<Ticket> getResolvedTicketListView(SqlSessionTemplate sqlSession) {
+    return (ArrayList) sqlSession.selectList("ticketMapper.getResolvedTicketListView");
+  }
 
-public int editResolvedTicket(SqlSessionTemplate sqlSession, Ticket ticket) {
-	return sqlSession.update("ticketMapper.resolveTicket", ticket);
-}
+  public int editResolvedTicket(SqlSessionTemplate sqlSession, Ticket ticket) {
+    return sqlSession.update("ticketMapper.resolveTicket", ticket);
+  }
 
-public int deleteResolvedTicketStatus(SqlSessionTemplate sqlSession, Ticket ticket) {
-	return sqlSession.update("ticketMapper.deleteResolvedStatus", ticket);
-}
+  public int deleteResolvedTicketStatus(SqlSessionTemplate sqlSession, Ticket ticket) {
+    return sqlSession.update("ticketMapper.deleteResolvedStatus", ticket);
+  }
 }

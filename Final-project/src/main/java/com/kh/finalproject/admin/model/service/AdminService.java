@@ -2,7 +2,6 @@ package com.kh.finalproject.admin.model.service;
 
 import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.ArrayList;
-import org.springframework.web.servlet.ModelAndView;
 
 public interface AdminService {
   ArrayList<Ticket> getTicketListView();
@@ -17,5 +16,5 @@ public interface AdminService {
 
   int editResolvedTicket(Ticket ticket);
 
-int deleteResolvedTicketStatus(Ticket ticket);
+  int deleteResolvedTicketStatus(Ticket ticket);
 }

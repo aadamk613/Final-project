@@ -35,18 +35,18 @@ public class AdminServiceImpl implements AdminService {
     return adminDao.resolveTicket(sqlSession, ticket);
   }
 
-@Override
-public ArrayList<Ticket> getResolvedTicketListView() {
-	return adminDao.getResolvedTicketListView(sqlSession);
-}
+  @Override
+  public ArrayList<Ticket> getResolvedTicketListView() {
+    return adminDao.getResolvedTicketListView(sqlSession);
+  }
 
-@Override
-public int editResolvedTicket(Ticket ticket) {
-	return adminDao.editResolvedTicket(sqlSession, ticket);
-}
+  @Override
+  public int editResolvedTicket(Ticket ticket) {
+    return adminDao.editResolvedTicket(sqlSession, ticket);
+  }
 
-@Override
-public int deleteResolvedTicketStatus(Ticket ticket) {
-	return adminDao.deleteResolvedTicketStatus(sqlSession, ticket); 
-}
+  @Override
+  public int deleteResolvedTicketStatus(Ticket ticket) {
+    return adminDao.deleteResolvedTicketStatus(sqlSession, ticket);
+  }
 }
