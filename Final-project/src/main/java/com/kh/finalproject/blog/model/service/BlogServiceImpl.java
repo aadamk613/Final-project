@@ -30,9 +30,14 @@ public class BlogServiceImpl implements BlogService{
 	}
 
 	@Override
-	public int updateBlog(Blog b) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateBlog(Blog blog) {
+		System.out.println("블로그 업데이트 서비스" + blog);
+		return blogDao.updateBlog(sqlSession, blog);
+	}
+	
+	@Override
+	public int insertCategory(int blogNo) {
+		return blogDao.insertCategory(sqlSession, blogNo);
 	}
 
 }
