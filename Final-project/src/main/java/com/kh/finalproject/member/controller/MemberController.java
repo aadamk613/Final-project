@@ -70,4 +70,27 @@ public class MemberController {
     session.invalidate();
     return "redirect:/";
   }
+  
+  @RequestMapping("joinForm.me")
+  public String joinForm() {
+	  return "member/memberJoinForm";
+  }
+  
+  @RequestMapping("join.me")
+  public String joinMember(Member m, Model model) {
+	  System.out.println(m);
+	  System.out.println("평문 : " + m.getMemPwd());
+	  
+	  String encPwd = bcryptPasswordEncoder.encode(m.getMemPwd());
+	  
+	  m.setMemPwd(encPwd); // Member객체의 MemPwd 필드에 평문이 아닌 암호문을 담아서 DB로 보내기
+	  
+	  if(memberService.joinMember(m) > 0) { // 성공하면 메인페이지로
+		  return "redirect:/";
+	  } else {
+		  model.addAttribute("errorMsg", "회원가입 실패");
+		  return "../common/errorPage.jsp";
+	  }
+	  
+  }
 }

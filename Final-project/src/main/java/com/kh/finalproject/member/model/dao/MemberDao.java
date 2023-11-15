@@ -17,4 +17,8 @@ public class MemberDao {
 		System.out.println(m);
 		return m;
 	}
+	
+	public int joinMember(SqlSessionTemplate sqlSession, Member m) {
+		  return sqlSession.insert("memberMapper.joinMember",m);
+	  }
 }
