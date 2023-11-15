@@ -5,14 +5,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>관리자메뉴</title>
+<title>관리자에게 문의</title>
 <link rel="stylesheet" href="resources/css/common/template.css">
-    <!-- jQuery 라이브러리 -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <!-- 부트스트랩에서 제공하고 있는 스타일 -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- 부트스트랩에서 제공하고 있는 스크립트 -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </head>
 <style>
 
@@ -35,13 +30,12 @@
 	</header> 
 	<main>
 		<aside id="pageAsideLeft" class="aside">
-           <ul class="list-group" style="width:100%">
-			  <a href="#" class="list-group-item list-group-item-action">회원상태변경</a>
-			  <a href="#" class="list-group-item list-group-item-action">댓글 신고조회</a>
-			  <a href="#" class="list-group-item list-group-item-action">게시글 신고조회</a>
-  			  <a href="#" class="list-group-item list-group-item-action">해시태그 관리</a>
-   			  <a href="ticket.admin" class="list-group-item list-group-item-action">Ticket</a>
-			</ul>
+            &lt;aside1&gt; <br>
+            id=pageAsideLeft <br>
+	            여기는 pageAsideLeft 공백공간 <br>
+	            사이드바 넣을 수도 있음 <br>
+	            필요하면 쓰세요 <br>
+	            중앙정렬되어있어요 <br>
 		</aside>
 		
 		<section id="pageSection">
@@ -54,11 +48,22 @@
 			
 			<div id="content">
                 content
-				<article>
+				<article id="pageArticle">
 
-					<p>
-                        여기는 article부분 <br>
-                    </p>
+					<form>
+					  <div class="input-group mb-3">
+					    <div class="input-group-prepend">
+					      <span class="input-group-text">Default</span>
+					    </div>
+					    <input type="text" class="form-control">
+					  </div>
+					  <div class="form-group">
+					   <label for="comment">Comment:</label>
+					   <textarea class="form-control" rows="7" id="comment"></textarea>
+					  </div>
+					  <button type="button" class="btn btn-light">작성완료</button>
+					</form>
+					<button type="button" class="btn btn-light">목록으로</button>
 
 				</article>
 			</div>

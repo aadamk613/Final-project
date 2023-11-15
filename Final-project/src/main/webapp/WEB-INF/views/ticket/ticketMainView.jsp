@@ -5,14 +5,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>관리자메뉴</title>
+<title>Ticket Main</title>
 <link rel="stylesheet" href="resources/css/common/template.css">
-    <!-- jQuery 라이브러리 -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <!-- 부트스트랩에서 제공하고 있는 스타일 -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- 부트스트랩에서 제공하고 있는 스크립트 -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </head>
 <style>
 
@@ -35,31 +30,51 @@
 	</header> 
 	<main>
 		<aside id="pageAsideLeft" class="aside">
-           <ul class="list-group" style="width:100%">
-			  <a href="#" class="list-group-item list-group-item-action">회원상태변경</a>
-			  <a href="#" class="list-group-item list-group-item-action">댓글 신고조회</a>
-			  <a href="#" class="list-group-item list-group-item-action">게시글 신고조회</a>
-  			  <a href="#" class="list-group-item list-group-item-action">해시태그 관리</a>
-   			  <a href="ticket.admin" class="list-group-item list-group-item-action">Ticket</a>
-			</ul>
+            &lt;aside1&gt; <br>
+            id=pageAsideLeft <br>
+	            여기는 pageAsideLeft 공백공간 <br>
+	            사이드바 넣을 수도 있음 <br>
+	            필요하면 쓰세요 <br>
+	            중앙정렬되어있어요 <br>
 		</aside>
 		
 		<section id="pageSection">
 			
 			<div id="contentTitle">
-                &lt;div&gt;
-                id=contentTitle 
-				제목(삭제해도 됨)
+                Ticket List
 			</div>
 			
 			<div id="content">
-                content
-				<article>
-
-					<p>
-                        여기는 article부분 <br>
-                    </p>
-
+				<article id="pageArticle">
+					<table id="tb" class="table table-sm table-hover" align="center" style="width: 78%" style="cursor:default">
+						<thead class="thead-light">
+							<tr>
+								<th width="100">번호</th>
+								<th width="300">제목</th>
+								<th width="50">작성자</th>
+								<th width="170">작성일</th>
+							</tr>
+						</thead>
+						<tbody style="cursor:default">
+							<c:choose>
+								<c:when test="${empty requestScope.list}">
+									<tr>
+										<td colspan="5">조회된 게시글이 없습니다..</td>
+									</tr>
+								</c:when>
+								<c:otherwise>
+									<c:forEach items="${requestScope.list}" var="b">
+										<tr>
+											<td>${b.boardNo}</td>
+											<td>${b.title}</td>
+											<td>${b.writer}</td>
+											<td>${b.createDate}</td>
+										</tr>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>
+						</tbody>
+					</table>
 				</article>
 			</div>
 			
