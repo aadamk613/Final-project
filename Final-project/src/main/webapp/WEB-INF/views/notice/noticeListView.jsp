@@ -39,12 +39,12 @@
 					<table id="boardTable" class="table table-hover">
 					  <thead>
 					    <tr>
-					      <th scope="col" width="10%" style="text-align: center">게시글 번호</th>
-					      <th scope="col" width="20%" style="text-align: center">제목</th>
+					      <th scope="col" width="10%" style="text-align: center">번호</th>
+					      <th scope="col" width="28%" style="text-align: center">제목</th>
 					      <th scope="col" width="10%" style="text-align: center">작성자</th>
-					      <th scope="col" width="20%" style="text-align: center">작성일</th>
-					      <th scope="col" width="10%" style="text-align: center">조회수</th>
-					      <th scope="col" width="10%" style="text-align: center">좋아요</th>
+					      <th scope="col" width="10%" style="text-align: center">작성일</th>
+					      <th scope="col" width="15%" style="text-align: center">조회수</th>
+					      <th scope="col" width="15%" style="text-align: center">좋아요</th>
 					    </tr>
 					  </thead>
 					  
@@ -56,8 +56,11 @@
 						  </c:if>
 						  	<c:forEach var="n" items="${ requestScope.list }">
 
-						      <td scope="col" width="10%" style="text-align: center">${ n.noticeNo }</th>
-					          <td scope="col" width="20%" style="text-align: center">${ n.noticeTitle }[${ n.views }]</th>	       
+						      <td scope="col" width="10%" style="text-align: center">
+						      BEST
+						      ${ n.category == 1 ? "공지" : '필독'}
+						      ${ n.noticeNo }</td>
+					          <td scope="row" width="20%" style="text-align: center">${ n.noticeTitle }[${ n.views }]</th>	       
 						      <td scope="row" width="20%" style="text-align: center">${ n.memNo }</td>
 						      <td scope="row" width="20%" style="text-align: center">${ n.noticeCreateDate }</td>
 						      <td scope="row" width="15%" style="text-align: center">${ n.views }</td>
@@ -100,7 +103,19 @@
 			</div>
 			
 
-			
+			            <form id="searchForm" action="" method="get" align="center">
+                <div class="select">
+                    <select class="custom-select" name="condition">
+                        <option value="writer">작성자</option>
+                        <option value="title">제목</option>
+                        <option value="content">내용</option>
+                    </select>
+                </div>
+                <div class="text">
+                    <input type="text" class="form-control" name="keyword">
+                </div>
+                <button type="submit" class="searchBtn btn btn-secondary">검색</button>
+            </form>
 			
 			
 		</section>

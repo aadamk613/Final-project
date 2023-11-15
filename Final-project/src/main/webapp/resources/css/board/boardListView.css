@@ -88,3 +88,15 @@ footer {
 #pageAsideLeft{width :25% !important}
 #pageAsideRight{width :15% !important}
 
+#searchForm {
+width:80%;
+margin:auto;
+}
+#searchForm>* {
+float:left;
+margin:5px;
+}
+.select {width:20%;}
+.text {width:53%;}
+.searchBtn {width:20%;}
+
