@@ -1,8 +1,12 @@
 package com.kh.finalproject.ticket.model.vo;
 
-import lombok.Data;
 
-@Data
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter @Setter @NoArgsConstructor @ToString
 public class Ticket {
 	private int ticketNo;
 	private String ticketWriter;

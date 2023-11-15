@@ -17,6 +17,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="ANSWER_MODIFY_DATE" property="answerModifyDate"/>
 		<result column="STATUS" property="status"/>
 	</resultMap>
+	<select id="getTicketNumber" resultType="_int">
+		SELECT
+			COUNT(*)
+		FROM
+			TICKET
+		WHERE 
+			STATUS = 'P'
+	</select>
 	<select id="getTicketListView" resultMap="ticketResultSet">
 		SELECT
 			TICKET_NO,
@@ -39,4 +47,66 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			BY
 				TICKET_NO ASC	
 	</select>
+	<select id="getResolvedTicketListView" resultMap="ticketResultSet">
+		SELECT
+			TICKET_NO,
+			TICKET_WRITER,
+			TICKET_TITLE,
+			TICKET_CONTENT,
+			TO_CHAR(CREATE_DATE, 'YYYY/MM/DD HH24:MI:SS') CREATE_DATE,
+			MODIFY_DATE,
+			ANSWER_WRITER,
+			ANSWER_TITLE,
+			ANSWER_CONTENT,
+			TO_CHAR(ANSWER_CREATE_DATE, 'YYYY/MM/DD HH24:MI:SS') ANSWER_CREATE_DATE,
+			ANSWER_MODIFY_DATE,
+			STATUS
+		FROM
+			TICKET
+		WHERE
+			STATUS = 'R'
+		ORDER
+			BY
+				TICKET_NO ASC	
+	</select>
+	<select id="selectTicket" parameterType="_int" resultMap="ticketResultSet">
+		SELECT
+			TICKET_NO,
+			TICKET_WRITER,
+			TICKET_TITLE,
+			TICKET_CONTENT,
+			TO_CHAR(CREATE_DATE, 'YYYY/MM/DD HH24:MI:SS') CREATE_DATE,
+			MODIFY_DATE,
+			ANSWER_WRITER,
+			ANSWER_TITLE,
+			ANSWER_CONTENT,
+			TO_CHAR(ANSWER_CREATE_DATE, 'YYYY/MM/DD HH24:MI:SS') ANSWER_CREATE_DATE,
+			ANSWER_MODIFY_DATE,
+			STATUS
+		FROM
+			TICKET
+		WHERE
+			TICKET_NO = #{bno}
+	</select>
+	<update id="resolveTicket" parameterType="ticket">
+		UPDATE
+			TICKET
+		SET 
+			ANSWER_WRITER = #{answerWriter},
+			ANSWER_TITLE = #{answerTitle},
+			ANSWER_CONTENT = #{answerContent},
+			ANSWER_CREATE_DATE = SYSDATE,
+			ANSWER_MODIFY_DATE = SYSDATE,
+			STATUS = 'R'
+		WHERE 
+			TICKET_NO = #{ticketNo}
+	</update>
+	<update id="deleteResolvedStatus" parameterType="_int">
+		UPDATE
+			TICKET
+		SET 
+			STATUS = 'P'
+		WHERE 
+			TICKET_NO = #{ticketNo}
+	</update>
 </mapper>

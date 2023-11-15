@@ -37,7 +37,7 @@ textarea {
 		<section id="pageSection">
 			
 			<div id="contentTitle">
-                고객문의 상세보기
+                고객문의 수정
 			</div>
 			
 			<div id="content">
@@ -58,7 +58,7 @@ textarea {
 								<td colspan="6">
 									<div class="input-group">
 										<div class="input-group-prepend">
-											<span class="input-group-text">제목</span>
+											<span class="input-group-text">문의제목</span>
 										</div>
 										<p class="form-control" name="title" style="cursor : default">${ticket.ticketTitle}</p>
 									</div>
@@ -77,39 +77,34 @@ textarea {
 									</div>
 								</td>
 							</tr>
-							<form action="resolveTicket.admin" method="post">
+							<form action="editResolveTicket.admin" method="post">
 							<tr>
 								<td colspan="6">
 									<div class="input-group mb-3">
 										<div class="input-group-prepend">
-											<span class="input-group-text">제목</span>
+											<span class="input-group-text">답변제목</span>
 										</div>
-										<input name="answerTitle" type="text" class="form-control" placeholder="답변 제목을 입력해 주세요.">
+										<input name="answerTitle" type="text" class="form-control" value="${ ticket.answerTitle }">
 									</div>
 								</td>
 							</tr>
 							<tr>
 								<td colspan="6">
 									<div class="form-group">
-										<label for="comment">답변 작성</label>
-										<textarea name="answerContent" class="form-control" rows="10" id="comment" placeholder="답변 내용을 입력해 주세요."></textarea>
+										<label for="comment">답변 수정:</label>
+										<textarea name="answerContent" class="form-control" rows="10" id="comment">${ ticket.answerContent }</textarea>
 									</div>
 								</td>
 							</tr>
 							<tr>
-								<td colspan="3">
+								<td colspan="4">
 									<input type="hidden" name="ticketNo" value="${ticket.ticketNo}">
 									<input type="hidden" name="ticketWriter" value="${sessionScope.loginUser.memId}">
 									<button type="submit" class="btn btn-primary btn-block btn-primary">답변수정</button>
 								</td>
-								<td colspan="3">
-									<input type="hidden" name="ticketNo" value="${ticket.ticketNo}">
-									<input type="hidden" name="ticketWriter" value="${sessionScope.loginUser.memId}">
-									<button type="submit" class="btn btn-primary btn-block btn-primary">답변삭제</button>
+								<td colspan="2">
+									<a href="#" class="btn btn-primary btn-block btn-danger" >답변삭제</a>
 								</td>
-								<!-- <td colspan="2">
-									<a href="#" class="btn btn-primary btn-block btn-danger" >삭제</a>
-								</td> -->
 							</tr>
 						</form>
 						</tbody>
