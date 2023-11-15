@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Ticket Main</title>
+<title>Resolved Ticket</title>
 <link rel="stylesheet" href="resources/css/common/template.css">
 
 </head>
@@ -36,7 +36,7 @@
 		<section id="pageSection">
 			
 			<div id="contentTitle">
-                Ticket List
+                Resolved Ticket List
 			</div>
 			
 			<div id="content">
@@ -64,7 +64,7 @@
 											<td>${b.ticketNo}</td>
 											<td>${b.ticketTitle}</td>
 											<td>${b.ticketWriter}</td>
-											<td>${b.createDate}</td>
+											<td>${b.answerModifyDate}</td>
 										</tr>
 									</c:forEach>
 								</c:otherwise>
@@ -89,9 +89,8 @@
 	</footer>
 <script>
 	$(() => {
-		// add event listener로 처리 해보자
 		$('#tb > tbody > tr').click(function() {
-			location.href = "ticketDetailView.admin?bno=" + $(this).children().eq(0).text();
+			location.href = "ticketEditView.admin?bno=" + $(this).children().eq(0).text();
 		})
 	});
 </script>

@@ -35,13 +35,7 @@
 	</header> 
 	<main>
 		<aside id="pageAsideLeft" class="aside">
-           <ul class="list-group" style="width:100%">
-			  <a href="#" class="list-group-item list-group-item-action">회원상태변경</a>
-			  <a href="#" class="list-group-item list-group-item-action">댓글 신고조회</a>
-			  <a href="#" class="list-group-item list-group-item-action">게시글 신고조회</a>
-  			  <a href="#" class="list-group-item list-group-item-action">해시태그 관리</a>
-   			  <a href="ticket.admin" class="list-group-item list-group-item-action">Ticket</a>
-			</ul>
+        	<jsp:include page="adminAsideLeft.jsp"/>
 		</aside>
 		
 		<section id="pageSection">
