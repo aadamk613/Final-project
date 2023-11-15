@@ -16,8 +16,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="BLOG_CREATE_DATE" property="blogCreateDate"/>
 	</resultMap>
 	
-	<resultMap type="blog" id="BlogCategorySettingResultSet">
+	<resultMap type="blogCategorySetting" id="BlogCategorySettingResultSet">
 		<result column="CATEGORY_NO" property="categoryNo"/>
+		<result column="CATEGORY_SETTING_NO" property="categorySettingNo"/>
 		<result column="BLOG_NO" property="blogNo"/>
 		<result column="CATEGORY_MEM_NAME" property="categoryMemName"/>
 	</resultMap>
@@ -86,20 +87,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	</update>
 	
-	<insert id="insertCategory" parameterType="_int" >
+	<insert id="insertCategory" parameterType="blogCategorySetting" >
 		INSERT 
 		  INTO
 		  		TB_BLOG_CATEGORY_SETTING
 			  	(
-			  	CATEGORY_NO,
-			  	BLOG_NO
+			  	CATEGORY_SETTING_NO,
+			  	BLOG_NO, 
+			  	CATEGORY_NO
 			  	)
 			  VALUES 	
 			  	(
-			  	SEQ_CATEGORY_NO.NEXTVAL,
-			  	${ blogNo }
+			  	SEQ_CATEGORY_SETTING_NO.NEXTVAL,
+			  	#{ blogNo },
+			  	#{ categoryNo }
 			  	)
 	</insert>
+	
+	<select id="selectCatogory" parameterType="_int" resultMap="BlogCategorySettingResultSet">
+		SELECT 
+			CATEGORY_SETTING_NO, 
+			CATEGORY_MEM_NAME, 
+			CATEGORY_NO
+	    FROM 
+	    	TB_BLOG_CATEGORY_SETTING
+	    WHERE  
+	    	BLOG_NO = #{ blogNo }
+		
+	</select>
 	
 	
 	

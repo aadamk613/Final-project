@@ -1,5 +1,8 @@
 package com.kh.finalproject.blog.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.kh.finalproject.blog.model.service.BlogService;
 import com.kh.finalproject.blog.model.vo.Blog;
+import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
 
 @Controller
 public class BlogController {
@@ -63,8 +68,8 @@ public class BlogController {
 		if(blogService.updateBlog(beforeBlog) > 0) { // 블로그 정보 수정 성공
 			Blog afterBlog = (Blog)blogService.selectBlog(blogNo);
 			System.out.println("블로그 업데이트 한 후블로그 정보 셀렉트 : " + afterBlog);
-			mv.addObject("alertMsg", "정보가 수정되었습니다");
-			mv.addObject("blog", afterBlog);
+			mv.addObject("alertMsg", "정보가 수정되었습니다")
+			  .addObject("blog", afterBlog);
 		} else { // 정보 수정 실패
 			mv.addObject("alertMsg", "정보 수정에 실패 했습니다");
 		}
@@ -74,18 +79,36 @@ public class BlogController {
 	
 	@RequestMapping("updateForm.bl_ct") // 블로그 카테고리 관리 화면으로 이동
 	public ModelAndView categoryFormBlog(int blogNo, ModelAndView mv) {
-		mv.addObject("blogNo", blogNo);
-		mv.setViewName("blog/blogCategoryView");
+		mv.addObject("blogNo", blogNo)
+		  .setViewName("blog/blogCategoryView");
 		return mv;
 	}
 	
-	@RequestMapping("insert.bl_ct") // 블로그 카테고리 생성하기
-	public ModelAndView insertCategory(int blogNo, ModelAndView mv) {
-		blogService.insertCategory(blogNo);
+	@ResponseBody
+	@RequestMapping(value="insert.bl_ct", produces="application/json; charset=UTF-8") // 블로그 카테고리 생성하기
+	public String insertCategory(int blogNo, int categoryNo, ModelAndView mv) {
+		BlogCategorySetting blogCateSet = new BlogCategorySetting();
+		blogCateSet.setBlogNo(blogNo);
+		blogCateSet.setCategoryNo(categoryNo);
+		System.out.println(blogCateSet);
 		
-		return mv;
+		return new Gson().toJson(blogService.insertCategory(blogCateSet));
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="select.bl_ct", produces="application/json; charset=UTF-8") // 블로그 카테고리 조회
+	public String selectCatogory(int blogNo, ModelAndView mv) {
+		ArrayList<BlogCategorySetting> list = blogService.selectCatogory(blogNo);
+		System.out.println("selectCatogory에서 list : " + list);
+		
+		
+		mv.addObject("list", list) 
+		  .setViewName("blog/blogCategoryView");
+		
+		return new Gson().toJson(list);
+	}
+	
+
 	
 	
 	

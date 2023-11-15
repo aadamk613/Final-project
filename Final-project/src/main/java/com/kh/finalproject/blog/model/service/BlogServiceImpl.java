@@ -1,5 +1,7 @@
 package com.kh.finalproject.blog.model.service;
 
+import java.util.ArrayList;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.finalproject.blog.model.dao.BlogDao;
 import com.kh.finalproject.blog.model.vo.Blog;
+import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
 
 @Service
 public class BlogServiceImpl implements BlogService{
@@ -36,8 +39,13 @@ public class BlogServiceImpl implements BlogService{
 	}
 	
 	@Override
-	public int insertCategory(int blogNo) {
-		return blogDao.insertCategory(sqlSession, blogNo);
+	public int insertCategory(BlogCategorySetting blogCateSet) {
+		return blogDao.insertCategory(sqlSession, blogCateSet);
+	}
+
+	@Override
+	public ArrayList<BlogCategorySetting> selectCatogory(int blogNo) {
+		return (ArrayList<BlogCategorySetting>)blogDao.selectCatogory(sqlSession, blogNo);
 	}
 
 }
