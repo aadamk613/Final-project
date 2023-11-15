@@ -1,10 +1,12 @@
 package com.kh.finalproject.member.model.service;
 
-import com.kh.finalproject.member.model.dao.MemberDao;
-import com.kh.finalproject.member.model.vo.Member;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.kh.finalproject.member.model.dao.MemberDao;
+import com.kh.finalproject.member.model.vo.Member;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -15,8 +17,10 @@ public class MemberServiceImpl implements MemberService {
   public Member loginMember(Member m) {
     return memberDao.loginMember(sqlSession, m);
   }
-  
-  public Member selectMember(int memNo) {
-	  return memberDao.selectMember(sqlSession, memNo);
-  }
+
+@Override
+@Transactional
+public int joinMember(Member m) {
+	return memberDao.joinMember(sqlSession, m);
+}
 }

@@ -6,5 +6,5 @@ public interface MemberService {
 
   Member loginMember(Member m);
   
-  Member selectMember(int memNo);
+  int joinMember(Member m);
 }
