@@ -114,7 +114,7 @@ a {
 					  		<li class="page-item"><a class="page-link" href="yrlist.exp?page=${ pi.currentPage - 1 }">&lt;</a></li>
 					  	</c:when>
 					  	<c:otherwise>
-					  		<li class="page-item"><a class="page-link" href="">Previous</a></li>
+					  		<li class="page-item"><a class="page-link" href="">&lt;</a></li>
 					  	</c:otherwise>
 				  	</c:choose>
 						<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
@@ -125,7 +125,7 @@ a {
 					  		<li class="page-item"><a class="page-link" href="yrlist.exp?page=${ pi.currentPage + 1 }">&gt;</a></li>
 					  	</c:when>
 					  	<c:otherwise>
-					  		<li class="page-item"><a class="page-link" href="">Next</a></li>
+					  		<li class="page-item"><a class="page-link" href="">&gt;</a></li>
 					  	</c:otherwise>
 				  	</c:choose>
 				  	

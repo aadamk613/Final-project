@@ -1,5 +1,7 @@
 package com.kh.finalproject.experience.controller;
 
+import java.util.HashMap;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kh.finalproject.common.model.service.CommonService;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
 import com.kh.finalproject.experience.model.service.ExperienceService;
@@ -17,6 +20,8 @@ public class ExperienceController {
 	
 	@Autowired
 	private ExperienceService experienceService;
+	@Autowired
+	private CommonService commonService;
 	
 	@RequestMapping("yrlist.exp")
 	public String seleceExperienceList(@RequestParam(value="page", defaultValue="1") int currentPage, Model model){
@@ -35,6 +40,13 @@ public class ExperienceController {
 			System.out.println("성공");
 			model.addAttribute("exp", experienceService.selectExperience(expNo));
 			System.out.println(experienceService.selectExperience(expNo));
+			
+			HashMap map = new HashMap();
+			map.put("refNo", expNo);
+			map.put("refType", "EXPERIENCE");
+			model.addAttribute("files", commonService.selectFiles(map));
+			System.out.println(commonService.selectFiles(map));
+			
 			return "experience/experienceDetailView";
 		} else {
 			System.out.println("에러");

@@ -1,6 +1,10 @@
 package com.kh.finalproject.common.model.vo;
 
-public class File {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data @AllArgsConstructor
+public class Files {
 
 	private int fileNo;
 	private String originalName;

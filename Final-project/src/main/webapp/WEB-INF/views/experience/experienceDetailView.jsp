@@ -121,7 +121,10 @@ h1 {
 				</div>
 				<div>
 					<div class="summary">
-						<img src="" id="thumb"/>
+						<c:if test="${ not empty files }">
+							<p>${ files.refType }</p>
+						</c:if>
+
 					</div>
 					<div class="summary">
 						<ul>

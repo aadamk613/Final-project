@@ -18,6 +18,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<typeAlias type="com.kh.finalproject.garden.model.vo.Garden" alias="garden"/>
 		<typeAlias type="com.kh.finalproject.member.model.vo.Member" alias="member"/>
 		<typeAlias type="com.kh.finalproject.notice.model.vo.Notice" alias="notice"/>
+		<typeAlias type="com.kh.finalproject.common.model.vo.Files" alias="files"/>
 	</typeAliases>
 	
 	 <mappers>
