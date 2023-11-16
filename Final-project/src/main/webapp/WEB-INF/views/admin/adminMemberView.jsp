@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Ticket Main</title>
+<title>회원상태변경</title>
 <link rel="stylesheet" href="resources/css/common/template.css">
 
 </head>
@@ -30,50 +30,30 @@
 	</header> 
 	<main>
 		<aside id="pageAsideLeft" class="aside">
-			<jsp:include page="adminAsideLeft.jsp"/>
+        	<jsp:include page="adminAsideLeft.jsp"/>
 		</aside>
 		
 		<section id="pageSection">
 			
 			<div id="contentTitle">
-                Ticket List
+                회원상태변경
 			</div>
 			
 			<div id="content">
+                content
 				<article id="pageArticle">
 
-					<table id="tb" class="table table-sm table-hover" align="center" style="width: 100%" style="cursor:default">
-						<thead class="thead-light">
-							<tr>
-								<th width="50">번호</th>
-								<th width="300">제목</th>
-								<th width="100">작성자</th>
-								<th width="170">작성일</th>
-							</tr>
-						</thead>
-						<tbody style="cursor:default">
-							<c:choose>
-								<c:when test="${empty list}">
-									<tr>
-										<td colspan="4">조회된 게시글이 없습니다..</td>
-									</tr>
-								</c:when>
-								<c:otherwise>
-									<c:forEach items="${list}" var="b">
-										<tr>
-											<td>${b.ticketNo}</td>
-											<td>${b.ticketTitle}</td>
-											<td>${b.ticketWriter}</td>
-											<td>${b.createDate}</td>
-										</tr>
-									</c:forEach>
-								</c:otherwise>
-							</c:choose>
-						</tbody>
-					</table>
+					<p>
+                        여기는 article부분 <br>
+                    </p>
+
 				</article>
 			</div>
 			
+			<div id="pageArea">
+                &lt;div&gt; <br>
+                id=page
+			</div>
 		
 		</section>
 		
@@ -88,14 +68,7 @@
 	<footer id="pageFooter">
 		<jsp:include page="../common/footer.jsp" />
 	</footer>
-<script>
-	$(() => {
-		// add event listener로 처리 해보자
-		$('#tb > tbody > tr').click(function() {
-			location.href = "ticketDetailView.admin?bno=" + $(this).children().eq(0).text();
-		})
-	});
-</script>
+
 
 </body>
 </html>
