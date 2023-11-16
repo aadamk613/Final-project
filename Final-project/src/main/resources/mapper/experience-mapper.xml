@@ -75,7 +75,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 WHERE 
 		 	   EXP_NO = #{ expNo }
 		   AND 
-		       EXP_STATUS = 'N'
+		       EXP_STATUS = 'Y'
 	</update>
 	
 	<!-- 체험학습 상세조회 -->
@@ -86,7 +86,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   EXP_WRITER,
 			   EXP_PEOPLE,
 			   EXP_CONTENT,
-			   TO_CHAR(EXP_CREATE_DATE, 'YYYY-MM-DD'),
+			   TO_CHAR(EXP_CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS'),
 			   TO_CHAR(EXP_WORK_DATE, 'YYYY-MM-DD'),
 			   TO_CHAR(EXP_END_DATE, 'YYYY-MM-DD HH24:MI'),
 			   EXP_STATUS,

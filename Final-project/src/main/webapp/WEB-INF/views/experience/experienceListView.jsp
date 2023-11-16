@@ -142,11 +142,11 @@ a {
 			</script>
 			
 			<c:if test="${ not empty sessionScope.error }">
-			console.log(${ sessionscope.error });
 				<script>
-					alert('오류');
+					console.log(${ sessionscope.error });
+					alert('게시글 상세조회에 실패하셨습니다. 다시 이용해 주세요.');
 				</script>
-				<jsp:remove ${ sessionScope.error } />
+				<c:remove var="error" scope="session" />
 			</c:if>
 			
 			
