@@ -47,9 +47,14 @@ public class BlogController {
 	@RequestMapping(value="select.bl", produces="application/json; charset=UTF-8") // 블로그 정보 불러오기
 	public ModelAndView selectBlog(int blogNo, ModelAndView mv) {
 		Blog blog = (Blog)blogService.selectBlog(blogNo);
-		mv.addObject("blog", blog);
+		ArrayList<BlogCategorySetting> list = blogService.selectCatogory(blogNo);
+		
+		mv.addObject("blog", blog).addObject("list", list);
 		mv.setViewName("blog/blogView");
+		
 		System.out.println("블로그 섹렉트 컨트롤러 : " + blog);
+		System.out.println("selectBlog에서 카테고리 list : " + list);
+		
 		return mv;
 	}
 	

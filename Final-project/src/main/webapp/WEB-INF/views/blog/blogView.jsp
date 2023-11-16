@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,7 +23,7 @@
    width: 100%;
    height: auto;
 }
-
+#content{padding: 10px;}
 #blogInfo{
     width: 100%;
     height: 100px;
@@ -32,19 +32,15 @@
 
 #plantWrap{
     width: 100%;
-    height: 100px;
+    height: 120px;
+    padding: 10px;
 }
-
-
 
 #plantWrap > div {
     float: left;
     width: 100px;
     height: 100px;
-    padding: 10px;
-    margin: 10px;
     text-align: center;
-    
 }
 
 #blogImg{width: 100%; height: 150px;}
@@ -58,7 +54,6 @@
     height: 100px;
     list-style: none;
     padding: 10px;
-
 }
 
 li{list-style-type: none;}
@@ -71,29 +66,26 @@ ul{padding: 10px;}
 #blogBoardWrap div{float: left;}
 
 #boardCategory, #blogBoardTitle, #createDateWrap{
-	width: 100%;
-	height: 30px; 
-	margin: 5px;
+	padding: 5px;
 }
 
 #boardCategory{
 	width: 100%;
-	height: 30px; 
+	height: 40px; 
 	font-size: 15px; 
 	color: gray;
-	
 }
 
 #blogBoardTitle{
 	width: 100%;
-	height: 30px; 
+	height: 40px; 
 	font-size: 20px;
 	font-weight: bold;
 }
 
 #createDateWrap{
 	width: 100%;
-	height: 30px; 
+	height: 40px; 
 	font-size: 15px; 
 	color: gray;
 }
@@ -102,7 +94,7 @@ ul{padding: 10px;}
 	width: 100%;
 	height: auto; 
 	font-size: 15px; 
-	margin: 5px;
+	padding: 10px;
 	
 }
 
@@ -142,14 +134,10 @@ ul{padding: 10px;}
             </div>
             <div id="categoryWrap">
                 <ul>
-                    <li>식물일지</li>
-                    <li>---------</li>
-                    <li>일반 게시판1</li>
-                    <li>일반 게시판2</li>
-                    <li>---------</li>
-                    <li>일반 게시판3</li>
-                    <li>일반 게시판4</li>
-                    <li>---------</li>
+                	<c:forEach var="i" items="${ list }">
+                    	<li><a href="#" >${ i.categoryMemName }</a></li>
+                    </c:forEach>
+                   	
                 </ul>
             </div>
 		</aside>
@@ -168,7 +156,8 @@ ul{padding: 10px;}
                         <div>사진</div>
                         <div>사진</div>
                         <div>사진</div>
-                        <div>사진추가 + </div>
+                        <div>사진</div>
+                        <div><a href="insertForm.bl_pl">일지추가 + </a></div>
                </div>
 				<article>
 					<div id="blogBoardWrap">
@@ -192,7 +181,7 @@ ul{padding: 10px;}
 							우하아하<br>
 						</div>
 					</div>
-
+					<br clear="both">
 
 
 				</article>
