@@ -60,7 +60,7 @@
 						      BEST
 						      ${ n.category == 1 ? "공지" : '필독'}
 						      ${ n.noticeNo }</td>
-					          <td scope="row" width="20%" style="text-align: center">${ n.noticeTitle }[${ n.views }]</th>	       
+					          <td scope="row" width="20%" style="text-align: center">${ n.noticeTitle }</th>	       
 						      <td scope="row" width="20%" style="text-align: center">${ n.memNo }</td>
 						      <td scope="row" width="20%" style="text-align: center">${ n.noticeCreateDate }</td>
 						      <td scope="row" width="15%" style="text-align: center">${ n.views }</td>

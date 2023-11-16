@@ -31,7 +31,7 @@ public class NoticeController {
 											 currentPage,
 											 20,
 											 5);
-		
+		model.addAttribute("best", noticeService.selectBestNoticeList());
 		model.addAttribute("list", noticeService.selectNoticeList(pi));
 		model.addAttribute("pi", pi);
 		

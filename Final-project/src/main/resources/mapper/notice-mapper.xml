@@ -46,8 +46,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   BY
 			     CATEGORY DESC, NOTICE_NO DESC
 	</select>
-<!-- 	<select id="selectBestNotice" resultMap="noticeResultSet">
-				SELECT *
+	<select id="selectBestNotice" resultMap="noticeResultSet">
+          SELECT 
+			    *
 			FROM
 			  (SELECT
 			    NOTICE_NO,
@@ -58,38 +59,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			    CATEGORY,
 			    LIKE_COUNT,
 			    MEM_NICK
-			  FROM
+			FROM
 			    TB_NOTICE
-			  INNER JOIN
+	  INNER JOIN
 			    MEMBER ON (TB_NOTICE.MEM_NO = MEMBER.MEM_NO)
-			  WHERE
+		   WHERE
 			    STATUS = 'Y'
 			    AND CATEGORY = 2
-			  ORDER BY
+		ORDER BY
 			    LIKE_COUNT DESC, NOTICE_NO DESC) b
-			WHERE ROWNUM <= 5
-			UNION ALL
-			SELECT *
-			FROM
-			  (SELECT
-			    NOTICE_NO,
-			    NOTICE_TITLE,
-			    NOTICE_CONTENT,
-			    VIEWS,
-			    TO_CHAR(NOTICE_CREATE_DATE, 'YYYY-MM-DD') AS "NOTICE_CREATE_DATE",
-			    CATEGORY,
-			    LIKE_COUNT,
-			    MEM_NICK
-			  FROM
-			    TB_NOTICE
-			  INNER JOIN
-			    MEMBER ON (TB_NOTICE.MEM_NO = MEMBER.MEM_NO)
-			  WHERE
-			    STATUS = 'Y'
-			    AND CATEGORY = 1
-			  ORDER BY
-			    LIKE_COUNT DESC, NOTICE_NO DESC) a
-			WHERE ROWNUM <= 5
-	</select> -->
+	       WHERE 
+	            ROWNUM <= 5
+	   UNION ALL
+		  SELECT
+		         *
+			FROM(
+		         SELECT
+					    NOTICE_NO,
+					    NOTICE_TITLE,
+					    NOTICE_CONTENT,
+					    VIEWS,
+					    TO_CHAR(NOTICE_CREATE_DATE, 'YYYY-MM-DD') AS "NOTICE_CREATE_DATE",
+					    CATEGORY,
+					    LIKE_COUNT,
+					    MEM_NICK
+				   FROM
+			            TB_NOTICE
+		     INNER JOIN
+			            MEMBER ON (TB_NOTICE.MEM_NO = MEMBER.MEM_NO)
+			      WHERE
+			            STATUS = 'Y'
+			        AND 
+			            CATEGORY = 1
+			   ORDER BY
+			            LIKE_COUNT DESC, NOTICE_NO DESC
+			      ) 
+			 WHERE 
+			      ROWNUM <= 5 a
+	</select> 
 	
 </mapper>
