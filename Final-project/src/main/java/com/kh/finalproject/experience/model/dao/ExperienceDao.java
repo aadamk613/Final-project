@@ -18,6 +18,14 @@ public class ExperienceDao {
 	public ArrayList<Experience> selectExperienceList(SqlSessionTemplate sqlSession, RowBounds rowBounds) {
 		return (ArrayList)sqlSession.selectList("experienceMapper.selectExperienceList", null, rowBounds);
 	}
+
+	public int increaseCount(SqlSessionTemplate sqlSession, int exp) {
+		return sqlSession.update("experienceMapper.increaseCount", exp);
+	}
+
+	public Experience selectExperience(SqlSessionTemplate sqlSession, int expNo) {
+		return sqlSession.selectOne("experienceMapper.selectExperience", expNo);
+	}
 	
 	
 

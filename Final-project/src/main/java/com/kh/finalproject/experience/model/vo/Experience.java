@@ -37,6 +37,6 @@ public class Experience {
 	private String expAddress;
 	private int expCategoryNo;
 	private String expCategoryName;
-	private int expWorkTime;
+	private double expWorkTime;
 
 }

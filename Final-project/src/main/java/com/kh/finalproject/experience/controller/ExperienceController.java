@@ -28,6 +28,20 @@ public class ExperienceController {
 		return "experience/experienceListView";
 	}
 	
+	@RequestMapping("yrdetail.exp")
+	public String selectExperience(int expNo) {
+		System.out.println(expNo);
+		
+		if(experienceService.increaseCount(expNo) > 0 ) {
+			System.out.println("성공");
+			experienceService.selectExperience(expNo);
+		} else {
+			System.out.println("에러");
+		}
+		
+		// experienceService.selectExperience(expNo);
+		return null;
+	}
 	
 	
 
