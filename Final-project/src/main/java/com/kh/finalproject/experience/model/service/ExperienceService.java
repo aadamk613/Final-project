@@ -12,6 +12,13 @@ public interface ExperienceService {
 	
 	// 체험학습 게시판 목록 조회
 	ArrayList<Experience> selectExperienceList(PageInfo pi);
+	
+	// 체험학습 게시글 상세 조회
+	// 조회수 증가
+	int increaseCount(int expNo);
+	// 상세조회
+	Experience selectExperience(int expNo);
+	
 
 
 }
