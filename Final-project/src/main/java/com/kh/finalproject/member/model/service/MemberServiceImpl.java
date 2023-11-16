@@ -25,14 +25,25 @@ public class MemberServiceImpl implements MemberService {
   public int joinMember(Member m) {
     return memberDao.joinMember(sqlSession, m);
   }
+<<<<<<< Updated upstream
   
   @Override
   public int idCheck(String checkId) {
 		return memberDao.idCheck(sqlSession, checkId);
 	}
+=======
+    
+  @Override
+    public int idCheck(String checkId) {
+    	return memberDao.idCheck(sqlSession, checkId);
+  }
+>>>>>>> Stashed changes
 
   @Override
   public int setLastLogin(Member m) {
     return memberDao.setLastLogin(sqlSession, m);
   }
+
+
+
 }
