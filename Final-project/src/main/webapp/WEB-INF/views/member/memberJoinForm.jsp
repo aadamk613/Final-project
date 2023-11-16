@@ -45,15 +45,14 @@
         여기는 헤더
 	</header> 
 	<main>
-		<aside id="pageAsideLeft" class="aside">
+	<aside id="pageAsideLeft" class="aside">
       
-		</aside>
+	</aside>
 		
-		<section id="section">
+	<section id="section">
 	
-			<div id="content">
-                
-				<article>
+	<div id="content">
+	<article>
 
 	<div class="content">
 		<br><br>
@@ -64,22 +63,22 @@
 		<form action="join.me" method="post" id="join-form">
 			<div class="idWrap">
 				* 아이디 : 
-				<input type="text" id="memberId" name="memId" onkeydown="inputIdCheck();" class="checkId" maxlength="12" min="4" max="12" autofocus> <!-- 사용자가 키보드의 키를 누를떄 함수 inputIdCheck()가 발생됨 -->
+				<input type="text" id="memberId" name="memId" onkeydown="inputIdCheck();" class="checkId" maxlength="12" min="4" max="12" autofocus required> 
 				<div id="checkResult" style="font-size:0.7em; display:none;"></div>
 			</div>
 			<div class="pwdWrap">
 				* 비밀번호 :
-				<input type="password" name="memPwd" maxlength="14" min="6" max="14" onkeyup="enterFn()" > 
+				<input type="password" name="memPwd" maxlength="14" min="6" max="14" onkeyup="enterFn()" required > 
 				</div>
 			<div class="pwdChkWrap">
 				* 비밀번호 확인 :
-				<input type="password" name="memPwdChk"  maxlength="14" min="6" max="14" onkeyup="enterFn()">
+				<input type="password" name="memPwdChk"  maxlength="14" min="6" max="14" onkeyup="enterFn()" required>
 				</div>
 			<div class="nkWrap">
 				닉네임
-				<input type="text" name="memNick" placeholder="한글/영문/숫자가능">
+				<input type="text" name="memNick" placeholder="한글/영문/숫자가능" required>
 				</div>
-			<div class="emailWrap" name="email">
+			<div class="emailWrap" name="email" required>
 				이메일
 				<input type="text"placeholder="@ 기입필수!">
 				</div>
@@ -98,16 +97,19 @@
 			</div>
 		</form>
 	</div>
+	</article>
+	</div>
 	
 	<script>
 		$(function(){
 			// 자주쓰는, 중복되는 요소는 변수로 지정해놓는게 나아서 해놓음
-			const $idInput = $('.joinFormWrap #memberId');
+			const $idInput = $('.idWrap #memberId');
 			const $checkResult = $('#checkResult');
 			const $joinFormSubmit = $('#join-form : submit');
 			
 			$idInput.keyup(function(){
 				if($idInput.val().length >= 5){
+					console.log($idInput.val());
 					$.ajax({
 						url : 'idCheck.me',
 						data :  {checkId : $idInput.val()},

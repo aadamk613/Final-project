@@ -68,6 +68,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{email}
 				)
 	</insert>
+	
+	<select id="idCheck" parameterType="string" resultType="_int">
+		SELECT 
+				COUNT(*)
+		  FROM
+		  		MEMBER
+		 WHERE
+		 		MEM_ID = #{checkId}
+	
+	</select>
 
 	<update id="setLastLogin" parameterType="member">
 		UPDATE
