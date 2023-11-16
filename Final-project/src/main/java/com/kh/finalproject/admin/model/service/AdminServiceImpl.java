@@ -55,4 +55,14 @@ public class AdminServiceImpl implements AdminService {
   public ArrayList<Hashtag> getHashtagList() {
     return adminDao.getHashtagList(sqlSession);
   }
+
+  @Override
+  public int updateHashtag(Hashtag h) {
+    return adminDao.updateHashtag(sqlSession, h);
+  }
+
+  @Override
+  public int deleteHashtag(Hashtag h) {
+    return adminDao.deleteHashtag(sqlSession, h);
+  }
 }

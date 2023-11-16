@@ -25,6 +25,9 @@
 .admin-menu {
 	width: 100%;
 }
+#pageAsideLeft {
+	display : block;
+}
 </style>
 <body>
 	<div>

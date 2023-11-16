@@ -115,6 +115,7 @@ textarea {
 		</section>
 		
 		<aside id="pageAsideRight" class="aside">
+			<jsp:include page="adminAsideRight.jsp"/>
 		</aside>
 		
 	</main>
@@ -124,11 +125,7 @@ textarea {
 	<footer id="pageFooter">
 		<jsp:include page="../common/footer.jsp" />
 	</footer>
-<script>
-	$(() => {
-		console.log(${ticket});
-	})
-</script>
+
 
 </body>
 </html>

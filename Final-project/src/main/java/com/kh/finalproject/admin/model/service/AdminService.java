@@ -20,4 +20,8 @@ public interface AdminService {
   int deleteResolvedTicketStatus(Ticket ticket);
 
   ArrayList<Hashtag> getHashtagList();
+
+  int updateHashtag(Hashtag h);
+
+  int deleteHashtag(Hashtag h);
 }
