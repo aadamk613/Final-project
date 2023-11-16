@@ -75,7 +75,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 WHERE 
 		 	   EXP_NO = #{ expNo }
 		   AND 
-		       EXP_STATUS = 'Y'
+		       EXP_STATUS = 'N'
 	</update>
 	
 	<!-- 체험학습 상세조회 -->

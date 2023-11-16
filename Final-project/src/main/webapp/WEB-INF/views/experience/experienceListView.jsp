@@ -138,8 +138,16 @@ a {
 					$('.pagination > li:contains(${ pi.currentPage })').attr('class', 'page-item active');
 					
 				});
-
+				
 			</script>
+			
+			<c:if test="${ not empty sessionScope.error }">
+			console.log(${ sessionscope.error });
+				<script>
+					alert('오류');
+				</script>
+				<jsp:remove ${ sessionScope.error } />
+			</c:if>
 			
 			
 			
