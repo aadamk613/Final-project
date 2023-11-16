@@ -122,6 +122,8 @@ zoom: 1.8;
 		$(() => {
 			$('input:checkbox[name=chk]').each(function (index) {
 				if ($(this).is(":checked") == true) {
+					consloe.log($(this));
+					console.log($(this).name);
 					console.log($(this).val());
 			}
 		})

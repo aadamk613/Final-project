@@ -9,8 +9,6 @@ public interface MemberService {
   int joinMember(Member m);
   
   int idCheck(String checkId);
-
-  int idCheck(String checkId);
   
   int setLastLogin(Member m);
 

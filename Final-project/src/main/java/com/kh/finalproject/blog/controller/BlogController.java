@@ -1,7 +1,6 @@
 package com.kh.finalproject.blog.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -113,9 +112,12 @@ public class BlogController {
 		
 		return new Gson().toJson(list);
 	}
-	
 
-	
+	@RequestMapping("insertForm.bl_bo")
+	public String insertBlogBoard(int blogNo, HttpSession session) {
+		session.setAttribute("blogNo", blogNo);
+		return ("blog/insertFormBlogBoard");
+	}
 	
 	
 	
