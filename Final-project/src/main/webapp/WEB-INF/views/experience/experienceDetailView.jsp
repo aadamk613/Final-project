@@ -54,6 +54,12 @@ h1 {
 	height : 400px;
 }
 
+.files{
+	width : 850px;;
+	height : 400px;
+	
+}
+
 .summary{
 	
 }
@@ -122,9 +128,7 @@ h1 {
 				<div>
 					<div class="summary">
 						<c:if test="${ not empty files }">
-							<c:forEach var="f" items="${ files }">
-								<img src="${ f.filePath }/${ f.updateName }" id="thumb" />
-							</c:forEach>
+							<img src="${ files[0].filePath }/${ files[0].updateName }" id="thumb" />
 						</c:if>
 
 					</div>
@@ -143,8 +147,12 @@ h1 {
 					<p>내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용</p>
 				</div>
 				<div id="">
-					<img src="https://static.vecteezy.com/system/resources/thumbnails/004/141/669/small/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg" />
-					<p>주석</p>
+					<c:if test="${ not empty files }">
+						<c:forEach var="f" items="${ files }">
+							<img src="${ f.filePath }/${ f.updateName }" class="files" />
+							<p>${ f.fileAnnotation }</p>
+						</c:forEach>
+					</c:if>
 				</div>
 			</div>
 			
