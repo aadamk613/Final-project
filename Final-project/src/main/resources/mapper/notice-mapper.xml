@@ -69,7 +69,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ORDER BY
 			    LIKE_COUNT DESC, NOTICE_NO DESC) b
 	       WHERE 
-	            ROWNUM <= 5
+	            ROWNUM BETWEEN 1 AND 5
 	   UNION ALL
 		  SELECT
 		         *
@@ -95,7 +95,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			            LIKE_COUNT DESC, NOTICE_NO DESC
 			      ) 
 			 WHERE 
-			      ROWNUM <= 5 a
+				  ROWNUM BETWEEN 1 AND 5
 	</select> 
 	
 </mapper>

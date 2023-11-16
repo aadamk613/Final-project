@@ -57,7 +57,7 @@
 						  	<c:forEach var="n" items="${ requestScope.list }">
 
 						      <td scope="col" width="10%" style="text-align: center">
-						      BEST
+						      <span class="best">BEST</span>
 						      ${ n.category == 1 ? "공지" : '필독'}
 						      ${ n.noticeNo }</td>
 					          <td scope="row" width="20%" style="text-align: center">${ n.noticeTitle }</th>	       
@@ -72,7 +72,7 @@
 					</table>
 					
 					<!-- 로그인 했을 경우에만 글 쓰기 버튼 보이게하기 --> 
-					<c:if test="${ loginUser ne null }">
+					<c:if test="${ loginUser.memStatus eq 'A' }">
 						<div id="writeWrap">
 						<a id="writeButton" class="btn btn-primary" href="" >글 쓰기</a>
 						</div>
