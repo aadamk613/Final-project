@@ -35,6 +35,7 @@ public class ExperienceController {
 		if(experienceService.increaseCount(expNo) > 0 ) {
 			System.out.println("성공");
 			model.addAttribute("exp", experienceService.selectExperience(expNo));
+			System.out.println(experienceService.selectExperience(expNo));
 			return "experience/experienceDetailView";
 		} else {
 			System.out.println("에러");
