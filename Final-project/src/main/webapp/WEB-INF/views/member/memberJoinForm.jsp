@@ -77,7 +77,7 @@
 				</div>
 			<div class="nkWrap">
 				닉네임
-				<input type="text" name="nickName" placeholder="한글/영문/숫자가능">
+				<input type="text" name="memNick" placeholder="한글/영문/숫자가능">
 				</div>
 			<div class="emailWrap" name="email">
 				이메일
