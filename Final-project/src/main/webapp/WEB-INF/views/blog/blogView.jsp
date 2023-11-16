@@ -157,7 +157,7 @@ ul{padding: 10px;}
                         <div>사진</div>
                         <div>사진</div>
                         <div>사진</div>
-                        <div><a href="insertForm.bl_pl">일지추가 + </a></div>
+                        <div><a href="insertForm.bl_pl?blogNo=${ blog.blogNo }">식물추가 + </a></div>
                </div>
 				<article>
 					<div id="blogBoardWrap">
