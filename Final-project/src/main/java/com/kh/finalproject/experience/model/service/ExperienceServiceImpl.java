@@ -32,6 +32,16 @@ public class ExperienceServiceImpl implements ExperienceService {
 		return (ArrayList<Experience>)experienceDao.selectExperienceList(sqlSession, rowBounds);
 	}
 
+	@Override
+	public int increaseCount(int expNo) {
+		return experienceDao.increaseCount(sqlSession, expNo);
+	}
+
+	@Override
+	public Experience selectExperience(int expNo) {
+		return experienceDao.selectExperience(sqlSession, expNo);
+	}
+
 
 	
 	

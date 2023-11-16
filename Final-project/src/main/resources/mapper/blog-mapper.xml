@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="bolgMapper">
+<mapper namespace="blogMapper">
 
 	<resultMap type="blog" id="BlogResultSet">
 		<result column="BLOG_NO" property="blogNo"/>
@@ -21,6 +21,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="CATEGORY_SETTING_NO" property="categorySettingNo"/>
 		<result column="BLOG_NO" property="blogNo"/>
 		<result column="CATEGORY_MEM_NAME" property="categoryMemName"/>
+	</resultMap>
+	
+	<resultMap type="plant" id="PlantResultSet">
+		<result column="PLANT_NO" property="plantNo"/>
+		<result column="BLOG_NO" property="blogNo"/>
+		<result column="PLANT_NAME" property="plantName"/>
+		<result column="PLANT_NICKNAME" property="plantNickName"/>
+		<result column="PLANT_COMMENT" property="plantComment"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="STATUS" property="status"/>
+		<result column="VIEW" property="view "/>
+		<result column="PLANT_CATEGORY" property="plantCategory"/>
+		<result column="PLANT_LOG_DATE" property="plantLogDate"/>
 	</resultMap>
 	
 	<insert id="insertBlog" parameterType="blog">
@@ -116,7 +129,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 	</select>
 	
+	<insert id="insertBlogPlant" parameterType="plant">
+		
+		INSERT 
+		  INTO
+				TB_PLANT
+				(
+				PLANT_NO, 
+				BLOG_NO, 
+				PLANT_NAME,
+				PLANT_NICKNAME,
+				PLANT_COMMENT, 
+				CREATE_DATE, 
+				STATUS, 
+				PLANT_LOG_DATE
+				)
+		VALUES
+				(
+				SEQ_PLANT_NO.NEXTVAL, 
+				#{ blogNo }, 
+				#{ plantName }, 
+				#{ plantNickName }, 
+				#{ plantComment }, 
+				SYSDATE, 
+				DEFAULT, 
+				SYSDATE
+				)
 	
+	</insert>
 	
 	
 	

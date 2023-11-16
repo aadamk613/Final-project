@@ -35,13 +35,17 @@
                 </div>
                 <ul id="navigator">
                 	<c:choose>
-	                	<c:when test="${ empty sessionScope.loginUser }">
-	                    	<li><a href="#" class="btn btn-primary">게시글작성</a></li>
+	                	<c:when test="${ not empty sessionScope.loginUser }">
+	                	  	<c:if test="${ loginUser.memStatus eq 'A' }">
+	                    	<li><a href="enrollForm.no" class="btn btn-primary">공지게시글작성</a></li>
+	                	  	</c:if>
+	                    	<li><a href="#" class="btn btn-primary">일반게시글작성</a></li>
 	                    	<li><a href="#" class="btn btn-primary">쪽지함</a></li>
 	                    	<li><a href="#" class="btn btn-light loginMemUser">내가 쓴 글 확인</a>
 	                    </c:when>
 	                    <c:otherwise>
-	                    	<li><a href='javascript:void(0);' onclick="alert('로그인 후 이용 가능한 기능입니다.');" class="btn btn-primary">게시글작성</a></li>
+	                    	<li><a href='javascript:void(0);' onclick="alert('로그인 후 이용 가능한 기능입니다.');" class="btn btn-primary">공지게시글작성</a></li>
+	                    	<li><a href='javascript:void(0);' onclick="alert('로그인 후 이용 가능한 기능입니다.');" class="btn btn-primary">일반게시글작성</a></li>
 	                    	<li><a href='javascript:void(0);' onclick="alert('로그인 후 이용 가능한 기능입니다.');" class="btn btn-primary">쪽지함</a></li>
 	                    	<li><a href='javascript:void(0);' onclick="alert('로그인 후 이용 가능한 기능입니다.');" class="btn btn-light">내가 쓴 글 확인</a></li>
 	                    </c:otherwise>

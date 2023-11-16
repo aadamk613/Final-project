@@ -19,6 +19,7 @@
   border: 1px solid skyblue;
 	box-sizing: border-box;
 }
+
 .list-group {
 	width: 100%;
 }
@@ -28,6 +29,7 @@
 #pageAsideLeft {
 	display : block;
 }
+
 </style>
 <body>
 	<div>

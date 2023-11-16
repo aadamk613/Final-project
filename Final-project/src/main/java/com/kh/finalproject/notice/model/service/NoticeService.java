@@ -14,6 +14,9 @@ public interface NoticeService {
 	// 게시글 리스트 조회
 	ArrayList<Notice> selectNoticeList(PageInfo pi);
 	
+	// 베스트 게시글 조회
+	ArrayList<Notice> selectBestNoticeList();
+	
 	// 게시글 작성
 	int insertNotice(Notice n);
 	

@@ -22,9 +22,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="EXP_ADDRESS" property="expAddress" />
 		<result column="EXP_CATEGORY_NO" property="expCategoryNo" />
 		<result column="EXP_CATEGORY_NAME" property="expCategoryName" />
+		<result column="EXP_LIKE_COUNT" property="expLikeCount" />
+		<result column="EXP_REPLY_COUNT" property="expReplyCount" />
+		<result column="EXP_SUPPORT_COUNT" property="expSupportCount" />
 	</resultMap>
 	
-	
+	<!-- 체험학습 목록 개수 조회 -->
 	<select id="selectListCount" resultType="_int">
 		SELECT 
 			   COUNT(*)
@@ -34,36 +37,182 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 	   EXP_STATUS = 'Y'
 	</select>
 	
+	<!-- 체험학습 목록조회 -->
 	<select id="selectExperienceList" resultMap="experienceResultSet">
 		SELECT 
 		       EXP_NO,
-			   EXP_TITLE,
-			   EXP_WRITER,
-			   EXP_PEOPLE,
-			   EXP_CONTENT,
-			   TO_CHAR(EXP_CREATE_DATE, 'YYYY-MM-DD'),
-			   TO_CHAR(EXP_WORK_DATE, 'YYYY-MM-DD'),
-			   TO_CHAR(EXP_END_DATE, 'YYYY-MM-DD HH24:MI'),
-			   EXP_STATUS,
-			   EXP_COUNT,
-			   TO_CHAR(EXP_UPDATE_DATE, 'YYYY-MM-DD'),
-			   EXP_AREA,
-			   EXP_ADDRESS,
-			   EXP_WORK_TIME,
-			   EXP_CATEGORY_NAME,
-			   EXP_CATEGORY_NO
+		       EXP_TITLE,
+		       EXP_WRITER,
+		       EXP_PEOPLE,
+		       EXP_CONTENT,
+		       TO_CHAR(EXP_CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS'),
+		       TO_CHAR(EXP_WORK_DATE, 'YYYY-MM-DD'),
+		       EXP_WORK_TIME, 
+		       TO_CHAR(EXP_END_DATE, 'YYYY-MM-DD HH24:MI'),
+		       EXP_STATUS,
+		       EXP_COUNT,
+		       TO_CHAR(EXP_UPDATE_DATE, 'YYYY-MM-DD'),
+		       EXP_AREA,
+		       EXP_ADDRESS,
+		       EXP_CATEGORY_NO,
+		       EXP_CATEGORY_NAME, 
+		       EXP_LIKE_COUNT,
+		       EXP_REPLY_COUNT,
+		       EXP_SUPPORT_COUNT
 		  FROM
-		       TB_EXPERIENCE
+		       TB_EXPERIENCE 
 		  JOIN 
-		       TB_EXPERIENCE_CATEGORY
+		       TB_EXPERIENCE_CATEGORY 
 		 USING 
-		 	   (EXP_CATEGORY_NO)
+		       (EXP_CATEGORY_NO)
+		  LEFT 
+		  JOIN
+		       (SELECT 
+		               NVL(COUNT(*), 0) EXP_LIKE_COUNT, 
+		               EXP_NO 
+		          FROM 
+		               TB_EXPERIENCE_LIKE 
+		         GROUP 
+		            BY 
+		               EXP_NO) 
+		 USING
+		       (EXP_NO)
+		  LEFT
+		  JOIN
+		       (SELECT 
+		               NVL(COUNT(*), 0) EXP_REPLY_COUNT, 
+		               EXP_NO 
+		          FROM 
+		               TB_EXPERIENCE_REPLY 
+		         GROUP 
+		            BY 
+		               EXP_NO) 
+		 USING
+		       (EXP_NO)
+		  LEFT
+		  JOIN
+		       (SELECT 
+		               NVL(COUNT(*), 0) EXP_SUPPORT_COUNT, 
+		               EXP_NO 
+		          FROM 
+		               TB_EXPERIENCE_PEOPLE 
+		         WHERE 
+		               EXP_PEOPLE_STATUS = 'Y'  
+		         GROUP 
+		            BY 
+		               EXP_NO) 
+		 USING 
+		       (EXP_NO)
 		 WHERE 
-			   EXP_STATUS = 'Y'
+		       EXP_STATUS = 'Y'
 		 ORDER 
 		    BY
 		       EXP_NO DESC
 	</select>
+	
+	<!-- 체험학습 조회수 증가 -->
+	<update id="increaseCount" parameterType="_int">
+		UPDATE 
+			   TB_EXPERIENCE 
+		   SET 
+		   	   EXP_COUNT = EXP_COUNT + 1 
+		 WHERE 
+		 	   EXP_NO = #{ expNo }
+		   AND 
+		       EXP_STATUS = 'Y'
+	</update>
+	
+	<!-- 체험학습 상세조회 -->
+	<select id="selectExperience" parameterType="_int" resultMap="experienceResultSet">
+		SELECT 
+		       EXP_NO,
+		       EXP_TITLE,
+		       EXP_WRITER,
+		       EXP_PEOPLE,
+		       EXP_CONTENT,
+		       TO_CHAR(EXP_CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS'),
+		       TO_CHAR(EXP_WORK_DATE, 'YYYY-MM-DD'),
+		       EXP_WORK_TIME, 
+		       TO_CHAR(EXP_END_DATE, 'YYYY-MM-DD HH24:MI'),
+		       EXP_STATUS,
+		       EXP_COUNT,
+		       TO_CHAR(EXP_UPDATE_DATE, 'YYYY-MM-DD'),
+		       EXP_AREA,
+		       EXP_ADDRESS,
+		       EXP_CATEGORY_NO,
+		       EXP_CATEGORY_NAME, 
+		       NVL(EXP_LIKE_COUNT, 0),
+		       NVL(EXP_REPLY_COUNT, 0),
+		       NVL(EXP_SUPPORT_COUNT, 0)
+		  FROM
+		       TB_EXPERIENCE 
+		  JOIN 
+		       TB_EXPERIENCE_CATEGORY 
+		 USING 
+		       (EXP_CATEGORY_NO)
+		  LEFT 
+		  JOIN
+		       (SELECT 
+		               NVL(COUNT(*), 0) EXP_LIKE_COUNT, 
+		               EXP_NO 
+		          FROM 
+		               TB_EXPERIENCE_LIKE 
+		         GROUP 
+		            BY 
+		               EXP_NO) 
+		 USING
+		       (EXP_NO)
+		  LEFT
+		  JOIN
+		       (SELECT 
+		               NVL(COUNT(*), 0) EXP_REPLY_COUNT, 
+		               EXP_NO 
+		          FROM 
+		               TB_EXPERIENCE_REPLY 
+		         GROUP 
+		            BY 
+		               EXP_NO) 
+		 USING
+		       (EXP_NO)
+		  LEFT
+		  JOIN
+		       (SELECT 
+		               NVL(COUNT(*), 0) EXP_SUPPORT_COUNT, 
+		               EXP_NO 
+		          FROM 
+		               TB_EXPERIENCE_PEOPLE 
+		         WHERE 
+		               EXP_PEOPLE_STATUS = 'Y'  
+		         GROUP 
+		            BY 
+		               EXP_NO) 
+		 USING 
+		       (EXP_NO)
+		 WHERE 
+		       EXP_STATUS = 'Y'
+		   AND
+		       EXP_NO = #{ expNo }
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 </mapper>
