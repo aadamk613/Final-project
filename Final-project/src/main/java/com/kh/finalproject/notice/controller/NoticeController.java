@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
 import com.kh.finalproject.notice.model.service.NoticeService;
+import com.kh.finalproject.notice.model.vo.Notice;
 
 @Controller
 public class NoticeController {
@@ -40,43 +42,73 @@ public class NoticeController {
 		model.addAttribute("list", noticeService.selectNoticeList(pi));
 		model.addAttribute("pi", pi);
 		
-		System.out.println(noticeService.selectNoticeList(pi));
 		
 		return "notice/noticeListView";
 	}
 	
-	@RequestMapping("enrollerForm.no")
+	@RequestMapping("enrollForm.no")
 	public String enrollForm() {
 		return "notice/noticeEnrollerForm";
 	}
 	
-	
-	   public String saveFile(MultipartFile upfile, HttpSession session) {
-		      
-		      // 파일 명 수정 작업 후 서버에 업로드("bono.jsp" => 2023110332132132.jsp)
-		               String originName = upfile.getOriginalFilename();
-		               
-		               // "20231103102244"(년월일시분초)
-		               String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-		               
-		               // 23432(5자리 랜덤값)
-		               int ranNum = (int)Math.random() * 90000 + 10000;
-		               
-		               // 확장자
-		               String ext = originName.substring(originName.lastIndexOf("."));
-		               
-		               String changeName = currentTime + ranNum + ext;
-		               
-		               String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
-		               
-		               try {
-		                  upfile.transferTo(new File(savePath + changeName));
-		               } catch (IllegalStateException | IOException e) {
-		                  e.printStackTrace();
-		               }
-		            return "/resources/uploadFiles/" + changeName;
-		   }
+	/*
+	@RequestMapping("insert.no")
+	public void insertNotice(Notice n, MultipartFile upfile) {
+		System.out.println(n);
+		System.out.println(upfile);
+	}
+	*/
 	
 	
+	
+	@RequestMapping("insert.no")
+	public String insertNotice(Notice n, Files f, Model model, MultipartFile upfile, HttpSession session) {
+
+		if(!upfile.getOriginalFilename().equals("")) {
+			
+			
+			
+			saveFile(upfile, session);
+			
+			f.setOriginalName(upfile.getOriginalFilename());
+			f.setUpdateName(saveFile(upfile, session));
+		} 
+		if(noticeService.insertNotice(n) > 0) { 
+			System.out.println("성공");
+			return "redirect:list.no";
+		} else {
+			System.out.println("실패");
+			return "common/errorPage";
+		}
+		
+	}
+
+	public String saveFile(MultipartFile upfile, HttpSession session) {
+
+		// 파일 명 수정 작업 후 서버에 업로드("bono.jsp" => 2023110332132132.jsp)
+		String originName = upfile.getOriginalFilename();
+
+		// "20231103102244"(년월일시분초)
+		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+
+		// 23432(5자리 랜덤값)
+		int ranNum = (int)Math.random() * 90000 + 10000;
+
+		// 확장자
+		String ext = originName.substring(originName.lastIndexOf("."));
+
+		String updateName = currentTime + ranNum + ext;
+
+		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
+
+		try {
+			upfile.transferTo(new File(savePath + updateName));
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		return "/resources/uploadFiles/" + updateName;
+	}
+
 	
 }

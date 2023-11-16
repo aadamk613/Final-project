@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data @NoArgsConstructor
-public class File {
+public class Files {
 
 	private int fileNo;
 	private String originalName;

@@ -98,4 +98,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				  ROWNUM BETWEEN 1 AND 5
 	</select> 
 	
+	<insert id="insertNotice" parameterType="notice">
+		INSERT
+		  INTO
+		      TB_NOTICE
+		      (
+			  NOTICE_NO
+			 ,NOTICE_TITLE
+			 ,NOTICE_CONTENT
+			 ,MEM_NO
+			 )
+	   VALUES		  
+	   	     (
+	   	     SEQ_NOTICE_NO.NEXTVAL
+	   	    ,#{noticeTitle}
+	   	    ,#{noticeContent}
+	   	    ,#{memNo}
+	   	     )
+	</insert>
+	
 </mapper>

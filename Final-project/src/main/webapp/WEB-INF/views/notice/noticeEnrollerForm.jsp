@@ -30,7 +30,7 @@
 			</div>
 			<div id="content">
 				<article>
-					<form action="insert.no" method="post">
+					<form action="insert.no" method="post" enctype="multipart/form-data">
 					<input type="hidden" name="memNo" value="${loginUser.memNo }">
 					<div id="boardCategoryWrap">
 						<select name="category" id="boardCategory">
@@ -42,7 +42,7 @@
 						<input type="text" placeholder="제목을 입력해주세요" name="noticeTitle" required>		
 					</div>
 					<div id="fileWrap">
-						<input type="file" name="file">
+						<input type="file" name="upfile">
 					</div>
 					<div id="boardContent">
 					<hr>
@@ -50,7 +50,7 @@
 					<hr>
 					</div>
 					<button type="submit" class="btn btn-primary" id="buttonWrite">글 작성</button>
-				</form>
+					</form>
 				</article>
 			</div>
 			

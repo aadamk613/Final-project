@@ -54,10 +54,24 @@
 							  <td colspan="5" style="text-align: center">작성한 게시글이 없습니다</td>
 							  <tr>
 						  </c:if>
-						  	<c:forEach var="n" items="${ requestScope.list }">
+						  
+						  
+						  	<c:forEach var="bn" items="${ requestScope.best }">
 
 						      <td scope="col" width="10%" style="text-align: center">
 						      <span class="best">BEST</span>
+						      ${ bn.category == 1 ? "공지" : '필독'}
+						      ${ bn.noticeNo }</td>
+					          <td scope="row" width="20%" style="text-align: center">${ bn.noticeTitle }</th>	       
+						      <td scope="row" width="20%" style="text-align: center">${ bn.memNo }</td>
+						      <td scope="row" width="20%" style="text-align: center">${ bn.noticeCreateDate }</td>
+						      <td scope="row" width="15%" style="text-align: center">${ bn.views }</td>
+						      <td scope="row" width="15%" style="text-align: center">${ bn.likeCount }</td>
+						    	</tr>
+						    </c:forEach>
+
+						  	<c:forEach var="n" items="${ requestScope.list }">
+						      <td scope="col" width="10%" style="text-align: center">
 						      ${ n.category == 1 ? "공지" : '필독'}
 						      ${ n.noticeNo }</td>
 					          <td scope="row" width="20%" style="text-align: center">${ n.noticeTitle }</th>	       

@@ -39,7 +39,7 @@ public class NoticeServiceImpl implements NoticeService{
 	
 	@Override
 	public int insertNotice(Notice n) {
-		return 0;
+		return noticeDao.insertNotice(sqlSession, n);
 	}
 
 	@Override
