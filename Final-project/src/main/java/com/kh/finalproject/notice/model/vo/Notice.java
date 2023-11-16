@@ -1,5 +1,9 @@
 package com.kh.finalproject.notice.model.vo;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data @NoArgsConstructor
 public class Notice {
 
 	private int noticeNo;
@@ -11,6 +15,6 @@ public class Notice {
 	private String status;
 	private int category;
 	private int likeCount;
-	private int memNo;
+	private String memNo;
 	
 }

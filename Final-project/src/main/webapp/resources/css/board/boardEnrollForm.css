@@ -1,0 +1,43 @@
+@charset "UTF-8";
+
+#header {width: 100vw; height: 100px;}
+
+main {width: 100%; height: auto;  line-height: 30px;}
+
+main > section, main > aside, main > div{float: left;}
+
+.aside {height: auto; float: left; margin: 20px auto; display: flex; justify-content: center; padding: 0;}
+
+#aside1{width :25%}
+
+#aside2{width :15%}
+
+#section{width: 60%; height: auto;  min-height: 1000px; float: left; padding: 20px;s}
+
+#contentTitle{width : 100%; height : 100px; padding: 20px; font-size : 30px; font-weight: bold; line-height : 200%;}
+
+#content{width : 100%; height : auto;}
+
+article{width: 95%; height: auto; margin: 20px auto; border: 1px solid rgb(230, 230, 230); border-radius: 10px; padding: 20px;}
+
+#boardCategoryWrap{width:100%; height:auto; padding: 5px;}
+
+#boardCategory{width:40%; height:30px;}
+
+#boardHeader {width: 100%; height: auto; font-size: 25px; font-weight : 600; padding: 5px;}
+
+#boardHeader > input{width: 40%; height: 40px;}
+
+#fileWrap{padding: 5px;}
+
+#fileWrap > input{width: 40%; height: 36px;}
+
+#boardContent{width: 100%; height: auto; min-height: 400px; resize:none; border: none; outline:none; padding:0px 5px;}
+
+#buttonWrite{margin: 0px 0px 0px 5px;}
+
+#page, #search{width : 100%; height : 100px; padding: 20px;}
+
+footer {width: 100%; height: auto;}
+
+a {text-decoration: none;}

@@ -143,19 +143,32 @@ a{
                <div id="blogInfo">
                    	블로그 관심사와 관심 식물 카테고리를 설정하시면 관련 글을 추천해드립니다
                </div>
+               
+               <script>
+               	function({
+               	
+               		
+               	})
+               	
+               
+               </script>
+               
+               
 				<article id="pageArticle">
 
 					<div id="createFormWrap">
-                        <form action="insert.bl" method="post" >
-                        <input type="hidden" name="blogNo" value="${ blogNo }">
+                        <form action="update.bl" method="post" >
+                        <input type="hidden" name="blogNo" value="${ blog.blogNo }">
+                        <input type="hidden" name="memNo" value="${ blog.memNo }">
                             <table id="createForm">
                             <tr>
                                     <th>블로그 이름</th>
-                                    <td><input type="text" name="blogTitle" placeholder="${ sessionScope.loginUser.memNick }님의 블로그" value="${ blog.blogTitle }"></td>
+                                    <td><input type="text" id=" blogTitle"name="blogTitle" placeholder="${ sessionScope.loginUser.memNick }님의 블로그" 
+                                    value="${ blog.blogTitle }" onfocus="this.value=''; return true"></td>
                                 </tr>
                                 <tr>
                                     <th>블로그 소개글</th>
-                                    <td><textarea name="blogIntroduce" id="" placeholder="${ sessionScope.loginUser.memNick }님의 블로그입니다." value="${ blog.blogIntroduce }"></textarea>
+                                    <td><textarea id="blogIntroduce" name="blogIntroduce" id="" placeholder="${ sessionScope.loginUser.memNick }님의 블로그입니다." onfocus="this.value=''; return true">${ blog.blogIntroduce }</textarea>
                                 </tr>
                                 <tr>
                                     <th>블로그 이미지</th>
@@ -204,7 +217,7 @@ a{
                             </table>
                             <div id="blogButtonWrap">
                                 <div><button type="submit" class="button forest" id="blogUpdateButton">정보 수정</button></div>
-                                <div><button type="button" class="button beige" id="goBlogHome">돌아가기</button></div>
+                                <div><a href="javascript:window.history.back();"><button type="button" class="button beige" id="goBlogHome">돌아가기</button></a></div>
                             </div>
                             </form>
 					</div>
