@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.kh.finalproject.blog.model.vo.Blog;
 import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
+import com.kh.finalproject.blog.model.vo.Plant;
 
 public interface BlogService {
 
@@ -23,6 +24,9 @@ public interface BlogService {
 	
 	// 블로그 카테고리 생성
 	int insertCategory(BlogCategorySetting blogCateSet);
+
+	// 식물 등록
+	int insertBlogPlant(Plant plant);
 	
 	// 블로그 카테고리 수정
 	

@@ -49,11 +49,12 @@ public class BlogController {
 		Blog blog = (Blog)blogService.selectBlog(blogNo);
 		ArrayList<BlogCategorySetting> list = blogService.selectCatogory(blogNo);
 		
-		mv.addObject("blog", blog).addObject("list", list);
-		mv.setViewName("blog/blogView");
+		mv.addObject("blog", blog)
+		  .addObject("list", list)
+		  .setViewName("blog/blogView");
 		
-		System.out.println("블로그 섹렉트 컨트롤러 : " + blog);
-		System.out.println("selectBlog에서 카테고리 list : " + list);
+		//System.out.println("블로그 섹렉트 컨트롤러 : " + blog);
+		//System.out.println("selectBlog에서 카테고리 list : " + list);
 		
 		return mv;
 	}
