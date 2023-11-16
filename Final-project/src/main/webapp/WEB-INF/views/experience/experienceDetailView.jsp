@@ -122,7 +122,9 @@ h1 {
 				<div>
 					<div class="summary">
 						<c:if test="${ not empty files }">
-							<p>${ files.refType }</p>
+							<c:forEach var="f" items="${ files }">
+								<img src="${ f.filePath }/${ f.updateName }" id="thumb" />
+							</c:forEach>
 						</c:if>
 
 					</div>
