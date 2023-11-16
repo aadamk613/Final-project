@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<h5%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,22 +16,32 @@
 */
 
 * {
-    border: 1px solid skyblue;
+  border: 1px solid skyblue;
 	box-sizing: border-box;
 }
+.list-group {
+	width: 100%;
+}
+.admin-menu {
+	width: 100%;
+}
 </style>
-	<body>
-		<ul class="list-group" style="width:100%">
-			<a href="#" class="list-group-item list-group-item-action">회원상태변경</a>
-			<a href="#" class="list-group-item list-group-item-action">댓글 신고조회</a>
-			<a href="#" class="list-group-item list-group-item-action">게시글 신고조회</a>
-			<a href="#" class="list-group-item list-group-item-action">해시태그 관리</a>
-			<a href="ticket.admin" class="list-group-item list-group-item-action">Ticket
-			<span class="badge badge-primary badge-pill">${numTicket}</span></a>
-			<a href="resolvedTicket.admin" class="list-group-item list-group-item-action">Ticket 처리목록</a>
-		</ul>
+<body>
+	<div>
+		<div class="admin-menu">
+			<ul class="list-group">
+				<a href="memberView.admin" class="list-group-item list-group-item-action">회원상태변경</a>
+				<a href="#" class="list-group-item list-group-item-action">댓글 신고조회</a>
+				<a href="#" class="list-group-item list-group-item-action">게시글 신고조회</a>
+				<a href="hashtag.admin" class="list-group-item list-group-item-action">해시태그 관리</a>
+				<a href="ticket.admin" class="list-group-item list-group-item-action">Ticket
+				<span class="badge badge-primary badge-pill">${numTicket}</span></a>
+				<a href="resolvedTicket.admin" class="list-group-item list-group-item-action">Ticket 처리목록</a>
+			</ul>
+		</div>
 		<div>
 			<h6>last login: ${loginUser.lastLogin}</h6>
 		</div>
-	</body>
+	</div>
+</body>
 </html>

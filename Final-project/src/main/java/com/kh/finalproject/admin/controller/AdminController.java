@@ -80,4 +80,15 @@ public class AdminController {
     }
     return "redirect:resolvedTicket.admin";
   }
+  
+  @GetMapping("memberView.admin")
+  public String memberView() {
+	  return "admin/adminMemberView";
+  }
+  
+  @GetMapping("hashtag.admin")
+  public String hashtagView() {
+	  
+	  return "admin/adminHashtag";
+  }
 }

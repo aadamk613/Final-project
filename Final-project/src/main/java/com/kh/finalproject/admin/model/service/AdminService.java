@@ -1,5 +1,6 @@
 package com.kh.finalproject.admin.model.service;
 
+import com.kh.finalproject.admin.model.vo.Hashtag;
 import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.ArrayList;
 
@@ -17,4 +18,6 @@ public interface AdminService {
   int editResolvedTicket(Ticket ticket);
 
   int deleteResolvedTicketStatus(Ticket ticket);
+
+  ArrayList<Hashtag> getHashtagList();
 }

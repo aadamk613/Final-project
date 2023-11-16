@@ -1,5 +1,6 @@
 package com.kh.finalproject.admin.model.dao;
 
+import com.kh.finalproject.admin.model.vo.Hashtag;
 import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -35,5 +36,9 @@ public class AdminDao {
 
   public int deleteResolvedTicketStatus(SqlSessionTemplate sqlSession, Ticket ticket) {
     return sqlSession.update("ticketMapper.deleteResolvedStatus", ticket);
+  }
+
+  public ArrayList<Hashtag> getHashtagList(SqlSessionTemplate sqlSession) {
+    return (ArrayList) sqlSession.selectList("HashtagMapper.getHashtagList");
   }
 }
