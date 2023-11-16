@@ -22,7 +22,6 @@ public class ExperienceController {
 	public String seleceExperienceList(@RequestParam(value="page", defaultValue="1") int currentPage, Model model){
 		// 페이지는 기본값 1로 설정
 		PageInfo pi = Pagination.getPageInfo(experienceService.selectListCount(), currentPage, 5, 5);
-		System.out.println(pi);
 		model.addAttribute("experienceList", experienceService.selectExperienceList(pi));
 		model.addAttribute("pi", pi);
 		return "experience/experienceListView";

@@ -128,7 +128,6 @@ h1 {
 							<li>카테고리 : ${ exp.expCategoryName }</li>
 							<li>체험학습일 : ${ exp.expWorkDate }, ${ exp.expWorkTime }시간</li>
 							<li>모집인원 : ${ exp.expSupportCount } / ${ exp.expPeople }명</li>
-							<li>참가비 : </li>
 							<li>지역 : ${ exp.expAddress }</li>
 							<li>모집마감일 : ${ exp.expEndDate }</li>
 						</ul>
