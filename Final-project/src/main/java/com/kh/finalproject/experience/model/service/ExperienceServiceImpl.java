@@ -12,6 +12,7 @@ import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.experience.model.dao.ExperienceDao;
 import com.kh.finalproject.experience.model.vo.Experience;
+import com.kh.finalproject.experience.model.vo.ExperienceReply;
 
 @Service
 public class ExperienceServiceImpl implements ExperienceService {
@@ -42,6 +43,11 @@ public class ExperienceServiceImpl implements ExperienceService {
 	@Override
 	public Experience selectExperience(int expNo) {
 		return experienceDao.selectExperience(sqlSession, expNo);
+	}
+
+	@Override
+	public ArrayList<ExperienceReply> selectExpReplyList(int expNo) {
+		return experienceDao.selectExpReplyList(sqlSession, expNo);
 	}
 
 	

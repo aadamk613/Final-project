@@ -194,6 +194,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		       EXP_NO = #{ expNo }
 	</select>
 	
+	<select id="selectReplyList" parameterType="_int" resultType="experienceReply">
+		SELECT
+		       EXP_REPLY_NO expReplyNo,
+		       REPLY_WRITER replyWriter,
+		       REPLY_CREATE_DATE replyCreateDate,
+		       REPLY_CONTENT replyContent,
+		       REPLY_STATUS replyStatus,
+		       REPLY_MODIFY_DATE replyModifyDate,
+		       REPLY_SECRET replySecret
+		  FROM
+		       TB_EXPERIENCE_REPLY
+		 WHERE 
+		       EXP_NO = #{ expNo }
+	</select>
+	
 
 	
 	

@@ -1,11 +1,10 @@
 package com.kh.finalproject.experience.model.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.experience.model.vo.Experience;
+import com.kh.finalproject.experience.model.vo.ExperienceReply;
 
 public interface ExperienceService {
 	
@@ -23,6 +22,9 @@ public interface ExperienceService {
 
 	// 사진조회는 common에 있음
 	
+	
+	// 체험학습 게시글 댓글조회
+	ArrayList<ExperienceReply> selectExpReplyList(int expNo);
 	
 
 

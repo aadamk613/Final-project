@@ -1,14 +1,13 @@
 package com.kh.finalproject.experience.model.dao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.experience.model.vo.Experience;
+import com.kh.finalproject.experience.model.vo.ExperienceReply;
 
 @Repository
 public class ExperienceDao {
@@ -28,7 +27,11 @@ public class ExperienceDao {
 	public Experience selectExperience(SqlSessionTemplate sqlSession, int expNo) {
 		return sqlSession.selectOne("experienceMapper.selectExperience", expNo);
 	}
-
+	
+	
+	public ArrayList<ExperienceReply> selectExpReplyList(SqlSessionTemplate sqlSession, int expNo) {
+		return (ArrayList)sqlSession.selectList("experienceMapper.selectReplyList", expNo);
+	}
 	
 	
 	

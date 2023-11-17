@@ -9,7 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
 import com.kh.finalproject.common.model.service.CommonService;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
@@ -36,27 +38,44 @@ public class ExperienceController {
 	public String selectExperience(int expNo, Model model, HttpSession session) {
 		System.out.println(expNo);
 		
+		// 조회수 증가 성공 시 
 		if(experienceService.increaseCount(expNo) > 0 ) {
-			System.out.println("성공");
+			// 게시글 상세조회
 			model.addAttribute("exp", experienceService.selectExperience(expNo));
-			System.out.println(experienceService.selectExperience(expNo));
-			
+			// 첨부파일 조회
 			HashMap map = new HashMap();
 			map.put("refNo", expNo);
 			map.put("refType", "EXPERIENCE");
 			model.addAttribute("files", commonService.selectFiles(map));
-			System.out.println(commonService.selectFiles(map));
-			
 			return "experience/experienceDetailView";
+		// 조회수 증가 실패 시	
 		} else {
-			System.out.println("에러");
 			session.setAttribute("error", "조회수 증가 실패");
 			// model.addAttribute("error", "조회수 증가 실패");
 			return "redirect:yrlist.exp";
 			// return "experience/experienceListView";
 		}
-		
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="yrselectExpReplyList", produces="application/json; charset=UTF-8")
+	public String selectExpReplyList(int expNo) {
+		return new Gson().toJson(experienceService.selectExpReplyList(expNo));
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 

@@ -117,9 +117,9 @@ a {
 					  		<li class="page-item"><a class="page-link" href="">&lt;</a></li>
 					  	</c:otherwise>
 				  	</c:choose>
-						<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
-				  			<li class="page-item"><a class="page-link" href="yrlist.exp?page=${ p }">${ p }</a></li>
-				  		</c:forEach>
+					<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+			  			<li class="page-item"><a class="page-link" href="yrlist.exp?page=${ p }">${ p }</a></li>
+			  		</c:forEach>
 				  	<c:choose>
 					  	<c:when test="${ pi.currentPage ne pi.maxPage }">
 					  		<li class="page-item"><a class="page-link" href="yrlist.exp?page=${ pi.currentPage + 1 }">&gt;</a></li>
@@ -128,7 +128,6 @@ a {
 					  		<li class="page-item"><a class="page-link" href="">&gt;</a></li>
 					  	</c:otherwise>
 				  	</c:choose>
-				  	
 				</ul>
 			</div>
 			
