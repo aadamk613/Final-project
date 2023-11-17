@@ -69,11 +69,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ORDER BY
 			    LIKE_COUNT DESC, NOTICE_NO DESC) b
 	       WHERE 
-<<<<<<< HEAD
 	            ROWNUM BETWEEN 1 AND 5
-=======
 	            ROWNUM between 1 and 5
->>>>>>> 890b38490e1cbaf0950931332e634c0be1f724cb
 	   UNION ALL
 		  SELECT
 		         *
@@ -102,7 +99,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 				  ROWNUM BETWEEN 1 AND 5
 	</select> 
-	
+<!-- <<<<<<< HEAD -->
+<!--  ======= -->
+<!-- >>>>>>> 890b38490e1cbaf0950931332e634c0be1f724cb -->
 	<insert id="insertNotice" parameterType="notice">
 		INSERT
 		  INTO

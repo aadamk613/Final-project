@@ -8,9 +8,6 @@ import lombok.Data;
 @Data @NoArgsConstructor
 
 public class Files {
-
-
-
 	private int fileNo;
 	private String originalName;
 	private String updateName;
@@ -20,4 +17,6 @@ public class Files {
 	private String fileAnnotation;
 	private String uploadDate;
 	
+}
+
 }
