@@ -30,6 +30,7 @@ public class MemberServiceImpl implements MemberService {
   public int idCheck(String checkId) {
 	return memberDao.idCheck(sqlSession, checkId);
 	}
+
   @Override
   public int setLastLogin(Member m) {
     return memberDao.setLastLogin(sqlSession, m);

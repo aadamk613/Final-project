@@ -122,7 +122,7 @@ ul{padding: 10px;}
             <div id="blogInfo">
                 <ul id="blogInfoUl">
                     <li id="blogImg"><img src=""/>사진 공간</li>
-                    <li id="memId">닉네임(아이디)</li>
+                    <li id="memId">${ blog.memNick }(${ blog.memId })</li>
                     <li id="blogIntroduce">${ blog.blogIntroduce }</li>
                     <li id="">
 	                    <a href="">글 쓰기</a>
@@ -157,7 +157,10 @@ ul{padding: 10px;}
                         <div>사진</div>
                         <div>사진</div>
                         <div>사진</div>
-                        <div><a href="insertForm.bl_pl">일지추가 + </a></div>
+                        <div>
+                        	<a href="insertForm.bl_pl?blogNo=${ blog.blogNo }">식물추가 + </a>
+                        	<a href="select.bl_pl?blogNo=${ blog.blogNo }">식물 일지</a>
+                        </div>
                </div>
 				<article>
 					<div id="blogBoardWrap">

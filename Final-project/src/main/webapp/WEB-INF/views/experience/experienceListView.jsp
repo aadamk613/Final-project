@@ -138,8 +138,16 @@ a {
 					$('.pagination > li:contains(${ pi.currentPage })').attr('class', 'page-item active');
 					
 				});
-
+				
 			</script>
+			
+			<c:if test="${ not empty sessionScope.error }">
+				<script>
+					console.log(${ sessionscope.error });
+					alert('게시글 상세조회에 실패하셨습니다. 다시 이용해 주세요.');
+				</script>
+				<c:remove var="error" scope="session" />
+			</c:if>
 			
 			
 			

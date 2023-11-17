@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration 
 PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
-"https://mybatis.org/dtd/mybatis-3-config.dtd" >
+"https://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
 	<settings>
@@ -10,9 +10,10 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 
 	<typeAliases>
 		<typeAlias type="com.kh.finalproject.auction.model.vo.Auction" alias="auction"/>
-		
+
 		<typeAlias type="com.kh.finalproject.blog.model.vo.Blog" alias="blog"/>
 		<typeAlias type="com.kh.finalproject.blog.model.vo.BlogCategorySetting" alias="blogCategorySetting"/>
+		<typeAlias type="com.kh.finalproject.blog.model.vo.Plant" alias="plant"/>
 		
 		<typeAlias type="com.kh.finalproject.board.model.vo.Board" alias="board"/>
 		<typeAlias type="com.kh.finalproject.chat.model.vo.Chat" alias="chat"/>
@@ -22,19 +23,21 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<typeAlias type="com.kh.finalproject.member.model.vo.Member" alias="member"/>
 		<typeAlias type="com.kh.finalproject.notice.model.vo.Notice" alias="notice"/>
 		<typeAlias type="com.kh.finalproject.ticket.model.vo.Ticket" alias="ticket"/>
+		<typeAlias type="com.kh.finalproject.admin.model.vo.Hashtag" alias="hashtag"/>
 	</typeAliases>
-	
-	 <mappers>
-	 	<mapper resource="/mapper/auction-mapper.xml" />
-	 	<mapper resource="/mapper/blog-mapper.xml" />
-	 	<mapper resource="/mapper/board-mapper.xml" />
-	 	<mapper resource="/mapper/chat-mapper.xml" />
-	 	<mapper resource="/mapper/common-mapper.xml" />
-	 	<mapper resource="/mapper/experience-mapper.xml" />
-	 	<mapper resource="/mapper/garden-mapper.xml" />
-	 	<mapper resource="/mapper/member-mapper.xml" />
-	 	<mapper resource="/mapper/notice-mapper.xml" />
-	 	<mapper resource="/mapper/ticket-mapper.xml" />
-	 </mappers>
-	 
+
+	<mappers>
+		<mapper resource="/mapper/auction-mapper.xml" />
+		<mapper resource="/mapper/blog-mapper.xml" />
+		<mapper resource="/mapper/board-mapper.xml" />
+		<mapper resource="/mapper/chat-mapper.xml" />
+		<mapper resource="/mapper/common-mapper.xml" />
+		<mapper resource="/mapper/experience-mapper.xml" />
+		<mapper resource="/mapper/garden-mapper.xml" />
+		<mapper resource="/mapper/member-mapper.xml" />
+		<mapper resource="/mapper/notice-mapper.xml" />
+		<mapper resource="/mapper/ticket-mapper.xml" />
+		<mapper resource="/mapper/hashtag-mapper.xml" />
+	</mappers>
+
 </configuration>

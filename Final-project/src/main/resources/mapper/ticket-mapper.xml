@@ -21,7 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT
 			COUNT(*)
 		FROM
-			TICKET
+			TB_TICKET
 		WHERE 
 			STATUS = 'P'
 	</select>
@@ -40,7 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			ANSWER_MODIFY_DATE,
 			STATUS
 		FROM
-			TICKET
+			TB_TICKET
 		WHERE
 			STATUS = 'P'
 		ORDER
@@ -62,7 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			ANSWER_MODIFY_DATE,
 			STATUS
 		FROM
-			TICKET
+			TB_TICKET
 		WHERE
 			STATUS = 'R'
 		ORDER
@@ -84,13 +84,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			ANSWER_MODIFY_DATE,
 			STATUS
 		FROM
-			TICKET
+			TB_TICKET
 		WHERE
 			TICKET_NO = #{bno}
 	</select>
 	<update id="resolveTicket" parameterType="ticket">
 		UPDATE
-			TICKET
+			TB_TICKET
 		SET 
 			ANSWER_WRITER = #{answerWriter},
 			ANSWER_TITLE = #{answerTitle},
@@ -103,7 +103,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	<update id="deleteResolvedStatus" parameterType="ticket">
 		UPDATE
-			TICKET
+			TB_TICKET
 		SET 
 			STATUS = 'P'
 		WHERE 

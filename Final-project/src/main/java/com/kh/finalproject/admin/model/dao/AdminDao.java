@@ -1,10 +1,10 @@
 package com.kh.finalproject.admin.model.dao;
 
+import com.kh.finalproject.admin.model.vo.Hashtag;
 import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.servlet.ModelAndView;
 
 @Repository
 public class AdminDao {
@@ -35,5 +35,17 @@ public class AdminDao {
 
   public int deleteResolvedTicketStatus(SqlSessionTemplate sqlSession, Ticket ticket) {
     return sqlSession.update("ticketMapper.deleteResolvedStatus", ticket);
+  }
+
+  public ArrayList<Hashtag> getHashtagList(SqlSessionTemplate sqlSession) {
+    return (ArrayList) sqlSession.selectList("hashtagMapper.getHashtagList");
+  }
+
+  public int updateHashtag(SqlSessionTemplate sqlSession, Hashtag h) {
+    return sqlSession.update("hashtagMapper.updateHashtag", h);
+  }
+
+  public int deleteHashtag(SqlSessionTemplate sqlSession, Hashtag h) {
+    return sqlSession.delete("hashtagMapper.deleteHashtag", h);
   }
 }

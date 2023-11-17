@@ -19,25 +19,29 @@
 #plantInfoWrap > div{float: left;}
 #plantInfoWrap{width: 100%; height: auto;}
 
-#plantImg{width: 20%; height: 160px; float: middle;}
+#plantImg{width: 20%; height: 160px;}
 
-#plantImfo{width: 80%; height: auto;}
+#plantImfo{width: 80%; height: 160px;}
 #plantName{font-size: 20px; font-weight: bold;}
 #plantNick{font-size: 17px; font-weight: bold; color: #448300;}
 #plantNick > div{display: inline; padding: 10px;}
 
 #plantCreateDate{font-size: 15px; color: #888;}
 
-#plantComment{width: 100%; height: 160px; padding: 10px;}
+#plantApiWrap{width: 100%; height: 150px; padding: 10px;}
 ul{
 	list-style: none;
+	margin: 10px 0px;
     padding: 0px;
-    margin: 0px;
 }
 li{
 	padding: 5px 20px;
     position: relative;
 }
+
+
+
+
 .button{
 	width: 130px;
 	height: 35px;
@@ -62,16 +66,6 @@ li{
     text-decoration: none;
     color: #888;
 	}
-	
-input[type=file]{display: none;}
-
-textarea{
-    resize: none;
-    width: 99%;
-    height: 100px;
-    outline-color: #afdba3;
-    border: none;
-}
 
 
 </style>
@@ -108,45 +102,32 @@ textarea{
 		<section id="pageSection">
 			
 			<div id="blogTitle">
-			   	식물 일지 리스트
+			   	식물 일지
 			</div>
 			
 			<div id="content">
 				<article>
-					<form method="post" action="insert.bl_pl" >  
-					<input type="hidden" name="blogNo" value="${ blogNo }"/>
                     <div id="plantInfoWrap">
-                        <div id="plantImg"><input type="file" id="plantInput"/><button id="plantImgInput">식물사진 추가</button></div>
+                        <div id="plantImg">식물사진</div>
                         <div id="plantImfo">
                             <ul>
-                                <li id="plantName">식물명 : <input type="text" name="plantName"/></li>
-                                <li id="plantNickName">
-	                                <div>애칭 : <input type="text" name="plantNickName" />
-	                                </div>키우기 시작한 일자: <div id="plantLogDate"><input type="date" name="plantLogDate"></div>
-                                </li>
-                                <li id="plantComment" >
-                                	<textarea placeholder="식물에 대한 코멘트를 작성해주세요" name="plantComment"></textarea>
+                                <li id="plantName">식물 이름 : 라벤더</li>
+                                <li id="plantNick"><div>별명 : 라라</div><div id="plantCreateDate">D+10</div></li>
+                                <li id="plantButtonWrap">
+                                    <button id="plantCare" class="button forest">일지 추가</button>
+                                    <button id="plantCare" class="button forest">관리하기</button>
                                 </li>
                             </ul>
                         </div>
-                        <div>
-                        	<button type="submit" id="plantCare" class="button forest">등록하기</button>
-                        	<button id="plantCare" class="button forest">돌아가기</button>
-                        </div>
                     </div>
-                    
                     <br clear="both">
-					</form>
+                    <div id="plantApiWrap">
+                        어쩌구 저쩌구 <br>
+                        Api에서 불러 온 정보
+                    </div>
+
 				</article>
 			</div>
-			
-			<script>
-			    
-			      plantImgInput.addEventListener('click', function(){
-			    	  plantInput.click();
-			      });
-			</script>
-			
 			
 		
 		</section>

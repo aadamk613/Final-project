@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kh.finalproject.blog.model.dao.BlogDao;
 import com.kh.finalproject.blog.model.vo.Blog;
 import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
+import com.kh.finalproject.blog.model.vo.Plant;
 
 @Service
 public class BlogServiceImpl implements BlogService{
@@ -46,6 +47,15 @@ public class BlogServiceImpl implements BlogService{
 	@Override
 	public ArrayList<BlogCategorySetting> selectCatogory(int blogNo) {
 		return (ArrayList<BlogCategorySetting>)blogDao.selectCatogory(sqlSession, blogNo);
+	}
+	
+	public int insertBlogPlant(Plant plant) {
+		return blogDao.insertBlogPlant(sqlSession, plant);
+	}
+
+	@Override
+	public ArrayList<Plant> selectListPlant(int blogNo) {
+		return blogDao.selectListPlant(sqlSession, blogNo);
 	}
 
 }
