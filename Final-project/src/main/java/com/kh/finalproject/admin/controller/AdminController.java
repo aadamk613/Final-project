@@ -1,13 +1,17 @@
 package com.kh.finalproject.admin.controller;
 
+import com.google.gson.Gson;
 import com.kh.finalproject.admin.model.service.AdminService;
 import com.kh.finalproject.admin.model.vo.Hashtag;
 import com.kh.finalproject.ticket.model.vo.Ticket;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -87,20 +91,25 @@ public class AdminController {
   }
 
   @GetMapping("hashtag.admin")
-  public ModelAndView hashtagView(ModelAndView mv) {
-    mv.addObject("list", adminService.getHashtagList()).setViewName("admin/adminHashtag");
-    mv.addObject("numTicket", adminService.getTicketNumber());
-    return mv;
+  public String hashtagView() {
+    return "admin/adminHashtag";
+  }
+  
+  @ResponseBody
+  @GetMapping(value = "ajaxHashtagList.admin", produces = "application/json; charset=UTF-8")
+  public String ajaxGetHashtagList() {
+	  return new Gson().toJson(adminService.getHashtagList());
   }
 
-  @PostMapping("updateHashtag.admin")
-  public String updateHashtag(Hashtag h, Model m) {
-    if (adminService.updateHashtag(h) > 0) {
-      m.addAttribute("alertMsg", "해시태그를 성공적으로 수정하였습니다!");
-    } else {
-      m.addAttribute("alertMsg", "해시태그 수정 실패하였습니다!");
+  @ResponseBody
+  @GetMapping(value = "ajaxGetHashtag.admin", produces = "application/json; charset=UTF-8")
+  public String ajaxGetHashtag() {
+    ArrayList<Hashtag> list = adminService.getHashtagList();
+    ArrayList<String> returnMe = new ArrayList<>();
+    for (Hashtag tag : list) {
+      returnMe.add("'" + tag.getTagName() + "'");
     }
-    return "redirect:hashtag.admin";
+    return new Gson().toJson(returnMe);
   }
 
   @PostMapping("deleteHashtag.admin")

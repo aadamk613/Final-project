@@ -7,7 +7,9 @@
 <meta charset="UTF-8">
 <title>화면 틀입니다 복사해서 사용해주세요</title>
 <link rel="stylesheet" href="resources/css/common/template.css">
-
+<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
 </head>
 <style>
 
@@ -17,10 +19,7 @@
 위의 id는 참조한 css에 이름 이미 있어서 화면 모양이 이상해질 수 있습니다
 */
 
-* {
-    border: 1px solid skyblue;
-	box-sizing: border-box;
-}
+
 input[type=checkbox] {
 
 zoom: 1.8;
@@ -45,6 +44,8 @@ zoom: 1.8;
 			
 			<div id="content">       
 				<article id="pageArticle">
+					<textarea name='tags2' placeholder='hashtags'>
+					</textarea>
 					<form id="postform" method="post" action="">
 					<table id="tb" class="table table-sm table-hover" align="center" style="width: 100%" style="cursor:default">
 						<thead class="thead-light">
@@ -57,38 +58,18 @@ zoom: 1.8;
 							</tr>
 						</thead>
 						<tbody style="cursor:default">
-							<c:choose>
-								<c:when test="${empty list}">
-									<tr>
-										<td colspan="5">조회된 게시글이 없습니다..</td>
-									</tr>
-								</c:when>
-								<c:otherwise>
-									<c:forEach items="${list}" var="b" varStatus="s">
-										<tr>
-											<td style="text-align: center;"><input type="checkbox" name="chk"></td>
-											<td>${b.tagNo}</td>
-											<td>${b.tagName}</td>
-											<td>${b.tagDate}</td>
-											<td>${b.tagUsage}</td>
-										</tr>
-									</c:forEach>
-								</c:otherwise>
-							</c:choose>
-							<tr>
-								<td colspan="2">
-									<input type="hidden" id="hdtag" name="tagNo" value="">
-
-									<a href="addHashtag.admin" class="btn btn-primary btn-block btn-primary">추가</a>
-								</td>
-								<td colspan="2">
-									<a class="btn btn-primary btn-block btn-danger" onclick="postformSubmit(0)">수정</a>
-								</td>
-								<td colspan="1">
-									<a class="btn btn-primary btn-block btn-danger" onclick="postformSubmit(1)">삭제</a>
-								</td>
-							</tr>
+							
 						</tbody>
+						<tr>
+							<td colspan="3">
+								<input type="hidden" id="hdtag" name="tagNo" value="">
+								<a href="addHashtag.admin" class="btn btn-primary btn-block btn-primary">추가</a>
+							</td>
+
+							<td colspan="2">
+								<a class="btn btn-primary btn-block btn-danger" onclick="postformSubmit(1)">선택삭제</a>
+							</td>
+						</tr>
 					</table>
 				</form>
 				</article>
@@ -109,23 +90,58 @@ zoom: 1.8;
 		<jsp:include page="../common/footer.jsp" />
 	</footer>
 	<script>
-		function postformSubmit(num) {
-			if (num == 0) {
-				// 수정 버튼 클릭시 
-				$('')
-				$('#postform').attr('action', 'updateHashtag.admin').submit();
-			} else {
-				//삭제버튼클릭시
-				$('#postform').attr('action', 'deleteHashtag.admin').submit();
-			}
-		};
 		$(() => {
-			$('input:checkbox[name=chk]').each(function (index) {
-				if ($(this).is(":checked") == true) {
-					console.log($(this).val());
+			$.ajax({
+				url : 'ajaxGetHashtag.admin',
+				success : data => {
+					var input = document.querySelector('textarea[name=tags2]'),
+					tagify = new Tagify(input, {
+						enforceWhitelist : true,
+						delimiters       : null,
+						whitelist        : data,
+						callbacks        : {
+							add    : console.log,  // callback when adding a tag
+							remove : console.log   // callback when removing a tag
+						}
+					})
+				},
+				error : e => {
+					console.log("해시태그 목록 조회 실패!");
+				}
+			});
+		});
+		$(() => {
+			$.ajax({
+				url : 'ajaxHashtagList.admin',
+				success : data => {
+					let result = '';
+					for (let i in data) {
+						result += '<tr>'
+										+ '<td>' + data[i].tagNo + '</td>'
+										+ '<td>' + data[i].tagName + '</td>'
+										+ '<td>' + data[i].tagDate + '</td>'
+										+ '<td>' + data[i].tagUsage + '</td>'
+										+ '<td>' + data[i].tagNo + '</td>'
+										+ '<td>' + data[i].tagNo + '</td>'
+										+ '<td>' + data[i].tagNo + '</td>'
+										
+					}
+				}
+			})
+		});
+		function deleteChecked() {
+			var checkedElements = document.postform.rowcheck;
+			var flag = false;
+			for (i = 0; i < checkedElements.length; i++) {
+				if (checkedElements[i].checked) {
+					flag = true;
+				}
 			}
-		})
-	})
+			if (flag === false) {
+				alert("하나 이상의 해시태그를 선택하여야 합니다.");
+			}
+			document.postform.submit();
+		}
 	</script>
 </body>
 </html>
