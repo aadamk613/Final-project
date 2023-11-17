@@ -54,6 +54,8 @@
 								<th width="170">마지막 로그인</th>
 							</tr>
 						</thead>
+						<tbody>
+						</tbody>
 					</table>
 				</article>
 			</div>
@@ -73,6 +75,28 @@
 		<jsp:include page="../common/footer.jsp" />
 	</footer>
 
-
+<script>
+	$(() => {
+			$.ajax({
+				url : 'getMemberList.me',
+				success : data => {
+					let result = '';
+					for (let i in data) {
+						result += '<tr>'
+										+ '<td>' + data[i].memNo + '</td>'
+										+ '<td>' + data[i].memStatus + '</td>'
+										+ '<td>' + data[i].memId + '</td>'
+										+ '<td>' + data[i].memNick + '</td>'
+										+ '<td>' + data[i].email + '</td>'
+										+ '<td>' + data[i].memTemp + '</td>'
+										+ '<td>' + data[i].blogNo + '</td>'
+										+ '<td>' + data[i].lastLogin + '</td>'
+										+ '<tr>';			
+					}
+					$('#tb > tbody').html(result);
+				}
+			})
+		});
+</script>
 </body>
 </html>
