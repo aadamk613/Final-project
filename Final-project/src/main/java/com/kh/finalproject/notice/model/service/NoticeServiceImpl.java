@@ -38,8 +38,13 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 	
 	@Override
+	public ArrayList<Notice> selectBestNoticeList() {
+		return noticeDao.selectBestNoticeList(sqlSession);
+	}
+	
+	@Override
 	public int insertNotice(Notice n) {
-		return 0;
+		return noticeDao.insertNotice(sqlSession, n);
 	}
 
 	@Override
@@ -62,8 +67,6 @@ public class NoticeServiceImpl implements NoticeService{
 		return 0;
 	}
 
-
-	
 	
 	
 }
