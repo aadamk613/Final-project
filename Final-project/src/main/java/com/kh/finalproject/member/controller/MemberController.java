@@ -89,7 +89,7 @@ public class MemberController {
 	  }
   }
   @ResponseBody	// 포워딩 해줄게 아니라서 
-  @RequestMapping
+  @RequestMapping("idCheck.me")
   public String idCheck(String checkId) {
 	  int count = memberService.idCheck(checkId);
 	  return count > 0 ? "NNNNN" : "NNNNY";
