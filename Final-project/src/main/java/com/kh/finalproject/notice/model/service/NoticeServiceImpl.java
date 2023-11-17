@@ -31,7 +31,12 @@ public class NoticeServiceImpl implements NoticeService{
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		return noticeDao.selectNoticeList(sqlSession, rowBounds);
 	}
-
+	
+	@Override
+	public ArrayList<Notice> selectBestNoticeList() {
+		return noticeDao.selectBestNoticeList(sqlSession);
+	}
+	
 	@Override
 	public int insertNotice(Notice n) {
 		return 0;
@@ -56,6 +61,7 @@ public class NoticeServiceImpl implements NoticeService{
 	public int updateNotice(int noticeNo) {
 		return 0;
 	}
+
 
 	
 	

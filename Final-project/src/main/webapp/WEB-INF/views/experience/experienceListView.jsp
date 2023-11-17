@@ -34,6 +34,10 @@
     justify-content: center;
 }
 
+a {
+	text-decoration : none;
+}
+
 
 </style>
 
@@ -80,7 +84,7 @@
 						<tr>
 						  <td>${ el.expNo }</td>
 						  <td>${ el.expCategoryName }</td>
-						  <td>${ el.expTitle }</td>
+						  <td><a href="yrdetail.exp?expNo=${ el.expNo }">${ el.expTitle }</a></td>
 						  <td>${ el.expArea }</td>
 						  <td>${ el.expEndDate }</td>
 						  <td>${ el.expWriter }</td>
@@ -107,7 +111,7 @@
 				<ul class="pagination">
 					<c:choose>
 						<c:when test="${ pi.currentPage ne 1 }">
-					  		<li class="page-item"><a class="page-link" href="yrlist.exp?page=${ pi.currentPage - 1 }">Previous</a></li>
+					  		<li class="page-item"><a class="page-link" href="yrlist.exp?page=${ pi.currentPage - 1 }">&lt;</a></li>
 					  	</c:when>
 					  	<c:otherwise>
 					  		<li class="page-item"><a class="page-link" href="">Previous</a></li>
@@ -118,7 +122,7 @@
 				  		</c:forEach>
 				  	<c:choose>
 					  	<c:when test="${ pi.currentPage ne pi.maxPage }">
-					  		<li class="page-item"><a class="page-link" href="yrlist.exp?page=${ pi.currentPage + 1 }">Next</a></li>
+					  		<li class="page-item"><a class="page-link" href="yrlist.exp?page=${ pi.currentPage + 1 }">&gt;</a></li>
 					  	</c:when>
 					  	<c:otherwise>
 					  		<li class="page-item"><a class="page-link" href="">Next</a></li>
@@ -134,8 +138,16 @@
 					$('.pagination > li:contains(${ pi.currentPage })').attr('class', 'page-item active');
 					
 				});
-
+				
 			</script>
+			
+			<c:if test="${ not empty sessionScope.error }">
+				<script>
+					console.log(${ sessionscope.error });
+					alert('게시글 상세조회에 실패하셨습니다. 다시 이용해 주세요.');
+				</script>
+				<c:remove var="error" scope="session" />
+			</c:if>
 			
 			
 			

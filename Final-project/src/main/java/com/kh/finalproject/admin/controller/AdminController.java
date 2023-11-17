@@ -65,6 +65,8 @@ public class AdminController {
     } else {
       m.addAttribute("errorMsg", "답변 등록에 실패하였습니다!");
     }
+    
+    
     return "redirect:resolvedTicket.admin";
   }
 
