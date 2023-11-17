@@ -4,20 +4,17 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.kh.finalproject.common.model.service.CommonService;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
@@ -65,9 +62,18 @@ public class ExperienceController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="yrselectExpReplyList", produces="application/json; charset=UTF-8")
+	@RequestMapping(value="yrselectExpReplyList.exp", produces="application/json; charset=UTF-8")
 	public String selectExpReplyList(int expNo) {
 		return new Gson().toJson(experienceService.selectExpReplyList(expNo));
+	}
+	
+	@ResponseBody
+	@PostMapping("yrinsertExpReply.exp")
+	public String insertExpReply(@RequestBody String expReply) {
+		// System.out.println(expNo);
+		System.out.println(expReply);
+		
+		return "success";
 	}
 	
 	@RequestMapping("yrdeleteExp.exp")
@@ -77,7 +83,6 @@ public class ExperienceController {
 		} else {
 			session.setAttribute("error", "체험학습 게시글 삭제에 실패하셨습니다.");
 		}
-		
 		// ResponseEntity<String> re = new ResponseEntity<String>("체험학습 게시글이 삭제되었습니다.", HttpStatus.OK);
 		// JSONObject객체로 키-밸류로 넘길수도 있음
 		// 이렇게 넘기면 한글은 0~255를 넘기기 때문에 POST방식으로 받아야 함

@@ -120,7 +120,7 @@ h1 {
 		<section id="pageSection">
 			<div class="container">
 				<!-- 작성자만 보이는 버튼 -->
-				<c:if test="${ sessionScope.loginMember eq requestScope.exp.expWriter }">
+				<c:if test="${ sessionScope.loginUser eq requestScope.exp.expWriter }">
 				<div id="forWriter">
 					<button type="button" class="btn btn-primary" onclick="updateExp();">수정하기</button>
 					<button type="button" class="btn btn-danger" onclick="deleteExp();">삭제하기</button>
@@ -186,8 +186,8 @@ h1 {
 					<p>${ exp.expContent }</p>
 				</div>
 				<div id="">
-					<c:if test="${ not empty files }">
-						<c:forEach var="f" items="${ files }">
+					<c:if test="${ not empty requestScope.files }">
+						<c:forEach var="f" items="${ requestScope.files }">
 							<img src="${ f.filePath }/${ f.updateName }" class="files" />
 							<p>${ f.fileAnnotation }</p>
 						</c:forEach>
@@ -213,8 +213,8 @@ h1 {
 							<label for="secret">비밀댓글로 설정하기</label>
 						</div>
 						<c:choose>
-							<c:when test="${ loginUser ne null }">
-								<div id="submitWrap"><a href='#javascript:void(0);' onclick="insertComment()">등록</a></div>
+							<c:when test="${ loginUser eq null }">
+								<div id="submitWrap"><a href='#' onclick="insertReply();">등록</a></div>
 							</c:when>
 							<c:otherwise>
 								<div id="submitWrap"><a href='#' onclick="alert('로그인 후 이용 가능한 기능입니다.');">등록</a></div>
@@ -241,9 +241,41 @@ h1 {
 
 
 		<script>
+		
+			// 댓글 작성기능
+			function insertReply(){
+				console.log("엥");
+				console.log(${ exp.expNo });
+				console.log('user01');
+				console.log($('#commentContentInsert').val());
+				console.log($('input[type=checkbox]:checked').length);
+				
+				const data = {
+						expNo : '${ exp.expNo }',
+						replyWriter : 'user01',
+						replyContent : $('#commentContentInsert').val(),
+						replySecret : $('input[type=checkbox]:checked').length
+				};
+				
+				$.ajax({
+					url : "yrinsertExpReply.exp",
+					type : 'post',
+					dataType: 'json',
+		            contentType: 'application/json; charset=utf-8',
+					data :JSON.stringify(data), 
+					success : result => {
+						console.log(result);
+					},
+					error : () => {
+						console.log("체험학습 댓글 작성 통신 오류");
+					}
+				});
+			}
+			
+			// 댓글 조회기능
 			$(() => {
 				$.ajax({
-					url : "yrselectExpReplyList",
+					url : "yrselectExpReplyList.exp",
 					data : {expNo : ${ exp.expNo }},
 					success : result => {
 						let value = '';
@@ -267,6 +299,7 @@ h1 {
 						console.log("체험학습 게시글 댓글 조회 통신 오류");
 					}
 				});
+				
 			});
 			
 		</script>
