@@ -39,11 +39,7 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	
-	@Override
-	public int insertNotice(Notice n) {
-		return noticeDao.insertNotice(sqlSession, n);
-	}
-	
+
 	@Override
 	public int insertFile(Files f) {
 		return noticeDao.insertFile(sqlSession, f);

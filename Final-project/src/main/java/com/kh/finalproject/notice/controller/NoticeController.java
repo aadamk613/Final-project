@@ -51,36 +51,28 @@ public class NoticeController {
 
 	
 	
-	
+	/*
 	@RequestMapping("insert.no")
 	public String insertNotice(Notice n, Files f, Model model, MultipartFile upfile, HttpSession session) {
-/*
+
 		if(!upfile.getOriginalFilename().equals("")) {
 			
 			
 			
 			saveFile(upfile, session);
 			
-			f.setOriginalName(upfile.getOriginalFilename());
+		f.setOriginalName(upfile.getOriginalFilename());
 			f.setUpdateName(saveFile(upfile, session));
 			noticeService.insertFile(f);
 		} 
-*/
+
 		if(noticeService.insertNotice(n) > 0) { 
 			return "redirect:list.no";
 		} else {
 			return "common/errorPage";
 		}
-		
 	}
-	
-	@RequestMapping("detail.no")
-	public ModelAndView selectNoticeDetail(int bno) {
-		
-		System.out.println(bno);
-		return null;
-	}
-	
+
 
 	
 	

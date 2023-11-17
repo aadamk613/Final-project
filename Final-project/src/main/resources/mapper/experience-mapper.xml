@@ -56,9 +56,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		       EXP_ADDRESS,
 		       EXP_CATEGORY_NO,
 		       EXP_CATEGORY_NAME, 
-		       EXP_LIKE_COUNT,
-		       EXP_REPLY_COUNT,
-		       EXP_SUPPORT_COUNT
+		       NVL(EXP_LIKE_COUNT, 0),
+		       NVL(EXP_REPLY_COUNT, 0),
+		       NVL(EXP_SUPPORT_COUNT, 0)
 		  FROM
 		       TB_EXPERIENCE 
 		  JOIN 
@@ -68,7 +68,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  LEFT 
 		  JOIN
 		       (SELECT 
-		               NVL(COUNT(*), 0) EXP_LIKE_COUNT, 
+		               COUNT(*) EXP_LIKE_COUNT, 
 		               EXP_NO 
 		          FROM 
 		               TB_EXPERIENCE_LIKE 
@@ -80,7 +80,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  LEFT
 		  JOIN
 		       (SELECT 
-		               NVL(COUNT(*), 0) EXP_REPLY_COUNT, 
+		               COUNT(*) EXP_REPLY_COUNT, 
 		               EXP_NO 
 		          FROM 
 		               TB_EXPERIENCE_REPLY 
@@ -92,7 +92,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  LEFT
 		  JOIN
 		       (SELECT 
-		               NVL(COUNT(*), 0) EXP_SUPPORT_COUNT, 
+		               COUNT(*) EXP_SUPPORT_COUNT, 
 		               EXP_NO 
 		          FROM 
 		               TB_EXPERIENCE_PEOPLE 
@@ -153,7 +153,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  LEFT 
 		  JOIN
 		       (SELECT 
-		               NVL(COUNT(*), 0) EXP_LIKE_COUNT, 
+		               COUNT(*) EXP_LIKE_COUNT, 
 		               EXP_NO 
 		          FROM 
 		               TB_EXPERIENCE_LIKE 
@@ -165,7 +165,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  LEFT
 		  JOIN
 		       (SELECT 
-		               NVL(COUNT(*), 0) EXP_REPLY_COUNT, 
+		               COUNT(*) EXP_REPLY_COUNT, 
 		               EXP_NO 
 		          FROM 
 		               TB_EXPERIENCE_REPLY 
@@ -177,7 +177,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  LEFT
 		  JOIN
 		       (SELECT 
-		               NVL(COUNT(*), 0) EXP_SUPPORT_COUNT, 
+		               COUNT(*) EXP_SUPPORT_COUNT, 
 		               EXP_NO 
 		          FROM 
 		               TB_EXPERIENCE_PEOPLE 
@@ -194,6 +194,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		       EXP_NO = #{ expNo }
 	</select>
 	
+	<select id="selectReplyList" parameterType="_int" resultType="experienceReply">
+		SELECT
+		       EXP_REPLY_NO expReplyNo,
+		       REPLY_WRITER replyWriter,
+		       REPLY_CREATE_DATE replyCreateDate,
+		       REPLY_CONTENT replyContent,
+		       REPLY_STATUS replyStatus,
+		       REPLY_MODIFY_DATE replyModifyDate,
+		       REPLY_SECRET replySecret
+		  FROM
+		       TB_EXPERIENCE_REPLY
+		 WHERE 
+		       EXP_NO = #{ expNo }
+	</select>
+	
+	<update id="deleteExperience" parameterType="_int">
+		UPDATE
+			   TB_EXPERIENCE
+		   SET
+		   	    EXP_STATUS = 'N'
+		  WHERE
+		  	    EXP_STATUS = 'Y'
+		    AND
+		   	    EXP_NO = #{ expNo }
+	</update>
+	
+
 	
 	
 	
