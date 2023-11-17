@@ -25,11 +25,11 @@ public class MemberServiceImpl implements MemberService {
   public int joinMember(Member m) {
     return memberDao.joinMember(sqlSession, m);
   }
-    
+  
   @Override
-    public int idCheck(String checkId) {
-    	return memberDao.idCheck(sqlSession, checkId);
-  }
+  public int idCheck(String checkId) {
+	return memberDao.idCheck(sqlSession, checkId);
+	}
 
   @Override
   public int setLastLogin(Member m) {
