@@ -114,26 +114,25 @@ a {
 					  		<li class="page-item"><a class="page-link" href="yrlist.exp?page=${ pi.currentPage - 1 }">&lt;</a></li>
 					  	</c:when>
 					  	<c:otherwise>
-					  		<li class="page-item"><a class="page-link" href="">Previous</a></li>
+					  		<li class="page-item"><a class="page-link" href="">&lt;</a></li>
 					  	</c:otherwise>
 				  	</c:choose>
-						<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
-				  			<li class="page-item"><a class="page-link" href="yrlist.exp?page=${ p }">${ p }</a></li>
-				  		</c:forEach>
+					<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+			  			<li class="page-item"><a class="page-link" href="yrlist.exp?page=${ p }">${ p }</a></li>
+			  		</c:forEach>
 				  	<c:choose>
 					  	<c:when test="${ pi.currentPage ne pi.maxPage }">
 					  		<li class="page-item"><a class="page-link" href="yrlist.exp?page=${ pi.currentPage + 1 }">&gt;</a></li>
 					  	</c:when>
 					  	<c:otherwise>
-					  		<li class="page-item"><a class="page-link" href="">Next</a></li>
+					  		<li class="page-item"><a class="page-link" href="">&gt;</a></li>
 					  	</c:otherwise>
 				  	</c:choose>
-				  	
 				</ul>
 			</div>
 			
 			<script>
-							
+				
 				$(function(){
 					$('.pagination > li:contains(${ pi.currentPage })').attr('class', 'page-item active');
 					
@@ -141,17 +140,23 @@ a {
 				
 			</script>
 			
+			<!-- 게시글삭제성공 -->
 			<c:if test="${ not empty sessionScope.error }">
 				<script>
-					console.log(${ sessionscope.error });
-					alert('게시글 상세조회에 실패하셨습니다. 다시 이용해 주세요.');
+					console.log('${ sessionscope.error }');
+					alert('${ error }');
 				</script>
 				<c:remove var="error" scope="session" />
 			</c:if>
 			
-			
-			
-		
+			<!-- 게시글삭제실패 -->
+			<c:if test="${ not empty sessionScope.success }">
+				<script>
+					console.log('${ sessionScope.success }');
+					alert('${ success }');
+				</script>
+				<c:remove var="success" scope="session" />
+			</c:if>
 		
 		
 		
