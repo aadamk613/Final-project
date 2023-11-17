@@ -132,7 +132,7 @@ a {
 			</div>
 			
 			<script>
-							
+				
 				$(function(){
 					$('.pagination > li:contains(${ pi.currentPage })').attr('class', 'page-item active');
 					
@@ -140,17 +140,23 @@ a {
 				
 			</script>
 			
+			<!-- 게시글삭제성공 -->
 			<c:if test="${ not empty sessionScope.error }">
 				<script>
-					console.log(${ sessionscope.error });
-					alert('게시글 상세조회에 실패하셨습니다. 다시 이용해 주세요.');
+					console.log('${ sessionscope.error }');
+					alert('${ error }');
 				</script>
 				<c:remove var="error" scope="session" />
 			</c:if>
 			
-			
-			
-		
+			<!-- 게시글삭제실패 -->
+			<c:if test="${ not empty sessionScope.success }">
+				<script>
+					console.log('${ sessionScope.success }');
+					alert('${ success }');
+				</script>
+				<c:remove var="success" scope="session" />
+			</c:if>
 		
 		
 		

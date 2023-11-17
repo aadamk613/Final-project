@@ -26,6 +26,9 @@ public interface ExperienceService {
 	// 체험학습 게시글 댓글조회
 	ArrayList<ExperienceReply> selectExpReplyList(int expNo);
 	
+	// 체험학습 게시글 삭제
+	int deleteExperience(int expNo);
+	
 
 
 }

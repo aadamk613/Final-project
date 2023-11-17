@@ -122,10 +122,21 @@ h1 {
 				<!-- 작성자만 보이는 버튼 -->
 				<c:if test="${ sessionScope.loginMember eq requestScope.exp.expWriter }">
 				<div id="forWriter">
-					<button type="button" class="btn btn-primary">수정하기</button>
-					<button type="button" class="btn btn-danger">삭제하기</button>
+					<button type="button" class="btn btn-primary" onclick="updateExp();">수정하기</button>
+					<button type="button" class="btn btn-danger" onclick="deleteExp();">삭제하기</button>
 				</div>
 				</c:if>
+				
+				<script>
+					function updateExp(){
+						location.href="yrupdateExp.exp?expNo=" + ${ exp.expNo };
+					}
+					
+					function deleteExp(){
+						location.href="yrdeleteExp.exp?expNo=" + ${ exp.expNo };
+					}
+				</script>
+				
 	
 				<div class="title">
 					<h1>${ exp.expTitle }</h1>
@@ -172,7 +183,7 @@ h1 {
 					</div>
 				</div>
 				<div>
-					<p>내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용</p>
+					<p>${ exp.expContent }</p>
 				</div>
 				<div id="">
 					<c:if test="${ not empty files }">
@@ -186,7 +197,7 @@ h1 {
 				<div>
 				</div>
 				
-				<!-- 댓글 AJAX처리 -->
+				
 				<div>
 					
 					<div id="commentInsertBox">
@@ -209,34 +220,23 @@ h1 {
 								<div id="submitWrap"><a href='#' onclick="alert('로그인 후 이용 가능한 기능입니다.');">등록</a></div>
 							</c:otherwise>							
 						</c:choose>
-						</div>
 					</div>
-					
-					
-					
-					<div id="reply">
-						<div id="commentWrap">
-							<div id="commentOption">
-								댓글 
-							</div>
-							<div id="commentProfile">
-								<div id="commentContentBox">
-									<img src="resources/uploadFiles/person.png" />
-								</div>
-								<div id="commentWriteMemId">
-									댓글 단 유저 id
-								</div>
-							</div>
-							<div id="commentContent">
-								댓글 내용입니다
-							</div>
-							<div id="commentCreateDate">
-								2023.10.17 13:14&nbsp;&nbsp;
-								<a href="#">답글 쓰기</a>
-							</div>
-						</div>	
+					<!-- 댓글 AJAX처리 -->
+					<div>
+						댓글
+						<table id="reply">
+							<tr>
+								<th>사진</th>
+								<th>닉네임</th>
+								<th>수정여부</th>
+								<th>하트</th>
+								<td>내용</td>
+								<td>수정일</td>
+							</tr>
+						</table>
 					</div>
 				</div>
+				
 			</div>
 
 
@@ -249,10 +249,18 @@ h1 {
 						let value = '';
 						let $resultValue = result;
 						for(let i in result){
-							$('#reply').append($resultValue);
-							
+							value =+ '<tr>'
+								   + '<th>' + '사진' + '</th>'
+								   + '<th>' + result[i].replyWriter + '</th>'
+								   <c:if test="${ not empty result[i].replyModifyDate }">
+								   + '<th>' + result[i].replyModifyDate + '</th>'
+								   </c:if>
+								   + '<th>' + '하트' + '</th>'
+								   + '<td>' + result[i].replyContent + '</td>'
+								   + '<th>' + result[i].replyModifyDate + '</th>'
+								   + '</tr>'
 						}
-						
+						$('#reply').append(value);
 						
 					},
 					error : () => {
@@ -260,7 +268,9 @@ h1 {
 					}
 				});
 			});
+			
 		</script>
+		
 
 		</section>
 		

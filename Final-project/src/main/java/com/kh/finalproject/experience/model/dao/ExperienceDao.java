@@ -32,6 +32,10 @@ public class ExperienceDao {
 	public ArrayList<ExperienceReply> selectExpReplyList(SqlSessionTemplate sqlSession, int expNo) {
 		return (ArrayList)sqlSession.selectList("experienceMapper.selectReplyList", expNo);
 	}
+
+	public int deleteExperience(SqlSessionTemplate sqlSession, int expNo) {
+		return sqlSession.update("experienceMapper.deleteExperience", expNo);
+	}
 	
 	
 	

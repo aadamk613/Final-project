@@ -50,6 +50,13 @@ public class ExperienceServiceImpl implements ExperienceService {
 		return experienceDao.selectExpReplyList(sqlSession, expNo);
 	}
 
+	@Override
+	public int deleteExperience(int expNo) {
+		return experienceDao.deleteExperience(sqlSession, expNo);
+	}
+	
+	
+
 	
 
 

@@ -6,7 +6,7 @@ import lombok.Data;
 @Data @AllArgsConstructor
 public class ExperienceReply {
 	
-	private Integer expReplyNo;
+	private int expReplyNo;
 	private String replyWriter;
 	private String replyCreateDate;
 	private String replyContent;

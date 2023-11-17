@@ -209,6 +209,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		       EXP_NO = #{ expNo }
 	</select>
 	
+	<update id="deleteExperience" parameterType="_int">
+		UPDATE
+			   TB_EXPERIENCE
+		   SET
+		   	    EXP_STATUS = 'N'
+		  WHERE
+		  	    EXP_STATUS = 'Y'
+		    AND
+		   	    EXP_NO = #{ expNo }
+	</update>
+	
 
 	
 	
