@@ -61,7 +61,7 @@ public class AdminServiceImpl implements AdminService {
   }
 
   @Override
-  public ArrayList<String> ajaxGetHashtag() {
-    return adminDao.ajaxGetHashtag(sqlSession);
+  public int addHashtag(Hashtag h) {
+    return adminDao.addHashtag(sqlSession, h);
   }
 }

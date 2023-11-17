@@ -22,6 +22,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         TAG_NO ASC
   </select>
   <delete id="deleteHashtag" parameterType="hashtag">
-  	DELETE FROM TB_HASHTAG WHERE TAG_NO = #{tagNo}
+    DELETE FROM TB_HASHTAG WHERE TAG_NO = #{tagNo}
   </delete>
+  <insert id="addHashtag" parameterType="hashtag">
+    INSERT
+      INTO
+        TB_HASHTAG
+        (
+        TAG_NO,
+        TAG_NAME,
+        TAG_DATE
+        )
+      VALUES
+        (
+        SEQ_TAG_NO.NEXTVAL,
+        #{tagName},
+        SYSDATE
+        )
+  </insert>
 </mapper>

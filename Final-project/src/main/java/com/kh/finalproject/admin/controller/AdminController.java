@@ -5,6 +5,8 @@ import com.kh.finalproject.admin.model.service.AdminService;
 import com.kh.finalproject.admin.model.vo.Hashtag;
 import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.ArrayList;
+import java.util.Arrays;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
@@ -65,8 +67,7 @@ public class AdminController {
     } else {
       m.addAttribute("errorMsg", "답변 등록에 실패하였습니다!");
     }
-    
-    
+
     return "redirect:resolvedTicket.admin";
   }
 
@@ -96,11 +97,11 @@ public class AdminController {
   public String hashtagView() {
     return "admin/adminHashtag";
   }
-  
+
   @ResponseBody
   @GetMapping(value = "ajaxHashtagList.admin", produces = "application/json; charset=UTF-8")
   public String ajaxGetHashtagList() {
-	  return new Gson().toJson(adminService.getHashtagList());
+    return new Gson().toJson(adminService.getHashtagList());
   }
 
   @ResponseBody
@@ -114,12 +115,39 @@ public class AdminController {
     return new Gson().toJson(returnMe);
   }
 
-  @PostMapping("deleteHashtag.admin")
-  public String deleteHashtag(Hashtag h, Model m) {
-    if (adminService.deleteHashtag(h) > 0) {
+  /**
+   * deleteHashtag method : this method deletes the specified hashtags.
+   *
+   * @param chk the array of integer contains value of tagNo of the hashtag to be deleted
+   * @param m the Model object to add message attributes
+   * @return String the mapping value for redirection
+   */
+  @PostMapping("deleteHashtags.admin")
+  public String deleteHashtag(int[] chk, Model m) {
+    System.out.println(Arrays.toString(chk));
+    int result = 0;
+    for (int i = 0; i < chk.length; i++) {
+      Hashtag h = new Hashtag();
+      h.setTagNo(chk[i]);
+      if (adminService.deleteHashtag(h) > 0) {
+        result += 1;
+      }
+    }
+    if (result > 1) {
       m.addAttribute("alertMsg", "해시태그를 성공적으로 삭제하였습니다!");
     } else {
       m.addAttribute("alertMsg", "해시태그 삭제 실패하였습니다!");
+    }
+    return "redirect:hashtag.admin";
+  }
+
+  @PostMapping("addHashtag.admin")
+  public String addHashtag(Hashtag h, Model m) {
+    System.out.println(h);
+    if (adminService.addHashtag(h) > 0) {
+      m.addAttribute("alertMsg", "해시태그를 성공적으로 추가하였습니다!");
+    } else {
+      m.addAttribute("alertMsg", "해시태그 추가 실패!!!");
     }
     return "redirect:hashtag.admin";
   }

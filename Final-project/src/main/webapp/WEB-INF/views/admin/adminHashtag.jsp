@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<a%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,7 +46,7 @@ zoom: 1.8;
 				<article id="pageArticle">
 					<textarea name='tags2' placeholder='hashtags'>
 					</textarea>
-					<form id="postform" method="post" action="">
+					<form id="postform" method="post" action="deleteHashtags.admin">
 					<table id="tb" class="table table-sm table-hover" align="center" style="width: 100%" style="cursor:default">
 						<thead class="thead-light">
 							<tr>
@@ -60,18 +60,25 @@ zoom: 1.8;
 						<tbody style="cursor:default">
 							
 						</tbody>
-						<tr>
-							<td colspan="3">
-								<input type="hidden" id="hdtag" name="tagNo" value="">
-								<a href="addHashtag.admin" class="btn btn-primary btn-block btn-primary">추가</a>
-							</td>
-
-							<td colspan="2">
-								<a class="btn btn-primary btn-block btn-danger" onclick="postformSubmit(1)">선택삭제</a>
-							</td>
-						</tr>
+						<tfoot>
+							<tr>
+								<td colspan="2">
+									<a class="btn btn-primary btn-block btn-danger" onclick="deleteChecked()">선택삭제</a>
+								</td>
+							</form>
+							<form id="addform" action="addHashtag.admin" method="post">
+								<td colspan="3">
+									<div class="input-group mb-3">
+										<input type="text" class="form-control" placeholder="추가할 해시태그를 입력해주세요" name="tagName">
+										<div class="input-group-append">
+											<a class="btn btn-success" onkeypress="press(f)">해시태그 추가</a>
+										</form>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tfoot>
 					</table>
-				</form>
 				</article>
 			</div>
 			
@@ -90,6 +97,17 @@ zoom: 1.8;
 		<jsp:include page="../common/footer.jsp" />
 	</footer>
 	<script>
+		function press(f){
+				if(f.keyCode == 13){ //javascript에서는 13이 enter키를 의미함
+					$('#addHashtag').val($('#add-btn').val());
+						addHashtag(); 
+				}
+		}
+		</script>
+	<script>
+		function addHashtag() {
+			$('#addform').submit();
+		};
 		$(() => {
 			$.ajax({
 				url : 'ajaxGetHashtag.admin',
@@ -99,6 +117,14 @@ zoom: 1.8;
 						enforceWhitelist : true,
 						delimiters       : null,
 						whitelist        : data,
+						dropdown : {
+            classname     : "color-blue",
+            enabled       : 0,              // show the dropdown immediately on focus
+            maxItems      : 10,
+            position      : "text",         // place the dropdown near the typed text
+            closeOnSelect : false,          // keep the dropdown open after selecting a suggestion
+            highlightFirst: true
+						},
 						callbacks        : {
 							add    : console.log,  // callback when adding a tag
 							remove : console.log   // callback when removing a tag
@@ -117,20 +143,19 @@ zoom: 1.8;
 					let result = '';
 					for (let i in data) {
 						result += '<tr>'
+										+ '<td>' + '<input type="checkbox" name="chk"' + 'value="'+ data[i].tagNo + '">' + '</td>'
 										+ '<td>' + data[i].tagNo + '</td>'
 										+ '<td>' + data[i].tagName + '</td>'
 										+ '<td>' + data[i].tagDate + '</td>'
 										+ '<td>' + data[i].tagUsage + '</td>'
-										+ '<td>' + data[i].tagNo + '</td>'
-										+ '<td>' + data[i].tagNo + '</td>'
-										+ '<td>' + data[i].tagNo + '</td>'
-										
+										+ '<tr>';			
 					}
+					$('#tb > tbody').html(result);
 				}
 			})
 		});
 		function deleteChecked() {
-			var checkedElements = document.postform.rowcheck;
+			var checkedElements = $('input[type="checkbox"]:checked');
 			var flag = false;
 			for (i = 0; i < checkedElements.length; i++) {
 				if (checkedElements[i].checked) {
@@ -140,7 +165,7 @@ zoom: 1.8;
 			if (flag === false) {
 				alert("하나 이상의 해시태그를 선택하여야 합니다.");
 			}
-			document.postform.submit();
+			$('#postform').submit();
 		}
 	</script>
 </body>

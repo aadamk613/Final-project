@@ -45,7 +45,7 @@ public class AdminDao {
     return sqlSession.delete("hashtagMapper.deleteHashtag", h);
   }
 
-  public ArrayList<String> ajaxGetHashtag(SqlSessionTemplate sqlSession) {
-    return (ArrayList) sqlSession.selectList("hashtagMapper.ajaxGetHashtag");
+  public int addHashtag(SqlSessionTemplate sqlSession, Hashtag h) {
+    return sqlSession.insert("hashtagMapper.addHashtag", h);
   }
 }
