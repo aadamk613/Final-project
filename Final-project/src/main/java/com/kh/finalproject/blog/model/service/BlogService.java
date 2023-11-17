@@ -25,6 +25,10 @@ public interface BlogService {
 	// 블로그 카테고리 생성
 	int insertCategory(BlogCategorySetting blogCateSet);
 
+	
+	// 식물 전체 리스트로 이동
+	ArrayList<Plant> selectListPlant(int blogNo);
+	
 	// 식물 등록
 	int insertBlogPlant(Plant plant);
 	
