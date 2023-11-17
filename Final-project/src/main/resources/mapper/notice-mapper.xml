@@ -107,6 +107,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 ,NOTICE_TITLE
 			 ,NOTICE_CONTENT
 			 ,MEM_NO
+			 ,CATEGORY
 			 )
 	   VALUES		  
 	   	     (
@@ -114,6 +115,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	   	    ,#{noticeTitle}
 	   	    ,#{noticeContent}
 	   	    ,#{memNo}
+	   	    ,#{category}
 	   	     )
 	</insert>
 	
