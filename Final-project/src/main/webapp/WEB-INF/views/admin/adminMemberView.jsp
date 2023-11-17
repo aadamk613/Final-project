@@ -40,21 +40,25 @@
 			</div>
 			
 			<div id="content">
-                content
 				<article id="pageArticle">
-
-					<p>
-                        여기는 article부분 <br>
-                    </p>
-
+					<table id="tb" class="table table-sm table-hover" align="center" style="width: 100%" style="cursor:default">
+						<thead class="thead-light">
+							<tr>
+								<th width="20">번호</th>
+								<th width="30">상태</th>
+								<th width="50">아이디</th>
+								<th width="50">닉네임</th>
+								<th width="100">이메일</th>					
+								<th width="30">온도</th>
+								<th width="50">블로그번호</th>
+								<th width="170">마지막 로그인</th>
+							</tr>
+						</thead>
+					</table>
 				</article>
 			</div>
 			
-			<div id="pageArea">
-                &lt;div&gt; <br>
-                id=page
-			</div>
-		
+			
 		</section>
 		
 		<aside id="pageAsideRight" class="aside">

@@ -24,6 +24,6 @@ public interface AdminService {
   int deleteHashtag(Hashtag h);
 
   ArrayList<String> ajaxGetHashtag();
-  
+
   int addHashtag(Hashtag h);
 }
