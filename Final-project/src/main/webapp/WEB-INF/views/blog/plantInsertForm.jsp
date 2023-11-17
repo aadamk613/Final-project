@@ -19,7 +19,9 @@
 #plantInfoWrap > div{float: left;}
 #plantInfoWrap{width: 100%; height: auto;}
 
-#plantImg{width: 20%; height: 160px; float: middle;}
+#plantImg{width: 20%; height: 180px; float: middle;}
+
+#plantImgInput{width:100%; height: 160px;}
 
 #plantImfo{width: 80%; height: auto;}
 #plantName{font-size: 20px; font-weight: bold;}
@@ -84,7 +86,8 @@ textarea{
 		<aside id="pageAsideLeft" class="aside">
             <div id="blogInfo">
                 <ul id="blogInfoUl">
-                    <li id="blogImg"><img src=""/>사진 공간</li>
+                    <li id="blogImg">
+                    <img src=""/>사진 공간</li>
                     <li id="memId">닉네임(아이디)</li>
                     <li id="blogIntroduce">${ blog.blogIntroduce }</li>
                     <li id="">
@@ -113,10 +116,12 @@ textarea{
 			
 			<div id="content">
 				<article>
-					<form method="post" action="insert.bl_pl" >  
+					<form method="post" action="insert.bl_pl" enctype="multipart/form-data">  
 					<input type="hidden" name="blogNo" value="${ blogNo }"/>
                     <div id="plantInfoWrap">
-                        <div id="plantImg"><input type="file" id="plantInput"/><button id="plantImgInput">식물사진 추가</button></div>
+                        <div id="plantImg"><input type="file" name="" id="plantInput"/>
+                        	<img src="resources/images/defaultPlant.png" id="plantImgInput">
+                        </div>
                         <div id="plantImfo">
                             <ul>
                                 <li id="plantName">식물명 : <input type="text" name="plantName"/></li>
@@ -145,6 +150,26 @@ textarea{
 			      plantImgInput.addEventListener('click', function(){
 			    	  plantInput.click();
 			      });
+			      
+			      /*
+			      function loadImg(inputFile){
+					
+					if(inputFile.files.length == 1){ // 파일이 첨부O
+						
+						let reader = new FileReader();
+						reader.readAsDataURL(inputFile.files[0]);
+
+						reader.onload = function(e){
+							console.log(e.target);
+								$('#plantInput').attr('src', e.target.result);
+						}
+					} 
+					else {
+						const str = "resources/images/defaultPlant.png" id="plantInput";
+						$('#plantInput').attr('src', str);
+					}
+				};
+			    */
 			</script>
 			
 			

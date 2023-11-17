@@ -21,7 +21,7 @@ public interface AdminService {
 
   ArrayList<Hashtag> getHashtagList();
 
-  int updateHashtag(Hashtag h);
-
   int deleteHashtag(Hashtag h);
+
+  int addHashtag(Hashtag h);
 }
