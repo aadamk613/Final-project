@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hashtagMapper">
+  <resultMap id="hashtagResultSet" type="hashtag">
+    <result column="TAG_NO" property="tagNo" />
+    <result column="TAG_NAME" property="tagName"/>
+    <result column="TAG_DATE" property="tagDate"/>
+    <result column="TAG_USAGE" property="tagUsage"/>
+  </resultMap>
+  <select id="getHashtagList" resultMap="hashtagResultSet">
+    SELECT
+      TAG_NO,
+      TAG_NAME,
+      TO_CHAR(TAG_DATE, 'YYYY/MM/DD HH24:MI:SS') TAG_DATE,
+      TAG_USAGE
+    FROM
+      TB_HASHTAG
+    ORDER
+      BY
+        TAG_NO DESC
+  </select>
+  <update id="updateHashtag" parameterType="hashtag">
+  	UPDATE
+  		TB_HASHTAG
+ 	SET
+ 		TAG_NAME = #{tagName},
+ 		TAG_DATE = SYSDATE,
+ 		TAG_USAGE = #{tagUsage}
+	WHERE
+		TAG_NO = #{tagNo}
+  </update>
+  <delete id="deleteHashtag" parameterType="hashtag">
+  	DELETE FROM TB_HASHTAG WHERE TAG_NO = #{tagNo}
+  </delete>
+</mapper>

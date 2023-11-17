@@ -25,7 +25,7 @@
 	</header> 
 	<main>
 		<aside id="pageAsideLeft" class="aside">
-			<jsp:include page="../common/blogSideBar.jsp" />
+			<jsp:include page="blogSideBar.jsp" />
 		</aside>
 		
 		<section id="pageSection">

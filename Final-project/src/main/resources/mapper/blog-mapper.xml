@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="bolgMapper">
+<mapper namespace="blogMapper">
 
 	<resultMap type="blog" id="BlogResultSet">
 		<result column="BLOG_NO" property="blogNo"/>
@@ -12,10 +12,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="BLOG_INTRODUCE" property="blogIntroduce"/>
 		<result column="BLOG_IMG" property="blogImg"/>
 		<result column="BLOG_INTEREST" property="blogInterest"/>
-		<result column="PLANT_PREFER" property="plantprefer "/>
+		<result column="PLANT_PREFER" property="plantPrefer "/>
 		<result column="BLOG_CREATE_DATE" property="blogCreateDate"/>
+		<result column="MEM_ID" property="memId"/>
+		<result column="MEM_NICK" property="memNick"/>
+		<result column="MEM_IMG" property="memImg"/>
 	</resultMap>
 	
+	<resultMap type="blogCategorySetting" id="BlogCategorySettingResultSet">
+		<result column="CATEGORY_NO" property="categoryNo"/>
+		<result column="CATEGORY_SETTING_NO" property="categorySettingNo"/>
+		<result column="BLOG_NO" property="blogNo"/>
+		<result column="CATEGORY_MEM_NAME" property="categoryMemName"/>
+	</resultMap>
+	
+	<resultMap type="plant" id="PlantResultSet">
+		<result column="PLANT_NO" property="plantNo"/>
+		<result column="BLOG_NO" property="blogNo"/>
+		<result column="PLANT_NAME" property="plantName"/>
+		<result column="PLANT_NICKNAME" property="plantNickName"/>
+		<result column="PLANT_COMMENT" property="plantComment"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="STATUS" property="status"/>
+		<result column="VIEW" property="view "/>
+		<result column="PLANT_CATEGORY" property="plantCategory"/>
+		<result column="PLANT_LOG_DATE" property="plantLogDate"/>
+	</resultMap>
+	
+	<!-- 블로그 생성 -->
 	<insert id="insertBlog" parameterType="blog">
 		INSERT 
 			INTO
@@ -50,20 +74,138 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	</update>
 	
+	<!-- 블로그 조회 -->
 	<select id="selectBlog" parameterType="_int" resultMap="BlogResultSet" >
 		
 		SELECT 
 				BLOG_NO,
-				MEM_NO,
+				B.MEM_NO,
 				BLOG_TITLE,
 				BLOG_INTRODUCE,
 				BLOG_IMG,
 				BLOG_INTEREST,
-				PLANT_PREFER
+				MEM_ID,
+                MEM_NICK,
+                MEM_IMG
 			FROM
-				TB_BLOG
+				TB_BLOG B
+		    JOIN
+                MEMBER USING(BLOG_NO)
 			WHERE
 				BLOG_NO = #{ blogNo }
 	
 	</select>
+	
+	<!-- 블로그 기본 정보 수정 -->
+	<update id="updateBlog" parameterType="blog" >
+	
+		UPDATE
+			  TB_BLOG
+		   SET
+				BLOG_TITLE = #{ blogTitle }, 
+				BLOG_INTRODUCE = #{ blogIntroduce },
+				BLOG_INTEREST = #{ blogInterest },
+				PLANT_PREFER = #{ plantPrefer }
+			WHERE
+			  	BLOG_NO = #{ blogNo }
+
+	</update>
+	
+	<!-- 블로그 카테고리 생성 -->
+	<insert id="insertCategory" parameterType="blogCategorySetting" >
+		INSERT 
+		  INTO
+		  		TB_BLOG_CATEGORY_SETTING
+			  	(
+			  	CATEGORY_SETTING_NO,
+			  	BLOG_NO, 
+			  	CATEGORY_NO
+			  	)
+			  VALUES 	
+			  	(
+			  	SEQ_CATEGORY_SETTING_NO.NEXTVAL,
+			  	#{ blogNo },
+			  	#{ categoryNo }
+			  	)
+	</insert>
+	
+	<!-- 블로그 카테고리  조회 -->
+	<select id="selectCatogory" parameterType="_int" resultMap="BlogCategorySettingResultSet">
+		SELECT 
+			CATEGORY_SETTING_NO, 
+			CATEGORY_MEM_NAME, 
+			CATEGORY_NO
+	    FROM 
+	    	TB_BLOG_CATEGORY_SETTING
+	    WHERE  
+	    	BLOG_NO = #{ blogNo }
+		
+	</select>
+	
+	<!-- 식물 등록하기 -->
+	<insert id="insertBlogPlant" parameterType="plant">
+		
+		INSERT 
+		  INTO
+				TB_PLANT
+				(
+				PLANT_NO, 
+				BLOG_NO, 
+				PLANT_NAME,
+				PLANT_NICKNAME,
+				PLANT_COMMENT, 
+				CREATE_DATE, 
+				STATUS, 
+				PLANT_LOG_DATE
+				)
+		VALUES
+				(
+				SEQ_PLANT_NO.NEXTVAL, 
+				#{ blogNo }, 
+				#{ plantName }, 
+				#{ plantNickName }, 
+				#{ plantComment }, 
+				SYSDATE, 
+				DEFAULT, 
+				#{ plantLogDate }
+				)
+	
+	</insert>
+	
+	<!-- 식물 전체 조회 리스트  -->
+	<select id="selectListPlant" parameterType="_int" resultMap="PlantResultSet">
+	
+		SELECT 
+	        PLANT_NO, 
+	        BLOG_NO, 
+	        PLANT_NAME, 
+	        PLANT_NICKNAME, 
+	        PLANT_COMMENT, 
+	        CREATE_DATE, 
+	        PLANT_CATEGORY, 
+	        TRUNC(SYSDATE - PLANT_LOG_DATE) PLANT_LOG_DATE
+	    FROM 
+	        TB_PLANT
+	    WHERE
+	        STATUS = 'Y'
+	    AND 
+	        BLOG_NO = #{ blogNo }
+	
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </mapper>
