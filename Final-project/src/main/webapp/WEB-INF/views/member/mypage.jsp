@@ -9,6 +9,14 @@
 	<link rel="stylesheet" href="resources/css/common/template.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <style>
+    .myContent{
+    	width:800px;
+    	height:100px;
+    }
+    
+    </style>
 </head>
 <body>
 
@@ -28,31 +36,63 @@
 		<section id="pageSection">
 			
 			<div id="contentTitle">
-                &lt;div&gt;
-                id=contentTitle 
-				제목(삭제해도 됨)
+                마이페이지(여긴 마이페이지입니다!)
 			</div>
 			
 			<div id="content">
-                content
-				<article id="pageArticle">
-
-					<p>
-                        여기는 article부분 <br>
-                    </p>
+			
+			<article id="pageArticle">
+				
+				<div id="wrap">
+        			<div id="myImgWrap1">
+            			<div id="header_1">
+                			<img src="https://geojecci.korcham.net/images/no-image01.gif" alt="myImage" width="200" height="150">
+            			</div>
+            		<div id="myImgWrap2">
+            	</div>
+            <div id="myImgWrap3">
+                <a href=""><img src="https://blog.kakaocdn.net/dn/uqJpZ/btqyenBIIXx/mh1Cc5F023UGpfQTFBdqV0/img.jpg" width="35" height="35" img-align="right" alt=""></a>
+            </div>
+        </div>
+				
+					
+						
+					</table>
+					
+							
+					<br><br><br>
+						
+					<form action="update.me" method="post" enctype="multipart/form-data">
+						<div class="form-group">
+							<label for="userId">*ID : </label>
+							<input type="text" class="form-control" id="memId" value="${ sessionScope.loginUser.memId }" name="memId" readonly><br>
+							
+							<label for="email">닉네임</label>
+							<input type="text" class="form-control" id="memNick" value="${ sessionScope.loginUser.email }" name="memNick">
+							
+							<label for="email">이메일</label>
+							<input type="text" class="form-control" id="memNick" value="${ sessionScope.loginUser.email }" name="memNick">
+						</div>
+						
+						<br>
+						
+						<div class="btns" align="center">
+							<button type="submit" class="button forest">수정하기</button>
+							<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteForm">회원탈퇴</button>
+						</div>
+					</form>
 
 				</article>
 			</div>
 			
 			<div id="pageArea">
-                &lt;div&gt; <br>
-                id=page
 			</div>
 		
 		</section>
 		
 		<aside id="pageAsideRight" class="aside">
 		</aside>
+		
 		
 	</main>
 	
@@ -61,9 +101,6 @@
 	<footer id="pageFooter">
 		<jsp:include page="../common/footer.jsp" />
 	</footer>
-
-
-
 	
 
 </body>

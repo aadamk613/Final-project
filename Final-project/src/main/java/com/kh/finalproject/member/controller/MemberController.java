@@ -99,6 +99,6 @@ public class MemberController {
   
   @RequestMapping("myPage.me")
   public String myPage() {
-	  return "member/mypage.jsp";
+	  return "member/mypage";
   }
 }
