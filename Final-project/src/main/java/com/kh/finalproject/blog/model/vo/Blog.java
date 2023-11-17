@@ -17,4 +17,8 @@ public class Blog {
 	private String plantPrefer;
 	private String blogCreateDate;
 	
+	private String memId;
+	private String memNick;
+	private String memImg;
+	
 }

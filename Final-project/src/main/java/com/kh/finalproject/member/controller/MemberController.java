@@ -83,11 +83,11 @@ public class MemberController {
       return "../common/errorPage.jsp";
     }
   }
-
   @ResponseBody // 포워딩 해줄게 아니라서
   @RequestMapping
   public String idCheck(String checkId) {
     int count = memberService.idCheck(checkId);
     return count > 0 ? "NNNNN" : "NNNNY";
+
   }
 }

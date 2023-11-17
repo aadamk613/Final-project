@@ -42,4 +42,8 @@ public class BlogDao {
 		return sqlSession.insert("blogMapper.insertBlogPlant", plant);
 	}
 
+	public ArrayList<Plant> selectListPlant(SqlSessionTemplate sqlSession, int blogNo) {
+		return (ArrayList)sqlSession.selectList("blogMapper.selectListPlant", blogNo);
+	}
+
 }

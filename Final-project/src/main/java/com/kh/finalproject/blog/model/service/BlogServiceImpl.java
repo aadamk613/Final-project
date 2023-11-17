@@ -53,4 +53,9 @@ public class BlogServiceImpl implements BlogService{
 		return blogDao.insertBlogPlant(sqlSession, plant);
 	}
 
+	@Override
+	public ArrayList<Plant> selectListPlant(int blogNo) {
+		return blogDao.selectListPlant(sqlSession, blogNo);
+	}
+
 }
