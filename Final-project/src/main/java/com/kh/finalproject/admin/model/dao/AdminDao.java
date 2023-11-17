@@ -41,11 +41,11 @@ public class AdminDao {
     return (ArrayList) sqlSession.selectList("hashtagMapper.getHashtagList");
   }
 
-  public int updateHashtag(SqlSessionTemplate sqlSession, Hashtag h) {
-    return sqlSession.update("hashtagMapper.updateHashtag", h);
-  }
-
   public int deleteHashtag(SqlSessionTemplate sqlSession, Hashtag h) {
     return sqlSession.delete("hashtagMapper.deleteHashtag", h);
+  }
+
+  public int addHashtag(SqlSessionTemplate sqlSession, Hashtag h) {
+    return sqlSession.insert("hashtagMapper.addHashtag", h);
   }
 }

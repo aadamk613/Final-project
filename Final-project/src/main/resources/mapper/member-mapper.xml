@@ -45,6 +45,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE
 			MEM_NO = #{memNo}
 	</select>
+	<select id="ajaxGetMemberList" resultMap="memberResultSet">
+		SELECT
+			MEM_STATUS,
+			MEM_ID,
+			MEM_NICK,
+			MEM_IMG,
+			REG_BUSINESS,
+			BLOG_NO,
+			TO_CHAR(LAST_LOGIN, 'YYYY/MM/DD HH24:MI:SS') LAST_LOGIN
+		FROM
+			MEMBER
+	</select>
 
 	<insert id="joinMember" parameterType="member">
 		INSERT

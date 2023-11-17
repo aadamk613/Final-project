@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.ModelAndView;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -57,12 +56,12 @@ public class AdminServiceImpl implements AdminService {
   }
 
   @Override
-  public int updateHashtag(Hashtag h) {
-    return adminDao.updateHashtag(sqlSession, h);
+  public int deleteHashtag(Hashtag h) {
+    return adminDao.deleteHashtag(sqlSession, h);
   }
 
   @Override
-  public int deleteHashtag(Hashtag h) {
-    return adminDao.deleteHashtag(sqlSession, h);
+  public int addHashtag(Hashtag h) {
+    return adminDao.addHashtag(sqlSession, h);
   }
 }
