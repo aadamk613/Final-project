@@ -65,6 +65,7 @@
 		</section>
 		
 		<aside id="pageAsideRight" class="aside">
+			<jsp:include page="adminAsideRight.jsp"/>
 		</aside>
 		
 	</main>

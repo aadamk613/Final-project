@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Ticket Main</title>
+<title>화면 틀입니다 복사해서 사용해주세요</title>
 <link rel="stylesheet" href="resources/css/common/template.css">
 
 </head>
@@ -21,7 +21,11 @@
     border: 1px solid skyblue;
 	box-sizing: border-box;
 }
+input[type=checkbox] {
 
+zoom: 1.8;
+
+}
 </style>
 <body>
 
@@ -30,47 +34,63 @@
 	</header> 
 	<main>
 		<aside id="pageAsideLeft" class="aside">
-			<jsp:include page="adminAsideLeft.jsp"/>
+            <jsp:include page="adminAsideLeft.jsp"/>
 		</aside>
 		
 		<section id="pageSection">
 			
 			<div id="contentTitle">
-                Ticket List
+				해시태그 관리
 			</div>
 			
-			<div id="content">
+			<div id="content">       
 				<article id="pageArticle">
-
+					<form id="postform" method="post" action="">
 					<table id="tb" class="table table-sm table-hover" align="center" style="width: 100%" style="cursor:default">
 						<thead class="thead-light">
 							<tr>
+								<th width="20"></th>
 								<th width="50">번호</th>
-								<th width="300">제목</th>
-								<th width="100">작성자</th>
+								<th width="250">해시태그명</th>
 								<th width="170">작성일</th>
+								<th width="50">사용횟수</th>
 							</tr>
 						</thead>
 						<tbody style="cursor:default">
 							<c:choose>
 								<c:when test="${empty list}">
 									<tr>
-										<td colspan="4">조회된 게시글이 없습니다..</td>
+										<td colspan="5">조회된 게시글이 없습니다..</td>
 									</tr>
 								</c:when>
 								<c:otherwise>
-									<c:forEach items="${list}" var="b">
+									<c:forEach items="${list}" var="b" varStatus="s">
 										<tr>
-											<td>${b.ticketNo}</td>
-											<td>${b.ticketTitle}</td>
-											<td>${b.ticketWriter}</td>
-											<td>${b.createDate}</td>
+											<td style="text-align: center;"><input type="checkbox" name="chk"></td>
+											<td>${b.tagNo}</td>
+											<td>${b.tagName}</td>
+											<td>${b.tagDate}</td>
+											<td>${b.tagUsage}</td>
 										</tr>
 									</c:forEach>
 								</c:otherwise>
 							</c:choose>
+							<tr>
+								<td colspan="2">
+									<input type="hidden" id="hdtag" name="tagNo" value="">
+
+									<a href="addHashtag.admin" class="btn btn-primary btn-block btn-primary">추가</a>
+								</td>
+								<td colspan="2">
+									<a class="btn btn-primary btn-block btn-danger" onclick="postformSubmit(0)">수정</a>
+								</td>
+								<td colspan="1">
+									<a class="btn btn-primary btn-block btn-danger" onclick="postformSubmit(1)">삭제</a>
+								</td>
+							</tr>
 						</tbody>
 					</table>
+				</form>
 				</article>
 			</div>
 			
@@ -88,14 +108,24 @@
 	<footer id="pageFooter">
 		<jsp:include page="../common/footer.jsp" />
 	</footer>
-<script>
-	$(() => {
-		// add event listener로 처리 해보자
-		$('#tb > tbody > tr').click(function() {
-			location.href = "ticketDetailView.admin?bno=" + $(this).children().eq(0).text();
+	<script>
+		function postformSubmit(num) {
+			if (num == 0) {
+				// 수정 버튼 클릭시 
+				$('')
+				$('#postform').attr('action', 'updateHashtag.admin').submit();
+			} else {
+				//삭제버튼클릭시
+				$('#postform').attr('action', 'deleteHashtag.admin').submit();
+			}
+		};
+		$(() => {
+			$('input:checkbox[name=chk]').each(function (index) {
+				if ($(this).is(":checked") == true) {
+					console.log($(this).val());
+			}
 		})
-	});
-</script>
-
+	})
+	</script>
 </body>
 </html>

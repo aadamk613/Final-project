@@ -27,4 +27,5 @@ public class NoticeDao {
 	public int insertNotice(SqlSessionTemplate sqlSession, Notice n) {
 		return sqlSession.insert("noticeMapper.insertNotice", n);
 	}
+
 }
