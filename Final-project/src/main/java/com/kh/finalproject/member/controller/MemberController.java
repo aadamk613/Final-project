@@ -95,6 +95,10 @@ public class MemberController {
 	  int count = memberService.idCheck(checkId);
 	  System.out.println(count);
 	  return count > 0 ? "NNNNN" : "NNNNY";
-
+  }
+  
+  @RequestMapping("myPage.me")
+  public String myPage() {
+	  return "member/mypage.jsp";
   }
 }
