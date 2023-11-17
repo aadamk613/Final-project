@@ -19,19 +19,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       TB_HASHTAG
     ORDER
       BY
-        TAG_NO DESC
+        TAG_NO ASC
   </select>
-  <update id="updateHashtag" parameterType="hashtag">
-  	UPDATE
-  		TB_HASHTAG
- 	SET
- 		TAG_NAME = #{tagName},
- 		TAG_DATE = SYSDATE,
- 		TAG_USAGE = #{tagUsage}
-	WHERE
-		TAG_NO = #{tagNo}
-  </update>
   <delete id="deleteHashtag" parameterType="hashtag">
-  	DELETE FROM TB_HASHTAG WHERE TAG_NO = #{tagNo}
+    DELETE FROM TB_HASHTAG WHERE TAG_NO = #{tagNo}
   </delete>
+  <insert id="addHashtag" parameterType="hashtag">
+    INSERT
+      INTO
+        TB_HASHTAG
+        (
+        TAG_NO,
+        TAG_NAME,
+        TAG_DATE
+        )
+      VALUES
+        (
+        SEQ_TAG_NO.NEXTVAL,
+        #{tagName},
+        SYSDATE
+        )
+  </insert>
 </mapper>

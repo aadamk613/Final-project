@@ -3,8 +3,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>회원가입양식</title>
+	<meta charset="UTF-8">
+	<title>회원가입양식</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -45,15 +45,14 @@
         여기는 헤더
 	</header> 
 	<main>
-		<aside id="pageAsideLeft" class="aside">
+	<aside id="pageAsideLeft" class="aside">
       
-		</aside>
+	</aside>
 		
-		<section id="section">
+	<section id="section">
 	
-			<div id="content">
-                
-				<article>
+	<div id="content">
+	<article>
 
 	<div class="content">
 		<br><br>
@@ -64,25 +63,25 @@
 		<form action="join.me" method="post" id="join-form">
 			<div class="idWrap">
 				* 아이디 : 
-				<input type="text" id="memberId" name="memId" onkeydown="inputIdCheck();" class="checkId" maxlength="12" min="4" max="12" autofocus> <!-- 사용자가 키보드의 키를 누를떄 함수 inputIdCheck()가 발생됨 -->
+				<input type="text" id="memberId" name="memId" class="checkId" maxlength="12" min="4" max="12" placeholder="아이디를 잘 입력해주세요" autofocus required> 
 				<div id="checkResult" style="font-size:0.7em; display:none;"></div>
 			</div>
 			<div class="pwdWrap">
 				* 비밀번호 :
-				<input type="password" name="memPwd" maxlength="14" min="6" max="14" onkeyup="enterFn()" > 
-				</div>
+				<input type="password" name="memPwd" maxlength="14" min="6" max="14" onkeyup="enterFn()" required > 
+			</div>
 			<div class="pwdChkWrap">
 				* 비밀번호 확인 :
-				<input type="password" name="memPwdChk"  maxlength="14" min="6" max="14" onkeyup="enterFn()">
-				</div>
+				<input type="password" name="memPwdChk"  maxlength="14" min="6" max="14" onkeyup="enterFn()" required>
+			</div>
 			<div class="nkWrap">
 				닉네임
-				<input type="text" name="memNick" placeholder="한글/영문/숫자가능">
-				</div>
-			<div class="emailWrap" name="email">
+				<input type="text" name="memNick" placeholder="한글/영문/숫자가능" required>
+			</div>
+			<div class="emailWrap">
 				이메일
-				<input type="text"placeholder="@ 기입필수!">
-				</div>
+				<input type="text"placeholder="@ 기입필수!" name="email" required>
+			</div>
 			<div class="Qualification">
 				개인/기업
 				<br>
@@ -93,31 +92,47 @@
 			</div>
 			<br>
 			<div class="btns" align="center">
-				<button type="submit" class="btn btn-primary">회원가입</button>			
+				<button type="submit" class="disabled btn-forest" disabled>회원가입</button>			
 				<button type="reset" class="btn btn-danger">다시</button>			
 			</div>
 		</form>
 	</div>
+	</article>
+	</div>
 	
 	<script>
+	
+	
+	
+	
+	
+	
 		$(function(){
 			// 자주쓰는, 중복되는 요소는 변수로 지정해놓는게 나아서 해놓음
-			const $idInput = $('.joinFormWrap #memberId');
+			const $idInput = $('#memberId');
 			const $checkResult = $('#checkResult');
-			const $joinFormSubmit = $('#join-form : submit');
+			const $joinFormSubmit = $('#join-form :submit');
 			
 			$idInput.keyup(function(){
+			console.log($idInput);
+				
+				// 최소 5글자 이상 입력했을 떄만 AJAX 요청을 보내서 중복체크
 				if($idInput.val().length >= 5){
+					//console.log($idInput.val());
+					
 					$.ajax({
 						url : 'idCheck.me',
 						data :  {checkId : $idInput.val()},
-						success : function(){
-							if(result.substr(4) === 'N'){
-								$checkResult.show().css('color', 'crimson').text('어? 중복된 아이디가 있네요~?');
+						success : function(result){
+							
+							console.log(result);
+							if(result.substr(4) === 'N'){ // 사용불가능
+								
+								$checkResult.show().css('color', 'red').text('어? 잠시만요! 중복된 아이디가 있네요~?');
 								$joyFormSubmit.attr('disabled', true);
 							}
-							else { 
-								$checkResult.show().css('color', 'lightgreen').text('와우~ 아주아주 멋진 아이디인걸요?');
+							else {  // 사용가능
+								$checkResult.show().css('color', 'green').text('와우~ 아주아주 멋진 아이디인걸요?');
 								$joinFormSubmit.removeAttr('disabled');
 							}
 						},
@@ -131,7 +146,7 @@
 					$joinFormSubmit.attr('disabled', true);
 				}
 				
-			})
+		});
 		})
 	</script>
 	</section>

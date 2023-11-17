@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,24 +25,17 @@ public class MemberController {
     return "member/loginForm";
   }
 
-//  @ResponseBody
-//  @RequestMapping(value = "select.me", produces = "application/json; charset=UTF-8")
-//  public String selectMember(int memNo, HttpSession session, ModelAndView mv) {
-//    return new Gson().toJson(memberService.selectMember(memNo));
-//  }
+  //  @ResponseBody
+  //  @RequestMapping(value = "select.me", produces = "application/json; charset=UTF-8")
+  //  public String selectMember(int memNo, HttpSession session, ModelAndView mv) {
+  //    return new Gson().toJson(memberService.selectMember(memNo));
+  //  }
 
-  @RequestMapping("insert.me")
-  public String insertMember(Member m, Model model) {
-    // System.out.println("평문" + m.getUserPwd());
-    // String encPwd = bcryptPasswordEncoder.encode(m.getUserPwd());
-    // System.out.println("encrypted: " + encPwd);
-    // // m.setUserPwd(encPwd); // member 객체의 userPwd 필드에 평문이 아닌 암호문을 담아서 DB로 보내기!
-    // if (memberService.insertMember(m) > 0) { // 성공 =>  메인페이지 리디렉션
-    //   return "redirect:/";
-    // } else { // 실패 => 에러메시지 담아서 에러페이지로 포워딩
-    //   model.addAttribute("errorMsg", "회원가입 실패");
-    //   return "common/errorPage";
-    return null;
+  
+  @ResponseBody
+  @GetMapping(value = "getMemberList.me", produces = "application/json; charset=UTF-8")
+  public String ajaxGetMemberList() {
+    return new Gson().toJson(memberService.ajaxGetMemberList());
   }
 
   @RequestMapping("login.me")
@@ -74,25 +69,25 @@ public class MemberController {
   @RequestMapping("join.me")
   public String joinMember(Member m, Model model) {
 
-	  System.out.println(m);
-	  System.out.println("평문 : " + m.getMemPwd());
-	  
-	  String encPwd = bcryptPasswordEncoder.encode(m.getMemPwd());
-	  
-	  m.setMemPwd(encPwd); // Member객체의 MemPwd 필드에 평문이 아닌 암호문을 담아서 DB로 보내기
-	  
-	  if(memberService.joinMember(m) > 0) { // 성공하면 메인페이지로
-		  return "redirect:/";
-	  } else {
-		  model.addAttribute("errorMsg", "회원가입 실패");
-		  return "../common/errorPage.jsp";
-	  }
+    System.out.println(m);
+    System.out.println("평문 : " + m.getMemPwd());
+
+    String encPwd = bcryptPasswordEncoder.encode(m.getMemPwd());
+
+    m.setMemPwd(encPwd); // Member객체의 MemPwd 필드에 평문이 아닌 암호문을 담아서 DB로 보내기
+
+    if (memberService.joinMember(m) > 0) { // 성공하면 메인페이지로
+      return "redirect:/";
+    } else {
+      model.addAttribute("errorMsg", "회원가입 실패");
+      return "../common/errorPage.jsp";
+    }
   }
-  @ResponseBody	// 포워딩 해줄게 아니라서 
+  @ResponseBody // 포워딩 해줄게 아니라서
   @RequestMapping
   public String idCheck(String checkId) {
-	  int count = memberService.idCheck(checkId);
-	  return count > 0 ? "NNNNN" : "NNNNY";
+    int count = memberService.idCheck(checkId);
+    return count > 0 ? "NNNNN" : "NNNNY";
 
   }
 }
