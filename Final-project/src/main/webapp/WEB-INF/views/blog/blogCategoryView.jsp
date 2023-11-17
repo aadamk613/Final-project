@@ -140,8 +140,12 @@
 					
 					let value='';
 					for(let i in data){
+						//console.log(data[i].categorySettingNo);
+						
+						var categorySettingNo = data[i].categorySettingNo;
+						
 						value  += '<ul>'
-						       + '<li><button onclick="selectCategory(data[i].categorySettingNo)">' + data[i].categoryMemName + '</button></li>'
+						       + '<li><button onclick="selectCategory(' + categorySettingNo +')">' + data[i].categoryMemName + '</button></li>'
 						       + '</ul>'; 
 					}
 					$('#category').html(value);
@@ -151,6 +155,13 @@
 					console.log('카테고리 불러오기 실패');
 				}
 			})
+			
+		}
+		
+		function selectCategory(){
+			
+			
+			
 			
 		}
 		

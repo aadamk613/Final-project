@@ -31,7 +31,7 @@ public class BlogController {
 	// 블로그 생성 화면으로 이동
 	@RequestMapping("insertForm.bl")
 	public String insertFormBlog() {
-		return "blog/insertBlogForm";
+		return "blog/blogInsertForm.jsp";
 	}
 	
 	// 블로그 생성하기
@@ -68,7 +68,7 @@ public class BlogController {
 	public ModelAndView updateFormBlog(int blogNo, ModelAndView mv) {
 		Blog blog = (Blog)blogService.selectBlog(blogNo);
 		mv.addObject("blog", blog)
-		  .setViewName("blog/updateFormBlog");
+		  .setViewName("blog/blogUpdateForm");
 		return mv;
 	}
 	
@@ -86,7 +86,7 @@ public class BlogController {
 			mv.addObject("alertMsg", "정보 수정에 실패 했습니다");
 		}
 		
-		mv.setViewName("blog/updateFormBlog");
+		mv.setViewName("blog/blogUpdateForm");
 		return mv;
 	}
 	

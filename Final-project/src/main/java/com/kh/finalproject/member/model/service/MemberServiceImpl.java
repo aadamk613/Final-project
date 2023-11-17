@@ -19,7 +19,6 @@ public class MemberServiceImpl implements MemberService {
   }
 
 
-
   @Override
   @Transactional
   public int joinMember(Member m) {
