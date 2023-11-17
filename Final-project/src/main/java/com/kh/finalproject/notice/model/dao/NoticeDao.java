@@ -6,7 +6,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.kh.finalproject.common.model.vo.PageInfo;
+import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.notice.model.vo.Notice;
 
 @Repository
@@ -28,4 +28,7 @@ public class NoticeDao {
 		return sqlSession.insert("noticeMapper.insertNotice", n);
 	}
 
+	public int insertFile(SqlSessionTemplate sqlSession, Files f) {
+		return sqlSession.insert("noticeMapper.insertFile", f);
+	}
 }

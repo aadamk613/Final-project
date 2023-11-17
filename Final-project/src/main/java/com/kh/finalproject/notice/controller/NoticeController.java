@@ -1,10 +1,5 @@
 package com.kh.finalproject.notice.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.finalproject.common.model.vo.Files;
-
-
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
 import com.kh.finalproject.notice.model.service.NoticeService;
@@ -34,7 +28,7 @@ public class NoticeController {
 	}
 	
 	@RequestMapping("list.no")
-	public String selectNotice(@RequestParam(value="cPage", defaultValue="1") int currentPage, Model model) {
+	public String selectNoticeList(@RequestParam(value="cPage", defaultValue="1") int currentPage, Model model) {
 		
 		PageInfo pi = Pagination.getPageInfo(noticeService.selectNoticeListCount(),
 											 currentPage,
@@ -60,7 +54,7 @@ public class NoticeController {
 	
 	@RequestMapping("insert.no")
 	public String insertNotice(Notice n, Files f, Model model, MultipartFile upfile, HttpSession session) {
-
+/*
 		if(!upfile.getOriginalFilename().equals("")) {
 			
 			
@@ -69,17 +63,28 @@ public class NoticeController {
 			
 			f.setOriginalName(upfile.getOriginalFilename());
 			f.setUpdateName(saveFile(upfile, session));
+			noticeService.insertFile(f);
 		} 
+*/
 		if(noticeService.insertNotice(n) > 0) { 
-			System.out.println("성공");
 			return "redirect:list.no";
 		} else {
-			System.out.println("실패");
 			return "common/errorPage";
 		}
 		
 	}
+	
+	@RequestMapping("detail.no")
+	public ModelAndView selectNoticeDetail(int bno) {
+		
+		System.out.println(bno);
+		return null;
+	}
+	
 
+	
+	
+/*
 	public String saveFile(MultipartFile upfile, HttpSession session) {
 
 		// 파일 명 수정 작업 후 서버에 업로드("bono.jsp" => 2023110332132132.jsp)
@@ -106,6 +111,5 @@ public class NoticeController {
 		
 		return "/resources/uploadFiles/" + updateName;
 	}
-
-	
+*/
 }

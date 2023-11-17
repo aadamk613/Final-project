@@ -119,5 +119,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	   	    ,#{category}
 	   	     )
 	</insert>
-	
+<!-- 
+	<insert id="insertFile" parameterType="files">
+		INSERT
+		  INTO
+		      TB_FILE
+		      (
+		      FILE_NO
+		     ,REF_NO
+		     ,ORIGINAL_NAME
+		     ,UPDATE_NAME
+		     ,FILE_PATH
+		     ,REF_TYPE
+		     ,FILE_ANNOTATION
+		      )
+		VALUES
+		      (
+		      SEQ_FILE_NO.NEXTVAL
+		     ,SEQ_NOTICE_NO.CURRVAL
+		     ,#{originalName}
+		     ,#{updateName}
+		     ,#{filePath}
+		     ,#{refType}
+		     ,#{fileAnnotation}
+		      )
+	</insert>
+ -->
 </mapper>

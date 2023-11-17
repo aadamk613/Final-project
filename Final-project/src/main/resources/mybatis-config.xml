@@ -23,6 +23,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<typeAlias type="com.kh.finalproject.notice.model.vo.Notice" alias="notice"/>
 		<typeAlias type="com.kh.finalproject.ticket.model.vo.Ticket" alias="ticket"/>
 		<typeAlias type="com.kh.finalproject.admin.model.vo.Hashtag" alias="hashtag"/>
+		<typeAlias type="com.kh.finalproject.common.model.vo.Files" alias="files"/>
 	</typeAliases>
 
 	<mappers>

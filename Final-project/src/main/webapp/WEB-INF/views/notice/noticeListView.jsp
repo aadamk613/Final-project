@@ -58,7 +58,7 @@
 						  
 						  	<c:forEach var="bn" items="${ requestScope.best }">
 
-						      <td scope="col" width="10%" style="text-align: center">
+						      <td scope="col" width="10%" style="text-align: center" class="bno">
 						      <span class="best">BEST</span>
 						      ${ bn.category == 1 ? "공지" : '필독'}
 						      ${ bn.noticeNo }</td>
@@ -73,9 +73,7 @@
 						    
 						  	<c:forEach var="n" items="${ requestScope.list }">
 
-						      <td scope="col" width="10%" style="text-align: center">
-						      ${ n.category == 1 ? "공지" : '필독'}
-						      ${ n.noticeNo }</td>
+						      <td scope="col" width="10%" style="text-align: center" class="bno">${ n.category == 1 ? "공지" : '필독'}${ n.noticeNo }</td>
 					          <td scope="row" width="20%" style="text-align: center">${ n.noticeTitle }</th>	       
 						      <td scope="row" width="20%" style="text-align: center">${ n.memNo }</td>
 						      <td scope="row" width="20%" style="text-align: center">${ n.noticeCreateDate }</td>
@@ -86,15 +84,16 @@
 
 					  </tbody>
 					</table>
-					
-					<!-- 로그인 했을 경우에만 글 쓰기 버튼 보이게하기 --> 
-					<c:if test="${ loginUser.memStatus eq 'A' }">
-						<div id="writeWrap">
-						<a id="writeButton" class="btn btn-primary" href="" >글 쓰기</a>
-						</div>
-					</c:if>
 				</article>
 			</div>
+			
+			<script>
+				$(function(){
+					$('#boardTable > tbody > tr').click(function(){
+						location.href = 'detail.no=' + $(this).children('.bno').text();
+					});
+				})
+			</script>
 			
 			
 			<div id="page">
