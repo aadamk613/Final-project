@@ -92,7 +92,7 @@
 			</div>
 			<br>
 			<div class="btns" align="center">
-				<button type="submit" class="button forest">회원가입</button>			
+				<button type="submit" class="disabled btn-forest" disabled>회원가입</button>			
 				<button type="reset" class="btn btn-danger">다시</button>			
 			</div>
 		</form>
@@ -101,6 +101,12 @@
 	</div>
 	
 	<script>
+	
+	
+	
+	
+	
+	
 		$(function(){
 			// 자주쓰는, 중복되는 요소는 변수로 지정해놓는게 나아서 해놓음
 			const $idInput = $('#memberId');
@@ -108,21 +114,25 @@
 			const $joinFormSubmit = $('#join-form :submit');
 			
 			$idInput.keyup(function(){
+			console.log($idInput);
 				
-				if($idInput.val().length >= 4){
+				// 최소 5글자 이상 입력했을 떄만 AJAX 요청을 보내서 중복체크
+				if($idInput.val().length >= 5){
 					//console.log($idInput.val());
+					
 					$.ajax({
 						url : 'idCheck.me',
 						data :  {checkId : $idInput.val()},
-						success : function(){
+						success : function(result){
 							
-						
-							if(result.substr(3) === 'N'){
-								$checkResult.show().css('color', 'crimson').text('어? 중복된 아이디가 있네요~?');
+							console.log(result);
+							if(result.substr(4) === 'N'){ // 사용불가능
+								
+								$checkResult.show().css('color', 'red').text('어? 잠시만요! 중복된 아이디가 있네요~?');
 								$joyFormSubmit.attr('disabled', true);
 							}
-							else { 
-								$checkResult.show().css('color', 'lightgreen').text('와우~ 아주아주 멋진 아이디인걸요?');
+							else {  // 사용가능
+								$checkResult.show().css('color', 'green').text('와우~ 아주아주 멋진 아이디인걸요?');
 								$joinFormSubmit.removeAttr('disabled');
 							}
 						},
