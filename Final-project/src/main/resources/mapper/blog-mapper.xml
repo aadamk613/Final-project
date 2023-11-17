@@ -193,6 +193,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	</select>
 	
+	<insert id="insertPlantReport">
+	
+		INSERT 
+		  INTO
+		  		TB_PLANT_REPORT
+		  		(
+		  		PLANT_REPORT_NO, 
+		  		TOP_PLANT_NO,
+		  		PLANT_REPORT_CATEGORY_NO, 
+		  		REPORT_COMMENT, 
+		  		REPORT_DATE,
+		  		)
+		  	VALUES
+		  		(
+		  		SEQ_REPORT_NO.NEXTVAL, 
+		  		#{ plantNo },
+		  		#{ plantReportCategoryNo },
+		  		#{ plantComment }, 
+		  		#{ plantLogDate },
+		  		)
+	
+	</insert>
+	
 	
 	
 	

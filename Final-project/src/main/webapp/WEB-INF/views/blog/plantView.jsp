@@ -105,8 +105,8 @@ textarea{
 	                                <div id="plantCreateDate">D+${ p.plantLogDate }</div>
                                 </li>
                                 <li id="plantButtonWrap">
-                                    <button id="plantCare" class="button forest">일지 추가</button>
-                                    <button id="plantCare" class="button forest">관리하기</button>
+                                    <button id="plantReport" class="button forest" onclick="plantCare(${ p.plantNo }, 10, ${ p.plantLogDate });">일지 추가</button>
+                                    <button id="plantCare" class="button forest" onclick="plantCare(${ p.plantNo }, 20, ${ p.plantLogDate });">관리하기</button>
                                 </li>
                             </ul>
                         </div>
@@ -121,10 +121,26 @@ textarea{
 			</div>
 			
 			<script>
-			    
+			    $(()=>{
+			    	
 			      plantImgInput.addEventListener('click', function(){
 			    	  plantInput.click();
 			      });
+			    });
+			      
+			      function plantCare(plantNo, category, plantNickName){
+						console.log(category);
+						console.log(plantNo);
+						console.log(plantNickName);
+						
+			    	 location.href= 'insertForm.bl.pr/' +  plantNo + '/' + category + '/' + plantNickName;
+
+		
+			    };
+			     
+			      
+			      
+			      
 			</script>
 			
 			
