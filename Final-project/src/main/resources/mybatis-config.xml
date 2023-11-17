@@ -19,11 +19,16 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<typeAlias type="com.kh.finalproject.chat.model.vo.Chat" alias="chat"/>
 		<typeAlias type="com.kh.finalproject.common.model.vo.Common" alias="common"/>
 		<typeAlias type="com.kh.finalproject.experience.model.vo.Experience" alias="experience"/>
+		<typeAlias type="com.kh.finalproject.experience.model.vo.ExperienceReply" alias="experienceReply" />
 		<typeAlias type="com.kh.finalproject.garden.model.vo.Garden" alias="garden"/>
 		<typeAlias type="com.kh.finalproject.member.model.vo.Member" alias="member"/>
 		<typeAlias type="com.kh.finalproject.notice.model.vo.Notice" alias="notice"/>
+
+		<typeAlias type="com.kh.finalproject.common.model.vo.Files" alias="files"/>
+
 		<typeAlias type="com.kh.finalproject.ticket.model.vo.Ticket" alias="ticket"/>
 		<typeAlias type="com.kh.finalproject.admin.model.vo.Hashtag" alias="hashtag"/>
+
 	</typeAliases>
 
 	<mappers>

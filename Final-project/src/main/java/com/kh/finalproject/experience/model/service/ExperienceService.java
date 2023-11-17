@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.experience.model.vo.Experience;
+import com.kh.finalproject.experience.model.vo.ExperienceReply;
 
 public interface ExperienceService {
 	
@@ -18,6 +19,15 @@ public interface ExperienceService {
 	int increaseCount(int expNo);
 	// 상세조회
 	Experience selectExperience(int expNo);
+
+	// 사진조회는 common에 있음
+	
+	
+	// 체험학습 게시글 댓글조회
+	ArrayList<ExperienceReply> selectExpReplyList(int expNo);
+	
+	// 체험학습 게시글 삭제
+	int deleteExperience(int expNo);
 	
 
 
