@@ -50,7 +50,7 @@
 								<th width="50">닉네임</th>
 								<th width="100">이메일</th>					
 								<th width="30">온도</th>
-								<th width="50">블로그번호</th>
+								<th width="50">블로그</th>
 								<th width="170">마지막 로그인</th>
 							</tr>
 						</thead>
