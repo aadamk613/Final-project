@@ -1,5 +1,10 @@
 package com.kh.finalproject.notice.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.common.model.vo.PageInfo;
@@ -51,10 +55,10 @@ public class NoticeController {
 
 	
 	
-	/*
+	
 	@RequestMapping("insert.no")
 	public String insertNotice(Notice n, Files f, Model model, MultipartFile upfile, HttpSession session) {
-
+/*
 		if(!upfile.getOriginalFilename().equals("")) {
 			
 			
@@ -65,7 +69,7 @@ public class NoticeController {
 			f.setUpdateName(saveFile(upfile, session));
 			noticeService.insertFile(f);
 		} 
-
+*/
 		if(noticeService.insertNotice(n) > 0) { 
 			return "redirect:list.no";
 		} else {
@@ -76,7 +80,6 @@ public class NoticeController {
 
 	
 	
-/*
 	public String saveFile(MultipartFile upfile, HttpSession session) {
 
 		// 파일 명 수정 작업 후 서버에 업로드("bono.jsp" => 2023110332132132.jsp)
@@ -103,5 +106,4 @@ public class NoticeController {
 		
 		return "/resources/uploadFiles/" + updateName;
 	}
-*/
 }

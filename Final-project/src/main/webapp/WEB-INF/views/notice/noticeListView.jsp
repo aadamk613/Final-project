@@ -62,7 +62,8 @@
 						      <td scope="col" width="10%" style="text-align: center" class="bno">
 						      <span class="best">BEST</span>
 						      ${ bn.category == 1 ? "공지" : '필독'}
-						      ${ bn.noticeNo }</td>
+						      ${ bn.noticeNo }
+						      </td>
 					          <td scope="row" width="20%" style="text-align: center">${ bn.noticeTitle }</th>	       
 						      <td scope="row" width="20%" style="text-align: center">${ bn.memNo }</td>
 						      <td scope="row" width="20%" style="text-align: center">${ bn.noticeCreateDate }</td>
