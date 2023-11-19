@@ -145,4 +145,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		      )
 	</insert>
  -->
+ 	<update id="increaseCount" parameterType="_int">
+ 		UPDATE
+ 		      TB_NOTICE
+ 		   SET
+ 		      VIEWS = VIEWS + 1
+ 		 WHERE
+ 		      NOTICE_NO = #{noticeNo}
+ 		   AND
+ 		      STATUS = 'Y'
+ 	</update>
+ 
+ 	<select id="selectNotice" parameterType="_int" resultMap="noticeResultSet">
+			SELECT
+			      NOTICE_NO
+			     ,NOTICE_TITLE
+			     ,NOTICE_CONTENT
+			     ,VIEWS
+			     ,TO_CHAR(NOTICE_CREATE_DATE, 'YYYY-MM-DD') AS "NOTICE_CREATE_DATE"
+			     ,CATEGORY
+			     ,LIKE_COUNT
+			     ,MEM_NICK
+			 FROM
+			     TB_NOTICE
+			INNER
+			 JOIN
+			     MEMBER ON(TB_NOTICE.MEM_NO = MEMBER.MEM_NO)
+			WHERE
+			     STATUS='Y'
+			  AND
+			     NOTICE_NO = #{noticeNo}
+ 	</select>
 </mapper>

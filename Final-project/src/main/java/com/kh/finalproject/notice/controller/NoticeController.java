@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.common.model.vo.PageInfo;
@@ -44,7 +45,9 @@ public class NoticeController {
 		model.addAttribute("pi", pi);
 		
 
+		System.out.println(currentPage);
 		return "notice/noticeListView";
+		
 	}
 	
 	@RequestMapping("enrollForm.no")
@@ -105,5 +108,17 @@ public class NoticeController {
 		}
 		
 		return "/resources/uploadFiles/" + updateName;
+	}
+	
+	@RequestMapping("detail.no")
+	public ModelAndView selectNotice(int bno, ModelAndView mv) {
+		
+		if(noticeService.increaseCount(bno) > 0 ) {
+			mv.addObject("n", noticeService.selectNotice(bno)).setViewName("notice/noticeDetailView");
+		} else {
+			mv.addObject("errorMsg", "게시글 조회 실패").setViewName("common/errorPage");
+		}
+		
+		return mv;
 	}
 }

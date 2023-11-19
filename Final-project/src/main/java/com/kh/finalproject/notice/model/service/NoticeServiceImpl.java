@@ -51,12 +51,12 @@ public class NoticeServiceImpl implements NoticeService{
 
 	@Override
 	public int increaseCount(int noticeNo) {
-		return 0;
+		return noticeDao.increaseCount(sqlSession, noticeNo);
 	}
 
 	@Override
 	public Notice selectNotice(int noticeNo) {
-		return null;
+		return noticeDao.selectNotice(sqlSession, noticeNo);
 	}
 
 	@Override

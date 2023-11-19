@@ -34,6 +34,7 @@
 				<h2>공지게시판</h2>
 			</div>
 			
+			
 			<div id="content">
 				<article>
 					<table id="boardTable" class="table table-hover">
@@ -57,26 +58,29 @@
 
 						  
 						  
+						  	<c:if test="${ pi.currentPage eq 1 }">
 						  	<c:forEach var="bn" items="${ requestScope.best }">
-
-						      <td scope="col" width="10%" style="text-align: center" class="bno">
+							  <tr>
+						      <td scope="col" width="10%" style="text-align: center">
 						      <span class="best">BEST</span>
 						      ${ bn.category == 1 ? "공지" : '필독'}
-						      ${ bn.noticeNo }
+						      <span class="bno">${ bn.noticeNo }</span>
 						      </td>
-					          <td scope="row" width="20%" style="text-align: center">${ bn.noticeTitle }</th>	       
+					          <td scope="row" width="20%" style="text-align: center">${ bn.noticeTitle }</td>	       
 						      <td scope="row" width="20%" style="text-align: center">${ bn.memNo }</td>
 						      <td scope="row" width="20%" style="text-align: center">${ bn.noticeCreateDate }</td>
 						      <td scope="row" width="15%" style="text-align: center">${ bn.views }</td>
 						      <td scope="row" width="15%" style="text-align: center">${ bn.likeCount }</td>
 						    	</tr>
 						    </c:forEach>
+						    </c:if>
 						    
 						  	<c:forEach var="n" items="${ requestScope.list }">
+						  	  <tr>
 						      <td scope="col" width="10%" style="text-align: center">
 						      ${ n.category == 1 ? "공지" : '필독'}
-						      ${ n.noticeNo }</td>
-					        <td scope="row" width="20%" style="text-align: center">${ n.noticeTitle }</th>	       
+						      <span class="bno">${ n.noticeNo }</span></td>
+					        <td scope="row" width="20%" style="text-align: center">${ n.noticeTitle }</td>	       
 						      <td scope="row" width="20%" style="text-align: center">${ n.memNo }</td>
 						      <td scope="row" width="20%" style="text-align: center">${ n.noticeCreateDate }</td>
 						      <td scope="row" width="15%" style="text-align: center">${ n.views }</td>
@@ -92,7 +96,7 @@
 			<script>
 				$(function(){
 					$('#boardTable > tbody > tr').click(function(){
-						location.href = 'detail.no=' + $(this).children('.bno').text();
+						location.href = 'detail.no?bno=' + $(this).find('.bno').text();
 					});
 				})
 			</script>
