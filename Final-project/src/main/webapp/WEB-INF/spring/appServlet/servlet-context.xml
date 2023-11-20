@@ -29,5 +29,24 @@
 		<websocket:mapping path="gp" handler="groupServer"/>
 	</websocket:handlers>
 	<context:component-scan base-package="com.kh.finalproject" />
-
+	<interceptors>
+		<interceptor>
+		<!-- 관리자 메뉴 인터셉터 매핑. 추가하실분 밑에다 주석달고 추가바람  -->
+			<mapping path="/main.admin" />
+			<mapping path="/ticket.admin" />
+			<mapping path="/ticketDetailView.admin" />
+			<mapping path="/resolvedTicket.admin" />
+			<mapping path="/editResolvedTicket.admin" />
+			<mapping path="/ticketDeitView.admin" />
+			<mapping path="/deleteResolvedTicketStatus.admin" />
+			<mapping path="/memberView.admin" />
+			<mapping path="/hashtag.admin" />
+			<mapping path="/ajaxHashtagList.admin" />
+			<mapping path="/ajaxGetHashtag.admin" />
+			<mapping path="/deleteHashtags.admin" />
+			<mapping path="/addHashtags.admin" />
+		<!-- 관리자 메뉴 인터셉터 매핑 끝-->
+			<beans:bean class="com.kh.finalproject.common.interceptor.LoginInterceptor" id="loginInterceptor" />
+		</interceptor>	
+	</interceptors>
 </beans:beans>

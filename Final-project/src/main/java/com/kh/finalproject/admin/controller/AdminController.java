@@ -6,9 +6,7 @@ import com.kh.finalproject.admin.model.vo.Hashtag;
 import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +19,12 @@ public class AdminController {
 
   @Autowired private AdminService adminService;
 
+  
+  /** 
+   * 
+   * @param mv
+   * @return ModelAndView
+   */
   @GetMapping("main.admin")
   public ModelAndView mainView(ModelAndView mv) {
     mv.addObject("numTicket", adminService.getTicketNumber()).setViewName("admin/adminMainView");
@@ -89,13 +93,15 @@ public class AdminController {
   }
 
   @GetMapping("memberView.admin")
-  public String memberView() {
-    return "admin/adminMemberView";
+  public ModelAndView memberView(ModelAndView mv) {
+    mv.addObject("numTicket", adminService.getTicketNumber()).setViewName("admin/adminMemberView");
+    return mv;
   }
 
   @GetMapping("hashtag.admin")
-  public String hashtagView() {
-    return "admin/adminHashtag";
+  public ModelAndView hashtagView(ModelAndView mv) {
+    mv.addObject("numTicket", adminService.getTicketNumber()).setViewName("admin/adminHashtag");
+    return mv;
   }
 
   @ResponseBody

@@ -56,8 +56,6 @@ public class NoticeController {
 		return "notice/noticeEnrollForm";
 	}
 	
-
-	
 	
 	
 	@RequestMapping("insert.no")
