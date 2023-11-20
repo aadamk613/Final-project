@@ -70,7 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			    LIKE_COUNT DESC, NOTICE_NO DESC) b
 	       WHERE 
 	            ROWNUM BETWEEN 1 AND 5
-	            ROWNUM between 1 and 5
+
 	   UNION ALL
 		  SELECT
 		         *
@@ -99,9 +99,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 				  ROWNUM BETWEEN 1 AND 5
 	</select> 
-<!-- <<<<<<< HEAD -->
-<!--  ======= -->
-<!-- >>>>>>> 890b38490e1cbaf0950931332e634c0be1f724cb -->
 	<insert id="insertNotice" parameterType="notice">
 		INSERT
 		  INTO
@@ -122,5 +119,61 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	   	    ,#{category}
 	   	     )
 	</insert>
-	
+<!-- 
+	<insert id="insertFile" parameterType="files">
+		INSERT
+		  INTO
+		      TB_FILE
+		      (
+		      FILE_NO
+		     ,REF_NO
+		     ,ORIGINAL_NAME
+		     ,UPDATE_NAME
+		     ,FILE_PATH
+		     ,REF_TYPE
+		     ,FILE_ANNOTATION
+		      )
+		VALUES
+		      (
+		      SEQ_FILE_NO.NEXTVAL
+		     ,SEQ_NOTICE_NO.CURRVAL
+		     ,#{originalName}
+		     ,#{updateName}
+		     ,#{filePath}
+		     ,#{refType}
+		     ,#{fileAnnotation}
+		      )
+	</insert>
+ -->
+ 	<update id="increaseCount" parameterType="_int">
+ 		UPDATE
+ 		      TB_NOTICE
+ 		   SET
+ 		      VIEWS = VIEWS + 1
+ 		 WHERE
+ 		      NOTICE_NO = #{noticeNo}
+ 		   AND
+ 		      STATUS = 'Y'
+ 	</update>
+ 
+ 	<select id="selectNotice" parameterType="_int" resultMap="noticeResultSet">
+			SELECT
+			      NOTICE_NO
+			     ,NOTICE_TITLE
+			     ,NOTICE_CONTENT
+			     ,VIEWS
+			     ,TO_CHAR(NOTICE_CREATE_DATE, 'YYYY-MM-DD HH:MI:SS') AS "NOTICE_CREATE_DATE"
+			     ,CATEGORY
+			     ,LIKE_COUNT
+			     ,MEM_NICK
+			 FROM
+			     TB_NOTICE
+			INNER
+			 JOIN
+			     MEMBER ON(TB_NOTICE.MEM_NO = MEMBER.MEM_NO)
+			WHERE
+			     STATUS='Y'
+			  AND
+			     NOTICE_NO = #{noticeNo}
+ 	</select>
 </mapper>

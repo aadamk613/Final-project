@@ -2,6 +2,7 @@ package com.kh.finalproject.notice.model.service;
 
 import java.util.ArrayList;
 
+import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.notice.model.vo.Notice;
 
@@ -31,6 +32,8 @@ public interface NoticeService {
 	
 	// 게시글 수정하기
 	int updateNotice(int noticeNo);
+
+	int insertFile(Files f);
 	
 	
 	
