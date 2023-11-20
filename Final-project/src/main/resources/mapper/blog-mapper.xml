@@ -65,6 +65,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     				)
 	</insert>
 	
+	<!-- 블로그 사이드바에서 member조회 -->
 	<update id="updateMemberBlogNo" parameterType="blog">
 		UPDATE MEMBER 
 			SET 
@@ -193,6 +194,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	</select>
 	
+	<!-- 식물 일지 등록하기 -->
 	<insert id="insertPlantReport">
 	
 		INSERT 

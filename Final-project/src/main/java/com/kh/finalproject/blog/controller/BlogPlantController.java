@@ -3,24 +3,30 @@ package com.kh.finalproject.blog.controller;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.finalproject.blog.model.service.BlogService;
 import com.kh.finalproject.blog.model.vo.Plant;
-import com.kh.finalproject.blog.model.vo.PlantReport;
+import com.kh.finalproject.common.controller.CommonController;
+import com.kh.finalproject.common.model.vo.Files;
 
 @Controller
 public class BlogPlantController {
 	
 	@Autowired
 	private BlogService blogService;
+	
+	@Autowired
+	private CommonController commonController;
 	
 	// 식물 전체 리스트로 이동
 	@RequestMapping("select.bl_pl")
@@ -43,21 +49,32 @@ public class BlogPlantController {
 	
 	// 식물 등록
 	@RequestMapping("insert.bl_pl")
-	public String insertBlogPlant(Plant plant, HttpServletRequest request) {
+	public String insertBlogPlant(Plant plant, 
+								  HttpServletRequest request,
+								  HttpSession session,
+								  MultipartFile upfile,
+								  Model model) {
 		
-		if(ServletFileUpload.isMultipartContent(request)) {
-			System.out.println("멀티 파일 있어요");
-			
-			int maxSize = 1024 * 1024 * 1000; // 파일 용량 1000mb
-			String savePath = "resources/uploadFiles/plant";
-			
-			
+		Files file = new Files();
+		
+		if(!upfile.getOriginalFilename().equals("")) {
+			file = commonController.setFile(upfile, session, "plant");
 		}
 		
+		// 넘어온 첨부파일이 존재하지 않을 경우: plant(제목, 작성자, 내용)
+		// 넘어온 첨부파일이 존재할 경우: plant(제목, 작성자, 내용 ) 
+		//					  + file(originalName, updateName, filePath, refType, refNo, fileAnnotation)
 		
-		System.out.println(plant);
-		blogService.insertBlogPlant(plant);
-		return "blog/plantView";
+		file.setFilePath("/resources/uploadFiles/");
+		file.setRefType("plant");
+		
+		if(blogService.insertBlogPlant(plant, file) > 0) { // 성공
+			session.setAttribute("alertMsg", "게시글 작성 성공");
+			return "redirect:select.bl_pl";
+		} else {
+			model.addAttribute("errorMsg", "게시글 작성 실패");
+			return "common/errorPage";
+		}
 	}
 	
 	@RequestMapping("insertForm.bl.pr/{plantNo}/{category}/{plantNickName}")

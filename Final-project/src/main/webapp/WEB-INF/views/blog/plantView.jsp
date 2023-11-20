@@ -133,7 +133,7 @@ textarea{
 						console.log(plantNo);
 						console.log(plantNickName);
 						
-			    	 location.href= 'insertForm.bl.pr/' +  plantNo + '/' + category + '/' + plantNickName;
+			    	 location.href= 'insertForm.bl.pr.' +  plantNo + '.' + category + '.' + plantNickName;
 
 		
 			    };

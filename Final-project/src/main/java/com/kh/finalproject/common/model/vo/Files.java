@@ -1,11 +1,12 @@
 package com.kh.finalproject.common.model.vo;
 
-
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 
-@Data @NoArgsConstructor
+@Getter @Setter @NoArgsConstructor @ToString
 public class Files {
 	private int fileNo;
 	private String originalName;
@@ -17,3 +18,5 @@ public class Files {
 	private String uploadDate;
 	
 }
+
+
