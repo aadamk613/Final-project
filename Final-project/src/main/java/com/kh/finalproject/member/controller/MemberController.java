@@ -97,9 +97,5 @@ public class MemberController {
   public String myPage() {
 	  return "member/mypage";
 
-    int count = memberService.idCheck(checkId);
-    return count > 0 ? "NNNNN" :"NNNNY";
-
-
   }
 }

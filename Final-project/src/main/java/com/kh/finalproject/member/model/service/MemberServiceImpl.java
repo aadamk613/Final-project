@@ -18,21 +18,16 @@ public class MemberServiceImpl implements MemberService {
     return memberDao.loginMember(sqlSession, m);
   }
 
-
-
-
   @Override
   @Transactional
   public int joinMember(Member m) {
     return memberDao.joinMember(sqlSession, m);
   }
 
-  
   @Override
   public int idCheck(String checkId) {
-	return memberDao.idCheck(sqlSession, checkId);
-	}
-
+    return memberDao.idCheck(sqlSession, checkId);
+  }
 
   @Override
   public int setLastLogin(Member m) {
@@ -42,5 +37,15 @@ public class MemberServiceImpl implements MemberService {
   @Override
   public ArrayList<Member> ajaxGetMemberList() {
     return memberDao.ajaxGetMemberList(sqlSession);
+  }
+
+  @Override
+  public Member selectMember(int memNo) {
+    return memberDao.selectMember(sqlSession, memNo);
+  }
+
+  @Override
+  public int editMember(Member m) {
+    return memberDao.editMember(sqlSession, m);
   }
 }

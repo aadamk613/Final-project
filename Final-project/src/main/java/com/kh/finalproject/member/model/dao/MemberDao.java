@@ -13,9 +13,7 @@ public class MemberDao {
   }
 
   public Member selectMember(SqlSessionTemplate sqlSession, int memNo) {
-    Member m = sqlSession.selectOne("memberMapper.selectMember", memNo);
-    System.out.println(m);
-    return m;
+    return sqlSession.selectOne("memberMapper.selectMember", memNo);
   }
 
   public int joinMember(SqlSessionTemplate sqlSession, Member m) {
@@ -24,9 +22,8 @@ public class MemberDao {
 
   public int idCheck(SqlSessionTemplate sqlSession, String checkId) {
 
-		return sqlSession.selectOne("memberMapper.idCheck", checkId);
-	}
-
+    return sqlSession.selectOne("memberMapper.idCheck", checkId);
+  }
 
   public int setLastLogin(SqlSessionTemplate sqlSession, Member m) {
     return sqlSession.update("memberMapper.setLastLogin", m);
@@ -34,5 +31,9 @@ public class MemberDao {
 
   public ArrayList<Member> ajaxGetMemberList(SqlSessionTemplate sqlSession) {
     return (ArrayList) sqlSession.selectList("memberMapper.ajaxGetMemberList");
+  }
+
+  public int editMember(SqlSessionTemplate sqlSession, Member m) {
+    return sqlSession.update("memberMapper.editMember", m);
   }
 }
