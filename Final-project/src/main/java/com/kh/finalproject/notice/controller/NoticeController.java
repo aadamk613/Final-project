@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.finalproject.common.model.vo.Files;
-
-
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
 import com.kh.finalproject.notice.model.service.NoticeService;
@@ -74,7 +72,7 @@ public class NoticeController {
 	*/
 	
 	
-	
+	/*
 	@RequestMapping("insert.no")
 	public String insertNotice(Notice n, Files f, Model model, MultipartFile upfile, HttpSession session) {
 
@@ -84,7 +82,7 @@ public class NoticeController {
 			
 			saveFile(upfile, session);
 			
-			f.setOriginalName(upfile.getOriginalFilename());
+		f.setOriginalName(upfile.getOriginalFilename());
 			f.setUpdateName(saveFile(upfile, session));
 		} 
 		if(noticeService.insertNotice(n) > 0) { 
@@ -94,8 +92,8 @@ public class NoticeController {
 			System.out.println("실패");
 			return "common/errorPage";
 		}
-		
 	}
+	 */
 
 	public String saveFile(MultipartFile upfile, HttpSession session) {
 

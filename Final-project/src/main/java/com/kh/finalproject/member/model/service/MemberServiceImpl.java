@@ -18,6 +18,9 @@ public class MemberServiceImpl implements MemberService {
     return memberDao.loginMember(sqlSession, m);
   }
 
+
+
+
   @Override
   @Transactional
   public int joinMember(Member m) {

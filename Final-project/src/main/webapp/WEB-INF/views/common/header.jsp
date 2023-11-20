@@ -44,7 +44,7 @@
 							<li><a href="main.admin">관리자메뉴</a></li>	
 						</c:when>
 						<c:otherwise>
-							<li><a href="createTicket.tk">마이페이지</a></li>
+							<li><a href="myPage.me">마이페이지</a></li>
 						</c:otherwise>
 					</c:choose>
 				</ul>
