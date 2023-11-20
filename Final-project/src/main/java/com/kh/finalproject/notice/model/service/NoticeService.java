@@ -35,6 +35,8 @@ public interface NoticeService {
 	
 	// 게시글 수정하기
 	int updateNotice(int noticeNo);
+
+	int insertFile(Files f);
 	
 	
 	

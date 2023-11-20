@@ -110,6 +110,7 @@ public class NoticeController {
 	}
 	
 
+
 	public ModelAndView selectNotice(int bno, ModelAndView mv) {
 		
 		if(noticeService.increaseCount(bno) > 0 ) {

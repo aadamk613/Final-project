@@ -24,11 +24,11 @@
 		<jsp:include page="../common/boardSideBar.jsp"/>
 		</aside>
 
-		
 		<section id="section">
 			
 			<div id="contentTitleWrap">
 				<div id="contentTitle">
+
 					${ n.category == 1 ? "공지게시글" : '필독게시글'}
 				</div>
 				<div id="backWrap">
@@ -73,12 +73,12 @@
 						<c:choose>
 						<c:when test="${ loginUser ne null }" >
 							<c:choose>
-								<c:when test="${ n.likeMem eq 1 }">
-									<img src="../resources/images/fullHeart.png" alt="하트" >
+								<c:when test="${ b.likeMem eq 1 }">
+									<img src="/WEB_INF/resources/images/fullHeart.png" alt="하트" >
 									<a href="#" id="like" class="like">좋아요</a>&nbsp;${ n.likeCount } 
 								</c:when>
 								<c:otherwise>
-									<img src="../resources/images/emptyHeart.png" alt="빈하트">
+									<img src="/WEB_INF/resources/images/emptyHeart.png" alt="빈하트">
 									<a href="#" id="like" class="like">좋아요</a>&nbsp;${ n.likeCount } 
 								</c:otherwise>
 							</c:choose>
@@ -96,16 +96,13 @@
 				</article>
 			</div>
 			
-			
+
 			<div id="page">
 				<div id="writeWrap">
-					<c:if test="${ loginUser ne null }">
-						<a class="btn btn-primary" href="#" >글 쓰기</a>
-						<c:if test="${ loginUser.memNo eq n.memNo }" >
+						<c:if test="${ loginUser.memNick eq n.memNo }" >
 							<a class="btn btn-light" href="#">수정</a>
 							<a class="btn btn-light" href="#">삭제</a>
 						</c:if>
-					</c:if>
 				&nbsp;
 				</div>
 				<div id="upWrap">
