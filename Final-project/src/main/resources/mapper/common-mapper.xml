@@ -27,13 +27,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		       FILE_ANNOTATION,
 		       UPLOAD_DATE
 		  FROM
-		       TB_FILE
+		       TB_FILES
 		 WHERE 
 		       REF_TYPE = #{ refType }
 		   AND 
 		       REF_NO = #{ refNo }
 	</select>
 	
+	<insert id="insertFiles" parameterType="files">
 	
+		INSERT 
+		  INTO
+		  		TB_FILES
+		  		(
+		  		 FILE_NO,
+		         ORIGINAL_NAME,
+		         UPDATE_NAME,
+		         FILE_PATH,
+		         REF_TYPE,
+		         REF_NO,
+		         FILE_ANNOTATION,
+		         UPLOAD_DATE
+		  		)
+		  		
+		  	VALUES
+		  		(
+		  		SEQ_FILE_NO.NEXTVAL,
+		  		#{ originalName },
+		  		#{ updateName },
+		  		#{ filePath },
+		  		#{ refType },
+		  		#{ refNo },
+		  		#{ fileAnnotation },
+		  		SYSDATE
+		  		)
+		  		
+	</insert>
 	
 </mapper>

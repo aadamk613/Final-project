@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.kh.finalproject.blog.model.vo.Blog;
 import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
 import com.kh.finalproject.blog.model.vo.Plant;
+import com.kh.finalproject.common.model.vo.Files;
 
 public interface BlogService {
 
@@ -30,7 +31,7 @@ public interface BlogService {
 	ArrayList<Plant> selectListPlant(int blogNo);
 	
 	// 식물 등록
-	int insertBlogPlant(Plant plant);
+	int insertBlogPlant(Plant plant, Files file);
 	
 	// 블로그 카테고리 수정
 	
