@@ -47,6 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	<select id="ajaxGetMemberList" resultMap="memberResultSet">
 		SELECT
+			MEM_NO,
 			MEM_STATUS,
 			MEM_ID,
 			MEM_NICK,

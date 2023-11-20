@@ -110,7 +110,7 @@ public class NoticeController {
 	}
 	
 
-	@RequestMapping("detail.no")
+
 	public ModelAndView selectNotice(int bno, ModelAndView mv) {
 		
 		if(noticeService.increaseCount(bno) > 0 ) {

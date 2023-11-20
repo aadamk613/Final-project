@@ -35,7 +35,7 @@
 					<div id="boardCategoryWrap">
 						<select name="category" id="boardCategory">
 							<option value="1">공지사항</option>
-							<option value="2">독사항</option>
+							<option value="2">필독사항</option>
                         </select>
 					</div>
 					<div id="boardHeader">
