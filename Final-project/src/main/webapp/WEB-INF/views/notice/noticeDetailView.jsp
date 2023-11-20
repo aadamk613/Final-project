@@ -51,7 +51,7 @@
 										<a id="writerIdButton">${ n.memNo }</a>
 							<div id="writeInfoHidden">
 								<ul id="writeInfoHiddenUl">
-									<li><a href="#	">게시글 보기</a></li>
+									<li><a href="#">게시글 보기</a></li>
 									<c:if test="${ loginUser ne null }">
 										<li><a href="#" class="hiddenButton">쪽지 보내기</a></li>
 									</c:if>
@@ -92,18 +92,16 @@
 					</div>	
 					<hr clear="both">
 					
-					
 				
 				</article>
 			</div>
-			
 			
 			
 			<div id="page">
 				<div id="writeWrap">
 					<c:if test="${ loginUser ne null }">
 						<a class="btn btn-primary" href="#" >글 쓰기</a>
-						<c:if test="${ loginUser.nickName eq n.memNo }" >
+						<c:if test="${ loginUser.memNo eq n.memNo }" >
 							<a class="btn btn-light" href="#">수정</a>
 							<a class="btn btn-light" href="#">삭제</a>
 						</c:if>

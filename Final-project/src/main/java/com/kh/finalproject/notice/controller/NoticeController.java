@@ -109,8 +109,8 @@ public class NoticeController {
 		return "/resources/uploadFiles/" + updateName;
 	}
 	
-	@RequestMapping("detail.no")
-	public ModelAndView selectNotice(int bno, ModelAndView mv, NoticeLike l) {
+
+	public ModelAndView selectNotice(int bno, ModelAndView mv) {
 		
 		if(noticeService.increaseCount(bno) > 0 ) {
 			mv.addObject("n", noticeService.selectNotice(bno)).setViewName("notice/noticeDetailView");
