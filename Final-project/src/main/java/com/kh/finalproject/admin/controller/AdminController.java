@@ -93,13 +93,15 @@ public class AdminController {
   }
 
   @GetMapping("memberView.admin")
-  public String memberView() {
-    return "admin/adminMemberView";
+  public ModelAndView memberView(ModelAndView mv) {
+    mv.addObject("numTicket", adminService.getTicketNumber()).setViewName("admin/adminMemberView");
+    return mv;
   }
 
   @GetMapping("hashtag.admin")
-  public String hashtagView() {
-    return "admin/adminHashtag";
+  public ModelAndView hashtagView(ModelAndView mv) {
+    mv.addObject("numTicket", adminService.getTicketNumber()).setViewName("admin/adminHashtag");
+    return mv;
   }
 
   @ResponseBody
