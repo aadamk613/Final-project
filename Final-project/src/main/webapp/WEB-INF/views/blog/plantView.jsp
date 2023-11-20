@@ -96,7 +96,10 @@ textarea{
                 <c:forEach var="p" items="${ list }">
 				<article>
                     <div id="plantInfoWrap">
-                        <div id="plantImg">식물사진</div>
+                        <div id="plantImg">
+                        	식물 사진
+							<img src="${ files.filePath }/${ files.updateName }" class="files" />
+						</div>
                         <div id="plantImfo">
                             <ul>
                                 <li id="plantName">식물 이름 : ${ p.plantName }</li>

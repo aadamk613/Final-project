@@ -47,7 +47,7 @@ public class ExperienceController {
 		System.out.println(expNo);
 		
 		// 조회수 증가 성공 시 
-		if(experienceService.increaseCount(expNo) > 0 ) {
+		if(experienceService.increaseCount(expNo) > 0 ) { 
 			// 게시글 상세조회
 			model.addAttribute("exp", experienceService.selectExperience(expNo));
 			// 첨부파일 조회
