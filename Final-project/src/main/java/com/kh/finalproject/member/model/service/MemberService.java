@@ -15,4 +15,8 @@ public interface MemberService {
   int setLastLogin(Member m);
 
   ArrayList<Member> ajaxGetMemberList();
+
+  Member selectMember(int memNo);
+
+  int editMember(Member m);
 }

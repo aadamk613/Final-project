@@ -31,7 +31,6 @@ public class MemberController {
   //    return new Gson().toJson(memberService.selectMember(memNo));
   //  }
 
-  
   @ResponseBody
   @GetMapping(value = "getMemberList.me", produces = "application/json; charset=UTF-8")
   public String ajaxGetMemberList() {
@@ -83,23 +82,26 @@ public class MemberController {
       return "../common/errorPage.jsp";
     }
   }
+
   @ResponseBody // 포워딩 해줄게 아니라서
   @RequestMapping
   public String idCheck(String checkId) {
 
-	  //System.out.println(checkId);
-	  int count = memberService.idCheck(checkId);
-	  System.out.println(count);
-	  return count > 0 ? "NNNNN" : "NNNNY";
+    // System.out.println(checkId);
+    int count = memberService.idCheck(checkId);
+    System.out.println(count);
+    return count > 0 ? "NNNNN" : "NNNNY";
   }
 
   @RequestMapping("myPage.me")
   public String myPage() {
-	  return "member/mypage";
+    return "member/mypage";
+  }
 
-    int count = memberService.idCheck(checkId);
-    return count > 0 ? "NNNNN" :"NNNNY";
-
-
+  @GetMapping("naverLogin.me")
+  public String naverLogin(String state, String code) {
+    System.out.println(state);
+    System.out.println(code);
+    return "redirect:/";
   }
 }
