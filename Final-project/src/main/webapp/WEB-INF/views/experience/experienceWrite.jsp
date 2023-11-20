@@ -13,6 +13,20 @@
 	box-sizing: border-box;
 }
 
+#summary > div{
+	float : left;
+	margin : 40px;
+}
+
+#thumb{
+	width : 400px;
+	height : 400px;
+}
+
+input{
+	display : block;
+}
+
 
 
 
@@ -37,9 +51,30 @@
 		
 		<section id="pageSection">
 			
+			<h1><input type="text" placeholder="제목을 입력해 주세요." /></h1>
+			<hr>
 			
+			<div id="summary">
+				<div>
+					<img src="" id="thumb" />
+				</div>
+				<div>
+					<h5>※필수 입력 사항입니다. </h5>
+					<select value="선택">
+						<option value="1">화훼농장</option>
+						<option value="2">과일농장</option>
+						<option value="3">채소농장</option>
+						<option value="4">꽃꽂이</option>
+						
+					</select>
+					<input type="text" />
+					<input type="text" />
+					<input type="text" />
+					<input type="number" />
+					<input type="text" />
+				</div>
 			
-			
+			</div>
 			
 			
 			
