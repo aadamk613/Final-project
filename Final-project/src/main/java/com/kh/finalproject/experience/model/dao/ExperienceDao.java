@@ -36,6 +36,10 @@ public class ExperienceDao {
 	public int deleteExperience(SqlSessionTemplate sqlSession, int expNo) {
 		return sqlSession.update("experienceMapper.deleteExperience", expNo);
 	}
+
+	public int insertExpReply(SqlSessionTemplate sqlSession, ExperienceReply expReply) {
+		return sqlSession.insert("experienceMapper.insertExpReply", expReply);
+	}
 	
 	
 	

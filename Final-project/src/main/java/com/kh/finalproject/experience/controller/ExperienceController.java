@@ -8,6 +8,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,8 +31,6 @@ public class ExperienceController {
 	private ExperienceService experienceService;
 	@Autowired
 	private CommonService commonService;
-	@Autowired
-	private ExperienceReply expReply;
 	
 	@RequestMapping("yrlist.exp")
 	public String seleceExperienceList(@RequestParam(value="page", defaultValue="1") int currentPage, Model model){
@@ -77,25 +76,46 @@ public class ExperienceController {
 	public String insertExpReply(@RequestBody String newReply) throws ParseException {
 		// System.out.println(expNo);
 		System.out.println(newReply);
+		// {"expNo":"61","replyWriter":"user01","replyContent":"ㅁㄴㅇㄹ","replySecret":0}
 		
 		// 버전 2.8.6
 		//JsonObject jobj = JsonParser.parseString(expReply).getAsJsonObject();
 		// 버전 2.8.5
 		JsonObject jobj = new JsonParser().parse(newReply).getAsJsonObject();
 		System.out.println(jobj);
+		// {"expNo":"61","replyWriter":"user01","replyContent":"ㅁㄴㅇㄹ","replySecret":0}
 		
-		System.out.println(jobj.get("expNo").getAsInt());
-		System.out.println(jobj.get("replyContent"));
+		System.out.println(jobj.get("expNo").getAsInt()); // 61
+		System.out.println(jobj.get("replyContent")); // "ㅁㄴㅇㄹ"
 		
 		// set해서 넣어줄 수 밖에 없음 (null일수도 있으니까 이렇게 해주는게 맞음)
+		ExperienceReply expReply = new ExperienceReply();
 		expReply.setExpNo(jobj.get("expNo").getAsInt());
 		expReply.setReplyContent(jobj.get("replyContent").getAsString());
+		expReply.setReplyWriter(jobj.get("replyWriter").getAsString());
+		expReply.setReplySecret((jobj.get("replySecret").getAsInt() > 0) ? "Y" : "N");
 		
-		
-		
-		
-		return "success";
+		return (experienceService.insertExpReply(expReply) > 0) ? "success" : "fail";
 	}
+	
+	@GetMapping("yrinsertExpForm.exp")
+	public String insertExperienceoForm() {
+		return "experience/experienceWrite";
+	}
+	
+	
+	
+	@GetMapping("yrupdateExp.exp")
+	public String updateExperienceForm(int expNo) {
+		System.out.println("여긴 체험학습 게시글 수정하기");
+		System.out.println(expNo);
+		return "";
+	}
+	
+	
+	
+	
+	
 	
 	@RequestMapping("yrdeleteExp.exp")
 	public String deleteExperience(int expNo, HttpSession session) {
