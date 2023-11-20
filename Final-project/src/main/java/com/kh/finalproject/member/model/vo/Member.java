@@ -1,8 +1,14 @@
 package com.kh.finalproject.member.model.vo;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
 public class Member {
 
   private int memNo;
@@ -15,4 +21,5 @@ public class Member {
   private String regBusiness;
   private String memStatus;
   private int blogNo;
+  private String lastLogin;
 }
