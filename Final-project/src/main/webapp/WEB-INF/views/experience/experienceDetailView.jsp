@@ -120,7 +120,7 @@ h1 {
 		<section id="pageSection">
 			<div class="container">
 				<!-- 작성자만 보이는 버튼 -->
-				<c:if test="${ sessionScope.loginUser eq requestScope.exp.expWriter }">
+				<c:if test="${ sessionScope.loginUser ne requestScope.exp.expWriter }">
 				<div id="forWriter">
 					<button type="button" class="btn btn-primary" onclick="updateExp();">수정하기</button>
 					<button type="button" class="btn btn-danger" onclick="deleteExp();">삭제하기</button>
