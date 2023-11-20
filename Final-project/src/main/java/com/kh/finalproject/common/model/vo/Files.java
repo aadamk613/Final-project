@@ -1,12 +1,11 @@
 package com.kh.finalproject.common.model.vo;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data @NoArgsConstructor
-
 public class Files {
 	private int fileNo;
 	private String originalName;
@@ -17,6 +16,4 @@ public class Files {
 	private String fileAnnotation;
 	private String uploadDate;
 	
-}
-
 }

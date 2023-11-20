@@ -252,7 +252,7 @@ h1 {
 				
 				const data = {
 						expNo : '${ exp.expNo }',
-						replyWriter : 'user01',
+						replyWriter : 'user01', 
 						replyContent : $('#commentContentInsert').val(),
 						replySecret : $('input[type=checkbox]:checked').length
 				};

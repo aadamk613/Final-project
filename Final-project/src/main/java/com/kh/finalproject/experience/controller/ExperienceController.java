@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,10 +16,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.kh.finalproject.common.model.service.CommonService;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
 import com.kh.finalproject.experience.model.service.ExperienceService;
+import com.kh.finalproject.experience.model.vo.ExperienceReply;
 
 @Controller
 public class ExperienceController {
@@ -27,6 +30,8 @@ public class ExperienceController {
 	private ExperienceService experienceService;
 	@Autowired
 	private CommonService commonService;
+	@Autowired
+	private ExperienceReply expReply;
 	
 	@RequestMapping("yrlist.exp")
 	public String seleceExperienceList(@RequestParam(value="page", defaultValue="1") int currentPage, Model model){
@@ -69,9 +74,25 @@ public class ExperienceController {
 	
 	@ResponseBody
 	@PostMapping("yrinsertExpReply.exp")
-	public String insertExpReply(@RequestBody String expReply) {
+	public String insertExpReply(@RequestBody String newReply) throws ParseException {
 		// System.out.println(expNo);
-		System.out.println(expReply);
+		System.out.println(newReply);
+		
+		// 버전 2.8.6
+		//JsonObject jobj = JsonParser.parseString(expReply).getAsJsonObject();
+		// 버전 2.8.5
+		JsonObject jobj = new JsonParser().parse(newReply).getAsJsonObject();
+		System.out.println(jobj);
+		
+		System.out.println(jobj.get("expNo").getAsInt());
+		System.out.println(jobj.get("replyContent"));
+		
+		// set해서 넣어줄 수 밖에 없음 (null일수도 있으니까 이렇게 해주는게 맞음)
+		expReply.setExpNo(jobj.get("expNo").getAsInt());
+		expReply.setReplyContent(jobj.get("replyContent").getAsString());
+		
+		
+		
 		
 		return "success";
 	}

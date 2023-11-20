@@ -12,6 +12,6 @@ public class ExperienceReply {
 	private String replyContent;
 	private String replyModifyDate;
 	private String replySecret;
-	private String expNo;
+	private int expNo;
 
 }
