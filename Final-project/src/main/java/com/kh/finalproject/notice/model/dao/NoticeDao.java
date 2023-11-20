@@ -39,6 +39,22 @@ public class NoticeDao {
 
 		return sqlSession.selectOne("noticeMapper.selectNotice", noticeNo);
 	}
+
+	public int deleteNotice(SqlSessionTemplate sqlSession, int noticeNo) {
+		return sqlSession.update("noticeMapper.deleteNotice", noticeNo);
+	}
+
+	public int updateNotice(SqlSessionTemplate sqlSession, Notice n) {
+		return sqlSession.update("noticeMapper.updateNotice", n);
+	}
+	
+	public int selectLastNoticeNo(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("noticeMapper.selectLastNoticeNo");
+	}
+
+	public ArrayList<Files> selectFile(SqlSessionTemplate sqlSession, int noticeNo) {
+		return (ArrayList)sqlSession.selectList("noticeMapper.selectFile", noticeNo);
+	}
 	
 	
 	

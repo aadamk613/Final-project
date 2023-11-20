@@ -31,11 +31,15 @@ public interface NoticeService {
 	int deleteNotice(int noticeNo);
 	
 	// 게시글 수정하기
-	int updateNotice(int noticeNo);
+	int updateNotice(Notice n);
 
+	// 파일 첨부
 	int insertFile(Files f);
 	
+	// 마지막번호 가져오기
+	int selectLastNoticeNo();
 	
-	
+	// 파일 가져오기
+	ArrayList<Files> selectFile(int noticeNo);
 	
 }

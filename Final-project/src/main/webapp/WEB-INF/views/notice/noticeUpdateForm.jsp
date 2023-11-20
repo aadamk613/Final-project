@@ -30,26 +30,21 @@
 			</div>
 			<div id="content">
 				<article>
-					<form action="insert.no" method="post" enctype="multipart/form-data">
+					<form id="updateForm" action="update.no" method="post" enctype="multipart/form-data">
+					<input type="hidden" name="noticeNo" value="${n.noticeNo }">
 					<input type="hidden" name="memNo" value="${loginUser.memNo }">
 					<div id="boardCategoryWrap">
-						<select name="category" id="boardCategory">
-							<option value="1">공지사항</option>
-							<option value="2">필독사항</option>
-                        </select>
+						<input type="text" name="category" value="${ n.category == 1 ? "공지사항" : '필독사항'}" readonly>
 					</div>
 					<div id="boardHeader">
-						<input type="text" placeholder="제목을 입력해주세요" name="noticeTitle" required>		
+						<input type="text" placeholder="${n.noticeTitle }" name="noticeTitle" required>		
 					</div>
 					<div id="fileWrap">
-						<input type="file" name="upfiles">
-						<input type="hidden" name="refType" value="notice">
-						<input type="hidden" name="filePath" value="/resources/uploadFiles/notice/">
-						
+						<input type="file" name="upfile">
 					</div>
 					<div id="boardContent">
 					<hr>
-						<textarea id="boardContent" placeholder="내용을 입력해주세요" name="noticeContent" required></textarea>
+						<textarea id="boardContent" placeholder="${n.noticeContent }" name="noticeContent" required></textarea>
 					<hr>
 					</div>
 					<button type="submit" class="btn btn-primary" id="buttonWrite">글 작성</button>

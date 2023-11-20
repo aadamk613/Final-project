@@ -10,6 +10,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +22,6 @@ import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
 import com.kh.finalproject.notice.model.service.NoticeService;
 import com.kh.finalproject.notice.model.vo.Notice;
-import com.kh.finalproject.notice.model.vo.NoticeLike;
 
 @Controller
 public class NoticeController {
@@ -46,7 +47,6 @@ public class NoticeController {
 		model.addAttribute("pi", pi);
 		
 
-		System.out.println(currentPage);
 		return "notice/noticeListView";
 		
 	}
@@ -60,18 +60,14 @@ public class NoticeController {
 	
 	@RequestMapping("insert.no")
 	public String insertNotice(Notice n, Files f, Model model, MultipartFile upfile, HttpSession session) {
-/*
 		if(!upfile.getOriginalFilename().equals("")) {
-			
-			
-			
 			saveFile(upfile, session);
-			
-		f.setOriginalName(upfile.getOriginalFilename());
+			int lastNo = noticeService.selectLastNoticeNo();
+			f.setOriginalName(upfile.getOriginalFilename());
 			f.setUpdateName(saveFile(upfile, session));
+			f.setRefNo(lastNo);
 			noticeService.insertFile(f);
 		} 
-*/
 		if(noticeService.insertNotice(n) > 0) { 
 			return "redirect:list.no";
 		} else {
@@ -98,7 +94,7 @@ public class NoticeController {
 
 		String updateName = currentTime + ranNum + ext;
 
-		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
+		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/notice/");
 
 		try {
 			upfile.transferTo(new File(savePath + updateName));
@@ -106,19 +102,57 @@ public class NoticeController {
 			e.printStackTrace();
 		}
 		
-		return "/resources/uploadFiles/" + updateName;
+		return updateName;
 	}
 	
 
-	@RequestMapping("detail.no")
-	public ModelAndView selectNotice(int bno, ModelAndView mv) {
+	@GetMapping("detail.no")
+	public ModelAndView selectNotice(int bno, ModelAndView mv, Files f, MultipartFile upfile, HttpSession session) {
 		
 		if(noticeService.increaseCount(bno) > 0 ) {
+
+			mv.addObject("f", noticeService.selectFile(bno));
+			System.out.println(noticeService.selectFile(bno));
+			if(bno == Integer.parseInt(f.getRefNo()) && f.getRefType().equals("notice")) {
+			}
 			mv.addObject("n", noticeService.selectNotice(bno)).setViewName("notice/noticeDetailView");
 		} else {
 			mv.addObject("errorMsg", "게시글 조회 실패").setViewName("common/errorPage");
 		}
-		
 		return mv;
 	}
+	
+	@PostMapping("delete.no")
+	public String deleteNotice(int bno, HttpSession session) {
+
+		if(noticeService.deleteNotice(bno) > 0) {
+			
+			session.setAttribute("alertMsg", "ㅎㅎㅎ");
+			return "redirect:list.no";
+		} else {
+			session.setAttribute("errorMsg", "실패했습니다");
+			return "common/errorPage";
+		}
+	}
+
+	@PostMapping("updateForm.no")
+	public ModelAndView updateNotice(int bno, ModelAndView mv) {
+		mv.addObject("n", noticeService.selectNotice(bno)).setViewName("notice/noticeUpdateForm");
+		return mv;
+	}
+	
+	@PostMapping("update.no")
+	public String updateNotice(Notice n, HttpSession session) {
+		
+		if(noticeService.updateNotice(n) > 0 ) {
+			session.setAttribute("alertMsg", "성공");
+			return "redirect:detail.no?bno=" + n.getNoticeNo();
+		} else {
+			session.setAttribute("errorMsg", "실패!");
+			return "common/errorPage";
+		}
+		
+	}
+
+
 }
