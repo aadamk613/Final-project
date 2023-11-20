@@ -98,7 +98,7 @@ public class MemberController {
 	  return "member/mypage";
 
     int count = memberService.idCheck(checkId);
-    return count > 0 ? "NNNNN" : "NNNNY";
+    return count > 0 ? "NNNNN" :"NNNNY";
 
 
   }
