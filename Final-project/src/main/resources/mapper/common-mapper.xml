@@ -16,6 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="UPLOAD_DATE" property="uploadDate"/>
 	</resultMap>
 	
+	<!-- 첨부파일 조회 -->
 	<select id="selectFiles" parameterType="hashmap" resultMap="fileResultSet">
 		SELECT 
 		       FILE_NO,
@@ -34,13 +35,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		       REF_NO = #{ refNo }
 	</select>
 	
-	<insert id="insertFiles" parameterType="files">
-	
+	<!-- 첨부파일 등록 -->
+	<insert id="insertFiles" parameterType="hashmap" >
 		INSERT 
 		  INTO
-		  		TB_FILES
-		  		(
-		  		 FILE_NO,
+		  		TB_FILE
+				(
+			     FILE_NO,
 		         ORIGINAL_NAME,
 		         UPDATE_NAME,
 		         FILE_PATH,
@@ -48,20 +49,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		         REF_NO,
 		         FILE_ANNOTATION,
 		         UPLOAD_DATE
-		  		)
-		  		
-		  	VALUES
-		  		(
-		  		SEQ_FILE_NO.NEXTVAL,
-		  		#{ originalName },
-		  		#{ updateName },
-		  		#{ filePath },
-		  		#{ refType },
-		  		#{ refNo },
-		  		#{ fileAnnotation },
-		  		SYSDATE
-		  		)
-		  		
+				)
+			VALUES
+			 	(
+			 	SEQ_FILE_NO.NEXTVAL, 
+			 	#{ originalName },
+			 	#{ updateName },
+			 	#{ filePath },
+			 	#{ refType },
+			 	#{ refNo },
+			 	#{ fileAnnotation },
+			 	SYSDATE
+			 	)		  	
+	
 	</insert>
 	
 </mapper>

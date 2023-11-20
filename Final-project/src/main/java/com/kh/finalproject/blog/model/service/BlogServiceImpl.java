@@ -29,7 +29,6 @@ public class BlogServiceImpl implements BlogService{
 	@Transactional
 	@Override
 	public int insertBlog(Blog b) {
-		
 		blogDao.insertBlog(sqlSession, b);
 		return blogDao.updateMemberBlogNo(sqlSession, b);
 	}

@@ -45,12 +45,6 @@ public class CommonController {
 		file.setOriginalName(originalName);
 		file.setUpdateName(changeName);
 
-		
-		try {
-			upfile.transferTo(new File(savePath + changeName));
-		} catch (IllegalStateException | IOException e) {
-			e.printStackTrace();
-		}
 			return file;
 		}
 	

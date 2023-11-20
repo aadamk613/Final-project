@@ -49,10 +49,10 @@ public class BlogPlantController {
 	
 	// 식물 등록
 	@RequestMapping("insert.bl_pl")
-	public String insertBlogPlant(Plant plant,  
-								  MultipartFile upfile, 
-								  HttpServletRequest request, 
+	public String insertBlogPlant(Plant plant, 
+								  HttpServletRequest request,
 								  HttpSession session,
+								  MultipartFile upfile,
 								  Model model) {
 		
 		Files file = new Files();
@@ -60,6 +60,13 @@ public class BlogPlantController {
 		if(!upfile.getOriginalFilename().equals("")) {
 			file = commonController.setFile(upfile, session, "plant");
 		}
+		
+		// 넘어온 첨부파일이 존재하지 않을 경우: plant(제목, 작성자, 내용)
+		// 넘어온 첨부파일이 존재할 경우: plant(제목, 작성자, 내용 ) 
+		//					  + file(originalName, updateName, filePath, refType, refNo, fileAnnotation)
+		
+		file.setFilePath("/resources/uploadFiles/");
+		file.setRefType("plant");
 		
 		if(blogService.insertBlogPlant(plant, file) > 0) { // 성공
 			session.setAttribute("alertMsg", "게시글 작성 성공");
