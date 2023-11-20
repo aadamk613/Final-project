@@ -34,6 +34,7 @@
 				<h2>공지게시판</h2>
 			</div>
 			
+			
 			<div id="content">
 				<article>
 					<table id="boardTable" class="table table-hover">
@@ -54,33 +55,18 @@
 							  <td colspan="5" style="text-align: center">작성한 게시글이 없습니다</td>
 							  </tr>
 						  </c:if>
-<<<<<<< HEAD
+
 						  
 						  
+						  	<c:if test="${ pi.currentPage eq 1 }">
 						  	<c:forEach var="bn" items="${ requestScope.best }">
-
+							  <tr>
 						      <td scope="col" width="10%" style="text-align: center">
 						      <span class="best">BEST</span>
 						      ${ bn.category == 1 ? "공지" : '필독'}
-						      ${ bn.noticeNo }</td>
-					          <td scope="row" width="20%" style="text-align: center">${ bn.noticeTitle }</th>	       
-						      <td scope="row" width="20%" style="text-align: center">${ bn.memNo }</td>
-						      <td scope="row" width="20%" style="text-align: center">${ bn.noticeCreateDate }</td>
-						      <td scope="row" width="15%" style="text-align: center">${ bn.views }</td>
-						      <td scope="row" width="15%" style="text-align: center">${ bn.likeCount }</td>
-						    	</tr>
-						    </c:forEach>
-
-						  	<c:forEach var="n" items="${ requestScope.list }">
-						      <td scope="col" width="10%" style="text-align: center">
-=======
-						  	  <c:if test="${ pi.currentPage eq 1 }">
-						      <c:forEach var="bn" items="${ requestScope.best }">
-						      <td scope="col" width="10%" style="text-align: center">
-						      <span class="best">BEST</span>
-						      ${ bn.category == 1 ? "공지" : '필독'}
-						      ${ bn.noticeNo }</td>
-					          <td scope="row" width="20%" style="text-align: center">${ bn.noticeTitle }</th>	       
+						      <span class="bno">${ bn.noticeNo }</span>
+						      </td>
+					          <td scope="row" width="20%" style="text-align: center">${ bn.noticeTitle }</td>	       
 						      <td scope="row" width="20%" style="text-align: center">${ bn.memNo }</td>
 						      <td scope="row" width="20%" style="text-align: center">${ bn.noticeCreateDate }</td>
 						      <td scope="row" width="15%" style="text-align: center">${ bn.views }</td>
@@ -90,12 +76,11 @@
 						    </c:if>
 						    
 						  	<c:forEach var="n" items="${ requestScope.list }">
-
+						  	  <tr>
 						      <td scope="col" width="10%" style="text-align: center">
->>>>>>> 890b38490e1cbaf0950931332e634c0be1f724cb
 						      ${ n.category == 1 ? "공지" : '필독'}
-						      ${ n.noticeNo }</td>
-					          <td scope="row" width="20%" style="text-align: center">${ n.noticeTitle }</th>	       
+						      <span class="bno">${ n.noticeNo }</span></td>
+					        <td scope="row" width="20%" style="text-align: center">${ n.noticeTitle }</td>	       
 						      <td scope="row" width="20%" style="text-align: center">${ n.memNo }</td>
 						      <td scope="row" width="20%" style="text-align: center">${ n.noticeCreateDate }</td>
 						      <td scope="row" width="15%" style="text-align: center">${ n.views }</td>
@@ -105,15 +90,16 @@
 
 					  </tbody>
 					</table>
-					
-					<!-- 로그인 했을 경우에만 글 쓰기 버튼 보이게하기 --> 
-					<c:if test="${ loginUser.memStatus eq 'A' }">
-						<div id="writeWrap">
-						<a id="writeButton" class="btn btn-primary" href="" >글 쓰기</a>
-						</div>
-					</c:if>
 				</article>
 			</div>
+			
+			<script>
+				$(function(){
+					$('#boardTable > tbody > tr').click(function(){
+						location.href = 'detail.no?bno=' + $(this).find('.bno').text();
+					});
+				})
+			</script>
 			
 			
 			<div id="page">

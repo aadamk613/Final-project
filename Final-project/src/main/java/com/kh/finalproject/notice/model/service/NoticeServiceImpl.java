@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.notice.model.dao.NoticeDao;
 import com.kh.finalproject.notice.model.vo.Notice;
@@ -36,11 +37,7 @@ public class NoticeServiceImpl implements NoticeService{
 	public ArrayList<Notice> selectBestNoticeList() {
 		return noticeDao.selectBestNoticeList(sqlSession);
 	}
-	
-	@Override
-	public ArrayList<Notice> selectBestNoticeList() {
-		return noticeDao.selectBestNoticeList(sqlSession);
-	}
+
 	
 	@Override
 	public int insertNotice(Notice n) {
@@ -48,13 +45,18 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
+	public int insertFile(Files f) {
+		return noticeDao.insertFile(sqlSession, f);
+	}
+
+	@Override
 	public int increaseCount(int noticeNo) {
-		return 0;
+		return noticeDao.increaseCount(sqlSession, noticeNo);
 	}
 
 	@Override
 	public Notice selectNotice(int noticeNo) {
-		return null;
+		return noticeDao.selectNotice(sqlSession, noticeNo);
 	}
 
 	@Override
@@ -66,6 +68,8 @@ public class NoticeServiceImpl implements NoticeService{
 	public int updateNotice(int noticeNo) {
 		return 0;
 	}
+
+
 
 	
 	

@@ -5,10 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
 @Getter @Setter @NoArgsConstructor @ToString
 public class Files {
-
 	private int fileNo;
 	private String originalName;
 	private String updateName;
@@ -19,3 +17,4 @@ public class Files {
 	private String uploadDate;
 	
 }
+
