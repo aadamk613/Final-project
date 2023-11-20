@@ -20,6 +20,7 @@ import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
 import com.kh.finalproject.notice.model.service.NoticeService;
 import com.kh.finalproject.notice.model.vo.Notice;
+import com.kh.finalproject.notice.model.vo.NoticeLike;
 
 @Controller
 public class NoticeController {
@@ -111,7 +112,7 @@ public class NoticeController {
 	}
 	
 	@RequestMapping("detail.no")
-	public ModelAndView selectNotice(int bno, ModelAndView mv) {
+	public ModelAndView selectNotice(int bno, ModelAndView mv, NoticeLike l) {
 		
 		if(noticeService.increaseCount(bno) > 0 ) {
 			mv.addObject("n", noticeService.selectNotice(bno)).setViewName("notice/noticeDetailView");

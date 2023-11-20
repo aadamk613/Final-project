@@ -29,7 +29,7 @@
 			
 			<div id="contentTitleWrap">
 				<div id="contentTitle">
-					${ n.noticeTitle }
+					${ n.category == 1 ? "공지게시글" : '필독게시글'}
 				</div>
 				<div id="backWrap">
 					<a href="list.no?cPage=1&type=${ n.category }" class="btn btn-light">목록으로</a>
@@ -48,7 +48,7 @@
 						</div>
 						<div id="writeIdWrap">
 							<div id="writerId">
-										<a id="writerIdButton">${ b.memNick }</a>
+										<a id="writerIdButton">${ n.memNo }</a>
 							<div id="writeInfoHidden">
 								<ul id="writeInfoHiddenUl">
 									<li><a href="#	">게시글 보기</a></li>
@@ -62,7 +62,7 @@
 					</div>
 					<div id="boardInfor">	
 						<div id="boardDate">
-							2023.09.05&nbsp;&nbsp;20:53&nbsp;&nbsp;&nbsp;&nbsp;조회 ${ n.views }
+							${ n.noticeCreateDate }&nbsp;&nbsp;&nbsp;&nbsp;조회 ${ n.views }
 						</div>
 					</div>
 					<hr clear="both">
@@ -73,12 +73,12 @@
 						<c:choose>
 						<c:when test="${ loginUser ne null }" >
 							<c:choose>
-								<c:when test="${ b.likeMem eq 1 }">
-									<img src="resources/img/fullHeart.png" alt="하트" >
+								<c:when test="${ n.likeMem eq 1 }">
+									<img src="../resources/images/fullHeart.png" alt="하트" >
 									<a href="#" id="like" class="like">좋아요</a>&nbsp;${ n.likeCount } 
 								</c:when>
 								<c:otherwise>
-									<img src="resources/img/emptyHeart.png" alt="빈하트">
+									<img src="../resources/images/emptyHeart.png" alt="빈하트">
 									<a href="#" id="like" class="like">좋아요</a>&nbsp;${ n.likeCount } 
 								</c:otherwise>
 							</c:choose>
@@ -103,7 +103,7 @@
 				<div id="writeWrap">
 					<c:if test="${ loginUser ne null }">
 						<a class="btn btn-primary" href="#" >글 쓰기</a>
-						<c:if test="${ loginUser.nickName eq b.writer }" >
+						<c:if test="${ loginUser.nickName eq n.memNo }" >
 							<a class="btn btn-light" href="#">수정</a>
 							<a class="btn btn-light" href="#">삭제</a>
 						</c:if>
