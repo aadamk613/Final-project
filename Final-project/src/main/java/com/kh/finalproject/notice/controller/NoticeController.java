@@ -52,16 +52,16 @@ public class NoticeController {
 		return "notice/noticeEnrollForm";
 	}
 	
-	@RequestMapping("insert.no")
-	public String insertNotice(Notice n, File f, MultipartFile upfile, Model model) {
-		
-		System.out.println(n);
-		System.out.println(upfile);
-		
-		return "notice/noticeEnrollForm";
+//	@RequestMapping("insert.no")
+//	public String insertNotice(Notice n, File f, MultipartFile upfile, Model model) {
+//		
+//		System.out.println(n);
+//		System.out.println(upfile);
+//		
+//		return "notice/noticeEnrollForm";
+//
+//	}
 
-	}
-	
 	
 	/*
 	@RequestMapping("insert.no")

@@ -70,7 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			    LIKE_COUNT DESC, NOTICE_NO DESC) b
 	       WHERE 
 	            ROWNUM BETWEEN 1 AND 5
-	            ROWNUM between 1 and 5
+
 	   UNION ALL
 		  SELECT
 		         *
