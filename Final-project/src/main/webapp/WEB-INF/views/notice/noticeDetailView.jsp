@@ -23,18 +23,22 @@
 		<aside id="pageAsideLeft" class="aside">
 		<jsp:include page="../common/boardSideBar.jsp"/>
 		</aside>
-		
+
 		<section id="section">
 			
 			<div id="contentTitleWrap">
 				<div id="contentTitle">
-					${ n.category == 1 ? "공지게시글" : '필독게시글' }
+
+					${ n.category == 1 ? "공지게시글" : '필독게시글'}
+				</div>
+				<div id="backWrap">
+					<a href="list.no?cPage=1&type=${ n.category }" class="btn btn-light">목록으로</a>
 				</div>
 			</div>
 			<div id="content">
 				<article>
 					<div id="boardHeader">
-						<div id="title">${ n.noticeTitle}</div>		
+						<div id="title">${ n.noticeTitle }</div>		
 					</div>
 					<div id="writerInfoWrap">
 						<div id="writerThumbnail">
@@ -58,7 +62,7 @@
 					</div>
 					<div id="boardInfor">	
 						<div id="boardDate">
-							${ n.noticeCreateDate }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;조회 ${ n.views }
+							${ n.noticeCreateDate }&nbsp;&nbsp;&nbsp;&nbsp;조회 ${ n.views }
 						</div>
 					</div>
 					<hr>
@@ -105,6 +109,7 @@
 				</article>
 			</div>
 			
+
 			<div id="page">
 				<div id="writeWrap">
 						<c:if test="${ loginUser.memNick eq n.memNo }" >

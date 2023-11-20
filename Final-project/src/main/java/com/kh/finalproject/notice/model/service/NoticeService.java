@@ -21,6 +21,9 @@ public interface NoticeService {
 	// 게시글 작성
 	int insertNotice(Notice n);
 	
+	// 파일첨부
+	int insertFile(Files f);
+	
 	// 조회수 증가
 	int increaseCount(int noticeNo);
 	
@@ -33,9 +36,6 @@ public interface NoticeService {
 	// 게시글 수정하기
 	int updateNotice(Notice n);
 
-	// 파일 첨부
-	int insertFile(Files f);
-	
 	// 마지막번호 가져오기
 	int selectLastNoticeNo();
 	
