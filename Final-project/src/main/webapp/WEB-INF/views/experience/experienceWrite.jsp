@@ -13,9 +13,16 @@
 	box-sizing: border-box;
 }
 
+
+#summary{
+	width : 100%;
+}
+
 #summary > div{
 	float : left;
-	margin : 40px;
+	padding : 40px;
+	height : 100%;
+	width : 50%;
 }
 
 #thumb{
@@ -23,10 +30,19 @@
 	height : 400px;
 }
 
-input{
+input, select{
 	display : block;
 }
 
+#content{
+	width : 100%;
+	resize : none;
+	display : inline-block;
+}
+
+#asdf{
+	height : 500px;
+}
 
 
 
@@ -60,23 +76,51 @@ input{
 				</div>
 				<div>
 					<h5>※필수 입력 사항입니다. </h5>
-					<select value="선택">
+					
+					카테고리 : <select id="category">
 						<option value="1">화훼농장</option>
 						<option value="2">과일농장</option>
 						<option value="3">채소농장</option>
 						<option value="4">꽃꽂이</option>
-						
 					</select>
-					<input type="text" />
-					<input type="text" />
-					<input type="text" />
-					<input type="number" />
-					<input type="text" />
+					체험학습일 : <input type="date" />
+					체험시간 : <input type="number" min=1 max=10 />
+					모집인원 : <input type="number" min=1 max=100 />
+					모집마감일 : <input type="date" />
 				</div>
-			
 			</div>
 			
+			<script>
+				console.log(new Date());
+				// toISOString() => YYYY-MM-DDTHH:mm:ss.sssZ
+				let mindate = new Date().toISOString().split('T')[0];
+				$(() => {
+					$('input[type=date]').prop('min', mindate);
+				});
+			</script>
 			
+			<br clear="both">
+			
+			<textarea id="content" placeholder="내용을 입력해 주세요." rows="5"></textarea>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		
+		
+		
+		
+		
 			
 			
 			

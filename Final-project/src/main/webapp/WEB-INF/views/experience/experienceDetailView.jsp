@@ -212,7 +212,7 @@ h1 {
 							</c:when>
 							<c:otherwise>
 								<div id="submitWrap"><a href='#' onclick="alert('로그인 후 이용 가능한 기능입니다.');">등록</a></div>
-							</c:otherwise>							
+							</c:otherwise>
 						</c:choose>
 					</div>
 					<!-- 댓글 AJAX처리 -->
