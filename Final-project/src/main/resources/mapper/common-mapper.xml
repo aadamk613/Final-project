@@ -36,10 +36,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- 첨부파일 등록 -->
-	<insert id="insertFiles" parameterType="hashmap" >
+	<insert id="insertFiles" parameterType="com.kh.finalproject.common.model.vo.Files" >
 		INSERT 
 		  INTO
-		  		TB_FILE
+		  		TB_FILES
 				(
 			     FILE_NO,
 		         ORIGINAL_NAME,
@@ -57,7 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 	#{ updateName },
 			 	#{ filePath },
 			 	#{ refType },
-			 	#{ refNo },
+			 	SEQ_PLANT_NO.CURRVAL,
 			 	#{ fileAnnotation },
 			 	SYSDATE
 			 	)		  	
