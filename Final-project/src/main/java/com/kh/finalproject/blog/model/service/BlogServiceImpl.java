@@ -11,6 +11,8 @@ import com.kh.finalproject.blog.model.dao.BlogDao;
 import com.kh.finalproject.blog.model.vo.Blog;
 import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
 import com.kh.finalproject.blog.model.vo.Plant;
+import com.kh.finalproject.common.model.dao.CommonDao;
+import com.kh.finalproject.common.model.vo.Files;
 
 @Service
 public class BlogServiceImpl implements BlogService{
@@ -18,13 +20,15 @@ public class BlogServiceImpl implements BlogService{
 	@Autowired
 	private BlogDao blogDao;
 	
+	@Autowired
+	private CommonDao commonDao;
+	
 	@Autowired 
 	private SqlSessionTemplate sqlSession;
 	
 	@Transactional
 	@Override
 	public int insertBlog(Blog b) {
-		
 		blogDao.insertBlog(sqlSession, b);
 		return blogDao.updateMemberBlogNo(sqlSession, b);
 	}
@@ -49,7 +53,10 @@ public class BlogServiceImpl implements BlogService{
 		return (ArrayList<BlogCategorySetting>)blogDao.selectCatogory(sqlSession, blogNo);
 	}
 	
-	public int insertBlogPlant(Plant plant) {
+	@Transactional
+	@Override
+	public int insertBlogPlant(Plant plant, Files file) {
+		commonDao.insertFiles(sqlSession, file);
 		return blogDao.insertBlogPlant(sqlSession, plant);
 	}
 
