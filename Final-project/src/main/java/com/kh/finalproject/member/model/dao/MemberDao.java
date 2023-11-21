@@ -42,6 +42,9 @@ public class MemberDao {
   
   public int loadImg(SqlSessionTemplate sqlSession, String inputFile) {
 	return sqlSession.update("memberMapper.loadImg");
-	  
+  }
+  
+  public int upateMember(SqlSessionTemplate sqlSession, Member m) {
+	  return sqlSession.update("memberMapper.updateMember", m);
   }
 }

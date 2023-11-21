@@ -121,5 +121,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				)
 				
 	</insert>
+	
+	<update id="updateMember" parameterType="member">
+		UPDATE
+				TB_FILE,
+				MEMBER
+		   SET
+				MEM_NICK = #{memNick},
+				EMAIL = #{email}
+		 WHERE
+		 		MEM_ID = #{memId}
+		   		
+	</update>
 
 </mapper>

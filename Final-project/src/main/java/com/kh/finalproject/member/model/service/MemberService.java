@@ -11,6 +11,8 @@ public interface MemberService {
   int joinMember(Member m);
 
   int idCheck(String checkId);
+  
+  int updateMember(Member m);
 
   int setLastLogin(Member m);
 

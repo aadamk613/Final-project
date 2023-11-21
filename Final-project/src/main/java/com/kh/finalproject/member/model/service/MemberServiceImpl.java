@@ -44,12 +44,15 @@ public class MemberServiceImpl implements MemberService {
     return memberDao.ajaxGetMemberList(sqlSession);
   }
 
-
-
-
   @Override
   public int loadImg(String inputFile) {
 	return memberDao.loadImg(sqlSession, inputFile);
 }
+
+
+  @Override
+	public int updateMember(Member m) {
+		return memberDao.updateMember(sqlSession, m);
+	}
 }
 
