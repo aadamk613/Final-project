@@ -1,9 +1,11 @@
 package com.kh.finalproject.experience.model.vo;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data @AllArgsConstructor
+@Setter @Getter @NoArgsConstructor @ToString
 public class Experience {
 
 	private int expNo;

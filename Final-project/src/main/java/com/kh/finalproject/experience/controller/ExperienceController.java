@@ -22,6 +22,7 @@ import com.kh.finalproject.common.model.service.CommonService;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
 import com.kh.finalproject.experience.model.service.ExperienceService;
+import com.kh.finalproject.experience.model.vo.Experience;
 import com.kh.finalproject.experience.model.vo.ExperienceReply;
 
 @Controller
@@ -102,6 +103,24 @@ public class ExperienceController {
 	public String insertExperienceoForm() {
 		return "experience/experienceWrite";
 	}
+	
+	@PostMapping("yrinsertExp.exp")
+	public String insertExperience(Experience exp) {
+//		System.out.println(expCategoryNo);
+//		System.out.println(expWorkDate);
+//		System.out.println(expAddress);
+//		System.out.println();
+		System.out.println(exp.toString());
+		System.out.println(exp.getExpCategoryNo());
+		System.out.println(exp.getExpPeople());
+		return "";
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	

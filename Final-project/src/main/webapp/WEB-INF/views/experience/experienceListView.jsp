@@ -96,7 +96,7 @@ a {
 						  <td>${ el.expCategoryName }</td>
 						  <td><a href="yrdetail.exp?expNo=${ el.expNo }">${ el.expTitle }</a></td>
 						  <td>${ el.expArea }</td>
-						  <td>${ el.expEndDate }</td>
+						  <td>${ el.expCreateDate }</td>
 						  <td>${ el.expWriter }</td>
 						  <td>${ el.expPeople }</td>
 						  <td>${ el.expStatus }</td>

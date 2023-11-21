@@ -32,6 +32,7 @@
 
 input, select{
 	display : block;
+	width : 400px;
 }
 
 #content{
@@ -64,87 +65,51 @@ input, select{
 		            중앙정렬되어있어요 <br>
 		</aside>
 		
-		
 		<section id="pageSection">
-			
-			<h1><input type="text" placeholder="제목을 입력해 주세요." /></h1>
+			<form action="yrinsertExp.exp" method="post">
+			<h1><input type="text" name="expTitle" placeholder="제목을 입력해 주세요."  /></h1>
 			<hr>
 			
 			<div id="summary">
 				<div>
 					<img src="" id="thumb" />
+					<input type="file" name="originalName" />
 				</div>
 				<div>
 					<h5>※필수 입력 사항입니다. </h5>
 					
-					카테고리 : <select id="category">
-						<option value="1">화훼농장</option>
-						<option value="2">과일농장</option>
-						<option value="3">채소농장</option>
-						<option value="4">꽃꽂이</option>
-					</select>
-					체험학습일 : <input type="date" />
-					체험시간 : <input type="number" min=1 max=10 />
-					모집인원 : <input type="number" min=1 max=100 />
+					카테고리 : <select id="category" name="expCategoryNo">
+								<option value="1">화훼농장</option>
+								<option value="2">과일농장</option>
+								<option value="3">채소농장</option>
+								<option value="4">꽃꽂이</option>
+							</select>
+					체험학습일 : <input type="date" name="expWorkDate" />
+					체험시간 : <input type="number" name="expWorkTime" min=1 max=10 />
+					모집인원 : <input type="number" name="expPeople" min=1 max=100 />
 					모집마감일 : <input type="date" />
-					주소 : <input type="text" id="sample5_address" placeholder="주소">
-						<input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
-						<div id="map" style="width:300px;height:300px;margin-top:10px;display:none"></div>
-						<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
+					주소 : 
+						<input type="text" name="expAddress" id="expAddress" placeholder="주소" readonly />
+						<input type="button" value="주소 검색" onclick="searchAddress();"  /><br>
+						<input type="hidden" name="expArea" id="expArea" />
+						<input type="submit" value="등록하기">
 					
 				</div>
 			</div>
-			<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=발급받은 API KEY를 사용하세요&libraries=services"></script>
+			<!-- 주소찾기 API -->
+			<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 			<script>
-			    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-			        mapOption = {
-			            center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
-			            level: 5 // 지도의 확대 레벨
-			        };
-			
-			    //지도를 미리 생성
-			    var map = new daum.maps.Map(mapContainer, mapOption);
-			    //주소-좌표 변환 객체를 생성
-			    var geocoder = new daum.maps.services.Geocoder();
-			    //마커를 미리 생성
-			    var marker = new daum.maps.Marker({
-			        position: new daum.maps.LatLng(37.537187, 127.005476),
-			        map: map
-			    });
-			
-			
-			    function sample5_execDaumPostcode() {
+			    function searchAddress() {
 			        new daum.Postcode({
 			            oncomplete: function(data) {
 			                var addr = data.address; // 최종 주소 변수
-			
 			                // 주소 정보를 해당 필드에 넣는다.
-			                document.getElementById("sample5_address").value = addr;
-			                // 주소로 상세 정보를 검색
-			                geocoder.addressSearch(data.address, function(results, status) {
-			                    // 정상적으로 검색이 완료됐으면
-			                    if (status === daum.maps.services.Status.OK) {
-			
-			                        var result = results[0]; //첫번째 결과의 값을 활용
-			
-			                        // 해당 주소에 대한 좌표를 받아서
-			                        var coords = new daum.maps.LatLng(result.y, result.x);
-			                        // 지도를 보여준다.
-			                        mapContainer.style.display = "block";
-			                        map.relayout();
-			                        // 지도 중심을 변경한다.
-			                        map.setCenter(coords);
-			                        // 마커를 결과값으로 받은 위치로 옮긴다.
-			                        marker.setPosition(coords)
-			                    }
-			                });
+			                document.getElementById("expAddress").value = addr;
+			                document.getElementById("expArea").value = data.sido + ' ' + data.sigungu;
 			            }
 			        }).open();
 			    }
 			</script>
-			
-			
 			
 			<script>
 				console.log(new Date());
@@ -157,9 +122,9 @@ input, select{
 			
 			<br clear="both">
 			
-			<textarea id="content" placeholder="내용을 입력해 주세요." rows="5"></textarea>
+			<textarea id="content" name="expContent" placeholder="내용을 입력해 주세요." rows="5"></textarea>
 			
-			
+			<p>으악</p>
 			
 			
 			
@@ -182,7 +147,7 @@ input, select{
 			
 			
 			
-			
+			</form>
 			
 			
 			

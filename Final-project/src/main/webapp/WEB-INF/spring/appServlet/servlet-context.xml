@@ -46,7 +46,19 @@
 			<mapping path="/deleteHashtags.admin" />
 			<mapping path="/addHashtags.admin" />
 		<!-- 관리자 메뉴 인터셉터 매핑 끝-->
-			<beans:bean class="com.kh.finalproject.common.interceptor.LoginInterceptor" id="loginInterceptor" />
+		
+			<beans:bean class="com.kh.finalproject.common.interceptor.AdminInterceptor" id="AdminInterceptor" />
 		</interceptor>	
+		<interceptor>
+		<!-- 로그인 인터셉터. 추가하실분 밑에다 주석달고 추가바람 -->
+		
+			<!-- 체험학습 게시판 관련 로그인 인터셉터 매핑. (게시글 작성하기) -->
+			<mapping path="/yrinsertExpForm.exp" />
+			<!-- 체험학습 게시판 관련 인터셉터 매핑 끝. -->
+			
+			<beans:bean class="com.kh.finalproject.common.interceptor.LoginInterceptor" id="loginInterceptor" />
+		</interceptor>
+		
+		
 	</interceptors>
 </beans:beans>
