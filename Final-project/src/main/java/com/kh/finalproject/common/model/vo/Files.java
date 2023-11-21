@@ -1,11 +1,10 @@
 package com.kh.finalproject.common.model.vo;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 
-@Data @NoArgsConstructor
+@Data 
 
 public class Files {
 	private int fileNo;
@@ -19,4 +18,4 @@ public class Files {
 	
 }
 
-}
+

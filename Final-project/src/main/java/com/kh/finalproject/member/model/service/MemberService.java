@@ -2,7 +2,9 @@ package com.kh.finalproject.member.model.service;
 
 import com.google.gson.JsonElement;
 import com.kh.finalproject.member.model.vo.Member;
+import com.kh.finalproject.member.model.vo.NaverLogin;
 import java.util.ArrayList;
+import java.util.Map;
 
 public interface MemberService {
 
@@ -19,4 +21,8 @@ public interface MemberService {
   Member selectMember(int memNo);
 
   int editMember(Member m);
+
+  int addNaverProfile(NaverLogin fromJson);
+
+  Member selectNaverProfile(String memId);
 }
