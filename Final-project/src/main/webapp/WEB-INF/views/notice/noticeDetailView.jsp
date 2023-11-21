@@ -66,18 +66,21 @@
 						</div>
 					</div>
 					<hr>
+					
 					<c:choose>
-						<c:when test="${ empty (n.noticeNo eq f.refNo) }">
+						<c:when test="${ empty f }">
 						첨부파일이 없습니다.
 						</c:when>
 						<c:otherwise>
-							<div>
-							첨부파일
-							<a href="${ f.updateName }" download="${ f.originName }">${ f.originName }</a>
-							</div>
+						<div>
+						  첨부파일
+						  <c:forEach var="file" items="${f}">
+						    <a href="/finalProject${file.filePath }${file.updateName}" download="${file.originalName}">${file.originalName}</a>
+						  </c:forEach>
+						</div>
 						</c:otherwise>
-
 					</c:choose>
+					
 					<hr clear="both">
 					<div id="boardContent">
 						${ n.noticeContent }

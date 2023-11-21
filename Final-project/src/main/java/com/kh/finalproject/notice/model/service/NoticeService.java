@@ -42,4 +42,7 @@ public interface NoticeService {
 	// 파일 가져오기
 	ArrayList<Files> selectFile(int noticeNo);
 	
+	// 파일 수정
+	int updateFiles(Files f);
+	
 }

@@ -79,6 +79,9 @@ public class NoticeServiceImpl implements NoticeService{
 		return noticeDao.selectFile(sqlSession, noticeNo);
 	}
 
-	
+	@Override
+	public int updateFiles(Files f) {
+		return noticeDao.updateFiles(sqlSession, f);
+	}
 	
 }

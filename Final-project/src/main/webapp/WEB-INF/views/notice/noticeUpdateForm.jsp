@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>게시글 작성하기</title>
+<title>게시글 수정하기</title>
 
 <link rel="stylesheet" href="resources/css/board/boardEnrollForm.css">
 
@@ -26,7 +26,7 @@
 		<section id="section">
 			
 			<div id="contentTitle">
-				게시글 작성
+				게시글 수정
 			</div>
 			<div id="content">
 				<article>
@@ -40,7 +40,16 @@
 						<input type="text" placeholder="${n.noticeTitle }" name="noticeTitle" required>		
 					</div>
 					<div id="fileWrap">
-						<input type="file" name="upfile">
+						<input type="file" name="reUpfile">
+						현재 업로드된 파일:
+						  <c:forEach var="file" items="${f}">
+						<c:if test="${ not empty file.originalName }">
+						    <a href="/finalProject${file.filePath }${file.updateName}" download="${file.originalName}">${file.originalName}</a>
+						    <input type="hidden" value="${ file.originalName }" name="originalName"/>
+						    <input type="hidden" value="${ file.updateName }" name="updateName"/>
+						    <input type="hidden" value="${ file.fileNo}" name="fileNo"/>
+						</c:if>
+						  </c:forEach>
 					</div>
 					<div id="boardContent">
 					<hr>
