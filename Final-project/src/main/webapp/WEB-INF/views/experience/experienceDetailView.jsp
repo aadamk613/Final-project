@@ -113,24 +113,28 @@ h1 {
 			<div class="container">
 				<!-- 작성자만 보이는 버튼 -->
 				<c:if test="${ sessionScope.loginUser ne requestScope.exp.expWriter }">
-				<div id="forWriter">
-					<button type="button" class="btn btn-primary" onclick="updateExp();">수정하기</button>
-					<button type="button" class="btn btn-danger" onclick="deleteExp();">삭제하기</button>
-				</div>
+					<div id="forWriter">
+						<a class="btn btn-primary" onclick="expSubmit(0);">수정하기</a>
+						<a class="btn btn-danger" onclick="expSubmit(1);">삭제하기</a>
+					</div>
 				</c:if>
+				<!-- 악성유저 방지차원 post방식으로 보내주기 -->
+				<form action="" method="post" id="postForm">
+					<input type="hidden" name="expNo" value="${ exp.expNo }" />
+				</form>
 				
 				<script>
-					function updateExp(){
-						location.href="yrupdateExp.exp?expNo=" + ${ exp.expNo };
-					}
-					
-					function deleteExp(){
-						if(confirm('정말로 삭제하시겠습니까?')){
-							location.href="yrdeleteExp.exp?expNo=" + ${ exp.expNo };
+					function expSubmit(type){
+						if(type == 0){
+							$('#postForm').attr('action', 'yrupdateExp.exp').submit();
 						}
-					}
+						else{
+							if(confirm('정말로 삭제하시겠습니까?')){
+								$('#postForm').attr('action', 'yrdeleteExp.exp').submit();
+							}
+						}
+					};
 				</script>
-				
 	
 				<div class="title">
 					<h1>${ exp.expTitle }</h1>
@@ -285,6 +289,7 @@ h1 {
 				$.ajax({
 					url : "yrselectExpReplyList.exp",
 					data : {expNo : ${ exp.expNo }},
+					
 					success : result => {
 						let value = '';
 						let $resultValue = result;
