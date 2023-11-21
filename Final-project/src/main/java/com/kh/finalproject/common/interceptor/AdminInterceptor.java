@@ -16,14 +16,19 @@ public class AdminInterceptor extends HandlerInterceptorAdapter{
 		
 		// 현재 로그인한 유저가 admin인 경우
 		HttpSession session = request.getSession();
-		if(((Member)session.getAttribute("loginUser")).getMemId().contains("admin")) {
-			return true;
+		if(session.getAttribute("loginUser") != null) {
+			if(((Member)session.getAttribute("loginUser")).getMemId().contains("admin")) {
+				return true;
+			} else {
+				session.setAttribute("alertMsg", "관리자만 이용가능한 페이지입니다.");
+				response.sendRedirect(request.getContextPath());
+				return false;
+			}
 		} else {
-			session.setAttribute("alertMsg", "관리자만 이용가능한 페이지입니다.");
+			session.setAttribute("alertMsg", "로그인 후 이용가능합니다.");
 			response.sendRedirect(request.getContextPath());
 			return false;
 		}
-		
 	}
 
 }

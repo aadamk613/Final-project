@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.kh.finalproject.common.model.service.CommonService;
+import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
 import com.kh.finalproject.experience.model.service.ExperienceService;
@@ -105,7 +106,7 @@ public class ExperienceController {
 	}
 	
 	@PostMapping("yrinsertExp.exp")
-	public String insertExperience(Experience exp) {
+	public String insertExperience(Experience exp, Files file) {
 //		System.out.println(expCategoryNo);
 //		System.out.println(expWorkDate);
 //		System.out.println(expAddress);
@@ -113,6 +114,7 @@ public class ExperienceController {
 		System.out.println(exp.toString());
 		System.out.println(exp.getExpCategoryNo());
 		System.out.println(exp.getExpPeople());
+		System.out.println(file.toString());
 		return "";
 	}
 	

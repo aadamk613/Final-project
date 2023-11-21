@@ -32,7 +32,7 @@
 
 input, select{
 	display : block;
-	width : 400px;
+	width : 80%;
 }
 
 #content{
@@ -72,9 +72,78 @@ input, select{
 			
 			<div id="summary">
 				<div>
-					<img src="" id="thumb" />
-					<input type="file" name="originalName" />
+					<input type="file" name="originalName" id="thumbFile" />
+					<img src="" id="thumb" class="thumbFile" />
 				</div>
+				
+				<script>
+					// 대표 이미지를 클릭하면 파일 업로드 input
+					$(() => {
+						$('#thumbFile').hide();
+						$('#thumb').click(() => {
+							$('#thumbFile').click();
+						});
+					});
+					
+					// input 파일요소가 바뀌면, 이미지가 보여짐
+					$('input[type=file]').on('change', (inputFile) =>{
+						console.log("바껴라");
+						console.log(inputFile.target);
+						console.log(inputFile.target.files);
+						if(inputFile.target.files.length == 1){
+							let reader = new FileReader();
+							reader.readAsDataURL(inputFile.target.files[0]);
+							reader.onload = function(e){
+								console.log(inputFile.target);
+								// $('#thumb').attr('src', e.target.result);
+								console.log("ㅇ오");
+								console.log(inputFile.target.id);
+								const inputFileId = inputFile.target.id;
+								console.log(inputFileId);
+								console.log("직직");
+								console.log($('input[id=' + inputFileId + ']').siblings());
+								// input요소 바로 다음 img의 이미지가 바뀜
+								$('input[id=' + inputFileId + ']').siblings().eq(0).attr('src', e.target.result);
+								// console.log($('img[class=inputFileId]'));
+								// $('img[class='+ inputFileId + ']').attr('src', e.target.result);
+								// console.log($('#thumb'));
+								// inputFile.target.siblings().eq(0).attr('src', e.target.result);
+							}
+						
+							
+							
+							
+							
+						}
+						else{
+							
+						}
+					});
+					/*
+					// onchange="loadImg(this, 1)" 쓰고 하는법 (수업시간에 한거)
+					function loadImg(inputFile, num){
+						console.log("이건 됨");
+						console.log(inputFile);
+						
+						console.log(inputFile.files);
+						if(inputFile.files.length == 1) {// 파일이 첨부
+							let reader = new FileReader();
+							reader.readAsDataURL(inputFile.files[0]);
+							console.log(inputFile.files[0]);
+							reader.onload = function(e){
+								console.log(e);
+								$('#thumb').attr('src', e.target.result);
+							}
+						}
+						
+					}
+					*/
+					
+					// 파일추가를 누르면 input요소와 img가 생성됨
+					
+				
+				</script>
+				
 				<div>
 					<h5>※필수 입력 사항입니다. </h5>
 					
@@ -87,13 +156,12 @@ input, select{
 					체험학습일 : <input type="date" name="expWorkDate" />
 					체험시간 : <input type="number" name="expWorkTime" min=1 max=10 />
 					모집인원 : <input type="number" name="expPeople" min=1 max=100 />
-					모집마감일 : <input type="date" />
+					모집마감일 : <input type="date" name="expEndDate" />
 					주소 : 
 						<input type="text" name="expAddress" id="expAddress" placeholder="주소" readonly />
 						<input type="button" value="주소 검색" onclick="searchAddress();"  /><br>
 						<input type="hidden" name="expArea" id="expArea" />
 						<input type="submit" value="등록하기">
-					
 				</div>
 			</div>
 			<!-- 주소찾기 API -->
@@ -124,7 +192,7 @@ input, select{
 			
 			<textarea id="content" name="expContent" placeholder="내용을 입력해 주세요." rows="5"></textarea>
 			
-			<p>으악</p>
+			
 			
 			
 			
