@@ -1,9 +1,7 @@
 package com.kh.finalproject.admin.model.service;
 
-import com.google.gson.JsonElement;
 import com.kh.finalproject.admin.model.dao.AdminDao;
 import com.kh.finalproject.admin.model.vo.Hashtag;
-import com.kh.finalproject.member.model.vo.Member;
 import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
