@@ -120,9 +120,9 @@ public class NoticeController {
 				for(Files file : fileList) {
 					f.setRefNo(file.getRefNo());
 					f.setRefType(file.getRefType());
-				}
 					System.out.println(f.getRefNo());
 					System.out.println(f.getRefType());
+				}
 					mv.addObject("f", noticeService.selectFile(bno)).setViewName("notice/noticeDetailView");
 					mv.addObject("n", noticeService.selectNotice(bno)).setViewName("notice/noticeDetailView");
 			}

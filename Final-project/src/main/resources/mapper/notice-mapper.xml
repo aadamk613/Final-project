@@ -210,20 +210,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="selectFile" resultType="files">
 		SELECT
-		      FILE_NO
-		     ,ORIGINAL_NAME
-		     ,UPDATE_NAME
-		     ,FILE_PATH
-		     ,REF_TYPE
-		     ,REF_NO
-		     ,FILE_ANNOTATION
-		     ,UPLOAD_DATE
+		      FILE_NO fileNo
+		     ,ORIGINAL_NAME originalName
+		     ,UPDATE_NAME updateName
+		     ,FILE_PATH filePath
+		     ,REF_TYPE refType
+		     ,REF_NO refNo
+		     ,FILE_ANNOTATION fileAnnotation
+		     ,UPLOAD_DATE uploadDate
 		 FROM
 		     TB_FILES
 	    WHERE
 	         REF_NO = #{noticeNo}
+	      AND
+	         REF_TYPE = 'notice'
 		      
 	</select>
 
+	<update id="updateFiles" parameterType="files">
+		UPDATE
+		      TB_FILES
+		   SET
+		      ORIGINAL_NAME = #{originalName}
+		     ,UPDATE_NAME = #{updateName}
+		     ,FILE_ANNOTATION = #{fileAnnotation}
+		 WHERE
+		      FILE_NO = #{fileNo}
+	</update>
 </mapper>
 
