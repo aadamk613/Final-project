@@ -55,69 +55,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		       EXP_WRITER,
 		       EXP_PEOPLE,
 		       EXP_CONTENT,
-		       TO_CHAR(EXP_CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS'),
-		       TO_CHAR(EXP_WORK_DATE, 'YYYY-MM-DD'),
+		       TO_CHAR(EXP_CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') EXP_CREATE_DATE,
+		       TO_CHAR(EXP_WORK_DATE, 'YYYY-MM-DD') EXP_WORK_DATE,
 		       EXP_WORK_TIME, 
-		       TO_CHAR(EXP_END_DATE, 'YYYY-MM-DD HH24:MI'),
+		       TO_CHAR(EXP_END_DATE, 'YYYY-MM-DD HH24:MI') EXP_END_DATE,
 		       EXP_STATUS,
 		       EXP_COUNT,
-		       TO_CHAR(EXP_UPDATE_DATE, 'YYYY-MM-DD'),
+		       TO_CHAR(EXP_UPDATE_DATE, 'YYYY-MM-DD') EXP_UPDATE_DATE,
 		       EXP_AREA,
 		       EXP_ADDRESS,
 		       EXP_CATEGORY_NO,
-		       EXP_CATEGORY_NAME, 
-		       NVL(EXP_LIKE_COUNT, 0),
-		       NVL(EXP_REPLY_COUNT, 0),
-		       NVL(EXP_SUPPORT_COUNT, 0)
+		       EXP_CATEGORY_NAME
 		  FROM
 		       TB_EXPERIENCE 
 		  JOIN 
 		       TB_EXPERIENCE_CATEGORY 
 		 USING 
 		       (EXP_CATEGORY_NO)
-		  LEFT 
-		  JOIN
-		       (SELECT 
-		               COUNT(*) EXP_LIKE_COUNT, 
-		               EXP_NO 
-		          FROM 
-		               TB_EXPERIENCE_LIKE 
-		         GROUP 
-		            BY 
-		               EXP_NO) 
-		 USING
-		       (EXP_NO)
-		  LEFT
-		  JOIN
-		       (SELECT 
-		               COUNT(*) EXP_REPLY_COUNT, 
-		               EXP_NO 
-		          FROM 
-		               TB_EXPERIENCE_REPLY 
-		         GROUP 
-		            BY 
-		               EXP_NO) 
-		 USING
-		       (EXP_NO)
-		  LEFT
-		  JOIN
-		       (SELECT 
-		               COUNT(*) EXP_SUPPORT_COUNT, 
-		               EXP_NO 
-		          FROM 
-		               TB_EXPERIENCE_PEOPLE 
-		         WHERE 
-		               EXP_PEOPLE_STATUS = 'Y'  
-		         GROUP 
-		            BY 
-		               EXP_NO) 
-		 USING 
-		       (EXP_NO)
 		 WHERE 
 		       EXP_STATUS = 'Y'
-		 ORDER 
-		    BY
-		       EXP_NO DESC
+		 ORDER
+		 	BY
+		 	   EXP_CREATE_DATE DESC
 	</select>
 	
 	<!-- 체험학습 조회수 증가 -->
@@ -140,13 +99,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		       EXP_WRITER,
 		       EXP_PEOPLE,
 		       EXP_CONTENT,
-		       TO_CHAR(EXP_CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS'),
-		       TO_CHAR(EXP_WORK_DATE, 'YYYY-MM-DD'),
+		       TO_CHAR(EXP_CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') EXP_CREATE_DATE,
+		       TO_CHAR(EXP_WORK_DATE, 'YYYY-MM-DD') EXP_WORK_DATE,
 		       EXP_WORK_TIME, 
-		       TO_CHAR(EXP_END_DATE, 'YYYY-MM-DD HH24:MI'),
+		       TO_CHAR(EXP_END_DATE, 'YYYY-MM-DD HH24:MI') EXP_END_DATE,
 		       EXP_STATUS,
 		       EXP_COUNT,
-		       TO_CHAR(EXP_UPDATE_DATE, 'YYYY-MM-DD'),
+		       TO_CHAR(EXP_UPDATE_DATE, 'YYYY-MM-DD') EXP_UPDATE_DATE,
 		       EXP_AREA,
 		       EXP_ADDRESS,
 		       EXP_CATEGORY_NO,
