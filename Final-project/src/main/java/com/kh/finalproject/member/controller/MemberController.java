@@ -96,8 +96,11 @@ public class MemberController {
   @RequestMapping("myPage.me")
   public String myPage() {
 	  return "member/mypage";
-
-
-
+  }
+  
+  @RequestMapping("loadImg.me")
+  public String loadImg(String inputFile) {
+	 int loadImg = memberService.loadImg(inputFile);
+	 return "succes";
   }
 }

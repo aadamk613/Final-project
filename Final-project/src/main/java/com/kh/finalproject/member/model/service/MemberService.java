@@ -15,4 +15,6 @@ public interface MemberService {
   int setLastLogin(Member m);
 
   ArrayList<Member> ajaxGetMemberList();
+  
+  int loadImg(String inputFile);
 }

@@ -43,4 +43,13 @@ public class MemberServiceImpl implements MemberService {
   public ArrayList<Member> ajaxGetMemberList() {
     return memberDao.ajaxGetMemberList(sqlSession);
   }
+
+
+
+
+  @Override
+  public int loadImg(String inputFile) {
+	return memberDao.loadImg(sqlSession, inputFile);
 }
+}
+

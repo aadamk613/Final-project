@@ -1,9 +1,12 @@
 package com.kh.finalproject.member.model.dao;
 
-import com.kh.finalproject.member.model.vo.Member;
 import java.util.ArrayList;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
+
+import com.kh.finalproject.common.model.vo.Files;
+import com.kh.finalproject.member.model.vo.Member;
 
 @Repository
 public class MemberDao {
@@ -33,7 +36,12 @@ public class MemberDao {
   }
 
   @SuppressWarnings("unchecked")
-public ArrayList<Member> ajaxGetMemberList(SqlSessionTemplate sqlSession) {
+  public ArrayList<Member> ajaxGetMemberList(SqlSessionTemplate sqlSession) {
     return (ArrayList) sqlSession.selectList("memberMapper.ajaxGetMemberList");
+  }
+  
+  public int loadImg(SqlSessionTemplate sqlSession, String inputFile) {
+	return sqlSession.update("memberMapper.loadImg");
+	  
   }
 }

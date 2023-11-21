@@ -17,7 +17,13 @@
     }
 
 	.introduceMyself{
-		display:block;
+		width:100%;
+		height:200px;
+	}
+
+	.blogAddress{
+		width:100%;
+		height:auto;
 	}
     
     </style>
@@ -47,7 +53,8 @@
 			
 			<article id="pageArticle">
 				
-				<br>
+				<br>  
+				<form action="loadImg.me" method="post" id="profile">
 				<table border="1" align="center">
 					<tr>
 						<td colspan="2" rowspan="2" width="250" height="140">
@@ -55,27 +62,28 @@
 							<input type="file" name="file1" id="file1" onchange="loadImg(this, 1)">
 						</td>
 						<td>닉네임</td>
-						<td width="10" height="60"><input type="text" id="memId" value="${ sessionScope.loginUser.memId }" name="memId"  readonly></td>
+						<td width="10" height="60"><input type="text" id="memNick" value="${ sessionScope.loginUser.memNick }" name="memNick"  readonly></td>
 					</tr>
 					<tr>
 						<td>이메일</td>
-						<td width="130" height="60"><input type="text" id="memNick" value="${ sessionScope.loginUser.email }" name="memNick"></td>
+						<td width="130" height="60"><input type="text" id="memNick" value="${ sessionScope.loginUser.email }" name="email"></td>
 					</tr>
 					<tr>
 						<td height="60" align="center">블로그주소</td>
-						<td colspan="3"><input type="text"></td>
+						<td colspan="3"><input type="text" class="blogAddress"></td>
 					</tr>
 					<tr>
 						<td height="200" align="center">자기소개</td>
 						<td colspan="3"><input type="text" class="introduceMyself"></td>
 					</tr>
 					</table>
+					</form>
 					<br>
 
 				<script>
 					function loadImg(inputFile, num){
-						if(inputFile.files.length == 1) { // 파일이 첨부
-                        // 선택된 파일을 읽어서 영역에 맞는 미리보기
+						if(inputFile.files.length == 1) { // 파일 첨부
+                        // 선택된 파일을 읽어서 영역에 맞게 미리보기
                         // 파일을 읽어들일 FileReader객체 생성
                         let reader = new FileReader();
                         // console.log(inputFile.files[0]);
@@ -97,7 +105,7 @@
 					} else {
                         const str = '';
                         switch(num){
-                            case 1 : $('#titleImg').attr('src', str); break;
+                            case 1 : $('#myPhoto').attr('src', str); break;
 						}
 						}
 					};
@@ -112,10 +120,10 @@
 						<input type="text" class="form-control" id="memId" value="${ sessionScope.loginUser.memId }" name="memId"  readonly><br>
 						
 						<label for="email">닉네임</label>
-						<input type="text" class="form-control" id="memNick" value="${ sessionScope.loginUser.email }" name="memNick">
+						<input type="text" class="form-control" id="memNick" value="${ sessionScope.loginUser.memNick }" name="memNick">
 						
 						<label for="email">이메일</label>
-						<input type="text" class="form-control" id="memNick" value="${ sessionScope.loginUser.email }" name="memNick">
+						<input type="text" class="form-control" id="email" value="${ sessionScope.loginUser.email }" name="email">
 					</div>
 					
 					<br>
