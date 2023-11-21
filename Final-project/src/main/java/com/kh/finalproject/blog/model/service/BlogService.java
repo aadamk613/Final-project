@@ -28,6 +28,12 @@ public interface BlogService {
 	// 블로그 카테고리 생성
 	int insertCategory(BlogCategorySetting blogCateSet);
 	
+	// 블로그 카테고리 수정
+	int updateCatogory(BlogCategorySetting blogCateSet);
+	
+	// 블로그 카테고리 삭제
+	int deleteCatogory(int categorySettingNo);
+	
 	// 블로그 식물 수 조회
 	int selectListCountPlant(int blogNo);
 	
@@ -36,13 +42,7 @@ public interface BlogService {
 	
 	// 식물 등록
 	int insertBlogPlant(Plant plant, Files file);
-	
-	// 블로그 카테고리 수정
-	
-	
-	// 블로그 카테고리 삭제
-	
-	
+
 	// 블로그 일반 글 쓰기
 	
 	

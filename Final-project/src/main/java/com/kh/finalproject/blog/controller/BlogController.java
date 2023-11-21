@@ -31,13 +31,12 @@ public class BlogController {
 	// 블로그 생성 화면으로 이동
 	@RequestMapping("insertForm.bl")
 	public String insertFormBlog() {
-		return "blog/blogInsertForm.jsp";
+		return "blog/blogInsertForm";
 	}
 	
 	// 블로그 생성하기
 	@RequestMapping("insert.bl") 
 	public String insertBlog(Blog b, HttpSession session) {
-		System.out.println(b);
 		if(blogService.insertBlog(b) > 0) {
 			session.setAttribute("alertMsg", "블로그 생성에 실패했습니다.");
 			return "blog/blogMainView";
@@ -46,6 +45,8 @@ public class BlogController {
 		}
 	}
 	
+	
+	// ---------- 블로그 기본 정보 관련 메서드 ---------- 
 	// 블로그 정보 불러오기
 	@ResponseBody
 	@RequestMapping(value="select.bl", produces="application/json; charset=UTF-8") 
@@ -57,7 +58,6 @@ public class BlogController {
 		  .addObject("list", list) // 해당 블로그의 BlogCategorySetting정보
 		  .setViewName("blog/blogView");
 		
-		System.out.println("블로그 섹렉트 컨트롤러 : " + blog);
 		//System.out.println("selectBlog에서 카테고리 list : " + list);
 		
 		return mv;
@@ -90,6 +90,7 @@ public class BlogController {
 		return mv;
 	}
 	
+	// ---------- 블로그 카테고리 관련 메서드 ---------- 
 	// 블로그 카테고리 관리 화면으로 이동
 	@RequestMapping("updateForm.bl_ct") 
 	public ModelAndView categoryFormBlog(int blogNo, ModelAndView mv) {
@@ -101,7 +102,7 @@ public class BlogController {
 	// 블로그 카테고리 생성하기
 	@ResponseBody
 	@RequestMapping(value="insert.bl_ct", produces="application/json; charset=UTF-8") 
-	public String insertCategory(int blogNo, int categoryNo, ModelAndView mv) {
+	public String insertCategoryBlog(int blogNo, int categoryNo, ModelAndView mv) {
 		BlogCategorySetting blogCateSet = new BlogCategorySetting();
 		blogCateSet.setBlogNo(blogNo);
 		blogCateSet.setCategoryNo(categoryNo);
@@ -113,7 +114,7 @@ public class BlogController {
 	// 블로그 카테고리 조회
 	@ResponseBody
 	@RequestMapping(value="select.bl_ct", produces="application/json; charset=UTF-8") 
-	public String selectCatogory(int blogNo, ModelAndView mv) {
+	public String selectCatogoryBlog(int blogNo, ModelAndView mv) {
 		ArrayList<BlogCategorySetting> list = blogService.selectCatogory(blogNo);
 		//System.out.println("selectCatogory에서 list : " + list);
 		
@@ -125,6 +126,30 @@ public class BlogController {
 	}
 	
 
+	// 블로그 카테고리 수정
+	@ResponseBody
+	@RequestMapping(value="update.bl_ct", produces="text/html; charset=UTF-8")
+	public String updateCategoryBlog(int blogNo, int categorySettingNo, 
+									 String categoryMemName) {
+		
+		System.out.println("categorySettingNo: " +categorySettingNo + "  categoryMemName : " +categoryMemName);
+		BlogCategorySetting blogCateSet = new BlogCategorySetting();
+		blogCateSet.setCategoryMemName(categoryMemName);
+		blogCateSet.setCategorySettingNo(categorySettingNo);
+		
+		System.out.println(blogCateSet);
+		return blogService.updateCatogory(blogCateSet) > 0 ? "카테고리 변경 성공" : "카테고리 변경 실패";
+	}
+	
+	// 블로그 카테고리 삭제
+	@ResponseBody
+	@RequestMapping(value="delete.bl_ct", produces="text/html; charset=UTF-8")
+	public String deleteCategoryBlog(int blogNo, int categorySettingNo, 
+									 ModelAndView mv) {
+		
+		return (blogService.deleteCatogory(categorySettingNo) > 0) ? "카테고리 삭제 성공" : "카테고리 삭제 실패";
+		
+	}
 	
 	
 	

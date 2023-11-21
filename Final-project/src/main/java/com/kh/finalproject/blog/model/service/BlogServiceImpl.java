@@ -44,6 +44,8 @@ public class BlogServiceImpl implements BlogService{
 		return blogDao.updateBlog(sqlSession, blog);
 	}
 	
+	
+	// -----------------------------------------
 	@Override
 	public int insertCategory(BlogCategorySetting blogCateSet) {
 		return blogDao.insertCategory(sqlSession, blogCateSet);
@@ -54,6 +56,18 @@ public class BlogServiceImpl implements BlogService{
 		return (ArrayList<BlogCategorySetting>)blogDao.selectCatogory(sqlSession, blogNo);
 	}
 	
+	@Override
+	public int updateCatogory(BlogCategorySetting blogCateSet) {
+		System.out.println("카테고리 바꾸기 service"+blogCateSet);
+		return blogDao.updateCatogory(sqlSession, blogCateSet);
+	}
+
+	@Override
+	public int deleteCatogory(int categorySettingNo) {
+		return blogDao.deleteCatogory(sqlSession, categorySettingNo);
+	}
+	
+	// -----------------------------------------
 	@Transactional
 	@Override
 	public int insertBlogPlant(Plant plant, Files file) {
@@ -72,5 +86,7 @@ public class BlogServiceImpl implements BlogService{
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit()); // offset부터 pi.getBoardLimit()개 조회 
 		return blogDao.selectListPlant(sqlSession, blogNo, rowBounds);
 	}
+
+
 
 }

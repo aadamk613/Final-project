@@ -21,6 +21,7 @@ public class CommonServiceImpl implements CommonService{
 	// 첨부파일 조회
 	@Override
 	public ArrayList<Files> selectFiles(HashMap map) {
+		System.out.println("첨부파일 조회 service " + map);
 		return commonDao.selectFiles(sqlSession, map);
 	}
 

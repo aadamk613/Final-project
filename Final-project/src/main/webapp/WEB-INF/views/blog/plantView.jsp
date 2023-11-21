@@ -98,7 +98,7 @@ textarea{
                     <div id="plantInfoWrap">
                         <div id="plantImg">
                         	식물 사진
-							<img src="${ files.filePath }/${ files.updateName }" class="files" />
+							<img src="${ fileList[0].filePath }/${ fileList[0].updateName }" class="files" />
 						</div>
                         <div id="plantImfo">
                             <ul>
