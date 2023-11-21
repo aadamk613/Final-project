@@ -32,7 +32,8 @@ public class MemberDao {
     return sqlSession.update("memberMapper.setLastLogin", m);
   }
 
-  public ArrayList<Member> ajaxGetMemberList(SqlSessionTemplate sqlSession) {
+  @SuppressWarnings("unchecked")
+public ArrayList<Member> ajaxGetMemberList(SqlSessionTemplate sqlSession) {
     return (ArrayList) sqlSession.selectList("memberMapper.ajaxGetMemberList");
   }
 }

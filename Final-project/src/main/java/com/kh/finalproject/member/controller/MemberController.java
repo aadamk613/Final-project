@@ -84,7 +84,7 @@ public class MemberController {
     }
   }
   @ResponseBody // 포워딩 해줄게 아니라서
-  @RequestMapping
+  @RequestMapping("idCheck.me")
   public String idCheck(String checkId) {
 
 	  //System.out.println(checkId);
@@ -97,8 +97,6 @@ public class MemberController {
   public String myPage() {
 	  return "member/mypage";
 
-    int count = memberService.idCheck(checkId);
-    return count > 0 ? "NNNNN" : "NNNNY";
 
 
   }
