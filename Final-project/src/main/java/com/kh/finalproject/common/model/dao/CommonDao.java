@@ -15,5 +15,11 @@ public class CommonDao {
 	public ArrayList<Files> selectFiles(SqlSessionTemplate sqlSession, HashMap map) {
 		return (ArrayList)sqlSession.selectList("commonMapper.selectFiles", map);
 	}
+	
+	// 첨부파일 등록
+	public int insertFiles(SqlSessionTemplate sqlSession, Files file) {
+		System.out.println("요서문제구나");
+		return sqlSession.insert("commonMapper.insertFiles", file);
+	}
 
 }

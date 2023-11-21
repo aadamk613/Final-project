@@ -34,10 +34,14 @@
     justify-content: center;
 }
 
+#insert-btn{
+	float : right;
+	margin : 5px 0px;
+}
+
 a {
 	text-decoration : none;
 }
-
 
 </style>
 
@@ -61,8 +65,14 @@ a {
 		
 		<!-- 게시판 -->
 		<section id="pageSection">
-		
-			<h1>체험학습</h1>
+			
+			<div>
+				<h1>체험학습</h1>
+				
+				<c:if test="${ empty loginUser }">
+					<button type="button" class="btn btn-primary" id="insert-btn" onclick="location.href='yrinsertExpForm.exp'">작성하기</button>
+				</c:if>
+			</div>
 			
 			<div class="table-sm">
 			<table class="table table-bordered">
@@ -132,12 +142,10 @@ a {
 			</div>
 			
 			<script>
-				
 				$(function(){
 					$('.pagination > li:contains(${ pi.currentPage })').attr('class', 'page-item active');
 					
 				});
-				
 			</script>
 			
 			<!-- 게시글삭제성공 -->

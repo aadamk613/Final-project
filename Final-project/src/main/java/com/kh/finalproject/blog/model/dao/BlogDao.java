@@ -2,6 +2,7 @@ package com.kh.finalproject.blog.model.dao;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -41,9 +42,15 @@ public class BlogDao {
 		System.out.println(plant);
 		return sqlSession.insert("blogMapper.insertBlogPlant", plant);
 	}
-
-	public ArrayList<Plant> selectListPlant(SqlSessionTemplate sqlSession, int blogNo) {
-		return (ArrayList)sqlSession.selectList("blogMapper.selectListPlant", blogNo);
+	
+	
+	public int selectListCountPlant(SqlSessionTemplate sqlSession, int blogNo) {
+		return sqlSession.selectOne("blogMapper.selectListCountPlant", blogNo);
 	}
+
+	public ArrayList<Plant> selectListPlant(SqlSessionTemplate sqlSession, int blogNo, RowBounds rowBounds) {
+		return (ArrayList)sqlSession.selectList("blogMapper.selectListPlant", blogNo, rowBounds);
+	}
+
 
 }

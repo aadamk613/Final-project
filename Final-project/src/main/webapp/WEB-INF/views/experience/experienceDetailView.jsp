@@ -17,8 +17,6 @@
 	box-sizing: border-box;
 }
 
-
-
 .container > div {
 	
 }
@@ -57,23 +55,17 @@ h1 {
 .files{
 	width : 80%;
 	height : 400px;
-	
 }
 
 .summary{
 	
 }
 
-
 .summary li {
 	list-style : none;
 	align : center;
 	
 }
-
-
-
-
 
 <!-- 댓글 --!>
 #commentWrap {width: 100%; height: auto;}
@@ -120,7 +112,7 @@ h1 {
 		<section id="pageSection">
 			<div class="container">
 				<!-- 작성자만 보이는 버튼 -->
-				<c:if test="${ sessionScope.loginUser eq requestScope.exp.expWriter }">
+				<c:if test="${ sessionScope.loginUser ne requestScope.exp.expWriter }">
 				<div id="forWriter">
 					<button type="button" class="btn btn-primary" onclick="updateExp();">수정하기</button>
 					<button type="button" class="btn btn-danger" onclick="deleteExp();">삭제하기</button>
@@ -133,7 +125,9 @@ h1 {
 					}
 					
 					function deleteExp(){
-						location.href="yrdeleteExp.exp?expNo=" + ${ exp.expNo };
+						if(confirm('정말로 삭제하시겠습니까?')){
+							location.href="yrdeleteExp.exp?expNo=" + ${ exp.expNo };
+						}
 					}
 				</script>
 				
@@ -225,14 +219,19 @@ h1 {
 					<div>
 						댓글
 						<table id="reply">
-							<tr>
-								<th>사진</th>
-								<th>닉네임</th>
-								<th>수정여부</th>
-								<th>하트</th>
-								<td>내용</td>
-								<td>수정일</td>
-							</tr>
+							<thead>
+								<tr>
+									<th>사진</th>
+									<th>아이디</th>
+									<th>내용</th>
+									<th>작성일</th>
+									<th>좋아요</th>
+									<th>비밀글</th>
+								</tr>
+							</thead>
+							<tbody>
+							
+							</tbody>
 						</table>
 					</div>
 				</div>
@@ -252,7 +251,7 @@ h1 {
 				
 				const data = {
 						expNo : '${ exp.expNo }',
-						replyWriter : 'user01',
+						replyWriter : 'user01',  // 로그인 유저로 바꿔야 함 ${ loginUser.memId }
 						replyContent : $('#commentContentInsert').val(),
 						replySecret : $('input[type=checkbox]:checked').length
 				};
@@ -265,6 +264,11 @@ h1 {
 					data :JSON.stringify(data), 
 					success : result => {
 						console.log(result);
+						if(result == 'success'){
+							$('#commentContentInsert').val('');
+							$('input[type=checkbox]:checked').prop('checked', false);
+							selectReply();
+						}
 					},
 					error : () => {
 						console.log("체험학습 댓글 작성 통신 오류");
@@ -274,34 +278,60 @@ h1 {
 			
 			// 댓글 조회기능
 			$(() => {
+				selectReply();
+			});
+			
+			function selectReply(){
 				$.ajax({
 					url : "yrselectExpReplyList.exp",
 					data : {expNo : ${ exp.expNo }},
 					success : result => {
 						let value = '';
 						let $resultValue = result;
-						for(let i in result){
-							value =+ '<tr>'
-								   + '<th>' + '사진' + '</th>'
-								   + '<th>' + result[i].replyWriter + '</th>'
-								   <c:if test="${ not empty result[i].replyModifyDate }">
-								   + '<th>' + result[i].replyModifyDate + '</th>'
-								   </c:if>
-								   + '<th>' + '하트' + '</th>'
-								   + '<td>' + result[i].replyContent + '</td>'
-								   + '<th>' + result[i].replyModifyDate + '</th>'
-								   + '</tr>'
-						}
-						$('#reply').append(value);
 						
+						// 비밀글은 댓글작성자와 게시글작성자만 보여지게 하기
+						for(let i in result){
+							console.log("뭐로 나올까");
+							console.log(result[i].replyModifyDate);
+							
+							if((result[i].replySecret == 'N') || 
+								((result[i].replySecret == 'Y') && ('user02' == result[i].replyWriter || ${ 'user02' eq exp.expWriter } ))) {
+								
+									console.log("일치여부 확인");
+									console.log(result);
+									// console.log(${ result[i].expNo });
+									value += '<tr>'
+										   + '<td>' + '사진' + '</td>'
+										   + '<td>' + result[i].replyWriter + '</td>'
+										   + '<td>' + result[i].replyContent + '</td>'
+										   // 수정했다면 수정일 보여주기
+										   <c:choose>
+											   <c:when test="${ not empty result[i].replyModifyDate }" >
+											   + '<td>' + result[i].replyModifyDate + '수정됨 </td>'
+											   </c:when>
+											   <c:otherwise>
+											   + '<td>' + result[i].replyCreateDate + '</td>'
+											   </c:otherwise>
+										   </c:choose>
+										   + '<td>' + '♥' + '</th>'
+										   if(result[i].replySecret == 'Y'){
+											   value += '<td>' + '<input type="checkbox" disabled checked />' + '</th>';
+										   } 
+										   + '</tr>'
+							} 
+							else {
+								value += '<tr><td colspan=6>' + '비밀댓글입니다' + '</td></tr>';
+							}
+							
+						}
+						$('#reply > tbody').html(value);
 					},
 					error : () => {
 						console.log("체험학습 게시글 댓글 조회 통신 오류");
 					}
+					
 				});
-				
-			});
-			
+			}
 		</script>
 		
 

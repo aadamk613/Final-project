@@ -4,9 +4,11 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +17,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.kh.finalproject.common.model.service.CommonService;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
 import com.kh.finalproject.experience.model.service.ExperienceService;
+import com.kh.finalproject.experience.model.vo.ExperienceReply;
 
 @Controller
 public class ExperienceController {
@@ -43,7 +47,7 @@ public class ExperienceController {
 		System.out.println(expNo);
 		
 		// 조회수 증가 성공 시 
-		if(experienceService.increaseCount(expNo) > 0 ) {
+		if(experienceService.increaseCount(expNo) > 0 ) { 
 			// 게시글 상세조회
 			model.addAttribute("exp", experienceService.selectExperience(expNo));
 			// 첨부파일 조회
@@ -69,12 +73,49 @@ public class ExperienceController {
 	
 	@ResponseBody
 	@PostMapping("yrinsertExpReply.exp")
-	public String insertExpReply(@RequestBody String expReply) {
+	public String insertExpReply(@RequestBody String newReply) throws ParseException {
 		// System.out.println(expNo);
-		System.out.println(expReply);
+		System.out.println(newReply);
+		// {"expNo":"61","replyWriter":"user01","replyContent":"ㅁㄴㅇㄹ","replySecret":0}
 		
-		return "success";
+		// 버전 2.8.6
+		//JsonObject jobj = JsonParser.parseString(expReply).getAsJsonObject();
+		// 버전 2.8.5
+		JsonObject jobj = new JsonParser().parse(newReply).getAsJsonObject();
+		System.out.println(jobj);
+		// {"expNo":"61","replyWriter":"user01","replyContent":"ㅁㄴㅇㄹ","replySecret":0}
+		
+		System.out.println(jobj.get("expNo").getAsInt()); // 61
+		System.out.println(jobj.get("replyContent")); // "ㅁㄴㅇㄹ"
+		
+		// set해서 넣어줄 수 밖에 없음 (null일수도 있으니까 이렇게 해주는게 맞음)
+		ExperienceReply expReply = new ExperienceReply();
+		expReply.setExpNo(jobj.get("expNo").getAsInt());
+		expReply.setReplyContent(jobj.get("replyContent").getAsString());
+		expReply.setReplyWriter(jobj.get("replyWriter").getAsString());
+		expReply.setReplySecret((jobj.get("replySecret").getAsInt() > 0) ? "Y" : "N");
+		
+		return (experienceService.insertExpReply(expReply) > 0) ? "success" : "fail";
 	}
+	
+	@GetMapping("yrinsertExpForm.exp")
+	public String insertExperienceoForm() {
+		return "experience/experienceWrite";
+	}
+	
+	
+	
+	@GetMapping("yrupdateExp.exp")
+	public String updateExperienceForm(int expNo) {
+		System.out.println("여긴 체험학습 게시글 수정하기");
+		System.out.println(expNo);
+		return "";
+	}
+	
+	
+	
+	
+	
 	
 	@RequestMapping("yrdeleteExp.exp")
 	public String deleteExperience(int expNo, HttpSession session) {

@@ -16,7 +16,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<typeAlias type="com.kh.finalproject.blog.model.vo.PlantReport" alias="plantReport"/>
 		<typeAlias type="com.kh.finalproject.board.model.vo.Board" alias="board"/>
 		<typeAlias type="com.kh.finalproject.chat.model.vo.Chat" alias="chat"/>
-		<typeAlias type="com.kh.finalproject.common.model.vo.Common" alias="common"/>
+		<typeAlias type="com.kh.finalproject.common.model.vo.Files" alias="files"/>
 		<typeAlias type="com.kh.finalproject.experience.model.vo.Experience" alias="experience"/>
 		<typeAlias type="com.kh.finalproject.experience.model.vo.ExperienceReply" alias="experienceReply" />
 		<typeAlias type="com.kh.finalproject.garden.model.vo.Garden" alias="garden"/>
