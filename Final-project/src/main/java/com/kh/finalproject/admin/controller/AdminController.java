@@ -145,7 +145,7 @@ public class AdminController {
 
   @PostMapping("editMember.admin")
   public ModelAndView editMember(Member m, ModelAndView mv, HttpSession session) {
-	System.out.println(m);
+    System.out.println(m);
     mv.addObject("numTicket", adminService.getTicketNumber()).setViewName("admin/adminMemberView");
     if (memberService.editMember(m) > 0) {
       session.setAttribute("alertMsg", "회원 정보를 성공적으로 수정하였습니다!");

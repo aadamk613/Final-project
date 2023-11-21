@@ -91,6 +91,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				)
 	</insert>
 
+
 	<select id="idCheck" parameterType="string" resultType="_int">
 		SELECT 
 				COUNT(*)
@@ -121,4 +122,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE 
 			MEM_NO = #{memNo}
 	</update>
+	<select id="selectNaverProfile" parameterType="string" resultMap="memberResultSet">
+		SELECT
+			MEM_NO,
+			MEM_STATUS,
+			MEM_TEMP,
+			MEM_ID,
+			EMAIL,
+			MEM_NICK,
+			MEM_IMG,
+			REG_BUSINESS,
+			BLOG_NO,
+			TO_CHAR(LAST_LOGIN, 'YYYY/MM/DD HH24:MI:SS') LAST_LOGIN
+		FROM 
+			MEMBER
+		WHERE 
+			MEM_ID = #{memId}
+	</select>
+	<insert id="addNaverProfile" parameterType="naver">
+		INSERT
+			INTO
+				MEMBER
+				(
+				MEM_NO,
+				MEM_STATUS,
+				MEM_ID,
+				MEM_NICK,
+				EMAIL,
+				MEM_IMG
+				)
+		VALUES
+				(
+				SEQ_MEMBER_NO.NEXTVAL,
+				'U',
+				#{id},
+				#{nickname},
+				#{email},
+				#{profile_image}
+				)
+	</insert>
 </mapper>

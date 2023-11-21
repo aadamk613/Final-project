@@ -2,7 +2,11 @@ package com.kh.finalproject.member.model.service;
 
 import com.kh.finalproject.member.model.dao.MemberDao;
 import com.kh.finalproject.member.model.vo.Member;
+import com.kh.finalproject.member.model.vo.NaverLogin;
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,5 +51,15 @@ public class MemberServiceImpl implements MemberService {
   @Override
   public int editMember(Member m) {
     return memberDao.editMember(sqlSession, m);
+  }
+
+  @Override
+  public int addNaverProfile(NaverLogin nv) {
+    return memberDao.addNaverProfile(sqlSession, nv);
+  }
+
+  @Override
+  public Member selectNaverProfile(String memId) {
+    return memberDao.selectNaverProfile(sqlSession, memId);
   }
 }

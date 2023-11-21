@@ -107,13 +107,11 @@
 										</form>
 										</table>
 									</div>
-									
 									<!-- Modal footer -->
 									<div class="modal-footer">
 										<button type="button" onclick="submitForm();" class="btn btn-warning" data-dismiss="modal">수정</button>
 										<button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
 								</div>
-
 							</div>
 						</div>
 					</div>
