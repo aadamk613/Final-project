@@ -59,10 +59,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 	#{ refType },
 
 			 	<choose>
-			 		<when test=${ refType='plant' }>
+			 		<when test="refType='plant'">
 			 			SEQ_PLANT_NO.CURRVAL,
 			 		</when>
-			 		<when test=${ refType='experience' }>
+			 		<when test="refType='experience'">
 			 			SEQ_EXPERIENCE.CURRVAL,
 			 		</when>
 			 		<otherwise>
