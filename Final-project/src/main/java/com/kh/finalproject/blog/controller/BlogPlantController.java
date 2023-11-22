@@ -50,6 +50,8 @@ public class BlogPlantController {
 		//System.out.println("식물 리스트 : "+list);
 
 		mv.addObject("list", list)
+		  .addObject("pi", pi)
+		  .addObject("blogNo", blogNo)
 		  .setViewName("blog/plantView");
 		return mv;
 	}
