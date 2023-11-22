@@ -1,26 +1,29 @@
 package com.kh.finalproject.experience.model.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.kh.finalproject.common.model.dao.CommonDao;
 import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.experience.model.dao.ExperienceDao;
 import com.kh.finalproject.experience.model.vo.Experience;
 import com.kh.finalproject.experience.model.vo.ExperienceReply;
 
-@Service
+@Service 
 public class ExperienceServiceImpl implements ExperienceService {
 	
 	@Autowired
 	private ExperienceDao experienceDao;
 	@Autowired
 	private SqlSessionTemplate sqlSession;
+	@Autowired
+	private CommonDao commonDao;
 
 	@Override
 	public int selectListCount() {
@@ -51,6 +54,17 @@ public class ExperienceServiceImpl implements ExperienceService {
 	}
 
 	@Override
+	@Transactional
+	public int insertExperience(Experience exp, ArrayList<Files> fileList) {
+		int result = experienceDao.insertExperience(sqlSession, exp);
+		for(Files file : fileList) {
+			result *= commonDao.insertFiles(sqlSession, file);
+		}
+		return result;
+	}
+	
+	
+	@Override
 	public int deleteExperience(int expNo) {
 		return experienceDao.deleteExperience(sqlSession, expNo);
 	}
@@ -59,6 +73,7 @@ public class ExperienceServiceImpl implements ExperienceService {
 	public int insertExpReply(ExperienceReply expReply) {
 		return experienceDao.insertExpReply(sqlSession, expReply);
 	}
+
 	
 	
 

@@ -9,5 +9,8 @@ public interface CommonService {
 	
 	// 첨부파일조회
 	ArrayList<Files> selectFiles(HashMap map);
+	
+	// 첨부파일등록
+	
 
 }

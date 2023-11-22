@@ -33,6 +33,10 @@ public class ExperienceDao {
 		return (ArrayList)sqlSession.selectList("experienceMapper.selectReplyList", expNo);
 	}
 
+	public int insertExperience(SqlSessionTemplate sqlSession, Experience exp) {
+		return sqlSession.insert("experienceMapper.insertExperience", exp);
+	}
+	
 	public int deleteExperience(SqlSessionTemplate sqlSession, int expNo) {
 		return sqlSession.update("experienceMapper.deleteExperience", expNo);
 	}
@@ -40,6 +44,7 @@ public class ExperienceDao {
 	public int insertExpReply(SqlSessionTemplate sqlSession, ExperienceReply expReply) {
 		return sqlSession.insert("experienceMapper.insertExpReply", expReply);
 	}
+
 	
 	
 	
