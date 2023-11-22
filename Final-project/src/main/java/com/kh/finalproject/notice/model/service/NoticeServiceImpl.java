@@ -21,6 +21,7 @@ public class NoticeServiceImpl implements NoticeService{
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 
+	
 	@Override
 	public int selectNoticeListCount() {
 		return noticeDao.selectNoticeCount(sqlSession);
@@ -63,7 +64,10 @@ public class NoticeServiceImpl implements NoticeService{
 	public int deleteNotice(int noticeNo) {
 		return noticeDao.deleteNotice(sqlSession, noticeNo);
 	}
-
+	@Override
+	public int deleteFile(int noticeNo) {
+		return noticeDao.deleteFile(sqlSession, noticeNo);
+	}
 	@Override
 	public int updateNotice(Notice n) {
 		return noticeDao.updateNotice(sqlSession, n);

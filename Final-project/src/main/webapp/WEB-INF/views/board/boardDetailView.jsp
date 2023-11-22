@@ -28,13 +28,13 @@
 			
 			<div id="contentTitleWrap">
 				<div id="contentTitle">
-					${ n.category == 1 ? "공지게시글" : '필독게시글'}
+				일반게시글
 				</div>
 			</div>
 			<div id="content">
 				<article>
 					<div id="boardHeader">
-						<div id="title">${ n.noticeTitle }</div>		
+						<div id="title">${ b.boardTitle }</div>		
 					</div>
 					<div id="writerInfoWrap">
 						<div id="writerThumbnail">
@@ -44,7 +44,7 @@
 						</div>
 						<div id="writeIdWrap">
 							<div id="writerId">
-										<a id="writerIdButton">${ n.memNo }</a>
+										<a id="writerIdButton">${ b.memNo }</a>
 							<div id="writeInfoHidden">
 								<ul id="writeInfoHiddenUl">
 									<li><a href="#">게시글 보기</a></li>
@@ -58,7 +58,7 @@
 					</div>
 					<div id="boardInfor">	
 						<div id="boardDate">
-							${ n.noticeCreateDate }&nbsp;&nbsp;&nbsp;&nbsp;조회 ${ n.views }
+							${ b.boardCreateDate }&nbsp;&nbsp;&nbsp;&nbsp;조회 ${ b.views }
 						</div>
 					</div>
 					<hr>
@@ -79,25 +79,25 @@
 					
 					<hr clear="both">
 					<div id="boardContent">
-						${ n.noticeContent }
+						${ b.boardContent }
 					</div>
 					<div id="boardlikeWrap">
 						<c:choose>
 						<c:when test="${ loginUser ne null }" >
 							<c:choose>
-								<c:when test="${ b.likeMem eq 1 }">
+								<c:when test="${ n.likeMem eq 1 }">
 									<img src="resources/images/fullHeart.png" alt="하트" >
-									<a href="#" id="like" class="like">좋아요</a>&nbsp;${ n.likeCount } 
+									<a href="#" id="like" class="like">좋아요</a>&nbsp;${ b.likeCount } 
 								</c:when>
 								<c:otherwise>
 									<img src="resources/images/emptyHeart.png" alt="빈하트">
-									<a href="#" id="like" class="like">좋아요</a>&nbsp;${ n.likeCount } 
+									<a href="#" id="like" class="like">좋아요</a>&nbsp;${ b.likeCount } 
 								</c:otherwise>
 							</c:choose>
 						</c:when>
 						<c:otherwise>
 							<img src="resources/images/fullHeart.png" alt="빈하트">
-					 		<a href='#' onclick="alert('로그인 후 이용 가능한 기능입니다.');" id="like" class="like">좋아요</a>&nbsp;${ n.likeCount } 
+					 		<a href='#' onclick="alert('로그인 후 이용 가능한 기능입니다.');" id="like" class="like">좋아요</a>&nbsp;${ b.likeCount } 
 						</c:otherwise>
 						</c:choose>
 						
@@ -111,7 +111,7 @@
 
 			<div id="page">
 				<div id="writeWrap">
-						<c:if test="${ loginUser.memNick eq n.memNo }" >
+						<c:if test="${ loginUser.memNick eq b.memNo }" >
 							<a class="btn btn-light" onclick="postFormSubmit(0);">수정</a>
 							<a class="btn btn-light" onclick="postFormSubmit(1);">삭제</a>
 						</c:if>
@@ -123,16 +123,16 @@
 			</div>
 			
 			<form action="" method="post" id="postForm">
-				<input type="hidden" name="bno" value="${ n.noticeNo }">
+				<input type="hidden" name="bno" value="${ b.boardNo }">
 			</form>
 			
 			<script>
 				function postFormSubmit(num) {
 					if(num == 0) {
-						$('#postForm').attr('action', 'updateForm.no').submit();				
+						$('#postForm').attr('action', 'updateForm.bo').submit();				
 					}
 					else {
-						$('#postForm').attr('action', 'delete.no').submit();				
+						$('#postForm').attr('action', 'delete.bo').submit();				
 					}
 				}
 			</script>

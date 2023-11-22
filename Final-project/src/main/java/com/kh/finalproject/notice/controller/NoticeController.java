@@ -56,7 +56,7 @@ public class NoticeController {
 	
 	// 공지사항 작성폼 이동
 	@RequestMapping("enrollForm.no")
-	public String enrollForm() {
+	public String noticenrollForm() {
 		return "notice/noticeEnrollForm";
 	}
 	
@@ -120,8 +120,6 @@ public class NoticeController {
 				for(Files file : fileList) {
 					f.setRefNo(file.getRefNo());
 					f.setRefType(file.getRefType());
-					System.out.println(f.getRefNo());
-					System.out.println(f.getRefType());
 				}
 					mv.addObject("f", noticeService.selectFile(bno)).setViewName("notice/noticeDetailView");
 					mv.addObject("n", noticeService.selectNotice(bno)).setViewName("notice/noticeDetailView");
@@ -139,7 +137,7 @@ public class NoticeController {
 	public String deleteNotice(int bno, HttpSession session) {
 
 		if(noticeService.deleteNotice(bno) > 0) {
-			
+			noticeService.deleteFile(bno);
 			session.setAttribute("alertMsg", "ㅎㅎㅎ");
 			return "redirect:list.no";
 		} else {
@@ -147,6 +145,7 @@ public class NoticeController {
 			return "common/errorPage";
 		}
 	}
+	
 
 	// 공제사항 수정폼
 	@PostMapping("updateForm.no")
@@ -164,14 +163,14 @@ public class NoticeController {
 		if(!reUpfile.getOriginalFilename().equals("")) {
 			
 			if(f.getOriginalName() != null) {
-				new File(session.getServletContext().getRealPath(f.getUpdateName())).delete();
+				new File(session.getServletContext().getRealPath("resources/uploadFiles/notice/"+f.getUpdateName())).delete();
+				System.out.println(session.getServletContext().getRealPath("resources/uploadFiles/notice"+f.getUpdateName()));
+				f.setOriginalName(reUpfile.getOriginalFilename());
+				f.setUpdateName(saveFile(reUpfile, session));
+				
 			}
-			f.setOriginalName(reUpfile.getOriginalFilename());
-			f.setUpdateName(saveFile(reUpfile, session));
 		}
-		System.out.println(f.getOriginalName());
-		System.out.println(f.getUpdateName());
-		
+		noticeService.updateFiles(f);
 		if(noticeService.updateNotice(n) > 0 ) {
 			session.setAttribute("alertMsg", "성공");
 			return "redirect:detail.no?bno=" + n.getNoticeNo();
