@@ -16,6 +16,14 @@
     border: 1px solid skyblue;
 	box-sizing: border-box;
 }
+
+#blogTitle{
+	font-size: 25px; 
+	font-weight: bold; 
+	padding: 20px;
+	color: #00610C;
+}
+	
 #plantInfoWrap > div{float: left;}
 #plantInfoWrap{width: 100%; height: auto;}
 

@@ -117,7 +117,7 @@
 						
 						<br clear="both">
 						
-						<button>뒤로 가기</button>
+						<a href="javascript:window.history.back();"><button >뒤로 가기</button></a>
 					</div>
 					
 
