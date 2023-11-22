@@ -61,16 +61,27 @@ public class NoticeServiceImpl implements NoticeService{
 
 	@Override
 	public int deleteNotice(int noticeNo) {
-		return 0;
+		return noticeDao.deleteNotice(sqlSession, noticeNo);
 	}
 
 	@Override
-	public int updateNotice(int noticeNo) {
-		return 0;
+	public int updateNotice(Notice n) {
+		return noticeDao.updateNotice(sqlSession, n);
 	}
 
+	@Override
+	public int selectLastNoticeNo() {
+		return noticeDao.selectLastNoticeNo(sqlSession);
+	}
 
+	@Override
+	public ArrayList<Files> selectFile(int noticeNo) {
+		return noticeDao.selectFile(sqlSession, noticeNo);
+	}
 
-	
+	@Override
+	public int updateFiles(Files f) {
+		return noticeDao.updateFiles(sqlSession, f);
+	}
 	
 }
