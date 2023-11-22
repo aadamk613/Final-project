@@ -165,11 +165,10 @@ public class NoticeController {
 				new File(session.getServletContext().getRealPath(f.getUpdateName())).delete();
 				f.setOriginalName(reUpfile.getOriginalFilename());
 				f.setUpdateName(saveFile(reUpfile, session));
-				System.out.println(f.getOriginalName());
-				System.out.println(f.getUpdateName());
+				
 			}
 		}
-		
+		noticeService.updateFiles(f);
 		if(noticeService.updateNotice(n) > 0 ) {
 			session.setAttribute("alertMsg", "성공");
 			return "redirect:detail.no?bno=" + n.getNoticeNo();

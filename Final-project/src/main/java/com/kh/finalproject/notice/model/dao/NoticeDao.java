@@ -57,7 +57,7 @@ public class NoticeDao {
 	}
 
 	public int updateFiles(SqlSessionTemplate sqlSession, Files f) {
-		return sqlSession.update("noticeMapper.updateFiles");
+		return sqlSession.update("noticeMapper.updateFiles", f);
 	}
 	
 	
