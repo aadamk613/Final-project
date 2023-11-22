@@ -2,7 +2,6 @@ package com.kh.finalproject.experience.controller;
 
 import java.util.ArrayList;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.simple.parser.ParseException;
@@ -201,8 +200,17 @@ public class ExperienceController {
 		return "redirect:yrlist.exp";
 	}
 
-	
-	
+	@ResponseBody
+	@GetMapping("yrexpLike")
+	public String expLike(int expNo, int like) {
+		System.out.println(expNo);
+		System.out.println(like);
+		// 좋아요라면 
+		if(like > 0) {
+			
+		}
+		return "true";
+	}
 	
 	
 	
