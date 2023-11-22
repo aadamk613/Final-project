@@ -137,7 +137,7 @@ a{
 				<script type="text/javascript">
 					var naver_id_login = new naver_id_login("RoTjq9rTwVYvgRm6M73T", "http://localhost:8001/final/naverLogin.me");
 					var state = naver_id_login.getUniqState();
-					naver_id_login.setButton("white", 3,60);
+					naver_id_login.setButton("green", 3,50);
 					naver_id_login.setDomain("http://localhost:8001/final");
 					naver_id_login.setState(state);
 					naver_id_login.setPopup();
