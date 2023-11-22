@@ -56,7 +56,7 @@
                                 <a href="list.no" class="naviText">공지사항</a>
                             </li>
                             <li>
-                                <a href="#" class="naviText">자유게시판</a>
+                                <a href="list.bo" class="naviText">자유게시판</a>
                             </li>
                 </ul>
 

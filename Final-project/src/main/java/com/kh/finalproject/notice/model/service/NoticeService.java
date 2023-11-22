@@ -33,6 +33,9 @@ public interface NoticeService {
 	// 게시글 삭제하기
 	int deleteNotice(int noticeNo);
 	
+	// 파일 삭제
+	int deleteFile(int noticeNo);
+	
 	// 게시글 수정하기
 	int updateNotice(Notice n);
 

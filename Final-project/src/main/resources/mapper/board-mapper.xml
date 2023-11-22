@@ -5,6 +5,85 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="boardMapper">
 	
+	<resultMap id="boardResultSet" type="board">
+		<result column="BOARD_NO" property="boardNo" />
+		<result column="BOARD_TITLE" property="boardTitle" />
+		<result column="BOARD_CONTENT" property="boardContent" />
+		<result column="VIEWS" property="views" />
+		<result column="BOARD_CREATE_DATE" property="boardCreateDate" />
+		<result column="LIKE_COUNT" property="likeCount" />
+		<result column="COMMENT_COUNT" property="commentCount" />
+		<result column="MEM_NICK" property="memNo" />
+	</resultMap>	
+		<select id="selectBoardCount" resultType="_int">
+		SELECT
+		      COUNT(*)
+		  FROM
+		      TB_BOARD
+		 WHERE
+		      STATUS = 'Y'
+		   AND
+		      IS_BLIND = 'N'
+	</select>
 	
-	
+	<select id="selectBoardList" resultMap="boardResultSet">
+			SELECT
+			      BOARD_NO
+			     ,BOARD_TITLE
+			     ,BOARD_CONTENT
+			     ,VIEWS
+			     ,TO_CHAR(BOARD_CREATE_DATE, 'YYYY-MM-DD') AS "BOARD_CREATE_DATE"
+			     ,LIKE_COUNT
+			     ,COMMENT_COUNT
+			     ,MEM_NICK
+			 FROM
+			     TB_BOARD
+			INNER
+			 JOIN
+			     MEMBER ON(TB_BOARD.MEM_NO = MEMBER.MEM_NO)
+			WHERE
+			     STATUS='Y'
+			  AND
+			     IS_BLIND = 'N'
+			ORDER
+			   BY
+			     BOARD_NO DESC
+	</select>
+ 
+		<select id="selectBestBoard" resultMap="boardResultSet">
+          SELECT 
+			    BOARD_NO
+			     ,BOARD_TITLE
+			     ,BOARD_CONTENT
+			     ,VIEWS
+			     ,BOARD_CREATE_DATE
+			     ,LIKE_COUNT
+			     ,COMMENT_COUNT
+			     ,MEM_NICK 
+			FROM
+			  (SELECT
+			      BOARD_NO
+			     ,BOARD_TITLE
+			     ,BOARD_CONTENT
+			     ,TB.VIEWS VIEWS
+			     ,TO_CHAR(BOARD_CREATE_DATE, 'YYYY-MM-DD') AS "BOARD_CREATE_DATE"
+			     ,TB.LIKE_COUNT LIKE_COUNT
+			     ,COMMENT_COUNT
+			     ,MEM_NICK
+			FROM
+			    TB_BOARD TB
+	  INNER JOIN
+			    MEMBER ON (TB.MEM_NO = MEMBER.MEM_NO)
+		   WHERE
+			    TB.STATUS = 'Y'
+			 AND 
+			    IS_BLIND = 'N'
+			 AND
+			    TB.LIKE_COUNT &gt; 50
+		ORDER BY
+			    TB.LIKE_COUNT DESC, BOARD_NO DESC)
+	       WHERE 
+	            ROWNUM BETWEEN 1 AND 5
+		</select>
+
 </mapper>

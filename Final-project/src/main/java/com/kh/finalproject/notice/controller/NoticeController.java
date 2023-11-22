@@ -137,7 +137,7 @@ public class NoticeController {
 	public String deleteNotice(int bno, HttpSession session) {
 
 		if(noticeService.deleteNotice(bno) > 0) {
-			
+			noticeService.deleteFile(bno);
 			session.setAttribute("alertMsg", "ㅎㅎㅎ");
 			return "redirect:list.no";
 		} else {
@@ -145,6 +145,7 @@ public class NoticeController {
 			return "common/errorPage";
 		}
 	}
+	
 
 	// 공제사항 수정폼
 	@PostMapping("updateForm.no")
@@ -162,7 +163,8 @@ public class NoticeController {
 		if(!reUpfile.getOriginalFilename().equals("")) {
 			
 			if(f.getOriginalName() != null) {
-				new File(session.getServletContext().getRealPath(f.getUpdateName())).delete();
+				new File(session.getServletContext().getRealPath("resources/uploadFiles/notice/"+f.getUpdateName())).delete();
+				System.out.println(session.getServletContext().getRealPath("resources/uploadFiles/notice"+f.getUpdateName()));
 				f.setOriginalName(reUpfile.getOriginalFilename());
 				f.setUpdateName(saveFile(reUpfile, session));
 				
