@@ -85,6 +85,8 @@ public class KakaoLoginService {
     returnMe.put("id", responseObj.get("id").toString());
     returnMe.put("nickname", kakaoAccount.get("nickname").toString());
     returnMe.put("profile_image", kakaoAccount.get("profile_image").toString());
+    urlConnection.disconnect();
+    br.close();
     return returnMe;
   }
 }

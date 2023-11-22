@@ -163,6 +163,7 @@ public class MemberController {
     }
     memberService.setLastLogin(loginUser);
     session.setAttribute("loginUser", loginUser);
+    System.out.println(loginUser);
     return "redirect:/";
   }
 }
