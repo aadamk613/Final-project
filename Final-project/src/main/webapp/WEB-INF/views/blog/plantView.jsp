@@ -96,7 +96,10 @@ textarea{
                 <c:forEach var="p" items="${ list }">
 				<article>
                     <div id="plantInfoWrap">
-                        <div id="plantImg">식물사진</div>
+                        <div id="plantImg">
+                        	식물 사진
+							<img src="${ fileList[0].filePath }/${ fileList[0].updateName }" class="files" />
+						</div>
                         <div id="plantImfo">
                             <ul>
                                 <li id="plantName">식물 이름 : ${ p.plantName }</li>
@@ -133,7 +136,7 @@ textarea{
 						console.log(plantNo);
 						console.log(plantNickName);
 						
-			    	 location.href= 'insertForm.bl.pr/' +  plantNo + '/' + category + '/' + plantNickName;
+			    	 location.href= 'insertForm.bl.pr.' +  plantNo + '.' + category + '.' + plantNickName;
 
 		
 			    };

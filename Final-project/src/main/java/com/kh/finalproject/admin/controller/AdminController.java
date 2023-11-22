@@ -3,12 +3,13 @@ package com.kh.finalproject.admin.controller;
 import com.google.gson.Gson;
 import com.kh.finalproject.admin.model.service.AdminService;
 import com.kh.finalproject.admin.model.vo.Hashtag;
+import com.kh.finalproject.member.model.service.MemberService;
+import com.kh.finalproject.member.model.vo.Member;
 import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.apache.ibatis.annotations.Delete;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class AdminController {
 
   @Autowired private AdminService adminService;
+  @Autowired private MemberService memberService;
 
+  /**
+   * @param mv
+   * @return ModelAndView
+   */
   @GetMapping("main.admin")
   public ModelAndView mainView(ModelAndView mv) {
     mv.addObject("numTicket", adminService.getTicketNumber()).setViewName("admin/adminMainView");
@@ -89,30 +95,15 @@ public class AdminController {
   }
 
   @GetMapping("memberView.admin")
-  public String memberView() {
-    return "admin/adminMemberView";
+  public ModelAndView memberView(ModelAndView mv) {
+    mv.addObject("numTicket", adminService.getTicketNumber()).setViewName("admin/adminMemberView");
+    return mv;
   }
 
   @GetMapping("hashtag.admin")
-  public String hashtagView() {
-    return "admin/adminHashtag";
-  }
-
-  @ResponseBody
-  @GetMapping(value = "ajaxHashtagList.admin", produces = "application/json; charset=UTF-8")
-  public String ajaxGetHashtagList() {
-    return new Gson().toJson(adminService.getHashtagList());
-  }
-
-  @ResponseBody
-  @GetMapping(value = "ajaxGetHashtag.admin", produces = "application/json; charset=UTF-8")
-  public String ajaxGetHashtag() {
-    ArrayList<Hashtag> list = adminService.getHashtagList();
-    ArrayList<String> returnMe = new ArrayList<>();
-    for (Hashtag tag : list) {
-      returnMe.add("'" + tag.getTagName() + "'");
-    }
-    return new Gson().toJson(returnMe);
+  public ModelAndView hashtagView(ModelAndView mv) {
+    mv.addObject("numTicket", adminService.getTicketNumber()).setViewName("admin/adminHashtag");
+    return mv;
   }
 
   /**
@@ -150,5 +141,40 @@ public class AdminController {
       m.addAttribute("alertMsg", "해시태그 추가 실패!!!");
     }
     return "redirect:hashtag.admin";
+  }
+
+  @PostMapping("editMember.admin")
+  public ModelAndView editMember(Member m, ModelAndView mv, HttpSession session) {
+    System.out.println(m);
+    mv.addObject("numTicket", adminService.getTicketNumber()).setViewName("admin/adminMemberView");
+    if (memberService.editMember(m) > 0) {
+      session.setAttribute("alertMsg", "회원 정보를 성공적으로 수정하였습니다!");
+    } else {
+      session.setAttribute("errorMsg", "회원 정보 수정 실패!");
+    }
+    return mv;
+  }
+
+  @ResponseBody
+  @GetMapping(value = "ajaxHashtagList.admin", produces = "application/json; charset=UTF-8")
+  public String ajaxGetHashtagList() {
+    return new Gson().toJson(adminService.getHashtagList());
+  }
+
+  @ResponseBody
+  @GetMapping(value = "ajaxGetHashtag.admin", produces = "application/json; charset=UTF-8")
+  public String ajaxGetHashtag() {
+    ArrayList<Hashtag> list = adminService.getHashtagList();
+    ArrayList<String> returnMe = new ArrayList<>();
+    for (Hashtag tag : list) {
+      returnMe.add("'" + tag.getTagName() + "'");
+    }
+    return new Gson().toJson(returnMe);
+  }
+
+  @ResponseBody
+  @GetMapping(value = "ajaxSelectMember.admin", produces = "application/json; charset=UTF-8")
+  public String ajaxSelectMember(int memNo) {
+    return new Gson().toJson(memberService.selectMember(memNo));
   }
 }

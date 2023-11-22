@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>로그인 화면</title>
+<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 </head>
 <style>
 
@@ -129,7 +131,18 @@ a{
 					</ul>
 					
 				</div>
-
+				 <!-- 네이버 로그인 버튼 노출 영역 -->
+				<div align="center" id="naver_id_login"></div>
+				<!-- //네이버 로그인 버튼 노출 영역 -->
+				<script type="text/javascript">
+					var naver_id_login = new naver_id_login("RoTjq9rTwVYvgRm6M73T", "http://localhost:8001/final/naverLogin.me");
+					var state = naver_id_login.getUniqState();
+					naver_id_login.setButton("white", 3,60);
+					naver_id_login.setDomain("http://localhost:8001/final");
+					naver_id_login.setState(state);
+					naver_id_login.setPopup();
+					naver_id_login.init_naver_id_login();
+				</script>
 				</article>
 			</div>
 			

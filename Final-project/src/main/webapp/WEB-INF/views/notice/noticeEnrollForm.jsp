@@ -35,7 +35,7 @@
 					<div id="boardCategoryWrap">
 						<select name="category" id="boardCategory">
 							<option value="1">공지사항</option>
-							<option value="2">독사항</option>
+							<option value="2">필독사항</option>
                         </select>
 					</div>
 					<div id="boardHeader">
@@ -43,6 +43,9 @@
 					</div>
 					<div id="fileWrap">
 						<input type="file" name="upfile">
+						<input type="hidden" name="refType" value="notice">
+						<input type="hidden" name="filePath" value="/resources/uploadFiles/notice/">
+						
 					</div>
 					<div id="boardContent">
 					<hr>

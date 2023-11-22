@@ -1,6 +1,17 @@
 package com.kh.finalproject.member.controller;
 
+
+import com.google.gson.Gson;
+import com.kh.finalproject.member.model.service.MemberService;
+import com.kh.finalproject.member.model.service.NaverLoginService;
+import com.kh.finalproject.member.model.vo.Member;
+import com.kh.finalproject.member.model.vo.NaverLogin;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.http.HttpSession;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -8,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -21,6 +33,7 @@ public class MemberController {
 
   @Autowired private BCryptPasswordEncoder bcryptPasswordEncoder;
   @Autowired private MemberService memberService;
+  @Autowired private NaverLoginService naverLoginService;
 
   @RequestMapping("loginForm.me")
   public String loginForm() {
@@ -33,7 +46,6 @@ public class MemberController {
   //    return new Gson().toJson(memberService.selectMember(memNo));
   //  }
 
-  
   @ResponseBody
   @GetMapping(value = "getMemberList.me", produces = "application/json; charset=UTF-8")
   public String ajaxGetMemberList() {
@@ -85,21 +97,21 @@ public class MemberController {
       return "../common/errorPage.jsp";
     }
   }
+
   @ResponseBody // 포워딩 해줄게 아니라서
   @RequestMapping("idCheck.me")
   public String idCheck(String checkId) {
 
-	  //System.out.println(checkId);
-	  int count = memberService.idCheck(checkId);
-	  System.out.println(count);
-	  return count > 0 ? "NNNNN" : "NNNNY";
+    // System.out.println(checkId);
+    int count = memberService.idCheck(checkId);
+    System.out.println(count);
+    return count > 0 ? "NNNNN" : "NNNNY";
   }
 
   @RequestMapping("myPage.me")
   public String myPage() {
 	  return "member/mypage";
   }
-  
   @RequestMapping("loadImg.me")
   public String loadImg(String inputFile) {
 	 int loadImg = memberService.loadImg(inputFile);
@@ -123,8 +135,42 @@ public class MemberController {
 			// /WEB-INF/views/ 		common/errorPage		.jsp
 			return "common/errorPage";
 		}
-	  
-	
-	  
+
+  @GetMapping("naverLogin.me")
+  public String naverLogin() {
+    return "member/naverLoginCallback";
+  }
+
+  /**
+   * @param accessToken
+   * @param session
+   * @return String
+   */
+  @GetMapping("naverLoginCallback.me")
+  public String naverLoginCallback(String accessToken, HttpSession session) throws Exception {
+    String header = "Bearer " + accessToken;
+    String apiURL = "https://openapi.naver.com/v1/nid/me";
+    Map<String, String> requestHeaders = new HashMap<>();
+    requestHeaders.put("Authorization", header);
+    String profile = naverLoginService.get(apiURL, requestHeaders);
+    NaverLogin nv = new NaverLogin();
+    JSONParser parser = new JSONParser();
+    Object obj = parser.parse(profile);
+    JSONObject jsonObj = (JSONObject)obj;
+    JSONObject responseObj = (JSONObject) jsonObj.get("response");
+    nv.setId((String)responseObj.get("id"));
+    nv.setNickname((String)responseObj.get("nickname"));
+    nv.setEmail((String)responseObj.get("email"));
+    nv.setProfile_image((String)responseObj.get("profile_image"));
+    // 지금 로그인한 네이버 프로필이 DB에 없으면 DB에 추가
+    Member loginUser = memberService.selectNaverProfile(nv.getId());
+    if (loginUser == null) {
+      memberService.addNaverProfile(nv);
+      loginUser = memberService.selectNaverProfile(nv.getId());
+    }
+    memberService.setLastLogin(loginUser);
+    session.setAttribute("loginUser", loginUser);
+    return "redirect:/";
+>>>>>>> main
   }
 }

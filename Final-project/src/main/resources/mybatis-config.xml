@@ -10,23 +10,20 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 
 	<typeAliases>
 		<typeAlias type="com.kh.finalproject.auction.model.vo.Auction" alias="auction"/>
-
 		<typeAlias type="com.kh.finalproject.blog.model.vo.Blog" alias="blog"/>
 		<typeAlias type="com.kh.finalproject.blog.model.vo.BlogCategorySetting" alias="blogCategorySetting"/>
 		<typeAlias type="com.kh.finalproject.blog.model.vo.Plant" alias="plant"/>
 		<typeAlias type="com.kh.finalproject.blog.model.vo.PlantReport" alias="plantReport"/>
-		
 		<typeAlias type="com.kh.finalproject.board.model.vo.Board" alias="board"/>
 		<typeAlias type="com.kh.finalproject.chat.model.vo.Chat" alias="chat"/>
-		<typeAlias type="com.kh.finalproject.common.model.vo.Common" alias="common"/>
+		<typeAlias type="com.kh.finalproject.common.model.vo.Files" alias="files"/>
 		<typeAlias type="com.kh.finalproject.experience.model.vo.Experience" alias="experience"/>
 		<typeAlias type="com.kh.finalproject.experience.model.vo.ExperienceReply" alias="experienceReply" />
 		<typeAlias type="com.kh.finalproject.garden.model.vo.Garden" alias="garden"/>
 		<typeAlias type="com.kh.finalproject.member.model.vo.Member" alias="member"/>
+		<typeAlias type="com.kh.finalproject.member.model.vo.NaverLogin" alias="naver" />
 		<typeAlias type="com.kh.finalproject.notice.model.vo.Notice" alias="notice"/>
-
 		<typeAlias type="com.kh.finalproject.common.model.vo.Files" alias="files"/>
-
 		<typeAlias type="com.kh.finalproject.ticket.model.vo.Ticket" alias="ticket"/>
 		<typeAlias type="com.kh.finalproject.admin.model.vo.Hashtag" alias="hashtag"/>
 

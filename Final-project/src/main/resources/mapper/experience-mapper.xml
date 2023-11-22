@@ -27,6 +27,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="EXP_SUPPORT_COUNT" property="expSupportCount" />
 	</resultMap>
 	
+	<resultMap id="expReplyResultSet" type="experienceReply">
+		<result column="EXP_REPLY_NO" property="expReplyNo" />
+		<result column="REPLY_WRITER" property="replyWriter" />
+		<result column="REPLY_CREATE_DATE" property="replyCreateDate" />
+		<result column="REPLY_CONTENT" property="replyContent" />
+		<result column="REPLY_STATUS" property="replyStatus" />
+		<result column="REPLY_MODIFY_DATE" property="replyModifyDate" />
+		<result column="REPLY_SECRET" property="replySecret" />
+	</resultMap>
+	
 	<!-- 체험학습 목록 개수 조회 -->
 	<select id="selectListCount" resultType="_int">
 		SELECT 
@@ -45,69 +55,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		       EXP_WRITER,
 		       EXP_PEOPLE,
 		       EXP_CONTENT,
-		       TO_CHAR(EXP_CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS'),
-		       TO_CHAR(EXP_WORK_DATE, 'YYYY-MM-DD'),
+		       TO_CHAR(EXP_CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') EXP_CREATE_DATE,
+		       TO_CHAR(EXP_WORK_DATE, 'YYYY-MM-DD') EXP_WORK_DATE,
 		       EXP_WORK_TIME, 
-		       TO_CHAR(EXP_END_DATE, 'YYYY-MM-DD HH24:MI'),
+		       TO_CHAR(EXP_END_DATE, 'YYYY-MM-DD HH24:MI') EXP_END_DATE,
 		       EXP_STATUS,
 		       EXP_COUNT,
-		       TO_CHAR(EXP_UPDATE_DATE, 'YYYY-MM-DD'),
+		       TO_CHAR(EXP_UPDATE_DATE, 'YYYY-MM-DD') EXP_UPDATE_DATE,
 		       EXP_AREA,
 		       EXP_ADDRESS,
 		       EXP_CATEGORY_NO,
-		       EXP_CATEGORY_NAME, 
-		       NVL(EXP_LIKE_COUNT, 0),
-		       NVL(EXP_REPLY_COUNT, 0),
-		       NVL(EXP_SUPPORT_COUNT, 0)
+		       EXP_CATEGORY_NAME
 		  FROM
 		       TB_EXPERIENCE 
 		  JOIN 
 		       TB_EXPERIENCE_CATEGORY 
 		 USING 
 		       (EXP_CATEGORY_NO)
-		  LEFT 
-		  JOIN
-		       (SELECT 
-		               COUNT(*) EXP_LIKE_COUNT, 
-		               EXP_NO 
-		          FROM 
-		               TB_EXPERIENCE_LIKE 
-		         GROUP 
-		            BY 
-		               EXP_NO) 
-		 USING
-		       (EXP_NO)
-		  LEFT
-		  JOIN
-		       (SELECT 
-		               COUNT(*) EXP_REPLY_COUNT, 
-		               EXP_NO 
-		          FROM 
-		               TB_EXPERIENCE_REPLY 
-		         GROUP 
-		            BY 
-		               EXP_NO) 
-		 USING
-		       (EXP_NO)
-		  LEFT
-		  JOIN
-		       (SELECT 
-		               COUNT(*) EXP_SUPPORT_COUNT, 
-		               EXP_NO 
-		          FROM 
-		               TB_EXPERIENCE_PEOPLE 
-		         WHERE 
-		               EXP_PEOPLE_STATUS = 'Y'  
-		         GROUP 
-		            BY 
-		               EXP_NO) 
-		 USING 
-		       (EXP_NO)
 		 WHERE 
 		       EXP_STATUS = 'Y'
-		 ORDER 
-		    BY
-		       EXP_NO DESC
+		 ORDER
+		 	BY
+		 	   EXP_CREATE_DATE DESC
 	</select>
 	
 	<!-- 체험학습 조회수 증가 -->
@@ -130,13 +99,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		       EXP_WRITER,
 		       EXP_PEOPLE,
 		       EXP_CONTENT,
-		       TO_CHAR(EXP_CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS'),
-		       TO_CHAR(EXP_WORK_DATE, 'YYYY-MM-DD'),
+		       TO_CHAR(EXP_CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') EXP_CREATE_DATE,
+		       TO_CHAR(EXP_WORK_DATE, 'YYYY-MM-DD') EXP_WORK_DATE,
 		       EXP_WORK_TIME, 
-		       TO_CHAR(EXP_END_DATE, 'YYYY-MM-DD HH24:MI'),
+		       TO_CHAR(EXP_END_DATE, 'YYYY-MM-DD HH24:MI') EXP_END_DATE,
 		       EXP_STATUS,
 		       EXP_COUNT,
-		       TO_CHAR(EXP_UPDATE_DATE, 'YYYY-MM-DD'),
+		       TO_CHAR(EXP_UPDATE_DATE, 'YYYY-MM-DD') EXP_UPDATE_DATE,
 		       EXP_AREA,
 		       EXP_ADDRESS,
 		       EXP_CATEGORY_NO,
@@ -207,6 +176,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		       TB_EXPERIENCE_REPLY
 		 WHERE 
 		       EXP_NO = #{ expNo }
+		 ORDER
+		 	BY
+		 	   REPLY_CREATE_DATE DESC
 	</select>
 	
 	<update id="deleteExperience" parameterType="_int">
@@ -220,6 +192,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   	    EXP_NO = #{ expNo }
 	</update>
 	
+	<!-- 체험학습 게시글 댓글 작성 -->
+	<insert id="insertExpReply" parameterType="experienceReply">
+		INSERT 
+		  INTO 
+		  	   TB_EXPERIENCE_REPLY
+		  	   (
+		  	  	EXP_REPLY_NO,
+				REPLY_WRITER,
+				REPLY_CONTENT,
+				REPLY_SECRET,
+				EXP_NO
+		  	   )
+		VALUES 
+			   (
+			   SEQ_EXPERIENCE_REPLY.NEXTVAL,
+			   #{ replyWriter },
+			   #{ replyContent },
+			   #{ replySecret },
+			   #{ expNo }
+			   )
+	</insert>
 
 	
 	

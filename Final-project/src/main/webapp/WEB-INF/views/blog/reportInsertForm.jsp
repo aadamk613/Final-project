@@ -115,10 +115,10 @@ textarea{
 			
 			<div id="content">
 				<article>
-					<form method="post" action="insert.bl_pl" enctype="multipart/form-data">  
+					<form method="post" action="insert.bl_pl" enctype="multipart/form-data" enctype="multipart/form-data">  
 					<input type="hidden" name="blogNo" value="${ blogNo }"/>
                     <div id="plantInfoWrap">
-                        <div id="plantImg"><input type="file" name="" id="plantInput"/>
+                        <div id="plantImg"><input type="file" name="upfile" id="plantInput"/>
                         	<img src="resources/images/defaultPlant.png" id="plantImgInput">
                         </div>
                         <div id="plantImfo">

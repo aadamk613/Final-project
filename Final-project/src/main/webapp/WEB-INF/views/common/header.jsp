@@ -23,6 +23,18 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
 
+    <!-- Alertify -->
+	<!-- JavaScript -->
+	<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+	<!-- CSS -->
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+	<!-- Default theme -->
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+	<!-- Semantic UI theme -->
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+	<!-- Bootstrap theme -->
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+
 </head>
 
 <body>
@@ -65,12 +77,14 @@
 			</div>
 		</div>
 		
-		<c:if test="${ not empty alertMsg }">
+		<c:if test="${ not empty sessionScope.alertMsg }">
 			<script>
-				alert('alertMsg');
+				alertify.alert('접근제한', '${ sessionScope.alertMsg }', function(){alertify.success('확인')});
 			</script>
 			<c:remove var="alertMsg" scope="session"/>
 		</c:if>
+		
+		
 		
 </body>
 </html>
