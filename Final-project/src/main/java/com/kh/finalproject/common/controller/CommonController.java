@@ -1,25 +1,40 @@
 package com.kh.finalproject.common.controller;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.finalproject.common.model.service.CommonService;
 import com.kh.finalproject.common.model.vo.Files;
 
 @Controller
 public class CommonController {
+	
+	@Autowired
+	private CommonService commonService;
 
 	@RequestMapping("main")
 	public String mainPage() {
 		return "common/main";
 	}
+	
+	
+	public ArrayList<Files> selectFiles(int refNo, String string) {
+		HashMap<Object, Object> map = new HashMap();
+		map.put("refNo", refNo);
+		map.put("refType", "EXPERIENCE");
+		
+		return commonService.selectFiles(map);
+	}
+	
 	
 	/** @author  
 	 * @param upfile
@@ -45,8 +60,14 @@ public class CommonController {
 		file.setOriginalName(originalName);
 		file.setUpdateName(changeName);
 
-			return file;
-		}
+		return file;
+	}
+
+
+
+
+
+
 	
 	
 }

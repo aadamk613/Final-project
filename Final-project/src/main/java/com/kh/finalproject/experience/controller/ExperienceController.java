@@ -1,7 +1,8 @@
 package com.kh.finalproject.experience.controller;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.simple.parser.ParseException;
@@ -14,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.kh.finalproject.common.model.service.CommonService;
-import com.kh.finalproject.common.model.vo.Files;
+import com.kh.finalproject.common.controller.CommonController;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
 import com.kh.finalproject.experience.model.service.ExperienceService;
@@ -32,7 +33,7 @@ public class ExperienceController {
 	@Autowired
 	private ExperienceService experienceService;
 	@Autowired
-	private CommonService commonService;
+	private CommonController commonController;
 	
 	@RequestMapping("yrlist.exp")
 	public String seleceExperienceList(@RequestParam(value="page", defaultValue="1") int currentPage, Model model){
@@ -53,10 +54,12 @@ public class ExperienceController {
 			// 게시글 상세조회
 			model.addAttribute("exp", experienceService.selectExperience(expNo));
 			// 첨부파일 조회
-			HashMap map = new HashMap();
-			map.put("refNo", expNo);
-			map.put("refType", "EXPERIENCE");
-			model.addAttribute("files", commonService.selectFiles(map));
+			
+			// HashMap map = new HashMap();
+			// map.put("refNo", expNo);
+			// map.put("refType", "EXPERIENCE");
+			
+			model.addAttribute("files", commonController.selectFiles(expNo, "experience"));
 			return "experience/experienceDetailView";
 		// 조회수 증가 실패 시	
 		} else {
@@ -84,11 +87,11 @@ public class ExperienceController {
 		//JsonObject jobj = JsonParser.parseString(expReply).getAsJsonObject();
 		// 버전 2.8.5
 		JsonObject jobj = new JsonParser().parse(newReply).getAsJsonObject();
-		System.out.println(jobj);
+		// System.out.println(jobj);
 		// {"expNo":"61","replyWriter":"user01","replyContent":"ㅁㄴㅇㄹ","replySecret":0}
 		
-		System.out.println(jobj.get("expNo").getAsInt()); // 61
-		System.out.println(jobj.get("replyContent")); // "ㅁㄴㅇㄹ"
+		// System.out.println(jobj.get("expNo").getAsInt()); // 61
+		// System.out.println(jobj.get("replyContent")); // "ㅁㄴㅇㄹ"
 		
 		// set해서 넣어줄 수 밖에 없음 (null일수도 있으니까 이렇게 해주는게 맞음)
 		ExperienceReply expReply = new ExperienceReply();
@@ -106,7 +109,7 @@ public class ExperienceController {
 	}
 	
 	@PostMapping("yrinsertExp.exp")
-	public String insertExperience(Experience exp, Files file) {
+	public String insertExperience(Experience exp, ArrayList<MultipartFile> upfile, HttpServletRequest request) {
 //		System.out.println(expCategoryNo);
 //		System.out.println(expWorkDate);
 //		System.out.println(expAddress);
@@ -114,7 +117,24 @@ public class ExperienceController {
 		System.out.println(exp.toString());
 		System.out.println(exp.getExpCategoryNo());
 		System.out.println(exp.getExpPeople());
-		System.out.println(file.toString());
+		System.out.println(upfile);
+		// System.out.println(upfile[0]);
+		// System.out.println(upfile[1]);
+		 System.out.println(upfile.get(0));
+		 System.out.println(upfile.get(1));
+		
+//		if(!upfile.getOriginalFilename().equals("")) {
+//			
+//		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		return "";
 	}
 	

@@ -7,12 +7,12 @@
 <meta charset="UTF-8">
 <title>체험학습 게시글 작성</title>
 
+
 <style>
 * {
     border: 1px solid skyblue;
 	box-sizing: border-box;
 }
-
 
 #summary{
 	width : 100%;
@@ -45,6 +45,11 @@ input, select{
 	height : 500px;
 }
 
+img{
+	width : 800px;
+	height : 400px;
+	
+}
 
 
 
@@ -66,59 +71,77 @@ input, select{
 		</aside>
 		
 		<section id="pageSection">
-			<form action="yrinsertExp.exp" method="post">
+			<form enctype="multipart/form-data" action="yrinsertExp.exp" method="post">
 			<h1><input type="text" name="expTitle" placeholder="제목을 입력해 주세요."  /></h1>
 			<hr>
 			
 			<div id="summary">
 				<div>
-					<input type="file" name="originalName" id="thumbFile" />
+					<input type="file" name="upfile" id="thumbFile" />
 					<img src="" id="thumb" class="thumbFile" />
 				</div>
 				
 				<script>
 					// 대표 이미지를 클릭하면 파일 업로드 input
+					/*
 					$(() => {
 						$('#thumbFile').hide();
 						$('#thumb').click(() => {
 							$('#thumbFile').click();
 						});
 					});
+					*/
 					
-					// input 파일요소가 바뀌면, 이미지가 보여짐
-					$('input[type=file]').on('change', (inputFile) =>{
-						console.log("바껴라");
-						console.log(inputFile.target);
-						console.log(inputFile.target.files);
-						if(inputFile.target.files.length == 1){
-							let reader = new FileReader();
-							reader.readAsDataURL(inputFile.target.files[0]);
-							reader.onload = function(e){
-								console.log(inputFile.target);
-								// $('#thumb').attr('src', e.target.result);
-								console.log("ㅇ오");
-								console.log(inputFile.target.id);
-								const inputFileId = inputFile.target.id;
-								console.log(inputFileId);
-								console.log("직직");
-								console.log($('input[id=' + inputFileId + ']').siblings());
-								// input요소 바로 다음 img의 이미지가 바뀜
-								$('input[id=' + inputFileId + ']').siblings().eq(0).attr('src', e.target.result);
-								// console.log($('img[class=inputFileId]'));
-								// $('img[class='+ inputFileId + ']').attr('src', e.target.result);
-								// console.log($('#thumb'));
-								// inputFile.target.siblings().eq(0).attr('src', e.target.result);
-							}
+					$(() => {
+						$('input[type=file]').hide();
+						$('img').click((e) =>{
+							console.log("하이드");
+							console.log(e.target.id);
+							const imgId = e.target.id;
+							console.log("이건 뭔데");
+							console.log($('img[id=' + imgId +']').siblings().eq(0));
+							$('img[id=' + imgId +']').siblings().eq(0).click();
+						});
 						
-							
-							
-							
-							
-						}
-						else{
-							
-						}
+						console.log($('input[type=file]'));
+						$('input[type=file]').on('change', ()=>{
+							console.log("??");
+						});
+						
+						// input 파일요소가 바뀌면, 이미지가 보여짐
+						$('input[type=file]').on('change', (inputFile) =>{
+							console.log("바껴라");
+							console.log(inputFile.target);
+							console.log(inputFile.target.files);
+							// 파일이 있다면
+							if(inputFile.target.files.length == 1){
+								let reader = new FileReader();
+								reader.readAsDataURL(inputFile.target.files[0]);
+								reader.onload = function(e){
+									console.log(inputFile.target);
+									// $('#thumb').attr('src', e.target.result);
+									console.log("ㅇ오");
+									console.log(inputFile.target.id);
+									const inputFileId = inputFile.target.id;
+									console.log(inputFileId);
+									console.log("직직");
+									console.log($('input[id=' + inputFileId + ']').siblings());
+									// input요소 바로 다음 img의 이미지가 바뀜
+									$('input[id=' + inputFileId + ']').siblings().eq(0).attr('src', e.target.result);
+									// console.log($('img[class=inputFileId]'));
+									// $('img[class='+ inputFileId + ']').attr('src', e.target.result);
+									// console.log($('#thumb'));
+									// inputFile.target.siblings().eq(0).attr('src', e.target.result);
+								}
+								
+							}
+							else{
+								
+							}
+						});
 					});
+					
+					
 					/*
 					// onchange="loadImg(this, 1)" 쓰고 하는법 (수업시간에 한거)
 					function loadImg(inputFile, num){
@@ -192,8 +215,16 @@ input, select{
 			
 			<textarea id="content" name="expContent" placeholder="내용을 입력해 주세요." rows="5"></textarea>
 			
-			
-			
+			<div>
+				<input type="file" name="upfile" id="inputfileId1" />
+				<img src="" class="file-img" id="file-img1" />
+				<input type="text" />
+			</div>
+			<div>
+				<input type="file" name="upfile" id="inputfileId2" />
+				<img src="" class="file-img" id="file-img2" />
+				<input type="text" />
+			</div>
 			
 			
 			
