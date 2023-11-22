@@ -47,50 +47,9 @@ public class BlogPlantController {
 		PageInfo pi = Pagination.getPageInfo(blogService.selectListCountPlant(blogNo), currentPage, 5, 5);
 		
 		ArrayList<Plant> list = blogService.selectListPlant(pi, blogNo);
-		System.out.println("식물 리스트 : "+list);
-		
-		ArrayList<HashMap> fileList = new ArrayList();
-		
-		
-		// 여기의 list에 있는 plantNo에 해당 하는 각각의 첨부파일을 다시 ArrayList형태로 조회해야 한다
-		// 이렇게 만들어진 첨부파일의 ArrayList를 위의 식물리스트의 ArrayList와 함께 view에 보내줘야한다
+		//System.out.println("식물 리스트 : "+list);
 
-		/*
-		for(int i = 0; i < list.size(); i++) {
-			
-			
-			HashMap map = new HashMap();
-			//plantNoList.add(list.get(i).getPlantNo());
-			//System.out.println(plantNoList);
-			
-			map.put("refNo", list.get(i).getPlantNo());
-			map.put("refType", "plant");
-			
-			ArrayList<Files> file = commonService.selectFiles(map);
-			System.out.println(file);
-			
-			if(file != null) {
-				
-				map.put("filePath", file.get(0).getFilePath());
-				map.put("updateName", file.get(0).getUpdateName());
-				fileList.add(map);
-			}
-		}
-		
-		System.out.println(fileList);
-		/* 첨부파일 조회
-		
-		
-		HashMap map = new HashMap();
-		
-		map.put("refNo", plantNo);
-		map.put("refType", "plant");
-		mv.addObject("files", commonService.selectFiles(map));
-		
-		*/
-		
 		mv.addObject("list", list)
-		  //.addObject("fileList", fileList)
 		  .setViewName("blog/plantView");
 		return mv;
 	}
@@ -136,10 +95,11 @@ public class BlogPlantController {
 	
 	
 	// ---------- 블로그 식물 일지 관련 메서드 ---------- 
-	@RequestMapping("insertForm.bl.pr/{plantNo}/{category}/{plantNickName}")
-	public String insertFormPlantReport(@PathVariable("plantNo") @ModelAttribute int plantNo,
-									    @PathVariable("category") @ModelAttribute int category,
-									    @PathVariable("plantNickName") @ModelAttribute String plantNickName) {
+	// 식물 일지 등록 페이지로 이동
+	@RequestMapping("insertForm.bl_pr")
+	public String insertFormPlantReport(int plantNo,
+								        String category,
+									    String plantNickName) {
 		
 		System.out.println(plantNo + category + plantNickName);
 		return "blog/reportInsertForm";
@@ -147,8 +107,8 @@ public class BlogPlantController {
 	
 	
 	
-	// 식물 일지 등록 페이지로 이동
-	@RequestMapping("insertForm.bl_pr")
+	// 식물 일지 등록하기
+	@RequestMapping("insert.bl_pr")
 	public String insertFormBlogPlantReport() {
 		return "blog/reportInsertForm";
 	}

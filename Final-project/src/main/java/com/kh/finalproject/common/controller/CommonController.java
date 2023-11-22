@@ -40,11 +40,16 @@ public class CommonController {
 		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/" + savePathFolder + "/");
 		
 		
-		file.setFilePath("/resources/uploadFiles/" + savePathFolder + "/");
+		file.setFilePath("resources/uploadFiles/" + savePathFolder + "/");
 		file.setRefType(savePathFolder);
 		file.setOriginalName(originalName);
 		file.setUpdateName(changeName);
 
+		try {
+			upfile.transferTo(new File(savePath + changeName));
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
 			return file;
 		}
 	
