@@ -120,8 +120,6 @@ public class NoticeController {
 				for(Files file : fileList) {
 					f.setRefNo(file.getRefNo());
 					f.setRefType(file.getRefType());
-					System.out.println(f.getRefNo());
-					System.out.println(f.getRefType());
 				}
 					mv.addObject("f", noticeService.selectFile(bno)).setViewName("notice/noticeDetailView");
 					mv.addObject("n", noticeService.selectNotice(bno)).setViewName("notice/noticeDetailView");
@@ -165,12 +163,12 @@ public class NoticeController {
 			
 			if(f.getOriginalName() != null) {
 				new File(session.getServletContext().getRealPath(f.getUpdateName())).delete();
+				f.setOriginalName(reUpfile.getOriginalFilename());
+				f.setUpdateName(saveFile(reUpfile, session));
+				System.out.println(f.getOriginalName());
+				System.out.println(f.getUpdateName());
 			}
-			f.setOriginalName(reUpfile.getOriginalFilename());
-			f.setUpdateName(saveFile(reUpfile, session));
 		}
-		System.out.println(f.getOriginalName());
-		System.out.println(f.getUpdateName());
 		
 		if(noticeService.updateNotice(n) > 0 ) {
 			session.setAttribute("alertMsg", "성공");
