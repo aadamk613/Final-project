@@ -36,6 +36,8 @@ public class BlogPlantController {
 	@Autowired
 	private CommonController commonController;
 	
+	
+	// ---------- 블로그 식물 관련 메서드 ---------- 
 	// 식물 전체 리스트로 이동
 	@RequestMapping("select.bl_pl")
 	public ModelAndView selectListPlant(@RequestParam(value="currentPage", defaultValue="1")int currentPage, 
@@ -47,28 +49,35 @@ public class BlogPlantController {
 		ArrayList<Plant> list = blogService.selectListPlant(pi, blogNo);
 		System.out.println("식물 리스트 : "+list);
 		
+		ArrayList<HashMap> fileList = new ArrayList();
 		
 		
 		// 여기의 list에 있는 plantNo에 해당 하는 각각의 첨부파일을 다시 ArrayList형태로 조회해야 한다
 		// 이렇게 만들어진 첨부파일의 ArrayList를 위의 식물리스트의 ArrayList와 함께 view에 보내줘야한다
 
-
-		HashMap map = new HashMap();
-		//ArrayList<Integer> plantNoList = new ArrayList();
+		/*
 		for(int i = 0; i < list.size(); i++) {
 			
 			
+			HashMap map = new HashMap();
 			//plantNoList.add(list.get(i).getPlantNo());
 			//System.out.println(plantNoList);
-			System.out.println(list.get(i).getPlantNo());
+			
 			map.put("refNo", list.get(i).getPlantNo());
 			map.put("refType", "plant");
-			mv.addObject("files", commonService.selectFiles(map));
 			
+			ArrayList<Files> file = commonService.selectFiles(map);
+			System.out.println(file);
 			
+			if(file != null) {
+				
+				map.put("filePath", file.get(0).getFilePath());
+				map.put("updateName", file.get(0).getUpdateName());
+				fileList.add(map);
+			}
 		}
 		
-		System.out.println(map);
+		System.out.println(fileList);
 		/* 첨부파일 조회
 		
 		
@@ -81,6 +90,7 @@ public class BlogPlantController {
 		*/
 		
 		mv.addObject("list", list)
+		  //.addObject("fileList", fileList)
 		  .setViewName("blog/plantView");
 		return mv;
 	}
@@ -123,6 +133,9 @@ public class BlogPlantController {
 		}
 	}
 	
+	
+	
+	// ---------- 블로그 식물 일지 관련 메서드 ---------- 
 	@RequestMapping("insertForm.bl.pr/{plantNo}/{category}/{plantNickName}")
 	public String insertFormPlantReport(@PathVariable("plantNo") @ModelAttribute int plantNo,
 									    @PathVariable("category") @ModelAttribute int category,

@@ -143,6 +143,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 	</select>
 	
+	<!-- 블로그 카테고리 업데이트하기 -->
+	<update id="updateCatogory" parameterType="blogCategorySetting">
+	
+		UPDATE 
+			  TB_BLOG_CATEGORY_SETTING 
+			SET 
+				CATEGORY_MEM_NAME = #{ categoryMemName }
+			WHERE 
+				CATEGORY_SETTING_NO = #{ categorySettingNo }
+	
+	</update>
+	
+	<!-- 블로그 카테고리 삭제하기 -->
+	<delete id="deleteCatogory" parameterType="_int">
+	
+		DELETE 
+		  FROM 
+		  		TB_BLOG_CATEGORY_SETTING 
+		  WHERE 
+		  		CATEGORY_SETTING_NO = #{ categorySettingNo } 
+	
+	</delete>
+	
 	<!-- 식물 등록하기 -->
 	<insert id="insertBlogPlant" parameterType="plant">
 		

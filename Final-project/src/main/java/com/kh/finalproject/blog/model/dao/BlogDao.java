@@ -30,6 +30,7 @@ public class BlogDao {
 		return sqlSession.update("blogMapper.updateBlog", blog);
 	}
 
+	// 블로그 카테고리 관련-----------------------------------------
 	public int insertCategory(SqlSessionTemplate sqlSession, BlogCategorySetting blogCateSet) {
 		return sqlSession.insert("blogMapper.insertCategory", blogCateSet);
 	}
@@ -38,11 +39,20 @@ public class BlogDao {
 		return (ArrayList)sqlSession.selectList("blogMapper.selectCatogory", blogNo);
 	}
 	
+	public int updateCatogory(SqlSessionTemplate sqlSession, BlogCategorySetting blogCateSet) {
+		System.out.println("카테고리 바꾸기 dao 결과 "+sqlSession.update("blogMapper.updateCatogory", blogCateSet));
+		return sqlSession.update("blogMapper.updateCatogory", blogCateSet);
+	}
+
+	public int deleteCatogory(SqlSessionTemplate sqlSession, int categorySettingNo) {
+		return sqlSession.delete("blogMapper.deleteCatogory", categorySettingNo);
+	}
+	
+	// 블로그 식물 관련 -----------------------------------------
 	public int insertBlogPlant(SqlSessionTemplate sqlSession, Plant plant) {
 		System.out.println(plant);
 		return sqlSession.insert("blogMapper.insertBlogPlant", plant);
 	}
-	
 	
 	public int selectListCountPlant(SqlSessionTemplate sqlSession, int blogNo) {
 		return sqlSession.selectOne("blogMapper.selectListCountPlant", blogNo);
@@ -51,6 +61,8 @@ public class BlogDao {
 	public ArrayList<Plant> selectListPlant(SqlSessionTemplate sqlSession, int blogNo, RowBounds rowBounds) {
 		return (ArrayList)sqlSession.selectList("blogMapper.selectListPlant", blogNo, rowBounds);
 	}
+
+
 
 
 }

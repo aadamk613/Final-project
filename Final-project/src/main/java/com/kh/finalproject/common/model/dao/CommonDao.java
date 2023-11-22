@@ -13,6 +13,8 @@ public class CommonDao {
 	
 	// 첨부파일 조회
 	public ArrayList<Files> selectFiles(SqlSessionTemplate sqlSession, HashMap map) {
+		System.out.println("첨부파일 조회 dao 받은 map " + map);
+		System.out.println("첨부파일 조회 dao 조회 후 결과" +(ArrayList)sqlSession.selectList("commonMapper.selectFiles", map));
 		return (ArrayList)sqlSession.selectList("commonMapper.selectFiles", map);
 	}
 	

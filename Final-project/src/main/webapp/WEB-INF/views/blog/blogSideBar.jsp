@@ -51,7 +51,7 @@
             
                 <div id="isLogin">
                 	<c:choose>
-	                	<c:when test="${empty loginUser.blogNo}" >
+	                	<c:when test="${ (empty sessionScope.loginUser.blogNo) or (sessionScope.loginUser.blogNo eq 0) }" >
 	                	<div id="user" align="center">
 								<c:choose>
 									<c:when test="${ empty sessionScope.loginUser }" >

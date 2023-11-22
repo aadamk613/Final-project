@@ -54,11 +54,12 @@
 }
 
 #categorySettingWrap div{
-	width: 100%; 
-	height: auto;
+	float: left;
 }
 
-#category{width: 100px;}
+#category{width: 40%; }
+
+#categorySetting{width: 60%;}
 
 </style>
 <body>
@@ -87,33 +88,38 @@
 					</div>
 					
 					<div id="categoryWrap">
-					categoryWrap
 						<div id="categoryInfo">
 							카테고리 관리 설정
 							<ul>
 								<li><button onclick="insertBlogCategory(10);">카테고리 추가</button></li>
 								<li><button onclick="insertBlogCategory(99);">구분선 추가</button></li>
-								<li><a href="delete.bl_ct"><button>삭제</button></a></li>
 							</ul>
 							
 							
 						</div>
 						<div id="categorySettingWrap">
-						categorySettingWrap
 							<div id="category">
 								category	
 								
 							</div>
+							
 							<div id="categorySetting">
-								카테고리 명 : <input type="text">
-								<button>이름 변경</button>
-								<button>삭제하기</button>
-								 
+								
+								<!-- 
+								카테고리 명 : <input type="text" id="rename">
+								<button onclick="categoryRename();">이름 변경</button>
+								<button onclick="categoryDelete();">삭제하기</button>
+								-->
+								
 							</div>
+								<br clear="both">
 						</div>
+						
+						<br clear="both">
 						
 						<button>뒤로 가기</button>
 					</div>
+					
 
 			</div>
 			
@@ -136,17 +142,39 @@
 				url: 'select.bl_ct',
 				data: {blogNo: ${ blogNo }},
 				success: data => {
-					console.log(data);
+					//console.log(data);
 					
 					let value='';
 					for(let i in data){
-						//console.log(data[i].categorySettingNo);
 						
 						var categorySettingNo = data[i].categorySettingNo;
+						var categoryMemName = data[i].categoryMemName;
+						var categoryNo = data[i].categoryNo;
 						
+						if(categoryNo == 99){
+							value += '<ul>'
+							       + '<li id="aa"><button onclick="selectCategory(' 
+							       + categorySettingNo 
+							       + ',\''
+							       + categoryMemName
+							       + '\')">' 
+							       + '----------------'
+							       + '</button></li>'
+							       + '</ul>'; 
+							
+						} else {
+							
 						value  += '<ul>'
-						       + '<li><button onclick="selectCategory(' + categorySettingNo +')">' + data[i].categoryMemName + '</button></li>'
+						       + '<li id="aa"><button onclick="selectCategory(' 
+						       + categorySettingNo 
+						       + ',\''
+						       + categoryMemName
+						       + '\')">' 
+						       + data[i].categoryMemName 
+						       + '</button></li>'
 						       + '</ul>'; 
+						}
+						
 					}
 					$('#category').html(value);
 					
@@ -157,12 +185,64 @@
 			})
 			
 		}
+
+		function selectCategory(cateNo, cateName){
+			
+			console.log(cateNo, cateName);
+			let categoryValue = '';
+			
+			categoryValue += '카테고리 명 : <input type="text" id="rename" class="rename" placeholder="' + cateName + '">'
+				  // + '<button onclick="categoryRename(' + cateNo +');">이름 변경</button>'
+				+ '<button onclick="categoryRename(' + cateNo + ', this)">이름 변경</button>'
+				  + '<button onclick="categoryDelete(' + cateNo + ');">삭제하기</button>';
+
+			$('#categorySetting').html(categoryValue);
+			console.log("d");
+			console.log($('#rename').val());
+		}
+
 		
-		function selectCategory(){
+		
+		function categoryRename(cateNo, cateName){
+			console.log(cateName);
+			//console.log($(arguments[1]).parent().find('.rename').val());
+			const str = $(arguments[1]).parent().find('.rename').val();
+			$.ajax({
+				url: 'update.bl_ct',
+				data: {categorySettingNo: cateNo,
+					   categoryMemName: str,
+					   blogNo : ${ blogNo }},
+				success: data => {
+					selectBlogCategory();
+				}, 
+				error: () => {
+					console.log('카테고리 이름 변경 통신 실패');
+				}
+			})
 			
+		}
+		
+		function categoryDelete(cateNo){
 			
-			
-			
+			if(confirm("카테고리를 삭제하면 카테고리 안의 게시글도 삭제됩니다. 정말 삭제하시겠습니까??")){
+				
+				$.ajax({
+					url: 'delete.bl_ct',
+					data: {categorySettingNo: cateNo,
+						   blogNo : ${ blogNo }},
+					success : data => {
+						selectBlogCategory();
+						alert(data);
+					}, 
+					error: () => {
+						alert('카테고리 삭제 통신 실패');
+					}
+				})
+				
+				
+			}else{
+				//alert("제출실패");
+			}
 		}
 		
 		function insertBlogCategory(cateNo){
@@ -178,17 +258,13 @@
 					console.log(data);
 				},
 				error: () => {
-					console.log('카테고리 생성 실패');
+					console.log('카테고리 생성 통신 실패');
 				}
 			})
 			
 		}
 		
-		function selectCategory(catoNo){
-			
-			
-			$('categorySetting').html(value);
-		}
+
 		
 	</script>
 	
