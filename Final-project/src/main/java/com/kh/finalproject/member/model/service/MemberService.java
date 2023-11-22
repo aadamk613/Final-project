@@ -14,15 +14,11 @@ public interface MemberService {
 
   int idCheck(String checkId);
 
+  int updateMember(Member m);
+
   int setLastLogin(Member m);
 
   ArrayList<Member> ajaxGetMemberList();
 
-  Member selectMember(int memNo);
-
-  int editMember(Member m);
-
-  int addNaverProfile(NaverLogin fromJson);
-
-  Member selectNaverProfile(String memId);
+  int loadImg(String inputFile);
 }

@@ -102,11 +102,6 @@
 	
 	<script>
 	
-	
-	
-	
-	
-	
 		$(function(){
 			// 자주쓰는, 중복되는 요소는 변수로 지정해놓는게 나아서 해놓음
 			const $idInput = $('#memberId');
