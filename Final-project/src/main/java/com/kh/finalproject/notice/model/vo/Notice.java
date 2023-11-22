@@ -13,7 +13,7 @@ public class Notice {
 	private String noticeCreateDate;
 	private String noticeUpdateDate;
 	private String status;
-	private int category;
+	private String category;
 	private int likeCount;
 	private String memNo;
 	

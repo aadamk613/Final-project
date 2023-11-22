@@ -24,15 +24,11 @@
 		<jsp:include page="../common/boardSideBar.jsp"/>
 		</aside>
 
-		
 		<section id="section">
 			
 			<div id="contentTitleWrap">
 				<div id="contentTitle">
 					${ n.category == 1 ? "공지게시글" : '필독게시글'}
-				</div>
-				<div id="backWrap">
-					<a href="list.no?cPage=1&type=${ n.category }" class="btn btn-light">목록으로</a>
 				</div>
 			</div>
 			<div id="content">
@@ -65,6 +61,22 @@
 							${ n.noticeCreateDate }&nbsp;&nbsp;&nbsp;&nbsp;조회 ${ n.views }
 						</div>
 					</div>
+					<hr>
+					
+					<c:choose>
+						<c:when test="${ empty f }">
+						첨부파일이 없습니다.
+						</c:when>
+						<c:otherwise>
+						<div>
+						  첨부파일
+						  <c:forEach var="file" items="${f}">
+						    <a href="/finalProject${file.filePath }${file.updateName}" download="${file.originalName}">${file.originalName}</a>
+						  </c:forEach>
+						</div>
+						</c:otherwise>
+					</c:choose>
+					
 					<hr clear="both">
 					<div id="boardContent">
 						${ n.noticeContent }
@@ -73,18 +85,18 @@
 						<c:choose>
 						<c:when test="${ loginUser ne null }" >
 							<c:choose>
-								<c:when test="${ n.likeMem eq 1 }">
-									<img src="../resources/images/fullHeart.png" alt="하트" >
+								<c:when test="${ b.likeMem eq 1 }">
+									<img src="resources/images/fullHeart.png" alt="하트" >
 									<a href="#" id="like" class="like">좋아요</a>&nbsp;${ n.likeCount } 
 								</c:when>
 								<c:otherwise>
-									<img src="../resources/images/emptyHeart.png" alt="빈하트">
+									<img src="resources/images/emptyHeart.png" alt="빈하트">
 									<a href="#" id="like" class="like">좋아요</a>&nbsp;${ n.likeCount } 
 								</c:otherwise>
 							</c:choose>
 						</c:when>
 						<c:otherwise>
-							<img src="resources/img/emptyHeart.png" alt="빈하트">
+							<img src="resources/images/fullHeart.png" alt="빈하트">
 					 		<a href='#' onclick="alert('로그인 후 이용 가능한 기능입니다.');" id="like" class="like">좋아요</a>&nbsp;${ n.likeCount } 
 						</c:otherwise>
 						</c:choose>
@@ -96,22 +108,34 @@
 				</article>
 			</div>
 			
-			
+
 			<div id="page">
 				<div id="writeWrap">
-					<c:if test="${ loginUser ne null }">
-						<a class="btn btn-primary" href="#" >글 쓰기</a>
-						<c:if test="${ loginUser.memNo eq n.memNo }" >
-							<a class="btn btn-light" href="#">수정</a>
-							<a class="btn btn-light" href="#">삭제</a>
+						<c:if test="${ loginUser.memNick eq n.memNo }" >
+							<a class="btn btn-light" onclick="postFormSubmit(0);">수정</a>
+							<a class="btn btn-light" onclick="postFormSubmit(1);">삭제</a>
 						</c:if>
-					</c:if>
 				&nbsp;
 				</div>
 				<div id="upWrap">
 					<a href="#header" class="btn btn-light">^</a>
 				</div>
 			</div>
+			
+			<form action="" method="post" id="postForm">
+				<input type="hidden" name="bno" value="${ n.noticeNo }">
+			</form>
+			
+			<script>
+				function postFormSubmit(num) {
+					if(num == 0) {
+						$('#postForm').attr('action', 'updateForm.no').submit();				
+					}
+					else {
+						$('#postForm').attr('action', 'delete.no').submit();				
+					}
+				}
+			</script>
 		
 		
 		</section>

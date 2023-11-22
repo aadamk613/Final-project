@@ -1,24 +1,40 @@
 package com.kh.finalproject.member.controller;
 
+
 import com.google.gson.Gson;
+import com.kh.finalproject.member.model.service.KakaoLoginService;
 import com.kh.finalproject.member.model.service.MemberService;
+import com.kh.finalproject.member.model.service.NaverLoginService;
 import com.kh.finalproject.member.model.vo.Member;
+import com.kh.finalproject.member.model.vo.NaverLogin;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.http.HttpSession;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.google.gson.Gson;
+import com.kh.finalproject.common.model.vo.Files;
+import com.kh.finalproject.member.model.service.MemberService;
+import com.kh.finalproject.member.model.vo.Member;
 
 @Controller
 public class MemberController {
 
   @Autowired private BCryptPasswordEncoder bcryptPasswordEncoder;
   @Autowired private MemberService memberService;
+  @Autowired private NaverLoginService naverLoginService;
+  @Autowired private KakaoLoginService kakaoLoginService;
 
   @RequestMapping("loginForm.me")
   public String loginForm() {
@@ -31,7 +47,6 @@ public class MemberController {
   //    return new Gson().toJson(memberService.selectMember(memNo));
   //  }
 
-  
   @ResponseBody
   @GetMapping(value = "getMemberList.me", produces = "application/json; charset=UTF-8")
   public String ajaxGetMemberList() {
@@ -83,23 +98,103 @@ public class MemberController {
       return "../common/errorPage.jsp";
     }
   }
+
   @ResponseBody // 포워딩 해줄게 아니라서
-  @RequestMapping
+  @RequestMapping("idCheck.me")
   public String idCheck(String checkId) {
 
-	  //System.out.println(checkId);
-	  int count = memberService.idCheck(checkId);
-	  System.out.println(count);
-	  return count > 0 ? "NNNNN" : "NNNNY";
+    // System.out.println(checkId);
+    int count = memberService.idCheck(checkId);
+    System.out.println(count);
+    return count > 0 ? "NNNNN" : "NNNNY";
   }
 
   @RequestMapping("myPage.me")
   public String myPage() {
 	  return "member/mypage";
+  }
+  @RequestMapping("loadImg.me")
+  public String loadImg(String inputFile) {
+	 int loadImg = memberService.loadImg(inputFile);
+	 return "succes";
+  }
+  
+  @RequestMapping("update.me")
+  public String updateMember(Member m, Model model, HttpSession session) {
+	  if(memberService.updateMember(m) > 0){
+		  
+		session.setAttribute("loginUser", memberService.loginMember(m));
+			
+		// session에 일회성 알라문구 띄워주기 
+		session.setAttribute("alertMsg", "정보수정에 성공했습니다~~");
+			
+		// 마이페이지 화면이 띄워지도록~  유지보수를 용이하게 하기 위해
+		return "redirect:myPage.me";
+			
+		} else { // 수정 실패 => 에러문구를 담아서 에러페이지로 포워딩
+			model.addAttribute("errorMsg", "정보수정에 실패했습니다.");
+			// /WEB-INF/views/ 		common/errorPage		.jsp
+			return "common/errorPage";
+		}
 
-    int count = memberService.idCheck(checkId);
-    return count > 0 ? "NNNNN" :"NNNNY";
+  @GetMapping("naverLogin.me")
+  public String naverLogin() {
+    return "member/naverLoginCallback";
+  }
 
+  /**
+   * @param accessToken
+   * @param session
+   * @return String
+   */
+  @GetMapping("naverLoginCallback.me")
+  public String naverLoginCallback(String accessToken, HttpSession session) throws Exception {
+    String header = "Bearer " + accessToken;
+    String apiURL = "https://openapi.naver.com/v1/nid/me";
+    Map<String, String> requestHeaders = new HashMap<>();
+    requestHeaders.put("Authorization", header);
+    String profile = naverLoginService.get(apiURL, requestHeaders);
+    NaverLogin nv = new NaverLogin();
+    JSONParser parser = new JSONParser();
+    Object obj = parser.parse(profile);
+    JSONObject jsonObj = (JSONObject) obj;
+    JSONObject responseObj = (JSONObject) jsonObj.get("response");
+    nv.setId((String) responseObj.get("id"));
+    nv.setNickname((String) responseObj.get("nickname"));
+    nv.setEmail((String) responseObj.get("email"));
+    nv.setProfile_image((String) responseObj.get("profile_image"));
+    // 지금 로그인한 네이버 프로필이 DB에 없으면 DB에 추가
+    Member loginUser = memberService.selectNaverProfile(nv.getId());
+    if (loginUser == null) {
+      memberService.addNaverProfile(nv);
+      loginUser = memberService.selectNaverProfile(nv.getId());
+    }
+    memberService.setLastLogin(loginUser);
+    session.setAttribute("loginUser", loginUser);
+    return "redirect:/";
+>>>>>>> main
+  }
 
+  @GetMapping("kakaoLogin.me")
+  public String kakaoLogin(String code, HttpSession session) throws Exception {
+    String accessToken = kakaoLoginService.getToken(code);
+    // 토큰으로 긁어온 유저 정보를 맵에 받아왔음
+    Map<String, String> profileMap = kakaoLoginService.getUserInfo(accessToken);
+    System.out.println("printing map" + profileMap.toString());
+    // 지금 로그인한 카카오톡 프로필이 DB에 없으면 DB에 추가.
+    // 네이버용으로 작성한 select문이지만 카카오 계정에도 적용가능.
+    Member loginUser = memberService.selectNaverProfile(profileMap.get("id"));
+    Member m = new Member();
+    m.setMemId(profileMap.get("id"));
+    m.setMemNick(profileMap.get("nickname"));
+    m.setMemImg(profileMap.get("profile_image"));
+    if (loginUser == null) {
+      memberService.addKaKaoProfile(m);
+      memberService.selectNaverProfile(profileMap.get("id"));
+    }
+    memberService.setLastLogin(loginUser);
+    session.setAttribute("loginUser", loginUser);
+    System.out.println(loginUser);
+    return "redirect:/";
   }
 }

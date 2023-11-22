@@ -12,7 +12,7 @@ import lombok.ToString;
 public class Plant {
 
 	private int plantNo;
-	private int blogNo;
+	private Integer blogNo;
 	private String plantName;
 	private String plantNickName;
 	private String plantComment;
@@ -21,5 +21,8 @@ public class Plant {
 	private int view;
 	private String plantCategory;
 	private String plantLogDate;
+	
+	private String filePath;
+	private String updateName;
 	
 }

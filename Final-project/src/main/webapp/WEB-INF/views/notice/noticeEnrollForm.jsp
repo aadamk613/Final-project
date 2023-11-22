@@ -43,6 +43,9 @@
 					</div>
 					<div id="fileWrap">
 						<input type="file" name="upfile">
+						<input type="hidden" name="refType" value="notice">
+						<input type="hidden" name="filePath" value="resources/uploadFiles/notice/">
+						
 					</div>
 					<div id="boardContent">
 					<hr>

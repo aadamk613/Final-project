@@ -12,14 +12,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="MEM_IMG" property="memImg"/>
 		<result column="MEM_BUSINESS" property="memBusiness"/>
 		<result column="BLOG_NO" property="blogNo"/>
+		<result column="EMAIL" property="email"/>
+		<result column="MEM_TEMP" property="memTemp"/>
 		<result column="LAST_LOGIN" property="lastLogin"/>
 	</resultMap>
 	<select id="loginMember" parameterType="member" resultMap="memberResultSet">
 		SELECT
       MEM_NO,
+			MEM_TEMP,
       MEM_STATUS,
       MEM_ID,
 			MEM_PW,
+			EMAIL,
       MEM_NICK,
       MEM_IMG,
       REG_BUSINESS,
@@ -33,9 +37,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="selectMember" parameterType="_int" resultMap="memberResultSet">
 		SELECT
+			MEM_NO,
 			MEM_STATUS,
+			MEM_TEMP,
 			MEM_ID,
 			MEM_NICK,
+			EMAIL,
 			MEM_IMG,
 			REG_BUSINESS,
 			BLOG_NO,
@@ -49,7 +56,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT
 			MEM_NO,
 			MEM_STATUS,
+			MEM_TEMP,
 			MEM_ID,
+			EMAIL,
 			MEM_NICK,
 			MEM_IMG,
 			REG_BUSINESS,
@@ -81,7 +90,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{email}
 				)
 	</insert>
-	
+
+
 	<select id="idCheck" parameterType="string" resultType="_int">
 		SELECT 
 				COUNT(*)
@@ -100,5 +110,108 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE 
 			MEM_NO = #{memNo}
 	</update>
+	<insert id="loadImg" parameterType="String">
+		INSERT
+		  INTO
+				TB_FILE
+				(
+				FILE_NO,
+				ORIGINAL_NAME,
+				UPDATE_NAME,
+				FILE_PATH,
+				REF_TYPE
+				)
+		VALUES
+				(
+				#{fileNo},
+				#{originalName},
+				#{updateName},
+				#{filePath},
+				#{refType}
+				)
+				
+	</insert>
 
+	<update id="updateMember" parameterType="member">
+		UPDATE
+				TB_FILE,
+				MEMBER
+		   SET
+				MEM_NICK = #{memNick},
+				EMAIL = #{email}
+		 WHERE
+		 		MEM_ID = #{memId}
+		   		
+	</update>
+	<update id="editMember" parameterType="member">
+		UPDATE
+			MEMBER
+		SET 
+			MEM_STATUS = #{memStatus},
+			MEM_ID = #{memId},
+			MEM_NICK = #{memNick},
+			EMAIL = #{email},
+			MEM_TEMP = #{memTemp}
+		WHERE 
+			MEM_NO = #{memNo}
+	</update>
+	<select id="selectNaverProfile" parameterType="string" resultMap="memberResultSet">
+		SELECT
+			MEM_NO,
+			MEM_STATUS,
+			MEM_TEMP,
+			MEM_ID,
+			EMAIL,
+			MEM_NICK,
+			MEM_IMG,
+			REG_BUSINESS,
+			BLOG_NO,
+			TO_CHAR(LAST_LOGIN, 'YYYY/MM/DD HH24:MI:SS') LAST_LOGIN
+		FROM 
+			MEMBER
+		WHERE 
+			MEM_ID = #{memId}
+	</select>
+	<insert id="addKakaoProfile" parameterType="member">
+		INSERT
+			INTO
+				MEMBER
+				(
+				MEM_NO,
+				MEM_STATUS,
+				MEM_ID,
+				MEM_NICK,
+				MEM_IMG
+				)
+		VALUES
+				(
+				SEQ_MEMBER_NO.NEXTVAL,
+				'U',
+				#{memId},
+				#{memNick},
+				#{memImg}
+				)
+	</insert>
+	<insert id="addNaverProfile" parameterType="naver">
+		INSERT
+			INTO
+				MEMBER
+				(
+				MEM_NO,
+				MEM_STATUS,
+				MEM_ID,
+				MEM_NICK,
+				EMAIL,
+				MEM_IMG
+				)
+		VALUES
+				(
+				SEQ_MEMBER_NO.NEXTVAL,
+				'U',
+				#{id},
+				#{nickname},
+				#{email},
+				#{profile_image}
+				)
+	</insert>
 </mapper>

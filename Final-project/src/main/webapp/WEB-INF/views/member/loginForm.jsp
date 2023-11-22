@@ -6,6 +6,16 @@
 <head>
 <meta charset="UTF-8">
 <title>로그인 화면</title>
+<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.5.0/kakao.min.js" integrity="sha384-kYPsUbBPlktXsY6/oNHSUDZoTX6+YI51f63jCPEIPFP09ttByAdxd2mEjKuhdqn4" crossorigin="anonymous"></script>
+<script>
+	// kakao login APi 
+	// SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해야 합니다.
+	Kakao.init('c17039c1894d25ecc561f2fb009cbcf6');
+	// SDK 초기화 여부를 판단합니다.
+	console.log(Kakao.isInitialized());
+</script>
 </head>
 <style>
 
@@ -129,7 +139,41 @@ a{
 					</ul>
 					
 				</div>
-
+				 <!-- 네이버 로그인 버튼 노출 영역 -->
+				 <div align="center">
+					<ul >
+						<li>
+							<div align="center" id="naver_id_login"></div>
+						</li>
+						<li>
+							<div align="center" id=""kakao-login>
+								<a href="javascript:loginClick()">
+									<img src="resources/images/Kakao login.png" alt="카카오로그인버튼"/>
+								</a>
+						</div>
+						</li>
+					</ul>
+				 </div>
+				
+				<!-- //네이버 로그인 버튼 노출 영역 -->
+				<script type="text/javascript">
+					var naver_id_login = new naver_id_login("RoTjq9rTwVYvgRm6M73T", "http://localhost:8001/final/naverLogin.me");
+					var state = naver_id_login.getUniqState();
+					naver_id_login.setButton("green", 3,47);
+					naver_id_login.setDomain("http://localhost:8001/final");
+					naver_id_login.setState(state);
+					naver_id_login.setPopup();
+					naver_id_login.init_naver_id_login();
+				</script>
+				
+			
+				<script>
+					function loginClick() {
+						Kakao.Auth.authorize({
+							redirectUri: 'http://localhost:8001/final/kakaoLogin.me'
+						});
+					};
+				</script>
 				</article>
 			</div>
 			

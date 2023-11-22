@@ -2,6 +2,7 @@ package com.kh.finalproject.blog.model.service;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
 import com.kh.finalproject.blog.model.vo.Plant;
 import com.kh.finalproject.common.model.dao.CommonDao;
 import com.kh.finalproject.common.model.vo.Files;
+import com.kh.finalproject.common.model.vo.PageInfo;
 
 @Service
 public class BlogServiceImpl implements BlogService{
@@ -39,10 +41,11 @@ public class BlogServiceImpl implements BlogService{
 
 	@Override
 	public int updateBlog(Blog blog) {
-		System.out.println("블로그 업데이트 서비스" + blog);
 		return blogDao.updateBlog(sqlSession, blog);
 	}
 	
+	
+	// -----------------------------------------
 	@Override
 	public int insertCategory(BlogCategorySetting blogCateSet) {
 		return blogDao.insertCategory(sqlSession, blogCateSet);
@@ -53,16 +56,37 @@ public class BlogServiceImpl implements BlogService{
 		return (ArrayList<BlogCategorySetting>)blogDao.selectCatogory(sqlSession, blogNo);
 	}
 	
-	@Transactional
 	@Override
-	public int insertBlogPlant(Plant plant, Files file) {
-		commonDao.insertFiles(sqlSession, file);
-		return blogDao.insertBlogPlant(sqlSession, plant);
+	public int updateCatogory(BlogCategorySetting blogCateSet) {
+		System.out.println("카테고리 바꾸기 service"+blogCateSet);
+		return blogDao.updateCatogory(sqlSession, blogCateSet);
 	}
 
 	@Override
-	public ArrayList<Plant> selectListPlant(int blogNo) {
-		return blogDao.selectListPlant(sqlSession, blogNo);
+	public int deleteCatogory(int categorySettingNo) {
+		return blogDao.deleteCatogory(sqlSession, categorySettingNo);
 	}
+	
+	// -----------------------------------------
+	@Transactional
+	@Override
+	public int insertBlogPlant(Plant plant, Files file) {
+		blogDao.insertBlogPlant(sqlSession, plant);
+		return commonDao.insertFiles(sqlSession, file);
+	}
+
+	@Override
+	public int selectListCountPlant(int blogNo) {
+		return blogDao.selectListCountPlant(sqlSession, blogNo);
+	}
+	
+	@Override
+	public ArrayList<Plant> selectListPlant(PageInfo pi, int blogNo) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit()); // offset부터 pi.getBoardLimit()개 조회 
+		return blogDao.selectListPlant(sqlSession, blogNo, rowBounds);
+	}
+
+
 
 }
