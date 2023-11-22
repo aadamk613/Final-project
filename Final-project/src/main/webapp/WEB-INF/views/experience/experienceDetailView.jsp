@@ -201,7 +201,7 @@ h1 {
 					<div id="commentInsertBox">
 						<div>
 							<div>
-								<img src="resources/uploadFiles/person.png" />
+								<img src="resources/uploadFiles/images/person.png" />
 							</div>
 							<div id="commentWriter">유저ID</div>
 						</div>

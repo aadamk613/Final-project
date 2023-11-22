@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.kh.finalproject.common.controller.CommonController;
+import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
 import com.kh.finalproject.experience.model.service.ExperienceService;
@@ -109,23 +110,56 @@ public class ExperienceController {
 	}
 	
 	@PostMapping("yrinsertExp.exp")
-	public String insertExperience(Experience exp, ArrayList<MultipartFile> upfile, HttpServletRequest request) {
-//		System.out.println(expCategoryNo);
-//		System.out.println(expWorkDate);
-//		System.out.println(expAddress);
-//		System.out.println();
+	public String insertExperience(Experience exp, ArrayList<MultipartFile> upfiles, String[] anno, HttpServletRequest request) {
+		/*
+		System.out.println(expCategoryNo);
+		System.out.println(expWorkDate);
+		System.out.println(expAddress);
+		System.out.println();
 		System.out.println(exp.toString());
 		System.out.println(exp.getExpCategoryNo());
 		System.out.println(exp.getExpPeople());
-		System.out.println(upfile);
+		System.out.println(upfiles);
+		*/
+		System.out.println(anno);
+		System.out.println(anno.toString());
+		System.out.println(anno[0]);
+		System.out.println(anno[1]);
+		System.out.println(anno[2]);
+		/*
 		// System.out.println(upfile[0]);
 		// System.out.println(upfile[1]);
-		 System.out.println(upfile.get(0));
-		 System.out.println(upfile.get(1));
+		System.out.println(upfiles.toString());
+		System.out.println(upfiles.get(0));
+		System.out.println(upfiles.get(1));
+		System.out.println(upfiles.get(2));
+		*/
 		
-//		if(!upfile.getOriginalFilename().equals("")) {
-//			
-//		}
+		// for(MultipartFile upfile : upfiles) {
+		ArrayList<Files> fileList = new ArrayList();
+		for(int i = 0; i < upfiles.size(); i++) {
+			if(!upfiles.get(i).getOriginalFilename().equals("")) {
+				Files file = commonController.setFile(upfiles.get(i), request.getSession(), "experience");
+				//System.out.println("파일이오");
+				//System.out.println(file);
+				file.setRefNo(exp.getExpNo());
+				file.setFileAnnotation(anno[i]);
+				//System.out.println("담음");
+				//System.out.println(file);
+				fileList.add(file);
+			}
+		}
+		System.out.println("파일리스트");
+		System.out.println(fileList);
+		System.out.println(fileList.get(0));
+		System.out.println(fileList.get(1));
+		System.out.println(fileList.get(2));
+		
+		if(experienceService.insertExperience(exp, fileList) > 0) {
+			System.out.println("성공");
+		} else {
+			System.out.println("실패");
+		}
 		
 		
 		

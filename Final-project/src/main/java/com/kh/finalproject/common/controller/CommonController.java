@@ -1,5 +1,7 @@
 package com.kh.finalproject.common.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,10 +54,15 @@ public class CommonController {
 			
 		String ext = originalName.substring(originalName.lastIndexOf("."));
 		String changeName = currentTime + ranNum + ext;
-		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/" + savePathFolder);
+		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/" + savePathFolder + "/");
 		
+		try {
+			upfile.transferTo(new File(savePath + changeName));
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
 		
-		file.setFilePath("/resources/uploadFiles/" + savePathFolder);
+		file.setFilePath("/resources/uploadFiles/" + savePathFolder + "/");
 		file.setRefType(savePathFolder);
 		file.setOriginalName(originalName);
 		file.setUpdateName(changeName);

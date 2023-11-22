@@ -181,15 +181,58 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 	   REPLY_CREATE_DATE DESC
 	</select>
 	
+	<!-- 체험학습 게시글 작성  -->
+	<insert id="insertExperience" parameterType="experience">
+		INSERT
+		  INTO
+		  	   TB_EXPERIENCE
+		  	   (
+		  	   EXP_NO,
+			   EXP_TITLE,
+			   EXP_WRITER,
+			   EXP_PEOPLE,
+			   EXP_CONTENT,
+			   EXP_CREATE_DATE,
+			   EXP_WORK_DATE,
+			   EXP_END_DATE,
+			   EXP_STATUS,
+			   EXP_COUNT,
+			   EXP_UPDATE_DATE,
+			   EXP_AREA,
+			   EXP_ADDRESS,
+			   EXP_CATEGORY_NO,
+			   EXP_WORK_TIME
+		  	   )
+		VALUES
+			   (
+			   SEQ_EXPERIENCE.NEXTVAL,
+			   #{ expTitle },
+			   #{ expWriter },
+			   #{ expPeople },
+			   #{ expContent },
+			   SYSDATE,
+			   #{ expWorkDate },
+			   #{ expEndDate },
+			   'Y',
+			   0,
+			   null,
+			   #{ expArea },
+			   #{ expAddress },
+			   #{ expCategoryNo },
+			   #{ expWorkTime }
+			   )
+	</insert>
+	
+	
 	<update id="deleteExperience" parameterType="_int">
 		UPDATE
 			   TB_EXPERIENCE
 		   SET
-		   	    EXP_STATUS = 'N'
-		  WHERE
-		  	    EXP_STATUS = 'Y'
-		    AND
-		   	    EXP_NO = #{ expNo }
+		   	   EXP_STATUS = 'N'
+		 WHERE
+		  	   EXP_STATUS = 'Y'
+		   AND
+		   	   EXP_NO = #{ expNo }
 	</update>
 	
 	<!-- 체험학습 게시글 댓글 작성 -->

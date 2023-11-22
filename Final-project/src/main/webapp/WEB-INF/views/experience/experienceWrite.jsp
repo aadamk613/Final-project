@@ -23,6 +23,7 @@
 	padding : 40px;
 	height : 100%;
 	width : 50%;
+	box-sizing : border-size;
 }
 
 #thumb{
@@ -48,7 +49,7 @@ input, select{
 img{
 	width : 800px;
 	height : 400px;
-	
+	object-fit : contain;
 }
 
 
@@ -72,13 +73,17 @@ img{
 		
 		<section id="pageSection">
 			<form enctype="multipart/form-data" action="yrinsertExp.exp" method="post">
+			
+			<input type="hidden" name="expWriter" value="${ loginUser.memId }" />
+			
 			<h1><input type="text" name="expTitle" placeholder="제목을 입력해 주세요."  /></h1>
 			<hr>
 			
 			<div id="summary">
 				<div>
-					<input type="file" name="upfile" id="thumbFile" />
+					<input type="file" name="upfiles" id="thumbFile" />
 					<img src="" id="thumb" class="thumbFile" />
+					<input type="text" name="anno" placeholder=">" />
 				</div>
 				
 				<script>
@@ -94,12 +99,12 @@ img{
 					
 					$(() => {
 						$('input[type=file]').hide();
-						$('img').click((e) =>{
-							console.log("하이드");
-							console.log(e.target.id);
+						$('img').on('click', e =>{
+							// console.log("하이드");
+							// console.log(e.target.id);
 							const imgId = e.target.id;
-							console.log("이건 뭔데");
-							console.log($('img[id=' + imgId +']').siblings().eq(0));
+							// console.log("이건 뭔데");
+							// console.log($('img[id=' + imgId +']').siblings().eq(0));
 							$('img[id=' + imgId +']').siblings().eq(0).click();
 						});
 						
@@ -118,13 +123,9 @@ img{
 								let reader = new FileReader();
 								reader.readAsDataURL(inputFile.target.files[0]);
 								reader.onload = function(e){
-									console.log(inputFile.target);
-									// $('#thumb').attr('src', e.target.result);
-									console.log("ㅇ오");
-									console.log(inputFile.target.id);
+									
 									const inputFileId = inputFile.target.id;
-									console.log(inputFileId);
-									console.log("직직");
+									
 									console.log($('input[id=' + inputFileId + ']').siblings());
 									// input요소 바로 다음 img의 이미지가 바뀜
 									$('input[id=' + inputFileId + ']').siblings().eq(0).attr('src', e.target.result);
@@ -132,6 +133,19 @@ img{
 									// $('img[class='+ inputFileId + ']').attr('src', e.target.result);
 									// console.log($('#thumb'));
 									// inputFile.target.siblings().eq(0).attr('src', e.target.result);
+									
+									// 그 이미지가 첨부되어야 주석 input요소가 열림
+									// input.attr('display', 'inline-block');
+									
+									// 그리고 그 다음 div가 생성됨
+									/*
+									const value = '<div>'
+												 +'<input type="file" name="upfiles" />'
+												 +'<img src="" class="file-img" />'
+												 +'<input type="text" name="anno" placeholder=">" />'
+												 +'</div>';	
+									$('#content-div').html(value);
+									*/
 								}
 								
 							}
@@ -215,19 +229,19 @@ img{
 			
 			<textarea id="content" name="expContent" placeholder="내용을 입력해 주세요." rows="5"></textarea>
 			
-			<div>
-				<input type="file" name="upfile" id="inputfileId1" />
-				<img src="" class="file-img" id="file-img1" />
-				<input type="text" />
+			<div id="content-div">
+				<div>
+					<input type="file" name="upfiles" id="inputfileId1" />
+					<img src="" class="file-img" id="file-img1" />
+					<input type="text" name="anno" placeholder=">" />
+				</div>
+				<div>
+					<input type="file" name="upfiles" id="inputfileId2" />
+					<img src="" class="file-img" id="file-img2" />
+					<input type="text" name="anno" placeholder=">" />
+				</div>
+			
 			</div>
-			<div>
-				<input type="file" name="upfile" id="inputfileId2" />
-				<img src="" class="file-img" id="file-img2" />
-				<input type="text" />
-			</div>
-			
-			
-			
 			
 			
 			
