@@ -62,7 +62,7 @@
 				<table border="1" align="center">
 					<tr>
 						<td colspan="5" rowspan="6" width="250" height="140">
-							<img src="https://cdn-icons-png.flaticon.com/512/259/259987.png" id="myPhoto" width="200" height="120" readonly>
+							<img src="https://cdn-icons-png.flaticon.com/512/259/259987.png" id="myPhoto" width="300" height="400" readonly>
 							<input type="file" name="file1" id="file1" onchange="loadImg(this, 1)">
 						</td>
 						<td align="center">ID</td>
