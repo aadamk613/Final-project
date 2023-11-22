@@ -22,4 +22,7 @@ public class Plant {
 	private String plantCategory;
 	private String plantLogDate;
 	
+	private String filePath;
+	private String updateName;
+	
 }
