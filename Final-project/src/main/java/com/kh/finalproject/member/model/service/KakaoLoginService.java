@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -26,9 +28,9 @@ public class KakaoLoginService {
 
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream()));
     StringBuilder sb = new StringBuilder();
-    sb.append("client_id=API키");
+    sb.append("client_id=5beb2b3c082749b54d59123ddd3d6c01");
     sb.append("&grant_type=authorization_code");
-    sb.append("&redirect_uri=리다이렉트uri");
+    sb.append("&redirect_uri=http://localhost:8001/final/kakaoLogin.me");
     sb.append("&code=" + code);
 
     bw.write(sb.toString());
@@ -55,7 +57,7 @@ public class KakaoLoginService {
     return accessToken;
   }
 
-  public String getUserInfo(String accessToken) throws IOException, ParseException {
+  public Map<String, String> getUserInfo(String accessToken) throws IOException, ParseException {
 
     String kakaoUrl = "https://kapi.kakao.com/v2/user/me";
 
@@ -74,14 +76,15 @@ public class KakaoLoginService {
       responseData += line;
     }
 
-    System.out.println(responseData);
-
     JSONObject responseObj = (JSONObject) new JSONParser().parse(responseData);
-    JSONObject kakaoAccount = (JSONObject) responseObj.get("kakao_account");
+    JSONObject kakaoAccount = (JSONObject) responseObj.get("properties");
 
     System.out.println(kakaoAccount);
     System.out.println(responseObj.get("id").toString());
-
-    return responseObj.get("id").toString();
+    Map<String, String> returnMe = new HashMap<>();
+    returnMe.put("id", responseObj.get("id").toString());
+    returnMe.put("nickname", kakaoAccount.get("nickname").toString());
+    returnMe.put("profile_image", kakaoAccount.get("profile_image").toString());
+    return returnMe;
   }
 }

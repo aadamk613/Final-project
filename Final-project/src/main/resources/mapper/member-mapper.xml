@@ -139,6 +139,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE 
 			MEM_ID = #{memId}
 	</select>
+	<insert id="addKakaoProfile" parameterType="member">
+		INSERT
+			INTO
+				MEMBER
+				(
+				MEM_NO,
+				MEM_STATUS,
+				MEM_ID,
+				MEM_NICK,
+				MEM_IMG
+				)
+		VALUES
+				(
+				SEQ_MEMBER_NO.NEXTVAL,
+				'U',
+				#{memId},
+				#{memNick},
+				#{memImg}
+				)
+	</insert>
 	<insert id="addNaverProfile" parameterType="naver">
 		INSERT
 			INTO
