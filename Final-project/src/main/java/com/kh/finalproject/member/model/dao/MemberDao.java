@@ -41,4 +41,8 @@ public class MemberDao {
   public int upateMember(SqlSessionTemplate sqlSession, Member m) {
     return sqlSession.update("memberMapper.updateMember", m);
   }
+
+  public int addKaKaoProfile(SqlSessionTemplate sqlSession, Member m) {
+    return sqlSession.insert("memberMapper.addKakaoProfile", m);
+  }
 }

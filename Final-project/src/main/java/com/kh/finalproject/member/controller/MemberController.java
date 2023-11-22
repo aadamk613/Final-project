@@ -2,6 +2,7 @@ package com.kh.finalproject.member.controller;
 
 
 import com.google.gson.Gson;
+import com.kh.finalproject.member.model.service.KakaoLoginService;
 import com.kh.finalproject.member.model.service.MemberService;
 import com.kh.finalproject.member.model.service.NaverLoginService;
 import com.kh.finalproject.member.model.vo.Member;
@@ -9,7 +10,6 @@ import com.kh.finalproject.member.model.vo.NaverLogin;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -34,6 +34,7 @@ public class MemberController {
   @Autowired private BCryptPasswordEncoder bcryptPasswordEncoder;
   @Autowired private MemberService memberService;
   @Autowired private NaverLoginService naverLoginService;
+  @Autowired private KakaoLoginService kakaoLoginService;
 
   @RequestMapping("loginForm.me")
   public String loginForm() {
@@ -156,12 +157,12 @@ public class MemberController {
     NaverLogin nv = new NaverLogin();
     JSONParser parser = new JSONParser();
     Object obj = parser.parse(profile);
-    JSONObject jsonObj = (JSONObject)obj;
+    JSONObject jsonObj = (JSONObject) obj;
     JSONObject responseObj = (JSONObject) jsonObj.get("response");
-    nv.setId((String)responseObj.get("id"));
-    nv.setNickname((String)responseObj.get("nickname"));
-    nv.setEmail((String)responseObj.get("email"));
-    nv.setProfile_image((String)responseObj.get("profile_image"));
+    nv.setId((String) responseObj.get("id"));
+    nv.setNickname((String) responseObj.get("nickname"));
+    nv.setEmail((String) responseObj.get("email"));
+    nv.setProfile_image((String) responseObj.get("profile_image"));
     // 지금 로그인한 네이버 프로필이 DB에 없으면 DB에 추가
     Member loginUser = memberService.selectNaverProfile(nv.getId());
     if (loginUser == null) {
@@ -172,5 +173,28 @@ public class MemberController {
     session.setAttribute("loginUser", loginUser);
     return "redirect:/";
 >>>>>>> main
+  }
+
+  @GetMapping("kakaoLogin.me")
+  public String kakaoLogin(String code, HttpSession session) throws Exception {
+    String accessToken = kakaoLoginService.getToken(code);
+    // 토큰으로 긁어온 유저 정보를 맵에 받아왔음
+    Map<String, String> profileMap = kakaoLoginService.getUserInfo(accessToken);
+    System.out.println("printing map" + profileMap.toString());
+    // 지금 로그인한 카카오톡 프로필이 DB에 없으면 DB에 추가.
+    // 네이버용으로 작성한 select문이지만 카카오 계정에도 적용가능.
+    Member loginUser = memberService.selectNaverProfile(profileMap.get("id"));
+    Member m = new Member();
+    m.setMemId(profileMap.get("id"));
+    m.setMemNick(profileMap.get("nickname"));
+    m.setMemImg(profileMap.get("profile_image"));
+    if (loginUser == null) {
+      memberService.addKaKaoProfile(m);
+      memberService.selectNaverProfile(profileMap.get("id"));
+    }
+    memberService.setLastLogin(loginUser);
+    session.setAttribute("loginUser", loginUser);
+    System.out.println(loginUser);
+    return "redirect:/";
   }
 }
