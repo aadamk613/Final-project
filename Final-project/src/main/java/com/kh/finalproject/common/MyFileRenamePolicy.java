@@ -1,6 +1,7 @@
 package com.kh.finalproject.common;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class MyFileRenamePolicy implements FileRenamePolicy {
@@ -46,3 +47,4 @@ public class MyFileRenamePolicy implements FileRenamePolicy {
 		return new File(originFile.getParent(), changeName);
 		
 	}
+}

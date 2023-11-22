@@ -66,7 +66,7 @@
 					</tr>
 					<tr>
 						<td>이메일</td>
-						<td width="130" height="60"><input type="text" id="memNick" value="${ sessionScope.loginUser.email }" name="email"></td>
+						<td width="130" height="60"><input type="text" id="memNick" value="${ sessionScope.loginUser.email }" name="email" readonly></td>
 					</tr>
 					<tr>
 						<td height="60" align="center">블로그주소</td>
@@ -120,10 +120,10 @@
 						<input type="text" class="form-control" id="memId" value="${ sessionScope.loginUser.memId }" name="memId"  readonly><br>
 						
 						<label for="email">닉네임</label>
-						<input type="text" class="form-control" id="memNick" value="${ sessionScope.loginUser.memNick }" name="memNick">
+						<input type="text" class="form-control" id="memNick" value="${ sessionScope.loginUser.memNick }" name="memNick" >
 						
 						<label for="email">이메일</label>
-						<input type="text" class="form-control" id="email" value="${ sessionScope.loginUser.email }" name="email">
+						<input type="text" class="form-control" id="email" value="${ sessionScope.loginUser.email }" name="email" >
 					</div>
 					
 					<br>

@@ -107,7 +107,7 @@ public class MemberController {
   }
   
   @RequestMapping("update.me")
-  public String updateMember(Member m, Files f, Model model, HttpSession session) {
+  public String updateMember(Member m, Model model, HttpSession session) {
 	  if(memberService.updateMember(m) > 0){
 		  
 		session.setAttribute("loginUser", memberService.loginMember(m));
