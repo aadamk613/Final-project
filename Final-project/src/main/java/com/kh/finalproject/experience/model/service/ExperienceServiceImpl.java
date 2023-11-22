@@ -6,7 +6,6 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.finalproject.common.model.dao.CommonDao;
@@ -17,7 +16,6 @@ import com.kh.finalproject.experience.model.vo.Experience;
 import com.kh.finalproject.experience.model.vo.ExperienceReply;
 
 @Service 
-@EnableTransactionManagement
 public class ExperienceServiceImpl implements ExperienceService {
 	
 	@Autowired
@@ -58,8 +56,7 @@ public class ExperienceServiceImpl implements ExperienceService {
 	@Override
 	@Transactional
 	public int insertExperience(Experience exp, ArrayList<Files> fileList) {
-		experienceDao.insertExperience(sqlSession, exp);
-		int result = 1;
+		int result = experienceDao.insertExperience(sqlSession, exp);
 		for(Files file : fileList) {
 			result *= commonDao.insertFiles(sqlSession, file);
 		}

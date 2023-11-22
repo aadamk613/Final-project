@@ -39,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="insertFiles" parameterType="hashmap" >
 		INSERT 
 		  INTO
-		  		TB_FILE
+		  		TB_FILES
 				(
 			     FILE_NO,
 		         ORIGINAL_NAME,
@@ -52,12 +52,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				)
 			VALUES
 			 	(
-			 	SEQ_FILE_NO.NEXTVAL, 
+			 	SEQ_FILES_NO.NEXTVAL, 
 			 	#{ originalName },
 			 	#{ updateName },
 			 	#{ filePath },
 			 	#{ refType },
-			 	#{ refNo },
+			 	<choose>
+			 		<when test=${ refType='plant' }>
+			 			SEQ_PLANT_NO.CURRVAL,
+			 		</when>
+			 		<when test=${ refType='experience' }>
+			 			SEQ_EXPERIENCE.CURRVAL,
+			 		</when>
+			 		<otherwise>
+			 			#{ refNo },
+			 		</otherwise>
+			 	</choose>
 			 	#{ fileAnnotation },
 			 	SYSDATE
 			 	)		  	

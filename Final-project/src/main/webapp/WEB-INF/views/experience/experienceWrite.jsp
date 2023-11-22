@@ -81,9 +81,9 @@ img{
 			
 			<div id="summary">
 				<div>
-					<input type="file" name="upfiles" id="thumbFile" />
+					<input type="file" name="upfiles" id="thumbFile" required />
 					<img src="" id="thumb" class="thumbFile" />
-					<input type="text" name="anno" placeholder=">" />
+					<input type="hidden" name="anno" value="thumb" placeholder=">"  />
 				</div>
 				
 				<script>
@@ -99,53 +99,63 @@ img{
 					
 					$(() => {
 						$('input[type=file]').hide();
-						$('img').on('click', e =>{
+						//$('img').on('click', function abc(e){
+						$(document).on('click', 'img', function abc(e){
 							// console.log("하이드");
 							// console.log(e.target.id);
 							const imgId = e.target.id;
 							// console.log("이건 뭔데");
 							// console.log($('img[id=' + imgId +']').siblings().eq(0));
-							$('img[id=' + imgId +']').siblings().eq(0).click();
+							console.log("왜 안나와");
+							console.log($(this)); // => 화살표함수.............쓰면 window로 잡힘
+							// $('img[id=' + imgId +']').siblings().eq(0).click();
+							$(this).siblings().eq(0).click();
+							// console.log("이얍");
+							//console.log($('img').last());
+							// $('img').last().siblings().eq(0).click();
 						});
 						
-						console.log($('input[type=file]'));
-						$('input[type=file]').on('change', ()=>{
-							console.log("??");
-						});
+						//console.log($('input[type=file]'));
+						//$('input[type=file]').on('change', ()=>{
+						//	console.log("??");
+						//});
 						
 						// input 파일요소가 바뀌면, 이미지가 보여짐
-						$('input[type=file]').on('change', (inputFile) =>{
+						//$('input[type=file]').on('change', function asd(inputFile){
+						$(document).on('change', 'input[type=file]', function asd(inputFile){
 							console.log("바껴라");
-							console.log(inputFile.target);
-							console.log(inputFile.target.files);
+							//console.log(inputFile.target);
+							//console.log(inputFile.target.files);
+							const changeFile = $(this);
+							console.log(changeFile);
 							// 파일이 있다면
 							if(inputFile.target.files.length == 1){
 								let reader = new FileReader();
 								reader.readAsDataURL(inputFile.target.files[0]);
 								reader.onload = function(e){
+									console.log("비교");
+									console.log(inputFile.target.files[0]);
+									console.log($(this));
+									console.log(this);
 									
-									const inputFileId = inputFile.target.id;
+									//const inputFileId = inputFile.target.id;
 									
-									console.log($('input[id=' + inputFileId + ']').siblings());
+									// console.log($('input[id=' + inputFileId + ']').siblings());
+									//console.log($('input[type=file]').last());
 									// input요소 바로 다음 img의 이미지가 바뀜
-									$('input[id=' + inputFileId + ']').siblings().eq(0).attr('src', e.target.result);
+									//$('input[id=' + inputFileId + ']').siblings().eq(0).attr('src', e.target.result);
+									changeFile.siblings().eq(0).attr('src', e.target.result);
+									// $('input[type=file]').last().siblings().eq(0).attr('src', e.target.result);
 									// console.log($('img[class=inputFileId]'));
 									// $('img[class='+ inputFileId + ']').attr('src', e.target.result);
 									// console.log($('#thumb'));
 									// inputFile.target.siblings().eq(0).attr('src', e.target.result);
 									
-									// 그 이미지가 첨부되어야 주석 input요소가 열림
+									// 그 이미지가 첨부되어야 주석 input요소가 열림 => 안해도됨
 									// input.attr('display', 'inline-block');
 									
-									// 그리고 그 다음 div가 생성됨
-									/*
-									const value = '<div>'
-												 +'<input type="file" name="upfiles" />'
-												 +'<img src="" class="file-img" />'
-												 +'<input type="text" name="anno" placeholder=">" />'
-												 +'</div>';	
-									$('#content-div').html(value);
-									*/
+									
+									
 								}
 								
 							}
@@ -184,18 +194,18 @@ img{
 				<div>
 					<h5>※필수 입력 사항입니다. </h5>
 					
-					카테고리 : <select id="category" name="expCategoryNo">
+					카테고리 : <select id="category" name="expCategoryNo" required>
 								<option value="1">화훼농장</option>
 								<option value="2">과일농장</option>
 								<option value="3">채소농장</option>
 								<option value="4">꽃꽂이</option>
 							</select>
-					체험학습일 : <input type="date" name="expWorkDate" />
-					체험시간 : <input type="number" name="expWorkTime" min=1 max=10 />
-					모집인원 : <input type="number" name="expPeople" min=1 max=100 />
-					모집마감일 : <input type="date" name="expEndDate" />
+					체험학습일 : <input type="date" name="expWorkDate" required readonly />
+					체험시간 : <input type="number" name="expWorkTime" min=1 max=10 required />
+					모집인원 : <input type="number" name="expPeople" min=1 max=100 required readonly />
+					모집마감일 : <input type="date" name="expEndDate" required />
 					주소 : 
-						<input type="text" name="expAddress" id="expAddress" placeholder="주소" readonly />
+						<input type="text" name="expAddress" id="expAddress" placeholder="주소" required readonly />
 						<input type="button" value="주소 검색" onclick="searchAddress();"  /><br>
 						<input type="hidden" name="expArea" id="expArea" />
 						<input type="submit" value="등록하기">
@@ -223,6 +233,27 @@ img{
 				$(() => {
 					$('input[type=date]').prop('min', mindate);
 				});
+				
+				
+				
+				// 버튼 클릭하면 div 생성
+				// 그리고 그 다음 div가 생성됨
+				$(() => {
+					$('#addContent').click(() => {
+						console.log("클릭했음");
+						const value = '<div>'
+							 +'<input type="file" name="upfiles" />'
+							 +'<img src="" class="file-img" />'
+							 +'<input type="text" name="anno" placeholder=">" />'
+							 +'</div>';	
+							 
+						$('#content-div').append(value);
+						$('input[type=file]').hide();
+						// $('#content-div').children().last().addEventListener('click', );
+					});
+				})
+				
+				
 			</script>
 			
 			<br clear="both">
@@ -230,6 +261,7 @@ img{
 			<textarea id="content" name="expContent" placeholder="내용을 입력해 주세요." rows="5"></textarea>
 			
 			<div id="content-div">
+			
 				<div>
 					<input type="file" name="upfiles" id="inputfileId1" />
 					<img src="" class="file-img" id="file-img1" />
@@ -264,7 +296,7 @@ img{
 			
 			
 			
-			
+			<button type="button" id="addContent">추가하기</button>
 			
 			
 			
