@@ -43,4 +43,7 @@ public interface BoardService {
 	
 	// 파일 수정
 	int updateFiles(Files f);
+
+	// 파일 삭제
+	int deleteFile(int noticeNo);
 }

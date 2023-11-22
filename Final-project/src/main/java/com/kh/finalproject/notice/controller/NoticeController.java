@@ -56,7 +56,7 @@ public class NoticeController {
 	
 	// 공지사항 작성폼 이동
 	@RequestMapping("enrollForm.no")
-	public String enrollForm() {
+	public String noticenrollForm() {
 		return "notice/noticeEnrollForm";
 	}
 	

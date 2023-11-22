@@ -40,43 +40,49 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public int insertBoard(Board n) {
-		return 0;
+	public int increaseCount(int boardNo) {
+		return boardDao.increaseCount(sqlSession, boardNo);
+	}
+	
+	@Override
+	public Board selectBoard(int boardNo) {
+		return boardDao.selectBoard(sqlSession, boardNo);
+	}
+	
+	@Override
+	public int insertBoard(Board b) {
+		return boardDao.insertBoard(sqlSession, b);
 	}
 
 	@Override
 	public int insertFile(Files f) {
-		return 0;
-	}
-
-	@Override
-	public int increaseCount(int boardNo) {
-		return 0;
-	}
-
-	@Override
-	public Board selectBoard(int boardNo) {
-		return null;
-	}
-
-	@Override
-	public int deleteBoard(int boardNo) {
-		return 0;
-	}
-
-	@Override
-	public int updateBoard(Board n) {
-		return 0;
+		return boardDao.insertFile(sqlSession, f);
 	}
 
 	@Override
 	public int selectLastBoardNo() {
-		return 0;
+		return boardDao.selectLastBoardNo(sqlSession);
+	}
+	
+	@Override
+	public int deleteBoard(int boardNo) {
+		return boardDao.deleteBoard(sqlSession, boardNo);
+	}
+	
+	@Override
+	public int deleteFile(int boardNo) {
+		return boardDao.deleteFile(sqlSession, boardNo);
 	}
 
 	@Override
+	public int updateBoard(Board b) {
+		return boardDao.updateBoard(sqlSession, b);
+	}
+
+
+	@Override
 	public ArrayList<Files> selectFile(int boardNo) {
-		return null;
+		return boardDao.selectFile(sqlSession, boardNo);
 	}
 
 	@Override

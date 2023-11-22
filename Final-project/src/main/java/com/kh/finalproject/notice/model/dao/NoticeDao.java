@@ -28,7 +28,6 @@ public class NoticeDao {
 		return sqlSession.insert("noticeMapper.insertNotice", n);
 	}
 	public int insertFile(SqlSessionTemplate sqlSession, Files f) {
-		System.out.println(f);
 		return sqlSession.insert("noticeMapper.insertFile", f);
 	}
 

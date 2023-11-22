@@ -41,7 +41,7 @@
 	                    	<li><a href="enrollForm.no" class="btn btn-primary">공지게시글작성</a></li>
 	                	  	</c:if>
 
-	                    	<li><a href="#" class="btn btn-primary">일반게시글작성</a></li>
+	                    	<li><a href="enrollForm.bo" class="btn btn-primary">일반게시글작성</a></li>
 	                    	<li><a href="#" class="btn btn-primary">쪽지함</a></li>
 	                    	<li><a href="#" class="btn btn-light loginMemUser">내가 쓴 글 확인</a>
 	                    </c:when>
