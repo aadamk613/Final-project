@@ -10,7 +10,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
-    <style>
+<style>
+
+	
     .myContent{
     	width:800px;
     	height:100px;
@@ -25,8 +27,9 @@
 		width:100%;
 		height:auto;
 	}
+	
     
-    </style>
+</style>
 </head>
 <body>
 
@@ -45,7 +48,7 @@
 		
 		<section id="pageSection">
 			
-			<div id="contentTitle">
+			<div id="infoTitle">
                 마이페이지(여긴 마이페이지입니다!)
 			</div>
 			
@@ -54,13 +57,16 @@
 			<article id="pageArticle">
 				
 				<br>  
+				
 				<form action="loadImg.me" method="post" id="profile">
 				<table border="1" align="center">
 					<tr>
-						<td colspan="2" rowspan="2" width="250" height="140">
+						<td colspan="5" rowspan="6" width="250" height="140">
 							<img src="https://cdn-icons-png.flaticon.com/512/259/259987.png" id="myPhoto" width="200" height="120" readonly>
 							<input type="file" name="file1" id="file1" onchange="loadImg(this, 1)">
 						</td>
+						<td align="center">ID</td>
+						<td><input type="text" class="form-control" id="memId" value="${ sessionScope.loginUser.memId }" name="memId"  readonly></td>
 						<td>닉네임</td>
 						<td width="10" height="60"><input type="text" id="memNick" value="${ sessionScope.loginUser.memNick }" name="memNick"  readonly></td>
 					</tr>
@@ -77,9 +83,13 @@
 						<td colspan="3"><input type="text" class="introduceMyself"></td>
 					</tr>
 					</table>
+					<br>
+					<div class="btns" align="center">
+						<button type="submit" class="button forest">수정하기</button>
+						<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteForm">회원탈퇴</button>
+					</div>
 					</form>
 					<br>
-
 				<script>
 					function loadImg(inputFile, num){
 						if(inputFile.files.length == 1) { // 파일 첨부
@@ -111,30 +121,6 @@
 					};
 
 				</script>
-					
-			
-				
-				<form action="update.me" method="post">
-					<div class="form-group">
-						<label for="userId">*ID : </label>
-						<input type="text" class="form-control" id="memId" value="${ sessionScope.loginUser.memId }" name="memId"  readonly><br>
-						
-						<label for="email">닉네임</label>
-						<input type="text" class="form-control" id="memNick" value="${ sessionScope.loginUser.memNick }" name="memNick" >
-						
-						<label for="email">이메일</label>
-						<input type="text" class="form-control" id="email" value="${ sessionScope.loginUser.email }" name="email" >
-					</div>
-					
-					<br>
-					
-					<div class="btns" align="center">
-						<button type="submit" class="button forest">수정하기</button>
-						<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteForm">회원탈퇴</button>
-					</div>
-				</form>
-
-				
 				</article>
 			</div>
 			
