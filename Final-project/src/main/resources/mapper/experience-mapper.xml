@@ -110,9 +110,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		       EXP_ADDRESS,
 		       EXP_CATEGORY_NO,
 		       EXP_CATEGORY_NAME, 
-		       NVL(EXP_LIKE_COUNT, 0),
-		       NVL(EXP_REPLY_COUNT, 0),
-		       NVL(EXP_SUPPORT_COUNT, 0)
+		       NVL(EXP_LIKE_COUNT, 0) EXP_LIKE_COUNT,
+		       NVL(EXP_REPLY_COUNT, 0) EXP_REPLY_COUNT,
+		       NVL(EXP_SUPPORT_COUNT, 0) EXP_SUPPORT_COUNT
 		  FROM
 		       TB_EXPERIENCE 
 		  JOIN 

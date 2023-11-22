@@ -55,6 +55,7 @@ h1 {
 .files{
 	width : 80%;
 	height : 400px;
+	object-fit : contain;
 }
 
 .summary{
@@ -186,7 +187,7 @@ h1 {
 				<div id="">
 					<c:if test="${ not empty requestScope.files }">
 						<c:forEach var="f" items="${ requestScope.files }">
-							<img src="${ f.filePath }/${ f.updateName }" class="files" />
+							<img src="${ f.filePath }${ f.updateName }" class="files" />
 							<p>${ f.fileAnnotation }</p>
 						</c:forEach>
 					</c:if>

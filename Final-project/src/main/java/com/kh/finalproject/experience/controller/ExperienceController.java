@@ -61,6 +61,8 @@ public class ExperienceController {
 			// map.put("refType", "EXPERIENCE");
 			
 			model.addAttribute("files", commonController.selectFiles(expNo, "experience"));
+			System.out.println("왜 아무것도 안나와");
+			System.out.println(model.getAttribute("files"));
 			return "experience/experienceDetailView";
 		// 조회수 증가 실패 시	
 		} else {
@@ -110,7 +112,7 @@ public class ExperienceController {
 	}
 	
 	@PostMapping("yrinsertExp.exp")
-	public String insertExperience(Experience exp, ArrayList<MultipartFile> upfiles, String[] anno, HttpServletRequest request) {
+	public String insertExperience(Experience exp, ArrayList<MultipartFile> upfiles, String[] anno, HttpSession session) {
 		/*
 		System.out.println(expCategoryNo);
 		System.out.println(expWorkDate);
@@ -121,12 +123,13 @@ public class ExperienceController {
 		System.out.println(exp.getExpPeople());
 		System.out.println(upfiles);
 		*/
+		/*
 		System.out.println(anno);
 		System.out.println(anno.toString());
 		System.out.println(anno[0]);
 		System.out.println(anno[1]);
 		System.out.println(anno[2]);
-		/*
+		
 		// System.out.println(upfile[0]);
 		// System.out.println(upfile[1]);
 		System.out.println(upfiles.toString());
@@ -139,9 +142,9 @@ public class ExperienceController {
 		ArrayList<Files> fileList = new ArrayList();
 		for(int i = 0; i < upfiles.size(); i++) {
 			if(!upfiles.get(i).getOriginalFilename().equals("")) {
-				Files file = commonController.setFile(upfiles.get(i), request.getSession(), "experience");
-				//System.out.println("파일이오");
-				//System.out.println(file);
+				Files file = commonController.setFile(upfiles.get(i), session, "experience");
+				System.out.println("파일이오");
+				System.out.println(file);
 				file.setRefNo(exp.getExpNo());
 				file.setFileAnnotation(anno[i]);
 				//System.out.println("담음");
@@ -151,20 +154,17 @@ public class ExperienceController {
 		}
 		System.out.println("파일리스트");
 		System.out.println(fileList);
-		System.out.println(fileList.get(0));
-		System.out.println(fileList.get(1));
-		System.out.println(fileList.get(2));
+		//System.out.println(fileList.get(0));
+		//System.out.println(fileList.get(1));
+		//System.out.println(fileList.get(2));
 		
 		if(experienceService.insertExperience(exp, fileList) > 0) {
-			System.out.println("성공");
+			session.setAttribute("alertMsg", "게시글이 등록되었습니다.");
 		} else {
-			System.out.println("실패");
+			session.setAttribute("alertMsg", "게시글 등록에 실패하셨습니다.");
 		}
+		return "redirect:yrlist.exp";
 		
-		
-		
-		
-		return "";
 	}
 	
 	

@@ -32,7 +32,7 @@ public class CommonController {
 	public ArrayList<Files> selectFiles(int refNo, String string) {
 		HashMap<Object, Object> map = new HashMap();
 		map.put("refNo", refNo);
-		map.put("refType", "EXPERIENCE");
+		map.put("refType", string);
 		
 		return commonService.selectFiles(map);
 	}
@@ -50,11 +50,12 @@ public class CommonController {
 
 		String originalName = upfile.getOriginalFilename();
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-		int ranNum = (int)Math.random() * 9000 + 10000;
-			
+		int ranNum = (int)(Math.random() * 9000) + 10000;
+		System.out.println("파일이름을 바꿔");
 		String ext = originalName.substring(originalName.lastIndexOf("."));
 		String changeName = currentTime + ranNum + ext;
-		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/" + savePathFolder + "/");
+		System.out.println(changeName);
+		String savePath = session.getServletContext().getRealPath("resources/uploadFiles/" + savePathFolder + "/");
 		
 		try {
 			upfile.transferTo(new File(savePath + changeName));
@@ -62,12 +63,14 @@ public class CommonController {
 			e.printStackTrace();
 		}
 		
-
+		
 		file.setFilePath("/resources/uploadFiles/" + savePathFolder + "/");
 
 		file.setRefType(savePathFolder);
 		file.setOriginalName(originalName);
 		file.setUpdateName(changeName);
+		System.out.println("이게 바로 바뀐ㅇ ㅣ름");
+		System.out.println(file.getUpdateName());
 
 
 		return file;
