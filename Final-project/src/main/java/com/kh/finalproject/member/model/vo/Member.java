@@ -22,4 +22,6 @@ public class Member {
   private String memStatus;
   private int blogNo;
   private String lastLogin;
+  private String blogAddress;
+  private String introduceMyself;
 }

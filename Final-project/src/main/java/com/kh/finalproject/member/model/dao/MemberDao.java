@@ -34,16 +34,12 @@ public class MemberDao {
     return (ArrayList) sqlSession.selectList("memberMapper.ajaxGetMemberList");
   }
 
-  public int editMember(SqlSessionTemplate sqlSession, Member m) {
-    return sqlSession.update("memberMapper.editMember", m);
+  public int loadImg(SqlSessionTemplate sqlSession, String inputFile) {
+    return sqlSession.update("memberMapper.loadImg");
   }
 
-  public int addNaverProfile(SqlSessionTemplate sqlSession, NaverLogin nv) {
-    return sqlSession.insert("memberMapper.addNaverProfile", nv);
-  }
-
-  public Member selectNaverProfile(SqlSessionTemplate sqlSession, String memId) {
-    return sqlSession.selectOne("memberMapper.selectNaverProfile", memId);
+  public int upateMember(SqlSessionTemplate sqlSession, Member m) {
+    return sqlSession.update("memberMapper.updateMember", m);
   }
 
   public int addKaKaoProfile(SqlSessionTemplate sqlSession, Member m) {

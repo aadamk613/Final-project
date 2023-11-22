@@ -65,6 +65,22 @@
 							${ n.noticeCreateDate }&nbsp;&nbsp;&nbsp;&nbsp;조회 ${ n.views }
 						</div>
 					</div>
+					<hr>
+					
+					<c:choose>
+						<c:when test="${ empty f }">
+						첨부파일이 없습니다.
+						</c:when>
+						<c:otherwise>
+						<div>
+						  첨부파일
+						  <c:forEach var="file" items="${f}">
+						    <a href="/finalProject${file.filePath }${file.updateName}" download="${file.originalName}">${file.originalName}</a>
+						  </c:forEach>
+						</div>
+						</c:otherwise>
+					</c:choose>
+					
 					<hr clear="both">
 					<div id="boardContent">
 						${ n.noticeContent }
@@ -84,7 +100,7 @@
 							</c:choose>
 						</c:when>
 						<c:otherwise>
-							<img src="resources/img/emptyHeart.png" alt="빈하트">
+							<img src="/WEB_INF/resources/img/emptyHeart.png" alt="빈하트">
 					 		<a href='#' onclick="alert('로그인 후 이용 가능한 기능입니다.');" id="like" class="like">좋아요</a>&nbsp;${ n.likeCount } 
 						</c:otherwise>
 						</c:choose>
@@ -100,8 +116,8 @@
 			<div id="page">
 				<div id="writeWrap">
 						<c:if test="${ loginUser.memNick eq n.memNo }" >
-							<a class="btn btn-light" href="#">수정</a>
-							<a class="btn btn-light" href="#">삭제</a>
+							<a class="btn btn-light" onclick="postFormSubmit(0);">수정</a>
+							<a class="btn btn-light" onclick="postFormSubmit(1);">삭제</a>
 						</c:if>
 				&nbsp;
 				</div>
@@ -109,6 +125,21 @@
 					<a href="#header" class="btn btn-light">^</a>
 				</div>
 			</div>
+			
+			<form action="" method="post" id="postForm">
+				<input type="hidden" name="bno" value="${ n.noticeNo }">
+			</form>
+			
+			<script>
+				function postFormSubmit(num) {
+					if(num == 0) {
+						$('#postForm').attr('action', 'updateForm.no').submit();				
+					}
+					else {
+						$('#postForm').attr('action', 'delete.no').submit();				
+					}
+				}
+			</script>
 		
 		
 		</section>

@@ -110,6 +110,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE 
 			MEM_NO = #{memNo}
 	</update>
+	<insert id="loadImg" parameterType="String">
+		INSERT
+		  INTO
+				TB_FILE
+				(
+				FILE_NO,
+				ORIGINAL_NAME,
+				UPDATE_NAME,
+				FILE_PATH,
+				REF_TYPE
+				)
+		VALUES
+				(
+				#{fileNo},
+				#{originalName},
+				#{updateName},
+				#{filePath},
+				#{refType}
+				)
+				
+	</insert>
+
+	<update id="updateMember" parameterType="member">
+		UPDATE
+				TB_FILE,
+				MEMBER
+		   SET
+				MEM_NICK = #{memNick},
+				EMAIL = #{email}
+		 WHERE
+		 		MEM_ID = #{memId}
+		   		
+	</update>
 	<update id="editMember" parameterType="member">
 		UPDATE
 			MEMBER

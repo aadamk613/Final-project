@@ -12,6 +12,8 @@ public interface MemberService {
 
   int idCheck(String checkId);
 
+  int updateMember(Member m);
+
   int setLastLogin(Member m);
 
   ArrayList<Member> ajaxGetMemberList();
@@ -25,4 +27,7 @@ public interface MemberService {
   Member selectNaverProfile(String memId);
 
   int addKaKaoProfile(Member m);
+
+  int loadImg(String inputFile);
+
 }

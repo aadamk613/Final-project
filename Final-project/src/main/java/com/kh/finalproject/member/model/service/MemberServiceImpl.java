@@ -41,6 +41,15 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
+  public int loadImg(String inputFile) {
+    return memberDao.loadImg(sqlSession, inputFile);
+  }
+
+  @Override
+  public int updateMember(Member m) {
+    return memberDao.upateMember(sqlSession, m);
+  }
+
   public Member selectMember(int memNo) {
     return memberDao.selectMember(sqlSession, memNo);
   }

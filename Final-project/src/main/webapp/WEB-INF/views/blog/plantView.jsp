@@ -16,12 +16,21 @@
     border: 1px solid skyblue;
 	box-sizing: border-box;
 }
+
+#blogTitle{
+	font-size: 25px; 
+	font-weight: bold; 
+	padding: 20px;
+	color: #00610C;
+	}
+
+article{padding: 10px;}
 #plantInfoWrap > div{float: left;}
 #plantInfoWrap{width: 100%; height: auto;}
 
 #plantImg{width: 20%; height: 160px; float: middle;}
 
-#plantImfo{width: 80%; height: auto;}
+#plantInfo{width: 80%; height: 160px;}
 #plantName{font-size: 20px; font-weight: bold;}
 #plantNick{font-size: 17px; font-weight: bold; color: #448300;}
 #plantNick > div{display: inline; padding: 10px;}
@@ -29,12 +38,13 @@
 #plantCreateDate{font-size: 15px; color: #888;}
 
 #plantComment{width: 100%; height: 160px; padding: 10px;}
-ul{
+
+#plantInfo ul{
 	list-style: none;
     padding: 0px;
     margin: 0px;
 }
-li{
+#plantInfo li{
 	padding: 5px 20px;
     position: relative;
 }
@@ -88,7 +98,7 @@ textarea{
 		<section id="pageSection">
 			
 			<div id="blogTitle">
-			   	식물 일지 리스트
+			   	${ sessionScope.loginUser.memNick }의 정원
 			</div>
 			
 			<div id="content">
@@ -97,10 +107,16 @@ textarea{
 				<article>
                     <div id="plantInfoWrap">
                         <div id="plantImg">
-                        	식물 사진
-							<img src="${ files.filePath }/${ files.updateName }" class="files" />
+                        	<c:choose>
+                        	<c:when test="${ empty p.filePath }" >
+                        	<img width="100%" height="100%" src="resources/images/defaultPlant.png" class="files" />
+							</c:when>
+							<c:otherwise>
+							<img width="100%" height="100%" src="${ p.filePath }${ p.updateName }" class="files" />
+							</c:otherwise>
+							</c:choose>
 						</div>
-                        <div id="plantImfo">
+                        <div id="plantInfo">
                             <ul>
                                 <li id="plantName">식물 이름 : ${ p.plantName }</li>
                                 <li id="plantNick">
@@ -108,39 +124,60 @@ textarea{
 	                                <div id="plantCreateDate">D+${ p.plantLogDate }</div>
                                 </li>
                                 <li id="plantButtonWrap">
+                                <form action="" method="post" id="postForm">
+                                	
+                                	<input type="hidden" id="plantNo" name="plantNo" value="${ p.plantNo }">
+                                	<input type="hidden" name="plantNickName" value="${ p.plantNickName }">
+									<input type="hidden" id="category" name="category" value="">
+									
+                                	<a id="plantReport" class="button forest" onclick="plantCare(10);">일지 추가</a>
+                                    <a id="plantCare" class="button forest" onclick="plantCare(20);">관리하기</a>
+                                    
+                                </form>
+                                <!-- 
                                     <button id="plantReport" class="button forest" onclick="plantCare(${ p.plantNo }, 10, ${ p.plantLogDate });">일지 추가</button>
                                     <button id="plantCare" class="button forest" onclick="plantCare(${ p.plantNo }, 20, ${ p.plantLogDate });">관리하기</button>
+                                 -->
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <br clear="both">
-                    <div id="plantApiWrap">
-                                                      어쩌구 저쩌구 <br>
-                        Api에서 불러 온 정보
-                    </div>
 				</article>
 				</c:forEach>
 			</div>
 			
 			<script>
-			    $(()=>{
-			    	
-			      plantImgInput.addEventListener('click', function(){
-			    	  plantInput.click();
-			      });
-			    });
+	         	function plantCare(category){
+	            		//console.log($(arguments[0]).parent().children().find($('#plantNo')).val());
+	            		console.log($(arguments[0]).parent().children());
+	            		
+	            		if(category == 10){ // 일지 추가 클릭 시
+	            			$(arguments[0].children().children(1).attr('value',10));
+	            			//$('#postForm').children().find('#category').attr('value',10);
+	            			//$('#postForm').children().find('input[name=category]').attr('value',10);
+	            			$('#postForm').attr('action', 'insertForm.bl_pr').submit();
+	            		
+	            		}
+	            		else{ // 관리하기 클릭 시
+	            			$(arguments[0].children().children(1).attr('value',20));
+	            			//$('#postForm').children().find('#category').attr('value',20);
+	            			//$('#postForm').children().find('input[name=category]').attr('value',20);
+	            			$('#postForm').attr('action', 'insertForm.bl_pr').submit();
+	            		}
+	            	}
 			      
-			      function plantCare(plantNo, category, plantNickName){
+			    /*
+			    function plantCare(plantNo, category, plantNickName){
 						console.log(category);
 						console.log(plantNo);
 						console.log(plantNickName);
 						
-			    	 location.href= 'insertForm.bl.pr.' +  plantNo + '.' + category + '.' + plantNickName;
-
-		
+			    	 location.href= 'insertForm.bl.pr/' +  plantNo + '/' + category + '/' + plantNickName;
 			    };
-			     
+			     */
+			    
+			    
 			      
 			      
 			      

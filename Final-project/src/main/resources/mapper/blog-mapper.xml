@@ -37,6 +37,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="VIEW" property="view "/>
 		<result column="PLANT_CATEGORY" property="plantCategory"/>
 		<result column="PLANT_LOG_DATE" property="plantLogDate"/>
+		
+		<result column="FILE_PATH" property="filePath"/>
+		<result column="UPDATE_NAME" property="updateName"/>
 	</resultMap>
 	
 	<!-- 블로그 생성 -->
@@ -143,6 +146,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 	</select>
 	
+	<!-- 블로그 카테고리 업데이트하기 -->
+	<update id="updateCatogory" parameterType="blogCategorySetting">
+	
+		UPDATE 
+			  TB_BLOG_CATEGORY_SETTING 
+			SET 
+				CATEGORY_MEM_NAME = #{ categoryMemName }
+			WHERE 
+				CATEGORY_SETTING_NO = #{ categorySettingNo }
+	
+	</update>
+	
+	<!-- 블로그 카테고리 삭제하기 -->
+	<delete id="deleteCatogory" parameterType="_int">
+	
+		DELETE 
+		  FROM 
+		  		TB_BLOG_CATEGORY_SETTING 
+		  WHERE 
+		  		CATEGORY_SETTING_NO = #{ categorySettingNo } 
+	
+	</delete>
+	
 	<!-- 식물 등록하기 -->
 	<insert id="insertBlogPlant" parameterType="plant">
 		
@@ -197,9 +223,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        PLANT_COMMENT, 
 	        CREATE_DATE, 
 	        PLANT_CATEGORY, 
-	        TRUNC(SYSDATE - PLANT_LOG_DATE) PLANT_LOG_DATE
+	        TRUNC(SYSDATE - PLANT_LOG_DATE) PLANT_LOG_DATE,
+	        
+	        FILE_PATH,
+            UPDATE_NAME
 	    FROM 
 	        TB_PLANT
+        LEFT OUTER JOIN 
+        	TB_FILES ON(PLANT_NO = REF_NO)
 	    WHERE
 	        STATUS = 'Y'
 	    AND 
