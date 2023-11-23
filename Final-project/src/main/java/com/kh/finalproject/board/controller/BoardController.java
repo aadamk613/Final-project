@@ -23,7 +23,6 @@ import com.kh.finalproject.board.model.vo.Board;
 import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
-import com.kh.finalproject.notice.model.vo.Notice;
 
 @Controller
 public class BoardController {
