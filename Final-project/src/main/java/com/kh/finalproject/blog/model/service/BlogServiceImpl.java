@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.finalproject.blog.model.dao.BlogDao;
 import com.kh.finalproject.blog.model.vo.Blog;
+import com.kh.finalproject.blog.model.vo.BlogBoard;
 import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
 import com.kh.finalproject.blog.model.vo.Plant;
 import com.kh.finalproject.common.model.dao.CommonDao;
@@ -45,7 +46,7 @@ public class BlogServiceImpl implements BlogService{
 	}
 	
 	
-	// -----------------------------------------
+	// 카테고리 -----------------------------------------
 	@Override
 	public int insertCategory(BlogCategorySetting blogCateSet) {
 		return blogDao.insertCategory(sqlSession, blogCateSet);
@@ -58,7 +59,6 @@ public class BlogServiceImpl implements BlogService{
 	
 	@Override
 	public int updateCatogory(BlogCategorySetting blogCateSet) {
-		System.out.println("카테고리 바꾸기 service"+blogCateSet);
 		return blogDao.updateCatogory(sqlSession, blogCateSet);
 	}
 
@@ -67,7 +67,7 @@ public class BlogServiceImpl implements BlogService{
 		return blogDao.deleteCatogory(sqlSession, categorySettingNo);
 	}
 	
-	// -----------------------------------------
+	// 식물 -----------------------------------------
 	@Transactional
 	@Override
 	public int insertBlogPlant(Plant plant, Files file) {
@@ -85,6 +85,12 @@ public class BlogServiceImpl implements BlogService{
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit()); // offset부터 pi.getBoardLimit()개 조회 
 		return blogDao.selectListPlant(sqlSession, blogNo, rowBounds);
+	}
+	
+	// 게시판 -----------------------------------------
+	@Override
+	public int insertBlogBoard(BlogBoard blogBoard) {
+		return blogDao.insertBlogBoard(sqlSession, blogBoard);
 	}
 
 

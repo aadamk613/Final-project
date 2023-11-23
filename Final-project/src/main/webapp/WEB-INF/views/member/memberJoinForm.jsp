@@ -107,6 +107,7 @@
 			var memId = document.getElementById('memId');
 			
 			var regExp = /^(?!.*\badmin\b).{3,11}$/;
+			var regExp = ^(?!.*\badmin\b).*{3,11}$/;
 			
 				console.log('memId');
 				
@@ -115,7 +116,7 @@
 				memId.select();
 				memId.value = '';
 				return false;
-			
+			}
 			
 			// 자주쓰는, 중복되는 요소는 변수로 지정해놓는게 나아서 해놓음
 			const $idInput = $('#memberId');

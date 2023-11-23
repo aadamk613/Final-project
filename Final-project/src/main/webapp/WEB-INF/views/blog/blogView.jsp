@@ -125,7 +125,7 @@ ul{padding: 10px;}
                     <li id="memId">${ blog.memNick }(${ blog.memId })</li>
                     <li id="blogIntroduce">${ blog.blogIntroduce }</li>
                     <li id="">
-	                    <a href="">글 쓰기</a>
+	                    <a href="insertForm.bl_bo?blogNo=${ blog.blogNo }">글 쓰기</a>
 	                    <a href="updateForm.bl?blogNo=${ blog.blogNo }">블로그 관리</a>
 	                    <a href="updateForm.bl_ct?blogNo=${ blog.blogNo }">카테고리 관리</a>
                     </li>

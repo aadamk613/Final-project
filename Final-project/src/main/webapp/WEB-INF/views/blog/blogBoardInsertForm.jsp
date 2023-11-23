@@ -22,8 +22,28 @@
 	box-sizing: border-box;
 }
 
+#contentTitle{width : 100%; height : 100px; padding: 20px; font-size : 30px; font-weight: bold; line-height : 200%;}
+
+#content{width : 100%; height : auto;}
+
+article{width: 95%; height: auto; margin: 20px auto; border: 1px solid rgb(230, 230, 230); border-radius: 10px; padding: 20px;}
+
+#boardCategoryWrap{width:100%; height:auto; padding: 5px;}
+
+#boardCategory{width:35%; height:30px;}
+
+#boardHeader {width: 100%; height: auto; font-size: 25px; font-weight : 600; padding: 5px;}
+
+#boardHeader > input{width: 40%; height: 40px;}
+
+#boardContent{width: 100%; height: auto; min-height: 400px; border: none; outline:none; padding:0px 5px; }
+
+#buttonWrite{margin: 0px 0px 0px 5px;}
+
+
 </style>
 <body>
+	<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 
 	<header id="pageHeader">
 		<jsp:include page="../common/header.jsp" />
@@ -41,56 +61,111 @@
 		<section id="pageSection">
 			
 			<div id="contentTitle">
-                &lt;div&gt;
-                id=contentTitle 
-				제목(삭제해도 됨)
+				게시글 작성
 			</div>
-			
 			<div id="content">
-                content
-				<article id="pageArticle">
-					<div align="center"><img src="이미지URL" width="38" height="53"></div>
-					<div align="center"><h1> 내가 뽑은 올해의책 BEST 5 </h1></div>
-					<p align="center">
-					   주말 나들이도 좋지만 마음을 채우는 독서에 취미를 가져보기로 했던 2015년.<br>
-					   목표했던만큼 읽지는 못했지만<br>
-					   올해 내가 읽었던 책중에서 베스트 5권을 소개하려한다.<br>
-					</p>
-					<div align="center"><img src="이미지URL" width="38" height="46"></div>
-					<div align="center"><h1>오늘은 태안</h1></div>
-					<div align="center"><img src="이미지URL" width="541" height="300"></div>
-					<p>얘기꾼 여행서 '오늘은' 시리즈 태안편이다. 두 작가가 일곱 해변 길을 걸으며 겪는 에피소드가 펼쳐진다.
-					 태안의 아름다운 풍경과 바다와 함께 살아가는 사람들의 이야기를 담았다. 책을 읽다보면 바람이 머무는
-					 태안으로 훌쩍 떠나게 될 것이다. 누구나 한 번쯤은 바다여행을 꿈꾼다. 흐르는 시간에 쉼은 없지만, 가끔
-					 쉼이 필요할 때가 아닐까 생각한다. 작은 꾸러미 하나 메고 바람이 머무는 곳으로 떠나보라고 권하고 싶다.
-					 수평선을 바라보는 순간 크게 느껴졌던 근심도 한낱 모래알갱이처럼 작게 보이고, 시간은 천천히 흐르고
-					 마음은 바다처럼 넓어질 것이다.</p>
-					<div align="center">
-					   <table>
-					       <tr>
-					           <td colspan="2"><b>오늘은 태안</b></td>
-					       </tr>
-					       <tr>
-					           <td>저자</td>
-					           <td>김미정, 전현서</td>
-					       </tr>
-					       <tr>
-					           <td>출판</td>
-					           <td>얘기꾼</td>
-					       </tr>
-					       <tr>
-					           <td>발매</td>
-					           <td>2015.07.13.</td>
-					       </tr>
-					   </table>
+				<article>
+					<form id="insertForm" action="" method="post">
+					<input type="hidden" name="memNo" value="${ sessionScope.loginUser.memNo }">
+						<div id="boardCategoryWrap">
+							게시판&nbsp;&nbsp;
+							
+							<select name="categorySettingNo" id="boardCategory">
+								<c:forEach var="c" items="${ list }">
+									<option value="${ c.categoryNo }">${ c.categoryMemName }</option>
+								</c:forEach>
+							</select> 
+							
+							카테고리&nbsp;&nbsp;
+							<select name="blogInterest" id="boardCategory">
+								<option value="no">선택안함</option>
+								<option value="book">문학&middot;책</option>
+								<option value="movie">영화</option>
+								<option value="art">미술&middot;디자인</option>
+								<option value="show">공연&middot;전시</option>
+								<option value="music">음악</option>
+								<option value="drama">드라마</option>
+								<option value="enter">스타&middot;연예인</option>
+								<option value="animation">만화&middot;애니</option>
+								<option value="broadcast">방송</option>
+								<option value="daily">일상&middot;생각</option>
+								<option value="parenting">육아&middot;결혼</option>
+								<option value="pet">반려동물</option>
+								<option value="fasion">패션&middot;미용</option>
+								<option value="interior">인테리어&middot;DIY</option>
+								<option value="cook">요리&middot;레시피</option>
+								<option value="review">상품리뷰</option>
+								<option value="game">게임</option>
+								<option value="sport">스포츠</option>
+								<option value="picture">사진</option>
+								<option value="car">자동차</option>
+								<option value="hobby">취미</option>
+								<option value="travel">여행</option>
+								<option value="restaurant">맛집</option>
+								<option value="computer">IT&middot;컴퓨터</option>
+								<option value="health">건강</option>
+								<option value="economy">경제</option>
+								<option value="language">외국어</option>
+								<option value="edu">교육</option>
+							</select>
+						</div>
+						<div id="boardHeader">
+						<input type="text" placeholder="제목을 입력해주세요" name="blogBoardTitle" required>		
 					</div>
+					
+					<div id="editor" required>
+					</div>
+					
+					<!-- 에디터의 글 내용을 받아줄 div-->
+    				<input type="hidden" id="contents" name="blogBoardContent" />
+    				
+					<button type="submit" class="btn btn-primary" id="buttonWrite">글 작성</button>
+					<a href="javascript:window.history.back();" class="btn btn-default" id="buttonWrite">뒤로가기</a>
+					
+				</form>
 				</article>
 			</div>
 			
-			<div id="pageArea">
-                &lt;div&gt; <br>
-                id=page
-			</div>
+			<!-- TUI 에디터 JS CDN -->
+		    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+		    
+		    <script>
+		    	//const Editor = toastui.Editor;
+		        const editor = new toastui.Editor({
+		            el: document.querySelector('#editor'), // 에디터를 적용할 요소 (컨테이너)
+		            height: '600px',                        // 에디터 영역의 높이 값 (OOOpx || auto)
+		            initialEditType: 'wysiwyg',            // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)
+		            initialValue: '내용을 입력해 주세요.',     // 내용의 초기 값으로, 반드시 마크다운 문자열 형태여야 함
+		            previewStyle: 'vertical'                // 마크다운 프리뷰 스타일 (tab || vertical)
+		        });
+		        
+		        //document.querySelector('#contents').insertAdjacentHTML('afterbegin' ,editor.getHTML());
+		        //console.log(editor.getHTML());
+				
+				$(document).on('click', $('#buttonWrite'),function(){
+					
+			        var str = editor.getHTML();
+			        console.log(str);
+					$('input[name=blogBoardContent]').val(str);
+					$('#insertForm').attr('action', 'insert.bl_bo');
+					
+				});
+		        
+		        
+		        
+		        /* 클릭 했을 시 내용을 입력해주세요 없애려고 하는데 모르겠따 띵띵~
+		        $(function(){
+		        	document.querySelector('#contents').insertAdjacentHTML('afterbegin' ,editor.getHtml());
+		        	console.log(editor.getHtml());
+		        	
+		        	$('.ProseMirror').focusin(function(){
+		        		console.log($('.ProseMirror').children.eq(0));
+		        		$('.ProseMirror').children.eq(0).attr('value', '');
+		        	})
+		        })
+		        */
+		        
+		    </script>
 		
 		</section>
 		
