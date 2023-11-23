@@ -79,7 +79,7 @@
 		
 		<c:if test="${ not empty sessionScope.alertMsg }">
 			<script>
-				alertify.alert('접근제한', '${ sessionScope.alertMsg }', function(){alertify.success('확인')});
+				alertify.alert('알림', '${ sessionScope.alertMsg }', function(){alertify.success('확인')});
 			</script>
 			<c:remove var="alertMsg" scope="session"/>
 		</c:if>

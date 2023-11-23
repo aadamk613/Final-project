@@ -22,7 +22,6 @@ public class MemberDao {
   }
 
   public int idCheck(SqlSessionTemplate sqlSession, String checkId) {
-
     return sqlSession.selectOne("memberMapper.idCheck", checkId);
   }
 
@@ -32,6 +31,18 @@ public class MemberDao {
 
   public ArrayList<Member> ajaxGetMemberList(SqlSessionTemplate sqlSession) {
     return (ArrayList) sqlSession.selectList("memberMapper.ajaxGetMemberList");
+  }
+
+  public int editMember(SqlSessionTemplate sqlSession, Member m) {
+    return sqlSession.update("memberMapper.editMember", m);
+  }
+
+  public int addNaverProfile(SqlSessionTemplate sqlSession, NaverLogin nv) {
+    return sqlSession.insert("memberMapper.addNaverProfile", nv);
+  }
+
+  public Member selectNaverProfile(SqlSessionTemplate sqlSession, String memId) {
+    return sqlSession.selectOne("memberMapper.selectNaverProfile", memId);
   }
 
   public int loadImg(SqlSessionTemplate sqlSession, String inputFile) {
