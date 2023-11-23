@@ -63,7 +63,7 @@
 		<form action="join.me" method="post" id="join-form">
 			<div class="idWrap">
 				* 아이디 : 
-				<input type="text" id="memberId" name="memId" class="checkId" maxlength="12" min="4" max="12" placeholder="아이디를 잘 입력해주세요" autofocus required> 
+				<input type="text" id="memberId" name="memId" class="checkId" maxlength="12" min="4" max="12" placeholder="아이디를 잘 입력해주세요" onkeyup="adminCheck()" required> 
 				<div id="checkResult" style="font-size:0.7em; display:none;"></div>
 			</div>
 			<div class="pwdWrap">
@@ -102,15 +102,29 @@
 	
 	<script>
 	
-		$(function(){
+		function adminCheck(){
+			
+			var memId = document.getElementById('memId');
+			
+			var regExp = ^(?!.*\badmin\b).*{3,11}$/;
+			
+				console.log('memId');
+				
+			if(!regExp.test(memId.value)){
+				alert('다시써~~~~~ 뭐하는거야아~~~~?');
+				memId.select();
+				memId.value = '';
+				return false;
+			}
+			
 			// 자주쓰는, 중복되는 요소는 변수로 지정해놓는게 나아서 해놓음
 			const $idInput = $('#memberId');
 			const $checkResult = $('#checkResult');
 			const $joinFormSubmit = $('#join-form :submit');
 			
 			$idInput.keyup(function(){
-			console.log($idInput);
-				
+			//console.log($idInput);
+			
 				// 최소 5글자 이상 입력했을 떄만 AJAX 요청을 보내서 중복체크
 				if($idInput.val().length >= 5){
 					//console.log($idInput.val());

@@ -32,4 +32,5 @@ public interface MemberService {
 
   int loadImg(String inputFile);
 
+
 }

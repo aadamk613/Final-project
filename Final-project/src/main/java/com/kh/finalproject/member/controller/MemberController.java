@@ -82,13 +82,14 @@ public class MemberController {
     System.out.println("평문 : " + m.getMemPwd());
 
     String encPwd = bcryptPasswordEncoder.encode(m.getMemPwd());
+    String regex = ".*admin.*";
 
     m.setMemPwd(encPwd); // Member객체의 MemPwd 필드에 평문이 아닌 암호문을 담아서 DB로 보내기
 
-    if (memberService.joinMember(m) > 0) { // 성공하면 메인페이지로
+    if(memberService.joinMember(m) > 0) { // 성공하면 메인페이지로
       return "redirect:/";
     } else {
-      model.addAttribute("errorMsg", "회원가입 실패");
+      model.addAttribute("errorMsg", "회원가입 실패/'admin'을 포함한 아이디는 사용할 수 없습니다.");
       return "../common/errorPage.jsp";
     }
   }
