@@ -42,6 +42,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="UPDATE_NAME" property="updateName"/>
 	</resultMap>
 	
+	<resultMap type="blogBoard" id="BlogBoardResultSet">
+		<result column="BLOG_BOARD_NO" property="blogBoardNo"/>
+		<result column="BLOG_NO" property="blogNo"/>
+		<result column="CATEGORY_SETTING_NO" property="cattegorySettingNo"/>
+		<result column="BLOG_BOARD_TITLE" property="blogBoardTitle"/>
+		<result column="BLOG_BOARD_CONTENT" property="blogBoardContent"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="VIEW" property="view "/>
+		<result column="STATUS" property="status"/>
+		<result column="WRITER" property="writer"/>
+		
+		<result column="BLOG_INTEREST" property="blogInterest"/>
+		<result column="CATEGORY_SETTING_NO" property="categorySettingNo"/>
+	</resultMap>
+	
+	
+	
 	<!-- 블로그 생성 -->
 	<insert id="insertBlog" parameterType="blog">
 		INSERT 
@@ -265,7 +282,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	
+	<insert id="insertBlogBoard" parameterType="blogBoard">
 	
+		INSERT 
+		  INTO 
+			    TB_BLOG_BOARD
+			        (
+			        BLOG_BOARD_NO, 
+			        BLOG_NO, 
+			        CATEGORY_SETTING_NO, 
+			        BLOG_BOARD_TITLE, 
+			        BLOG_BOARD_CONTENT, 
+			        CREATE_DATE, 
+			        STATUS, 
+			        WRITER
+			        )
+			    VALUES
+			        (
+			        SEQ_BLOG_BOARD_NO.NEXTVAL, 
+			        1,
+			        79, 
+			        '제목', 
+			        '실험용', 
+			        DEFAULT, 
+			        DEFAULT, 
+			        2)
+		
+	</insert>
 	
 	
 	

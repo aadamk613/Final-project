@@ -115,12 +115,12 @@ textarea{
                     <div id="plantInfoWrap">
                         <div id="plantImg">
                         	<c:choose>
-                        	<c:when test="${ empty p.filePath }" >
-                        	<img width="100%" height="100%" src="resources/images/defaultPlant.png" class="files" />
-							</c:when>
-							<c:otherwise>
-							<img width="100%" height="100%" src="${ p.filePath }${ p.updateName }" class="files" />
-							</c:otherwise>
+	                        	<c:when test="${ empty p.filePath }" >
+	                        	<img width="100%" height="100%" src="resources/images/defaultPlant.png" class="files" />
+								</c:when>
+								<c:otherwise>
+								<img width="100%" height="100%" src="${ p.filePath }${ p.updateName }" class="files" />
+								</c:otherwise>
 							</c:choose>
 						</div>
                         <div id="plantInfo">

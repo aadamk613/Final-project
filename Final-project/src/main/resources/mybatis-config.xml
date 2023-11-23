@@ -10,10 +10,13 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 
 	<typeAliases>
 		<typeAlias type="com.kh.finalproject.auction.model.vo.Auction" alias="auction"/>
+		
 		<typeAlias type="com.kh.finalproject.blog.model.vo.Blog" alias="blog"/>
 		<typeAlias type="com.kh.finalproject.blog.model.vo.BlogCategorySetting" alias="blogCategorySetting"/>
+		<typeAlias type="com.kh.finalproject.blog.model.vo.BlogBoard" alias="blogBoard"/>
 		<typeAlias type="com.kh.finalproject.blog.model.vo.Plant" alias="plant"/>
 		<typeAlias type="com.kh.finalproject.blog.model.vo.PlantReport" alias="plantReport"/>
+		
 		<typeAlias type="com.kh.finalproject.board.model.vo.Board" alias="board"/>
 		<typeAlias type="com.kh.finalproject.chat.model.vo.Chat" alias="chat"/>
 		<typeAlias type="com.kh.finalproject.common.model.vo.Files" alias="files"/>

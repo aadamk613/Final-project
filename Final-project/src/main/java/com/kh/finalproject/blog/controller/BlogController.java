@@ -1,12 +1,12 @@
 package com.kh.finalproject.blog.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.kh.finalproject.blog.model.service.BlogService;
 import com.kh.finalproject.blog.model.vo.Blog;
+import com.kh.finalproject.blog.model.vo.BlogBoard;
 import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
 
 @Controller
@@ -118,7 +119,6 @@ public class BlogController {
 		ArrayList<BlogCategorySetting> list = blogService.selectCatogory(blogNo);
 		//System.out.println("selectCatogory에서 list : " + list);
 		
-		
 		mv.addObject("list", list) 
 		  .setViewName("blog/blogCategoryView");
 		
@@ -151,8 +151,25 @@ public class BlogController {
 		
 	}
 	
+	// ---------- 블로그 게시글 관련 메서드 ----------
+	@RequestMapping("insertForm.bl_bo")
+	public String insertFormBlogBoard(int blogNo,
+									  Model model) {
+		ArrayList<BlogCategorySetting> list = blogService.selectCatogory(blogNo);
+		model.addAttribute("list", list);
+		return "blog/blogBoardInsertForm";
+	}
 	
-	
+	@RequestMapping("insert.bl_bo")
+	public String insertBlogBoard(BlogBoard blogBoard, HttpSession session) {
+		if(blogService.insertBlogBoard(blogBoard) > 0 ) {
+			session.setAttribute("alertMsg", "게시글 작성에 성공했습니다");
+		} else {
+			session.setAttribute("alertMsg", "게시글 작성에 실패했습니다");
+		}
+		System.out.println(blogBoard);
+		return "blog/blogView";
+	}
 	
 	
 	
