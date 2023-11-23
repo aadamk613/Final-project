@@ -51,7 +51,12 @@ public class BlogController {
 	// 블로그 정보 불러오기
 	@ResponseBody
 	@RequestMapping(value="select.bl", produces="application/json; charset=UTF-8") 
-	public ModelAndView selectBlog(int blogNo, ModelAndView mv) {
+	public ModelAndView selectBlog(int blogNo, ModelAndView mv, HttpSession session) {
+		System.out.println(session.getServletContext().getRealPath("blog/blogView"));
+		System.out.println(session.getServletContext().getRealPath("resources")); // 이거랑
+		System.out.println(session.getServletContext().getRealPath("/resources")); // 이거랑 머가 차이??????
+		System.out.println(session.getServletContext().getContextPath());
+		
 		Blog blog = (Blog)blogService.selectBlog(blogNo);
 		ArrayList<BlogCategorySetting> list = blogService.selectCatogory(blogNo);
 		
@@ -160,15 +165,24 @@ public class BlogController {
 		return "blog/blogBoardInsertForm";
 	}
 	
+	/**@author Jyd
+	 * 
+	 * @param blogBoard: blogInsertForm 작성 화면에서 작성한 블로그 게시글 VO
+	 * @param blogNo: blogView로 redirect하기 위해 필요한 블로그 번호
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("insert.bl_bo")
-	public String insertBlogBoard(BlogBoard blogBoard, HttpSession session) {
+	public String insertBlogBoard(BlogBoard blogBoard, 
+								  int blogNo,
+								  HttpSession session) {
 		if(blogService.insertBlogBoard(blogBoard) > 0 ) {
 			session.setAttribute("alertMsg", "게시글 작성에 성공했습니다");
 		} else {
 			session.setAttribute("alertMsg", "게시글 작성에 실패했습니다");
 		}
 		System.out.println(blogBoard);
-		return "blog/blogView";
+		return "redirect:select.bl?blogNo=" + blogNo;
 	}
 	
 	

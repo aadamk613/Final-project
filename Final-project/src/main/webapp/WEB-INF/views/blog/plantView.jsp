@@ -116,7 +116,7 @@ textarea{
                         <div id="plantImg">
                         	<c:choose>
 	                        	<c:when test="${ empty p.filePath }" >
-	                        	<img width="100%" height="100%" src="resources/images/defaultPlant.png" class="files" />
+	                        	<img width="100%" height="100%" src="resources/images/filePath.png" class="files" />
 								</c:when>
 								<c:otherwise>
 								<img width="100%" height="100%" src="${ p.filePath }${ p.updateName }" class="files" />

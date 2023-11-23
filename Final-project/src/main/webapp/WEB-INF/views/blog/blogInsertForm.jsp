@@ -199,7 +199,7 @@ a{
                                 </tr>
                                 <tr>
                                     <th>관심 식물</th>
-                                    <td><input type="text" name="plantPrefer" value="g"></td>
+                                    <td><input type="file" name="upfile" ></td>
                                 </tr>
                             </table>
                             <div id="blogButtonWrap">
