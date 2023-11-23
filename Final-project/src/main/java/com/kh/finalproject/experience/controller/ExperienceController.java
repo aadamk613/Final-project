@@ -55,6 +55,10 @@ public class ExperienceController {
 			// 게시글 상세조회
 			model.addAttribute("exp", experienceService.selectExperience(expNo));
 			// 첨부파일 조회
+			System.out.println("왜 안나오냐구요");
+			
+			System.out.println(((Experience)model.getAttribute("exp")).getExpNo());
+			
 			
 			// HashMap map = new HashMap();
 			// map.put("refNo", expNo);
@@ -185,7 +189,17 @@ public class ExperienceController {
 		}
 	}
 	
-	
+	// 체험학습 댓글 삭제
+	@ResponseBody
+	@PostMapping("yrdeleteExpReply")
+	public String deleteExpReply(int expReplyNo) {
+		
+		if(experienceService.deleteExpReply(expReplyNo) > 0) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
 	
 	
 	

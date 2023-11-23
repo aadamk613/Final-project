@@ -176,6 +176,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		       TB_EXPERIENCE_REPLY
 		 WHERE 
 		       EXP_NO = #{ expNo }
+		   AND
+		   	   REPLY_STATUS = 'Y'
 		 ORDER
 		 	BY
 		 	   REPLY_CREATE_DATE DESC
@@ -296,7 +298,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   	   MEM_NO = #{ memNo }
 	</delete>
 	
-	
+	<!-- 체험학습 댓글 삭제 -->
+	<delete id="deleteExpReply" parameterType="_int">
+		UPDATE
+			   TB_EXPERIENCE_REPLY
+		   SET
+		   	   REPLY_STATUS = 'N'
+		 WHERE
+		 	   EXP_REPLY_NO = #{ expReplyNo }
+	</delete>
 	
 	
 	

@@ -246,6 +246,7 @@ th, td{
 									<th>작성일</th>
 									<th>좋아요</th>
 									<th>비밀글</th>
+									<th>삭제하기</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -277,6 +278,8 @@ th, td{
 			// 좋아요 수
 			let likeCount = ${ exp.expLikeCount };
 			$('#likeCount').text('좋아요수 ' + likeCount);
+			
+			
 		
 			$(() => {
 				
@@ -339,6 +342,9 @@ th, td{
 				
 			};
 		
+			// 댓글 수 초기값
+			let replyCount = ${ exp.expReplyCount };
+			
 			// 댓글 작성기능
 			function insertReply(){
 				const data = {
@@ -355,7 +361,12 @@ th, td{
 					data :JSON.stringify(data), 
 					success : result => {
 						console.log(result);
+						
 						if(result == 'success'){
+							// 댓글 수 증가
+							replyCount++;
+							$('#replyCount').text('댓글수 ' + replyCount);
+							
 							$('#commentContentInsert').val('');
 							$('input[type=checkbox]:checked').prop('checked', false);
 							selectReply();
@@ -372,7 +383,6 @@ th, td{
 			$(() => {
 				selectReply();
 			});
-			
 			
 			
 			function selectReply(){
@@ -395,18 +405,26 @@ th, td{
 										   // 수정했다면 수정일 보여주기
 										   if(result[i].replyModifyDate != null){
 											   value += '<td>' + result[i].replyModifyDate + '수정됨 </td>'
-										   } else{
+										   } 
+										   else{
 											   value += '<td>' + result[i].replyCreateDate + '</td>'
 										   }
-										   value += '<td>' + '♥' + '</th>'
+										   value += '<td>' + '♥' + '</td>'
 										   if(result[i].replySecret == 'Y'){
-											   value += '<td>' + '<input type="checkbox" disabled checked />' + '</th>';
+											   value += '<td>' + '<input type="checkbox" disabled checked />' + '</td>';
 										   } 
-										   + '</tr>'
+										   else{
+											   value += '<td></td>';
+										   }
+											// 해당 댓글에 맞는 번호를 넘겨줘서 ajax로 delete처리 해야함
+										   value += '<td><a class="btn btn-danger" id="deleteReplyBtn" no="' + result[i].expReplyNo + '" >삭제</a></td>'
+										   + '</tr>';
 							} 
 							else {
 								value += '<tr><td colspan=6>' + '비밀댓글입니다' + '</td></tr>';
 							}
+							
+							
 						}
 						$('#reply > tbody').html(value);
 					},
@@ -415,6 +433,33 @@ th, td{
 					}
 				});
 			}
+			
+			$('tbody').on('click', 'a', function(){
+				alertify.confirm('알림', '정말로 삭제하시겠습니까?', () => {
+					console.log("이게 떠야 진짜지");
+					console.log($(this));
+					console.log($(this).attr('no'));
+					$.ajax({
+						url : 'yrdeleteExpReply',
+						data : { expReplyNo : $(this).attr('no')},
+						type : 'post',
+						success : result => {
+							console.log(result);
+						},
+						error : () => {
+							console.log("체험학습 댓글 삭제 오류");
+						}
+					});
+					alertify.success('삭제 완료');
+					selectReply()
+					
+				}, () => { alertify.error('삭제 취소') });
+			});
+			
+			
+			
+			
+			
 		</script>
 
 		</section>
