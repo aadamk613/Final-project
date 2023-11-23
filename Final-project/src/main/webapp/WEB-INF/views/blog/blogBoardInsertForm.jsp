@@ -9,13 +9,10 @@
 <link rel="stylesheet" href="resources/css/common/template.css">
 
 </head>
-<style>
+<!-- TUI 에디터 JS CDN -->
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 
-/* 화면틀입니다 안에 부분은 자기가 맡은 파트로 채워주세요 
-사용하면 안되는 id값 : pageHeader, pageAsideLeft, pageAsideRight, pageSection, contentTitle, content, 
-				pageArea, searchArea, pageFooter
-위의 id는 참조한 css에 이름 이미 있어서 화면 모양이 이상해질 수 있습니다
-*/
+<style>
 
 * {
     border: 1px solid skyblue;
@@ -66,7 +63,9 @@ article{width: 95%; height: auto; margin: 20px auto; border: 1px solid rgb(230, 
 			<div id="content">
 				<article>
 					<form id="insertForm" action="" method="post">
-					<input type="hidden" name="memNo" value="${ sessionScope.loginUser.memNo }">
+					<input type="hidden" name="writer" value="${ sessionScope.loginUser.memNo }">
+					<input type="hidden" name="blogNo" value="${ sessionScope.loginUser.blogNo }">
+					
 						<div id="boardCategoryWrap">
 							게시판&nbsp;&nbsp;
 							
@@ -126,8 +125,6 @@ article{width: 95%; height: auto; margin: 20px auto; border: 1px solid rgb(230, 
 				</article>
 			</div>
 			
-			<!-- TUI 에디터 JS CDN -->
-		    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 		    
 		    <script>
 		    	//const Editor = toastui.Editor;
@@ -138,9 +135,6 @@ article{width: 95%; height: auto; margin: 20px auto; border: 1px solid rgb(230, 
 		            initialValue: '내용을 입력해 주세요.',     // 내용의 초기 값으로, 반드시 마크다운 문자열 형태여야 함
 		            previewStyle: 'vertical'                // 마크다운 프리뷰 스타일 (tab || vertical)
 		        });
-		        
-		        //document.querySelector('#contents').insertAdjacentHTML('afterbegin' ,editor.getHTML());
-		        //console.log(editor.getHTML());
 				
 				$(document).on('click', $('#buttonWrite'),function(){
 					
@@ -150,7 +144,6 @@ article{width: 95%; height: auto; margin: 20px auto; border: 1px solid rgb(230, 
 					$('#insertForm').attr('action', 'insert.bl_bo');
 					
 				});
-		        
 		        
 		        
 		        /* 클릭 했을 시 내용을 입력해주세요 없애려고 하는데 모르겠따 띵띵~

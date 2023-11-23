@@ -300,13 +300,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			    VALUES
 			        (
 			        SEQ_BLOG_BOARD_NO.NEXTVAL, 
-			        1,
-			        79, 
-			        '제목', 
-			        '실험용', 
+			        #{ blogNo },
+			        #{ cattegorySettingNo }, 
+			        #{ blogBoardTitle }, 
+			        #{ blogBoardContent }, 
 			        DEFAULT, 
 			        DEFAULT, 
-			        2)
+			        #{ writer }
+			        )
 		
 	</insert>
 	

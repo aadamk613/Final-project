@@ -123,6 +123,9 @@ a{
     text-decoration: none;
     color: #888;
 	}
+	
+input[name=upfile]{display: none;}
+
 </style>
 <body>
 
@@ -144,18 +147,8 @@ a{
                    	블로그 관심사와 관심 식물 카테고리를 설정하시면 관련 글을 추천해드립니다
                </div>
                
-               <script>
-               	function({
-               	
-               		
-               	})
-               	
-               
-               </script>
-               
-               
 				<article id="pageArticle">
-
+				
 					<div id="createFormWrap">
                         <form action="update.bl" method="post" >
                         <input type="hidden" name="blogNo" value="${ blog.blogNo }">
@@ -163,7 +156,7 @@ a{
                             <table id="createForm">
                             <tr>
                                     <th>블로그 이름</th>
-                                    <td><input type="text" id=" blogTitle"name="blogTitle" placeholder="${ sessionScope.loginUser.memNick }님의 블로그" 
+                                    <td><input type="text" id="blogTitle"name="blogTitle" placeholder="${ sessionScope.loginUser.memNick }님의 블로그" 
                                     value="${ blog.blogTitle }" onfocus="this.value=''; return true"></td>
                                 </tr>
                                 <tr>
@@ -172,7 +165,10 @@ a{
                                 </tr>
                                 <tr>
                                     <th>블로그 이미지</th>
-                                    <td><input type="text" name="blogImg" value="${ blog.blogImg }"></td>
+                                    <td>
+                                    <img src="resources/images/defaultProfile.png" id="imageButton">
+                                    <input type="file" name="upfile">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>블로그 관심사</th>
@@ -224,8 +220,18 @@ a{
 
 				</article>
 			</div>
+
+			<script>
+				$('#imageButton').on('click', function() {
+					$('input[name=upfile]').click();
+				});
+				
+				$('input[name=upfile]').onChange
+				
+			</script>
 			
-		
+			
+			
 		</section>
 		
 		<aside id="pageAsideRight" class="aside">
