@@ -156,8 +156,8 @@ h1 {
 					<div class="count">
 						<ul>
 							<li>조회수 ${ exp.expCount }</li>
-							<li>댓글수 ${ exp.expReplyCount } </li>
-							<li>좋아요수 ${ exp.expLikeCount }</li>
+							<li id="replyCount">댓글수 ${ exp.expReplyCount } </li>
+							<li id="likeCount"> </li>
 							<li>
 								<div class="writer">
 									작성자 : ${ exp.expWriter } | 
@@ -176,8 +176,6 @@ h1 {
 				</div>
 				<div>
 				
-				
-				
 					<div class="summary">
 						<c:if test="${ not empty files }">
 							<img src="${ files[0].filePath }/${ files[0].updateName }" id="thumb" />
@@ -185,32 +183,68 @@ h1 {
 					</div>
 					
 					<div>
-						<a id="like">🤍</a>
+						
+						<a id="like"><img src="resources/images/emptyHeart.png" /></a>
 					</div>
 					
 					<script>
-						//let heartCheck = 0;
+					
+						let likeImg = $('#like > img');	
+						
+						// 좋아요 수
+						let likeCount = ${ exp.expLikeCount};
+						$('#likeCount').text('좋아요수 ' + likeCount);
+						
+					
+						$(() => {
+							
+							$.ajax({
+								url : 'yrexpLikeCheck',
+								data : {
+									expNo : ${ exp.expNo },
+									memNo : 1
+								},
+								success : result => {
+									console.log(result);
+									if(result){
+										likeImg.attr('src', 'resources/images/fullHeart.png');
+									}
+								},
+								error : () => {
+									console.log("체험학습 게시글 좋아요 조회 통신오류")
+								}
+							});
+						});
+						
 						$('#like').click(function(){
-							//heartCheck++;
-							
-							console.log($('#like').text() == '🤍' );
-							
-							($('#like').text() == '🤍') ? $(this).text(' 🤍 ') : $(this).text( '🤍' );
-							// 좋아요이면 true, 아니면 false
-							//const like = $('#heart').text();
-							const likeVal = $('#like').text() == '🤍' ? 1 : 0;
-							console.log(likeVal)
-							
-							//const heartVal = (heartCheck % 2);
-							
+							// 버튼을 눌렀을 때 실행되니까 likeValue는 무조건 변경됨
+							let likeValue = 0;
+							if(likeImg.attr('src') == 'resources/images/emptyHeart.png'){
+								likeImg.attr('src', 'resources/images/fullHeart.png');
+								likeValue = 1;
+								// 좋아요 수 증가
+								likeCount++;
+								$('#likeCount').text('좋아요수 ' + likeCount);
+							}
+							else {
+								likeImg.attr('src', 'resources/images/emptyHeart.png');
+								likeValue = 0;
+								// 좋아요 수 감소
+								likeCount--;
+								$('#likeCount').text('좋아요수 ' + likeCount);
+							}
 							$.ajax({
 								url : 'yrexpLike',
 								data : {
 									expNo : ${ exp.expNo },
-									like : likeVal
+									memNo : 1,
+									likeVal : likeValue
 								},
 								success : result => {
-									// (result == 'true') ? $('#heart').text('❤') : $('#heart').text('🤍'); 
+									console.log(result);
+									if(result != 1){
+										alert('오류발생 ');
+									}
 								},
 								error : () => {
 									console.log("체험학습 게시글 좋아요 통신오류")
@@ -219,11 +253,7 @@ h1 {
 							});
 							
 						});
-							
-						
 					</script>
-					
-					
 					
 					<div class="summary">
 						<ul>
@@ -250,7 +280,6 @@ h1 {
 				<!-- 해시태그  -->
 				<div>
 				</div>
-				
 				
 				<div>
 					
@@ -305,7 +334,7 @@ h1 {
 			function insertReply(){
 				console.log("엥");
 				console.log(${ exp.expNo });
-				console.log('user01');
+				console.log("user01");
 				console.log($('#commentContentInsert').val());
 				console.log($('input[type=checkbox]:checked').length);
 				
@@ -317,7 +346,7 @@ h1 {
 				};
 				
 				$.ajax({
-					url : "yrinsertExpReply.exp",
+					url : 'yrinsertExpReply.exp',
 					type : 'post',
 					dataType: 'json',
 		            contentType: 'application/json; charset=utf-8',
