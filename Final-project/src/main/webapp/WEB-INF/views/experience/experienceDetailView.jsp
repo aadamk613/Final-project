@@ -10,6 +10,7 @@
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  
 
 <style>
 * {
@@ -55,6 +56,7 @@ h1 {
 .files{
 	width : 80%;
 	height : 400px;
+	object-fit : contain;
 }
 
 .summary{
@@ -90,6 +92,16 @@ h1 {
 }
 
 
+</style>
+
+<style>
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
 </style>
 
 </head>
@@ -163,12 +175,56 @@ h1 {
 					</div>
 				</div>
 				<div>
+				
+				
+				
 					<div class="summary">
 						<c:if test="${ not empty files }">
 							<img src="${ files[0].filePath }/${ files[0].updateName }" id="thumb" />
 						</c:if>
-
 					</div>
+					
+					<div>
+						<a id="like">🤍</a>
+					</div>
+					
+					<script>
+						//let heartCheck = 0;
+						$('#like').click(function(){
+							//heartCheck++;
+							
+							console.log($('#like').text() == '🤍' );
+							
+							($('#like').text() == '🤍') ? $(this).text(' 🤍 ') : $(this).text( '🤍' );
+							// 좋아요이면 true, 아니면 false
+							//const like = $('#heart').text();
+							const likeVal = $('#like').text() == '🤍' ? 1 : 0;
+							console.log(likeVal)
+							
+							//const heartVal = (heartCheck % 2);
+							
+							$.ajax({
+								url : 'yrexpLike',
+								data : {
+									expNo : ${ exp.expNo },
+									like : likeVal
+								},
+								success : result => {
+									// (result == 'true') ? $('#heart').text('❤') : $('#heart').text('🤍'); 
+								},
+								error : () => {
+									console.log("체험학습 게시글 좋아요 통신오류")
+								}
+								
+							});
+							
+						});
+							
+						
+					</script>
+					
+					
+					
 					<div class="summary">
 						<ul>
 							<li>카테고리 : ${ exp.expCategoryName }</li>
@@ -186,7 +242,7 @@ h1 {
 				<div id="">
 					<c:if test="${ not empty requestScope.files }">
 						<c:forEach var="f" items="${ requestScope.files }">
-							<img src="${ f.filePath }/${ f.updateName }" class="files" />
+							<img src="${ f.filePath }${ f.updateName }" class="files" />
 							<p>${ f.fileAnnotation }</p>
 						</c:forEach>
 					</c:if>
@@ -201,7 +257,7 @@ h1 {
 					<div id="commentInsertBox">
 						<div>
 							<div>
-								<img src="resources/uploadFiles/images/person.png" />
+								<img src="resources/images/person.png" />
 							</div>
 							<div id="commentWriter">유저ID</div>
 						</div>

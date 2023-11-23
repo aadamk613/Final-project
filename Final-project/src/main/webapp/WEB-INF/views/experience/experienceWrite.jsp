@@ -200,9 +200,9 @@ img{
 								<option value="3">채소농장</option>
 								<option value="4">꽃꽂이</option>
 							</select>
-					체험학습일 : <input type="date" name="expWorkDate" required readonly />
+					체험학습일 : <input type="date" name="expWorkDate" required />
 					체험시간 : <input type="number" name="expWorkTime" min=1 max=10 required />
-					모집인원 : <input type="number" name="expPeople" min=1 max=100 required readonly />
+					모집인원 : <input type="number" name="expPeople" min=1 max=100 required />
 					모집마감일 : <input type="date" name="expEndDate" required />
 					주소 : 
 						<input type="text" name="expAddress" id="expAddress" placeholder="주소" required readonly />
@@ -261,7 +261,7 @@ img{
 			<textarea id="content" name="expContent" placeholder="내용을 입력해 주세요." rows="5"></textarea>
 			
 			<div id="content-div">
-			
+				<!-- 
 				<div>
 					<input type="file" name="upfiles" id="inputfileId1" />
 					<img src="" class="file-img" id="file-img1" />
@@ -272,7 +272,7 @@ img{
 					<img src="" class="file-img" id="file-img2" />
 					<input type="text" name="anno" placeholder=">" />
 				</div>
-			
+				 -->
 			</div>
 			
 			
