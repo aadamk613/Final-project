@@ -101,6 +101,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 		MEM_ID = #{checkId}
 	
 	</select>
+	
+	<update id="updateMember" parameterType="member">
+		UPDATE
+				TB_FILE,
+				MEMBER
+		   SET
+				MEM_NICK = #{memNick},
+				EMAIL = #{email}
+		 WHERE
+		 		MEM_ID = #{memId}
+		   		
+	</update>
+	
+	<update id="deleteMember" parameterType="string">
+		UPDATE
+				MEMBER
+		   SET
+		   		MEM_STATUS = 'D'
+		 WHERE
+		 		MEM_ID = #{memId}
+	</update>
 
 	<update id="setLastLogin" parameterType="member">
 		UPDATE
@@ -132,17 +153,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				
 	</insert>
 
-	<update id="updateMember" parameterType="member">
-		UPDATE
-				TB_FILE,
-				MEMBER
-		   SET
-				MEM_NICK = #{memNick},
-				EMAIL = #{email}
-		 WHERE
-		 		MEM_ID = #{memId}
-		   		
-	</update>
 	<update id="editMember" parameterType="member">
 		UPDATE
 			MEMBER

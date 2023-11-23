@@ -136,6 +136,35 @@ public class MemberController {
 			// /WEB-INF/views/ 		common/errorPage		.jsp
 			return "common/errorPage";
 		}
+  }
+  
+  @RequestMapping("delete.me")
+  public String deleteMember(String memPwd, HttpSession session) {
+	  
+	  Member loginUser = ((Member)session.getAttribute("loginUser"));
+		
+		String encPwd = ((Member)session.getAttribute("loginUser")).getMemPwd();
+		// 비밃먼호가 사용자가 입력한 평문으로 만든 암호문일 경우
+		if(bcryptPasswordEncoder.matches(memPwd, encPwd)) {
+			
+			String memId = loginUser.getMemId();
+			
+			if(memberService.deleteMember(memId) > 0) {
+				// 탈퇴처리 성공 => session에서 loginUser지움, alert문구 담기 => 메인페이지로 잘가라고~~~~
+				session.removeAttribute("loginUser");
+				session.setAttribute("alertMsg", "잘가고~~~ 다신 보지말자~~~~");
+				return "redirect:/";
+			 } else {
+				 session.setAttribute("errorMsg", "탈퇴처리 실패");
+				 return "common/errorPage";
+			 }
+			
+		} else {
+			session.setAttribute("alertMsg", "비밀번호가 틀렸어요!!틀렸다구요!!!! 정말 제대로 입력한게 맞아요? 다시 확인해보세요~~~");
+			return "redirect:myPage.me";
+		}
+	}
+  
 
   @GetMapping("naverLogin.me")
   public String naverLogin() {
@@ -172,7 +201,6 @@ public class MemberController {
     memberService.setLastLogin(loginUser);
     session.setAttribute("loginUser", loginUser);
     return "redirect:/";
->>>>>>> main
   }
 
   @GetMapping("kakaoLogin.me")

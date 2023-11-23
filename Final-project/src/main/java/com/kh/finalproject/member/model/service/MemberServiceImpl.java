@@ -49,6 +49,11 @@ public class MemberServiceImpl implements MemberService {
   public int updateMember(Member m) {
     return memberDao.upateMember(sqlSession, m);
   }
+  
+  @Override
+  public int deleteMember(String memId) {
+	  return memberDao.deleteMember(sqlSession, memId);
+  }
 
   public Member selectMember(int memNo) {
     return memberDao.selectMember(sqlSession, memNo);
