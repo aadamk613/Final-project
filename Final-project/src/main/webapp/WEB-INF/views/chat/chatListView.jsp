@@ -28,7 +28,7 @@
 			nickname = prompt('닉네임을 입력해주세요');
 			const uri = 'ws://localhost:8001/final/gp';
 			socket = new WebSocket(uri);
-			socket.onopen = ()=>{ //소켓이 열리면 호출되는 핸들러
+			socket.onopen = () => { //소켓이 열리면 호출되는 핸들러
 				console.log("열림");
 			}
 			socket.onclose = () => { // 닫히면 호출됨

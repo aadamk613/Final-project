@@ -78,4 +78,9 @@ public class MemberServiceImpl implements MemberService {
   public int addKaKaoProfile(Member m) {
     return memberDao.addKaKaoProfile(sqlSession, m);
   }
+
+  @Override
+  public int addGoogleProfile(Member m) {
+    return memberDao.addGoogleProfile(sqlSession, m);
+  }
 }

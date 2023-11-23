@@ -202,6 +202,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{memImg}
 				)
 	</insert>
+	<insert id="addGoogleProfile" parameterType="member">
+		INSERT
+			INTO
+				MEMBER
+				(
+				MEM_NO,
+				MEM_STATUS,
+				MEM_ID,
+				MEM_NICK,
+				MEM_IMG,
+				EMAIL
+				)
+		VALUES
+				(
+				SEQ_MEMBER_NO.NEXTVAL,
+				'U',
+				#{memId},
+				#{memNick},
+				#{memImg},
+				#{email}
+				)
+	</insert>
 	<insert id="addNaverProfile" parameterType="naver">
 		INSERT
 			INTO

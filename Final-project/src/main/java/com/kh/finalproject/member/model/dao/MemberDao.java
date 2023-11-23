@@ -61,4 +61,8 @@ public class MemberDao {
   public int addKaKaoProfile(SqlSessionTemplate sqlSession, Member m) {
     return sqlSession.insert("memberMapper.addKakaoProfile", m);
   }
+
+  public int addGoogleProfile(SqlSessionTemplate sqlSession, Member m) {
+    return sqlSession.insert("memberMapper.addGoogleProfile", m);
+  }
 }
