@@ -3,6 +3,7 @@ package com.kh.finalproject.blog.model.service;
 import java.util.ArrayList;
 
 import com.kh.finalproject.blog.model.vo.Blog;
+import com.kh.finalproject.blog.model.vo.BlogBoard;
 import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
 import com.kh.finalproject.blog.model.vo.Plant;
 import com.kh.finalproject.common.model.vo.Files;
@@ -44,6 +45,7 @@ public interface BlogService {
 	int insertBlogPlant(Plant plant, Files file);
 
 	// 블로그 일반 글 쓰기
+	int insertBlogBoard(BlogBoard blogBoard);
 	
 	
 	// 블로그 일반 글 삭제

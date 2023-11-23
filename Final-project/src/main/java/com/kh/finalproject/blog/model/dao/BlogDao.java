@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.finalproject.blog.model.vo.Blog;
+import com.kh.finalproject.blog.model.vo.BlogBoard;
 import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
 import com.kh.finalproject.blog.model.vo.Plant;
 
@@ -60,6 +61,10 @@ public class BlogDao {
 
 	public ArrayList<Plant> selectListPlant(SqlSessionTemplate sqlSession, int blogNo, RowBounds rowBounds) {
 		return (ArrayList)sqlSession.selectList("blogMapper.selectListPlant", blogNo, rowBounds);
+	}
+
+	public int insertBlogBoard(SqlSessionTemplate sqlSession, BlogBoard blogBoard) {
+		return sqlSession.insert("blogMapper.insertBlogBoard", blogBoard);
 	}
 
 
