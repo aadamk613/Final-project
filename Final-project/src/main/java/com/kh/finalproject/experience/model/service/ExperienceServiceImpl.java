@@ -1,6 +1,7 @@
 package com.kh.finalproject.experience.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -72,6 +73,21 @@ public class ExperienceServiceImpl implements ExperienceService {
 	@Override
 	public int insertExpReply(ExperienceReply expReply) {
 		return experienceDao.insertExpReply(sqlSession, expReply);
+	}
+
+	@Override
+	public int selectExpLike(HashMap map) {
+		return experienceDao.selectExpLike(sqlSession, map);
+	}
+
+	@Override
+	public int insertExpLike(HashMap map) {
+		return experienceDao.insertExpLike(sqlSession, map);
+	}
+
+	@Override
+	public int deleteExpLike(HashMap map) {
+		return experienceDao.deleteExpLike(sqlSession, map);
 	}
 
 	

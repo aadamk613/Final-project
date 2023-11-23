@@ -53,8 +53,8 @@
 		<!-- 로그인 인터셉터. 추가하실분 밑에다 주석달고 추가바람 -->
 		
 			<!-- 체험학습 게시판 관련 로그인 인터셉터 매핑. (게시글 작성, 수정, 삭제 / 댓글 작성) -->
+			<mapping path="/addHashtags.admin" />
 			
-			<mapping path="/yrinsertExpReply.exp" />
 			<!-- 체험학습 게시판 관련 인터셉터 매핑 끝. -->
 			
 			<beans:bean class="com.kh.finalproject.common.interceptor.LoginInterceptor" id="loginInterceptor" />

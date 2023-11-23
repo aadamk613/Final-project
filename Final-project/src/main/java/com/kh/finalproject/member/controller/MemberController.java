@@ -140,6 +140,7 @@ public class MemberController {
 			return "common/errorPage";
 		}
   }
+
   
   @RequestMapping("delete.me")
   public String deleteMember(String memPwd, HttpSession session) {

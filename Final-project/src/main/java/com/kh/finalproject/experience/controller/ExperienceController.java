@@ -1,6 +1,7 @@
 package com.kh.finalproject.experience.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -75,14 +76,15 @@ public class ExperienceController {
 	@ResponseBody
 	@RequestMapping(value="yrselectExpReplyList.exp", produces="application/json; charset=UTF-8")
 	public String selectExpReplyList(int expNo) {
+		System.out.println("하하");
+		System.out.println(experienceService.selectExpReplyList(expNo).toString());
 		return new Gson().toJson(experienceService.selectExpReplyList(expNo));
 	}
 	
 	@ResponseBody
 	@PostMapping("yrinsertExpReply.exp")
 	public String insertExpReply(@RequestBody String newReply) throws ParseException {
-		// System.out.println(expNo);
-		System.out.println(newReply);
+		
 		// {"expNo":"61","replyWriter":"user01","replyContent":"ㅁㄴㅇㄹ","replySecret":0}
 		
 		// 버전 2.8.6
@@ -112,50 +114,16 @@ public class ExperienceController {
 	
 	@PostMapping("yrinsertExp.exp")
 	public String insertExperience(Experience exp, ArrayList<MultipartFile> upfiles, String[] anno, HttpSession session) {
-		/*
-		System.out.println(expCategoryNo);
-		System.out.println(expWorkDate);
-		System.out.println(expAddress);
-		System.out.println();
-		System.out.println(exp.toString());
-		System.out.println(exp.getExpCategoryNo());
-		System.out.println(exp.getExpPeople());
-		System.out.println(upfiles);
-		*/
-		/*
-		System.out.println(anno);
-		System.out.println(anno.toString());
-		System.out.println(anno[0]);
-		System.out.println(anno[1]);
-		System.out.println(anno[2]);
-		
-		// System.out.println(upfile[0]);
-		// System.out.println(upfile[1]);
-		System.out.println(upfiles.toString());
-		System.out.println(upfiles.get(0));
-		System.out.println(upfiles.get(1));
-		System.out.println(upfiles.get(2));
-		*/
-		
 		// for(MultipartFile upfile : upfiles) {
 		ArrayList<Files> fileList = new ArrayList();
 		for(int i = 0; i < upfiles.size(); i++) {
 			if(!upfiles.get(i).getOriginalFilename().equals("")) {
 				Files file = commonController.setFile(upfiles.get(i), session, "experience");
-				System.out.println("파일이오");
-				System.out.println(file);
 				file.setRefNo(exp.getExpNo());
 				file.setFileAnnotation(anno[i]);
-				//System.out.println("담음");
-				//System.out.println(file);
 				fileList.add(file);
 			}
 		}
-		System.out.println("파일리스트");
-		System.out.println(fileList);
-		//System.out.println(fileList.get(0));
-		//System.out.println(fileList.get(1));
-		//System.out.println(fileList.get(2));
 		
 		if(experienceService.insertExperience(exp, fileList) > 0) {
 			session.setAttribute("alertMsg", "게시글이 등록되었습니다.");
@@ -166,25 +134,12 @@ public class ExperienceController {
 		
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
 	@GetMapping("yrupdateExp.exp")
 	public String updateExperienceForm(int expNo) {
 		System.out.println("여긴 체험학습 게시글 수정하기");
 		System.out.println(expNo);
 		return "";
 	}
-	
-	
-	
-	
-	
 	
 	@RequestMapping("yrdeleteExp.exp")
 	public String deleteExperience(int expNo, HttpSession session) {
@@ -199,17 +154,35 @@ public class ExperienceController {
 		// 받을 때 데이터를 @RequestBody String str 이렇게 받음
 		return "redirect:yrlist.exp";
 	}
+	
+	@ResponseBody
+	@GetMapping("yrexpLikeCheck")
+	public int expLikeCheck(int expNo, int memNo) {
+		
+		HashMap map = new HashMap();
+		map.put("expNo", expNo);
+		map.put("memNo", memNo);
+		
+		return experienceService.selectExpLike(map);
+	}
 
 	@ResponseBody
-	@GetMapping("yrexpLike")
-	public String expLike(int expNo, int like) {
-		System.out.println(expNo);
-		System.out.println(like);
+	@GetMapping(value="yrexpLike")
+	public int expLike(int expNo, int likeVal, int memNo) {
+		
+		HashMap map = new HashMap();
+		map.put("expNo", expNo);
+		map.put("memNo", memNo);
+		
 		// 좋아요라면 
-		if(like > 0) {
+		if(likeVal > 0) {
+			// 좋아요 등록
+			return experienceService.insertExpLike(map);
 			
+		} else {
+			// 좋아요 취소
+			return experienceService.deleteExpLike(map);
 		}
-		return "true";
 	}
 	
 	

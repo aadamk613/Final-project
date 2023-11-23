@@ -51,10 +51,8 @@ public class CommonController {
 		String originalName = upfile.getOriginalFilename();
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		int ranNum = (int)(Math.random() * 9000) + 10000;
-		System.out.println("파일이름을 바꿔");
 		String ext = originalName.substring(originalName.lastIndexOf("."));
 		String changeName = currentTime + ranNum + ext;
-		System.out.println(changeName);
 		String savePath = session.getServletContext().getRealPath("resources/uploadFiles/" + savePathFolder + "/");
 		
 		try {
@@ -63,15 +61,10 @@ public class CommonController {
 			e.printStackTrace();
 		}
 		
-		
-		file.setFilePath("/resources/uploadFiles/" + savePathFolder + "/");
-
+		file.setFilePath("resources/uploadFiles/" + savePathFolder + "/");
 		file.setRefType(savePathFolder);
 		file.setOriginalName(originalName);
 		file.setUpdateName(changeName);
-		System.out.println("이게 바로 바뀐ㅇ ㅣ름");
-		System.out.println(file.getUpdateName());
-
 
 		return file;
 	}

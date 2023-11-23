@@ -1,6 +1,7 @@
 package com.kh.finalproject.experience.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -43,6 +44,18 @@ public class ExperienceDao {
 
 	public int insertExpReply(SqlSessionTemplate sqlSession, ExperienceReply expReply) {
 		return sqlSession.insert("experienceMapper.insertExpReply", expReply);
+	}
+
+	public int selectExpLike(SqlSessionTemplate sqlSession, HashMap map) {
+		return sqlSession.selectOne("experienceMapper.selectExpLike", map);
+	}
+
+	public int insertExpLike(SqlSessionTemplate sqlSession, HashMap map) {
+		return sqlSession.insert("experienceMapper.insertExpLike", map);
+	}
+
+	public int deleteExpLike(SqlSessionTemplate sqlSession, HashMap map) {
+		return sqlSession.delete("experienceMapper.deleteExpLike", map);
 	}
 
 	

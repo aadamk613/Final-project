@@ -257,9 +257,44 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   )
 	</insert>
 
+	<!-- 체험학습 게시글 사용자 좋아요 조회 -->
+	<select id="selectExpLike" parameterType="hashmap" resultType="_int">
+		SELECT 
+			   COUNT(*)
+		  FROM 
+		  	   TB_EXPERIENCE_LIKE
+		 WHERE
+		 	   EXP_NO = #{ expNo }
+		   AND
+		   	   MEM_NO = #{ memNo }
+	</select>
 	
+	<!-- 체험학습 게시글 좋아요 등록 -->
+	<insert id="insertExpLike" parameterType="hashmap">
+		INSERT
+		  INTO
+		  	   TB_EXPERIENCE_LIKE
+		  	   (
+		  	   EXP_NO,
+		  	   MEM_NO
+		  	   )
+		VALUES 
+				(
+				#{ expNo },
+				#{ memNo }
+				)
+	</insert>
 	
-	
+	<!-- 체험학습 게시글 좋아요 취소 -->
+	<delete id="deleteExpLike" parameterType="hashmap">
+		DELETE
+		  FROM
+		  	   TB_EXPERIENCE_LIKE
+		 WHERE
+		 	   EXP_NO = #{ expNo }
+		   AND
+		   	   MEM_NO = #{ memNo }
+	</delete>
 	
 	
 	

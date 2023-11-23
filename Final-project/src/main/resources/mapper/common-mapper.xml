@@ -52,7 +52,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				)
 			VALUES
 			 	(
-			 	SEQ_FILES_NO.NEXTVAL, 
+			 	SEQ_FILE_NO.NEXTVAL, 
 			 	#{ originalName },
 			 	#{ updateName },
 			 	#{ filePath },

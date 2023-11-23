@@ -1,6 +1,7 @@
 package com.kh.finalproject.experience.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.common.model.vo.PageInfo;
@@ -38,6 +39,18 @@ public interface ExperienceService {
 	
 	// 체험학습 게시글 댓글 작성
 	int insertExpReply(ExperienceReply expReply);
+	
+	
+	// 체험학습 게시글 좋아요 조회
+	int selectExpLike(HashMap map);
+	
+	// 체험학습 게시글 좋아요 등록
+	int insertExpLike(HashMap map);
+	
+	// 체험학습 게시글 좋아요 취소
+	int deleteExpLike(HashMap map);
+	
+	
 	
 
 
