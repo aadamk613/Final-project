@@ -13,6 +13,8 @@ public interface MemberService {
   int idCheck(String checkId);
 
   int updateMember(Member m);
+  
+  int deleteMember(String memId);
 
   int setLastLogin(Member m);
 

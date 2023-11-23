@@ -116,6 +116,50 @@ public class MemberController {
 
   @RequestMapping("update.me")
   public String updateMember(Member m, Model model, HttpSession session) {
+
+	  if(memberService.updateMember(m) > 0){
+		  
+		session.setAttribute("loginUser", memberService.loginMember(m));
+			
+		// session에 일회성 알라문구 띄워주기 
+		session.setAttribute("alertMsg", "정보수정에 성공했습니다~~");
+			
+		// 마이페이지 화면이 띄워지도록~  유지보수를 용이하게 하기 위해
+		return "redirect:myPage.me";
+			
+		} else { // 수정 실패 => 에러문구를 담아서 에러페이지로 포워딩
+			model.addAttribute("errorMsg", "정보수정에 실패했습니다.");
+			// /WEB-INF/views/ 		common/errorPage		.jsp
+			return "common/errorPage";
+		}
+  }
+  
+  @RequestMapping("delete.me")
+  public String deleteMember(String memPwd, HttpSession session) {
+	  
+	  Member loginUser = ((Member)session.getAttribute("loginUser"));
+		
+		String encPwd = ((Member)session.getAttribute("loginUser")).getMemPwd();
+		// 비밃먼호가 사용자가 입력한 평문으로 만든 암호문일 경우
+		if(bcryptPasswordEncoder.matches(memPwd, encPwd)) {
+			
+			String memId = loginUser.getMemId();
+			
+			if(memberService.deleteMember(memId) > 0) {
+				// 탈퇴처리 성공 => session에서 loginUser지움, alert문구 담기 => 메인페이지로 잘가라고~~~~
+				session.removeAttribute("loginUser");
+				session.setAttribute("alertMsg", "잘가고~~~ 다신 보지말자~~~~");
+				return "redirect:/";
+			 } else {
+				 session.setAttribute("errorMsg", "탈퇴처리 실패");
+				 return "common/errorPage";
+			 }
+			
+		} else {
+			session.setAttribute("alertMsg", "비밀번호가 틀렸어요!!틀렸다구요!!!! 정말 제대로 입력한게 맞아요? 다시 확인해보세요~~~");
+			return "redirect:myPage.me";
+		}
+	}
     if (memberService.updateMember(m) > 0) {
       session.setAttribute("loginUser", memberService.loginMember(m));
       // session에 일회성 알라문구 띄워주기
@@ -128,6 +172,7 @@ public class MemberController {
       return "common/errorPage";
     }
   }
+
 
   @GetMapping("naverLogin.me")
   public String naverLogin() {

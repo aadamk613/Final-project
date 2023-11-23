@@ -29,6 +29,15 @@ public class MemberServiceImpl implements MemberService {
   public int idCheck(String checkId) {
     return memberDao.idCheck(sqlSession, checkId);
   }
+  @Override
+  public int updateMember(Member m) {
+	  return memberDao.upateMember(sqlSession, m);
+  }
+  
+  @Override
+  public int deleteMember(String memId) {
+	  return memberDao.deleteMember(sqlSession, memId);
+  }
 
   @Override
   public int setLastLogin(Member m) {
@@ -45,10 +54,6 @@ public class MemberServiceImpl implements MemberService {
     return memberDao.loadImg(sqlSession, inputFile);
   }
 
-  @Override
-  public int updateMember(Member m) {
-    return memberDao.upateMember(sqlSession, m);
-  }
 
   public Member selectMember(int memNo) {
     return memberDao.selectMember(sqlSession, memNo);
