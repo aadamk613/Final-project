@@ -30,7 +30,7 @@ public class MemberDao {
   }
   
   public int deleteMember(SqlSessionTemplate sqlSession, String memId) {
-	  System.out.print(memId);
+	  //System.out.print(memId);
 	  return sqlSession.delete("memberMapper.deleteMember", memId);
   }
 

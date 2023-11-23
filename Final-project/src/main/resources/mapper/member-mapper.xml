@@ -18,16 +18,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	<select id="loginMember" parameterType="member" resultMap="memberResultSet">
 		SELECT
-      MEM_NO,
+      		MEM_NO,
 			MEM_TEMP,
-      MEM_STATUS,
-      MEM_ID,
+      		MEM_STATUS,
+      		MEM_ID,
 			MEM_PW,
 			EMAIL,
-      MEM_NICK,
-      MEM_IMG,
-      REG_BUSINESS,
-      BLOG_NO,
+      		MEM_NICK,
+      		MEM_IMG,
+      		REG_BUSINESS,
+      		BLOG_NO,
 			TO_CHAR(LAST_LOGIN, 'YYYY/MM/DD HH24:MI:SS') LAST_LOGIN
 		FROM
 			MEMBER
