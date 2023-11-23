@@ -10,7 +10,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <Style>
 	.content{
-		width:25%;
+		width:180%;
 		margin:auto;
 	}
 	.innerOuter{
@@ -40,6 +40,7 @@
 <body>
 
 	<header id="pageHeader">
+	<jsp:include page="../common/header.jsp" />
         &lt;header&gt;
         id=pageHeader
         여기는 헤더
@@ -168,6 +169,7 @@
 	<br clear="both">
 	
 	<footer id="pageFooter">
+	<jsp:include page="../common/footer.jsp" />
         &lt;footer&gt; <br>
         id=pageFooter
         여기는 푸터 <br>
