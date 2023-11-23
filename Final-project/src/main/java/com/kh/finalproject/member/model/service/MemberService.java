@@ -34,4 +34,5 @@ public interface MemberService {
   
   int addGoogleProfile(Member m);
 
+
 }

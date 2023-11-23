@@ -33,6 +33,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			MEMBER
 		WHERE
 			MEM_ID = #{memId}
+		  AND
+		  	MEM_STATUS 
+		  			IN 
+		  				('A','U','B')
 	</select>
 
 	<select id="selectMember" parameterType="_int" resultMap="memberResultSet">
