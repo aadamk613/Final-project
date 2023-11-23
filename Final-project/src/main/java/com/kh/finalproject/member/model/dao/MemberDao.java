@@ -22,8 +22,15 @@ public class MemberDao {
   }
 
   public int idCheck(SqlSessionTemplate sqlSession, String checkId) {
-
     return sqlSession.selectOne("memberMapper.idCheck", checkId);
+  }
+  public int upateMember(SqlSessionTemplate sqlSession, Member m) {
+	  return sqlSession.update("memberMapper.updateMember", m);
+  }
+  
+  public int deleteMember(SqlSessionTemplate sqlSession, String memId) {
+	  //System.out.print(memId);
+	  return sqlSession.delete("memberMapper.deleteMember", memId);
   }
 
   public int setLastLogin(SqlSessionTemplate sqlSession, Member m) {
@@ -34,15 +41,28 @@ public class MemberDao {
     return (ArrayList) sqlSession.selectList("memberMapper.ajaxGetMemberList");
   }
 
+  public int editMember(SqlSessionTemplate sqlSession, Member m) {
+    return sqlSession.update("memberMapper.editMember", m);
+  }
+
+  public int addNaverProfile(SqlSessionTemplate sqlSession, NaverLogin nv) {
+    return sqlSession.insert("memberMapper.addNaverProfile", nv);
+  }
+
+  public Member selectNaverProfile(SqlSessionTemplate sqlSession, String memId) {
+    return sqlSession.selectOne("memberMapper.selectNaverProfile", memId);
+  }
+
   public int loadImg(SqlSessionTemplate sqlSession, String inputFile) {
     return sqlSession.update("memberMapper.loadImg");
   }
 
-  public int upateMember(SqlSessionTemplate sqlSession, Member m) {
-    return sqlSession.update("memberMapper.updateMember", m);
-  }
 
   public int addKaKaoProfile(SqlSessionTemplate sqlSession, Member m) {
     return sqlSession.insert("memberMapper.addKakaoProfile", m);
+  }
+
+  public int addGoogleProfile(SqlSessionTemplate sqlSession, Member m) {
+    return sqlSession.insert("memberMapper.addGoogleProfile", m);
   }
 }

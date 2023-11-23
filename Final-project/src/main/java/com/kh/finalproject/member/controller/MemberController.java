@@ -1,32 +1,33 @@
 package com.kh.finalproject.member.controller;
 
-
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import com.google.gson.Gson;
+import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.member.model.service.KakaoLoginService;
 import com.kh.finalproject.member.model.service.MemberService;
 import com.kh.finalproject.member.model.service.NaverLoginService;
 import com.kh.finalproject.member.model.vo.Member;
 import com.kh.finalproject.member.model.vo.NaverLogin;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.google.gson.Gson;
-import com.kh.finalproject.common.model.vo.Files;
-import com.kh.finalproject.member.model.service.MemberService;
-import com.kh.finalproject.member.model.vo.Member;
 
 @Controller
 public class MemberController {
@@ -111,16 +112,18 @@ public class MemberController {
 
   @RequestMapping("myPage.me")
   public String myPage() {
-	  return "member/mypage";
+    return "member/mypage";
   }
+
   @RequestMapping("loadImg.me")
   public String loadImg(String inputFile) {
-	 int loadImg = memberService.loadImg(inputFile);
-	 return "succes";
+    int loadImg = memberService.loadImg(inputFile);
+    return "succes";
   }
-  
+
   @RequestMapping("update.me")
   public String updateMember(Member m, Model model, HttpSession session) {
+
 	  if(memberService.updateMember(m) > 0){
 		  
 		session.setAttribute("loginUser", memberService.loginMember(m));
@@ -137,6 +140,47 @@ public class MemberController {
 			return "common/errorPage";
 		}
   }
+
+  
+  @RequestMapping("delete.me")
+  public String deleteMember(String memPwd, HttpSession session) {
+	  
+	  Member loginUser = ((Member)session.getAttribute("loginUser"));
+		
+		String encPwd = ((Member)session.getAttribute("loginUser")).getMemPwd();
+		// 비밃먼호가 사용자가 입력한 평문으로 만든 암호문일 경우
+		if(bcryptPasswordEncoder.matches(memPwd, encPwd)) {
+			
+			String memId = loginUser.getMemId();
+			
+			if(memberService.deleteMember(memId) > 0) {
+				// 탈퇴처리 성공 => session에서 loginUser지움, alert문구 담기 => 메인페이지로 잘가라고~~~~
+				session.removeAttribute("loginUser");
+				session.setAttribute("alertMsg", "잘가고~~~ 다신 보지말자~~~~");
+				return "redirect:/";
+			 } else {
+				 session.setAttribute("errorMsg", "탈퇴처리 실패");
+				 return "common/errorPage";
+			 }
+			
+		} else {
+			session.setAttribute("alertMsg", "비밀번호가 틀렸어요!!틀렸다구요!!!! 정말 제대로 입력한게 맞아요? 다시 확인해보세요~~~");
+			return "redirect:myPage.me";
+		}
+	}
+    if (memberService.updateMember(m) > 0) {
+      session.setAttribute("loginUser", memberService.loginMember(m));
+      // session에 일회성 알라문구 띄워주기
+      session.setAttribute("alertMsg", "정보수정에 성공했습니다~~");
+      // 마이페이지 화면이 띄워지도록~  유지보수를 용이하게 하기 위해
+      return "redirect:myPage.me";
+    } else { // 수정 실패 => 에러문구를 담아서 에러페이지로 포워딩
+      model.addAttribute("errorMsg", "정보수정에 실패했습니다.");
+      // /WEB-INF/views/ 		common/errorPage		.jsp
+      return "common/errorPage";
+    }
+  }
+
 
   @GetMapping("naverLogin.me")
   public String naverLogin() {
@@ -173,7 +217,6 @@ public class MemberController {
     memberService.setLastLogin(loginUser);
     session.setAttribute("loginUser", loginUser);
     return "redirect:/";
-
   }
 
   @GetMapping("kakaoLogin.me")
@@ -195,7 +238,60 @@ public class MemberController {
     }
     memberService.setLastLogin(loginUser);
     session.setAttribute("loginUser", loginUser);
-    System.out.println(loginUser);
+    return "redirect:/";
+  }
+
+  @RequestMapping("googleLogin.me")
+  public String googleLogin(String credential, HttpSession session) throws Exception {
+    HttpTransport transport = new NetHttpTransport();
+    JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
+    GoogleIdTokenVerifier verifier =
+        new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
+            // Specify the CLIENT_ID of the app that accesses the backend:
+            .setAudience(
+                Collections.singletonList(
+                    "347219723290-po60vc83hnfdh6pac0tfgufblgqmvvbk.apps.googleusercontent.com"))
+            // Or, if multiple clients access the backend:
+            // .setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
+            .build();
+    GoogleIdToken idToken = verifier.verify(credential);
+    Map<String, String> returnMe = new HashMap<>();
+    if (idToken != null) {
+      Payload payload = idToken.getPayload();
+
+      // Print user identifier
+      String userId = payload.getSubject();
+      System.out.println("User ID: " + userId);
+
+      // Get profile information from payload
+      String email = payload.getEmail();
+      boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
+      String name = (String) payload.get("name");
+      String pictureUrl = (String) payload.get("picture");
+      String locale = (String) payload.get("locale");
+      String familyName = (String) payload.get("family_name");
+      String givenName = (String) payload.get("given_name");
+
+      returnMe.put("email", email);
+      returnMe.put("name", name);
+      returnMe.put("pictureUrl", pictureUrl);
+      returnMe.put("userId", userId);
+      System.out.println(returnMe);
+      Member loginUser = memberService.selectNaverProfile(returnMe.get("userId"));
+      Member m = new Member();
+      m.setMemId(returnMe.get("userId"));
+      m.setMemNick(returnMe.get("name"));
+      m.setMemImg(returnMe.get("pictureUrl"));
+      m.setEmail(returnMe.get("email"));
+      if (loginUser == null) {
+        memberService.addGoogleProfile(m);
+        memberService.selectNaverProfile(returnMe.get("id"));
+        loginUser = m;
+      }
+      memberService.setLastLogin(loginUser);
+      session.setAttribute("loginUser", loginUser);
+      System.out.println(loginUser);
+    }
     return "redirect:/";
   }
 }
