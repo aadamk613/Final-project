@@ -9,6 +9,8 @@
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.5.0/kakao.min.js" integrity="sha384-kYPsUbBPlktXsY6/oNHSUDZoTX6+YI51f63jCPEIPFP09ttByAdxd2mEjKuhdqn4" crossorigin="anonymous"></script>
+<script src="https://accounts.google.com/gsi/client" async></script>
+
 <script>
 	// kakao login APi 
 	// SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해야 합니다.
@@ -152,8 +154,25 @@ a{
 								</a>
 						</div>
 						</li>
+						<li>
+							<div class="g_id_signin"
+								data-type="standard"
+								data-shape="rectangular"
+								data-theme="filled_blue"
+								data-text="signin_with"
+								data-size="large"
+								data-logo_alignment="left">
+							</div>
+						</li>
 					</ul>
-				 </div>
+				</div>
+				<div id="g_id_onload"
+						data-client_id="347219723290-po60vc83hnfdh6pac0tfgufblgqmvvbk.apps.googleusercontent.com"
+						data-context="signin"
+						data-ux_mode="popup"
+						data-login_uri="http://localhost:8001/final/googleLogin.me"
+						data-auto_prompt="false">
+				</div>
 				
 				<!-- //네이버 로그인 버튼 노출 영역 -->
 				<script type="text/javascript">
