@@ -76,15 +76,15 @@ public class ExperienceController {
 	@ResponseBody
 	@RequestMapping(value="yrselectExpReplyList.exp", produces="application/json; charset=UTF-8")
 	public String selectExpReplyList(int expNo) {
+		System.out.println("하하");
+		System.out.println(experienceService.selectExpReplyList(expNo).toString());
 		return new Gson().toJson(experienceService.selectExpReplyList(expNo));
 	}
 	
 	@ResponseBody
 	@PostMapping("yrinsertExpReply.exp")
 	public String insertExpReply(@RequestBody String newReply) throws ParseException {
-		// System.out.println(expNo);
-		System.out.println("댓글작성");
-		System.out.println(newReply);
+		
 		// {"expNo":"61","replyWriter":"user01","replyContent":"ㅁㄴㅇㄹ","replySecret":0}
 		
 		// 버전 2.8.6

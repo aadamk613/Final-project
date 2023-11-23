@@ -91,6 +91,11 @@ h1 {
 	padding : 20px;
 }
 
+td{
+	width : 150px;
+	height : 50px;
+}
+
 
 </style>
 
@@ -124,7 +129,7 @@ h1 {
 		<section id="pageSection">
 			<div class="container">
 				<!-- 작성자만 보이는 버튼 -->
-				<c:if test="${ sessionScope.loginUser ne requestScope.exp.expWriter }">
+				<c:if test="${ sessionScope.loginUser.memId eq requestScope.exp.expWriter }">
 					<div id="forWriter">
 						<a class="btn btn-primary" onclick="expSubmit(0);">수정하기</a>
 						<a class="btn btn-danger" onclick="expSubmit(1);">삭제하기</a>
@@ -135,19 +140,6 @@ h1 {
 					<input type="hidden" name="expNo" value="${ exp.expNo }" />
 				</form>
 				
-				<script>
-					function expSubmit(type){
-						if(type == 0){
-							$('#postForm').attr('action', 'yrupdateExp.exp').submit();
-						}
-						else{
-							if(confirm('정말로 삭제하시겠습니까?')){
-								$('#postForm').attr('action', 'yrdeleteExp.exp').submit();
-							}
-						}
-					};
-				</script>
-	
 				<div class="title">
 					<h1>${ exp.expTitle }</h1>
 				</div>
@@ -183,77 +175,8 @@ h1 {
 					</div>
 					
 					<div>
-						
 						<a id="like"><img src="resources/images/emptyHeart.png" /></a>
 					</div>
-					
-					<script>
-					
-						let likeImg = $('#like > img');	
-						
-						// 좋아요 수
-						let likeCount = ${ exp.expLikeCount};
-						$('#likeCount').text('좋아요수 ' + likeCount);
-						
-					
-						$(() => {
-							
-							$.ajax({
-								url : 'yrexpLikeCheck',
-								data : {
-									expNo : ${ exp.expNo },
-									memNo : 1
-								},
-								success : result => {
-									console.log(result);
-									if(result){
-										likeImg.attr('src', 'resources/images/fullHeart.png');
-									}
-								},
-								error : () => {
-									console.log("체험학습 게시글 좋아요 조회 통신오류")
-								}
-							});
-						});
-						
-						$('#like').click(function(){
-							// 버튼을 눌렀을 때 실행되니까 likeValue는 무조건 변경됨
-							let likeValue = 0;
-							if(likeImg.attr('src') == 'resources/images/emptyHeart.png'){
-								likeImg.attr('src', 'resources/images/fullHeart.png');
-								likeValue = 1;
-								// 좋아요 수 증가
-								likeCount++;
-								$('#likeCount').text('좋아요수 ' + likeCount);
-							}
-							else {
-								likeImg.attr('src', 'resources/images/emptyHeart.png');
-								likeValue = 0;
-								// 좋아요 수 감소
-								likeCount--;
-								$('#likeCount').text('좋아요수 ' + likeCount);
-							}
-							$.ajax({
-								url : 'yrexpLike',
-								data : {
-									expNo : ${ exp.expNo },
-									memNo : 1,
-									likeVal : likeValue
-								},
-								success : result => {
-									console.log(result);
-									if(result != 1){
-										alert('오류발생 ');
-									}
-								},
-								error : () => {
-									console.log("체험학습 게시글 좋아요 통신오류")
-								}
-								
-							});
-							
-						});
-					</script>
 					
 					<div class="summary">
 						<ul>
@@ -282,7 +205,6 @@ h1 {
 				</div>
 				
 				<div>
-					
 					<div id="commentInsertBox">
 						<div>
 							<div>
@@ -296,8 +218,8 @@ h1 {
 							<label for="secret">비밀댓글로 설정하기</label>
 						</div>
 						<c:choose>
-							<c:when test="${ loginUser eq null }">
-								<div id="submitWrap"><a href='#' onclick="insertReply();">등록</a></div>
+							<c:when test="${ loginUser ne null }">
+								<div id="submitWrap"><button type="button" onclick="insertReply();">등록</button></div>
 							</c:when>
 							<c:otherwise>
 								<div id="submitWrap"><a href='#' onclick="alert('로그인 후 이용 가능한 기능입니다.');">등록</a></div>
@@ -312,7 +234,7 @@ h1 {
 								<tr>
 									<th>사진</th>
 									<th>아이디</th>
-									<th>내용</th>
+									<th width="30px">내용</th>
 									<th>작성일</th>
 									<th>좋아요</th>
 									<th>비밀글</th>
@@ -329,18 +251,87 @@ h1 {
 
 
 		<script>
+			// 게시글 수정 및 삭제
+			function expSubmit(type){
+				if(type == 0){
+					$('#postForm').attr('action', 'yrupdateExp.exp').submit();
+				}
+				else{
+					if(confirm('정말로 삭제하시겠습니까?')){
+						$('#postForm').attr('action', 'yrdeleteExp.exp').submit();
+					}
+				}
+			};
+
+			// 좋아요 표시
+			let likeImg = $('#like > img');	
+			
+			// 좋아요 수
+			let likeCount = ${ exp.expLikeCount};
+			$('#likeCount').text('좋아요수 ' + likeCount);
+		
+			$(() => {
+				
+				$.ajax({
+					url : 'yrexpLikeCheck',
+					data : {
+						expNo : ${ exp.expNo },
+						memNo : ${ loginUser.memNo }
+					},
+					success : result => {
+						console.log(result);
+						if(result){
+							likeImg.attr('src', 'resources/images/fullHeart.png');
+						}
+					},
+					error : () => {
+						console.log("체험학습 게시글 좋아요 조회 통신오류")
+					}
+				});
+			});
+			
+			// 좋아요 클릭
+			$('#like').click(function(){
+				// 버튼을 눌렀을 때 실행되니까 likeValue는 무조건 변경됨
+				let likeValue = 0;
+				if(likeImg.attr('src') == 'resources/images/emptyHeart.png'){
+					likeImg.attr('src', 'resources/images/fullHeart.png');
+					likeValue = 1;
+					// 좋아요 수 증가
+					likeCount++;
+					$('#likeCount').text('좋아요수 ' + likeCount);
+				}
+				else {
+					likeImg.attr('src', 'resources/images/emptyHeart.png');
+					likeValue = 0;
+					// 좋아요 수 감소
+					likeCount--;
+					$('#likeCount').text('좋아요수 ' + likeCount);
+				}
+				$.ajax({
+					url : 'yrexpLike',
+					data : {
+						expNo : ${ exp.expNo },
+						memNo : ${ loginUser.memNo },
+						likeVal : likeValue
+					},
+					success : result => {
+						console.log(result);
+						if(result != 1){
+							alert('오류발생 ');
+						}
+					},
+					error : () => {
+						console.log("체험학습 게시글 좋아요 통신오류")
+					}
+				});
+			});
 		
 			// 댓글 작성기능
 			function insertReply(){
-				console.log("엥");
-				console.log(${ exp.expNo });
-				console.log("user01");
-				console.log($('#commentContentInsert').val());
-				console.log($('input[type=checkbox]:checked').length);
-				
 				const data = {
 						expNo : '${ exp.expNo }',
-						replyWriter : 'user01',  // 로그인 유저로 바꿔야 함 ${ loginUser.memId }
+						replyWriter : '${ loginUser.memId }',
 						replyContent : $('#commentContentInsert').val(),
 						replySecret : $('input[type=checkbox]:checked').length
 				};
@@ -348,7 +339,6 @@ h1 {
 				$.ajax({
 					url : 'yrinsertExpReply.exp',
 					type : 'post',
-					dataType: 'json',
 		            contentType: 'application/json; charset=utf-8',
 					data :JSON.stringify(data), 
 					success : result => {
@@ -359,8 +349,9 @@ h1 {
 							selectReply();
 						}
 					},
-					error : () => {
+					error : (request, error) => {
 						console.log("체험학습 댓글 작성 통신 오류");
+						// alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 					}
 				});
 			}
@@ -371,39 +362,29 @@ h1 {
 			});
 			
 			function selectReply(){
+				console.log("ㄹ하ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ");
 				$.ajax({
 					url : "yrselectExpReplyList.exp",
-					data : {expNo : ${ exp.expNo }},
-					
+					data : {expNo : '${ exp.expNo }'},
 					success : result => {
 						let value = '';
 						let $resultValue = result;
 						
 						// 비밀글은 댓글작성자와 게시글작성자만 보여지게 하기
 						for(let i in result){
-							console.log("뭐로 나올까");
-							console.log(result[i].replyModifyDate);
-							
 							if((result[i].replySecret == 'N') || 
-								((result[i].replySecret == 'Y') && ('user02' == result[i].replyWriter || ${ 'user02' eq exp.expWriter } ))) {
-								
-									console.log("일치여부 확인");
-									console.log(result);
-									// console.log(${ result[i].expNo });
+								((result[i].replySecret == 'Y') && ('${ loginUser.memId }' == result[i].replyWriter || ${ loginUser.memId eq exp.expWriter } ))) {
 									value += '<tr>'
 										   + '<td>' + '사진' + '</td>'
 										   + '<td>' + result[i].replyWriter + '</td>'
 										   + '<td>' + result[i].replyContent + '</td>'
 										   // 수정했다면 수정일 보여주기
-										   <c:choose>
-											   <c:when test="${ not empty result[i].replyModifyDate }" >
-											   + '<td>' + result[i].replyModifyDate + '수정됨 </td>'
-											   </c:when>
-											   <c:otherwise>
-											   + '<td>' + result[i].replyCreateDate + '</td>'
-											   </c:otherwise>
-										   </c:choose>
-										   + '<td>' + '♥' + '</th>'
+										   if(result[i].replyModifyDate != null){
+											   value += '<td>' + result[i].replyModifyDate + '수정됨 </td>'
+										   } else{
+											   value += '<td>' + result[i].replyCreateDate + '</td>'
+										   }
+										   value += '<td>' + '♥' + '</th>'
 										   if(result[i].replySecret == 'Y'){
 											   value += '<td>' + '<input type="checkbox" disabled checked />' + '</th>';
 										   } 
@@ -412,18 +393,15 @@ h1 {
 							else {
 								value += '<tr><td colspan=6>' + '비밀댓글입니다' + '</td></tr>';
 							}
-							
 						}
 						$('#reply > tbody').html(value);
 					},
 					error : () => {
 						console.log("체험학습 게시글 댓글 조회 통신 오류");
 					}
-					
 				});
 			}
 		</script>
-		
 
 		</section>
 		

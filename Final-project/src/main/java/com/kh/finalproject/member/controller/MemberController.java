@@ -136,6 +136,7 @@ public class MemberController {
 			// /WEB-INF/views/ 		common/errorPage		.jsp
 			return "common/errorPage";
 		}
+  }
 
   @GetMapping("naverLogin.me")
   public String naverLogin() {
@@ -172,7 +173,7 @@ public class MemberController {
     memberService.setLastLogin(loginUser);
     session.setAttribute("loginUser", loginUser);
     return "redirect:/";
->>>>>>> main
+
   }
 
   @GetMapping("kakaoLogin.me")

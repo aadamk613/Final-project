@@ -61,7 +61,7 @@ public class CommonController {
 			e.printStackTrace();
 		}
 		
-		file.setFilePath("/resources/uploadFiles/" + savePathFolder + "/");
+		file.setFilePath("resources/uploadFiles/" + savePathFolder + "/");
 		file.setRefType(savePathFolder);
 		file.setOriginalName(originalName);
 		file.setUpdateName(changeName);
