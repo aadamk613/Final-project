@@ -17,6 +17,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="MEM_ID" property="memId"/>
 		<result column="MEM_NICK" property="memNick"/>
 		<result column="MEM_IMG" property="memImg"/>
+		
+		<result column="FILE_PATH" property="filePath"/>
+		<result column="UPDATE_NAME" property="updateName"/>
 	</resultMap>
 	
 	<resultMap type="blogCategorySetting" id="BlogCategorySettingResultSet">
@@ -103,15 +106,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				B.MEM_NO,
 				BLOG_TITLE,
 				BLOG_INTRODUCE,
-				BLOG_IMG,
 				BLOG_INTEREST,
 				MEM_ID,
                 MEM_NICK,
-                MEM_IMG
+                MEM_IMG,
+                
+                FILE_PATH, 
+                UPDATE_NAME
 			FROM
 				TB_BLOG B
 		    JOIN
                 MEMBER USING(BLOG_NO)
+			LEFT OUTER JOIN
+                TB_FILES ON (REF_NO = BLOG_NO)
 			WHERE
 				BLOG_NO = #{ blogNo }
 	

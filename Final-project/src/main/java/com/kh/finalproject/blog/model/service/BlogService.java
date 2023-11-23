@@ -21,7 +21,7 @@ public interface BlogService {
 	int insertBlog(Blog b);
 	
 	// 블로그 정보 수정
-	int updateBlog(Blog b);
+	int updateBlog(Blog b, Files file);
 
 	// 블로그 카테고리 select
 	ArrayList<BlogCategorySetting> selectCatogory(int blogNo);

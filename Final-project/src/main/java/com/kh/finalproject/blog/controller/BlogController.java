@@ -2,6 +2,7 @@ package com.kh.finalproject.blog.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
@@ -16,12 +18,17 @@ import com.kh.finalproject.blog.model.service.BlogService;
 import com.kh.finalproject.blog.model.vo.Blog;
 import com.kh.finalproject.blog.model.vo.BlogBoard;
 import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
+import com.kh.finalproject.common.controller.CommonController;
+import com.kh.finalproject.common.model.vo.Files;
 
 @Controller
 public class BlogController {
 	
 	@Autowired
 	private BlogService blogService;
+	
+	@Autowired
+	private CommonController commonController;
 
 	// 블로그 메인 화면으로 이동
 	@RequestMapping("main.bl") 
@@ -80,12 +87,22 @@ public class BlogController {
 	
 	// 블로그 업데이트하기
 	@RequestMapping("update.bl") 
-	public ModelAndView updateBlog(int blogNo, Blog beforeBlog, ModelAndView mv) {
+	public ModelAndView updateBlog(Blog beforeBlog, 
+							       HttpServletRequest request, 
+							       HttpSession session,
+							       MultipartFile upfile,
+							       ModelAndView mv) {
 		//System.out.println("블로그 업데이트 하기 전 블로그 정보 셀렉트 : " + beforeBlog);
+		Files file = new Files();
+		if(!upfile.getOriginalFilename().equals("")) {
+			file = commonController.setFile(upfile, session, "blog");
+			System.out.println(file);
+		}
 		
-		if(blogService.updateBlog(beforeBlog) > 0) { // 블로그 정보 수정 성공
-			Blog afterBlog = (Blog)blogService.selectBlog(blogNo);
-			//System.out.println("블로그 업데이트 한 후블로그 정보 셀렉트 : " + afterBlog);
+		
+		
+		if(blogService.updateBlog(beforeBlog, file) > 0) { // 블로그 정보 수정 성공
+			Blog afterBlog = (Blog)blogService.selectBlog(beforeBlog.getBlogNo());
 			mv.addObject("alertMsg", "정보가 수정되었습니다")
 			  .addObject("blog", afterBlog);
 		} else { // 정보 수정 실패

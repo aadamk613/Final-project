@@ -21,4 +21,6 @@ public class Blog {
 	private String memNick;
 	private String memImg;
 	
+	private String filePath;
+	private String updateName;
 }

@@ -49,9 +49,11 @@ public class CommonController {
 		Files file = new Files();
 
 		String originalName = upfile.getOriginalFilename();
+		
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		int ranNum = (int)(Math.random() * 9000) + 10000;
 		String ext = originalName.substring(originalName.lastIndexOf("."));
+		
 		String changeName = currentTime + ranNum + ext;
 		String savePath = session.getServletContext().getRealPath("resources/uploadFiles/" + savePathFolder + "/");
 		
