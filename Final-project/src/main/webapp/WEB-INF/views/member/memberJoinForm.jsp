@@ -63,7 +63,7 @@
 		<form action="join.me" method="post" id="join-form">
 			<div class="idWrap">
 				* 아이디 : 
-				<input type="text" id="memberId" name="memId" class="checkId" maxlength="12" min="4" max="12" placeholder="아이디를 잘 입력해주세요" onkeyup="adminCheck()" required> 
+				<input type="text" id="memberId" name="memId" class="checkId" maxlength="12" min="4" max="12" placeholder="아이디를 잘 입력해주세요" onkeyup="nokorean()" required> 
 				<div id="checkResult" style="font-size:0.7em; display:none;"></div>
 			</div>
 			<div class="pwdWrap">
@@ -102,16 +102,16 @@
 	
 	<script>
 	
-		function adminCheck(){
+		function noKorean(){
 			
 			var memId = document.getElementById('memId');
 			
-			var regExp = ^(?!.*\badmin\b).*{3,11}$/;
+			var regExp = /^[a-zA-Z0-9]+$/;
 			
 				console.log('memId');
 				
 			if(!regExp.test(memId.value)){
-				alert('다시써~~~~~ 뭐하는거야아~~~~?');
+				alert('해당 아이디는 사용하실 수 없습니다.');
 				memId.select();
 				memId.value = '';
 				return false;

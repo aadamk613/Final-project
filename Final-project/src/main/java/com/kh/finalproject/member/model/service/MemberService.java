@@ -31,6 +31,8 @@ public interface MemberService {
   int addKaKaoProfile(Member m);
 
   int loadImg(String inputFile);
+  
+  int addGoogleProfile(Member m);
 
 
 }
