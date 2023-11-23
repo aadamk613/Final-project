@@ -76,7 +76,7 @@ img{
 			
 			<input type="hidden" name="expWriter" value="${ loginUser.memId }" />
 			
-			<h1><input type="text" name="expTitle" placeholder="제목을 입력해 주세요."  /></h1>
+			<h1><input type="text" name="expTitle" placeholder="제목을 입력해 주세요." autofocus  /></h1>
 			<hr>
 			
 			<div id="summary">

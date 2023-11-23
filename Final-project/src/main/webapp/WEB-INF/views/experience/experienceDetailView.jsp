@@ -12,6 +12,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
   
 
+
 <style>
 * {
     border: 1px solid skyblue;
@@ -91,7 +92,7 @@ h1 {
 	padding : 20px;
 }
 
-td{
+th, td{
 	width : 150px;
 	height : 50px;
 }
@@ -149,7 +150,7 @@ td{
 						<ul>
 							<li>조회수 ${ exp.expCount }</li>
 							<li id="replyCount">댓글수 ${ exp.expReplyCount } </li>
-							<li id="likeCount"> </li>
+							<li id="likeCount">좋아요수 ${ exp.expLikeCount }</li>
 							<li>
 								<div class="writer">
 									작성자 : ${ exp.expWriter } | 
@@ -175,7 +176,14 @@ td{
 					</div>
 					
 					<div>
-						<a id="like"><img src="resources/images/emptyHeart.png" /></a>
+						<c:choose>
+							<c:when test="${ empty loginUser }" >
+								<a id="like" ><img src="resources/images/emptyHeart.png" onclick="alertify.alert('알림', '로그인 후 이용가능합니다.');" /></a>
+							</c:when>
+							<c:otherwise>
+								<a id="like" ><img src="resources/images/emptyHeart.png" onclick="likeClick();" /></a>
+							</c:otherwise>
+						</c:choose>
 					</div>
 					
 					<div class="summary">
@@ -222,7 +230,7 @@ td{
 								<div id="submitWrap"><button type="button" onclick="insertReply();">등록</button></div>
 							</c:when>
 							<c:otherwise>
-								<div id="submitWrap"><a href='#' onclick="alert('로그인 후 이용 가능한 기능입니다.');">등록</a></div>
+								<div id="submitWrap"><a onclick="alertify.alert('알림', '로그인 후 이용가능합니다.');">등록</a></div>
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -267,7 +275,7 @@ td{
 			let likeImg = $('#like > img');	
 			
 			// 좋아요 수
-			let likeCount = ${ exp.expLikeCount};
+			let likeCount = ${ exp.expLikeCount };
 			$('#likeCount').text('좋아요수 ' + likeCount);
 		
 			$(() => {
@@ -291,7 +299,8 @@ td{
 			});
 			
 			// 좋아요 클릭
-			$('#like').click(function(){
+			function likeClick(){
+				
 				// 버튼을 눌렀을 때 실행되니까 likeValue는 무조건 변경됨
 				let likeValue = 0;
 				if(likeImg.attr('src') == 'resources/images/emptyHeart.png'){
@@ -308,6 +317,7 @@ td{
 					likeCount--;
 					$('#likeCount').text('좋아요수 ' + likeCount);
 				}
+				
 				$.ajax({
 					url : 'yrexpLike',
 					data : {
@@ -325,7 +335,9 @@ td{
 						console.log("체험학습 게시글 좋아요 통신오류")
 					}
 				});
-			});
+
+				
+			};
 		
 			// 댓글 작성기능
 			function insertReply(){
@@ -360,6 +372,8 @@ td{
 			$(() => {
 				selectReply();
 			});
+			
+			
 			
 			function selectReply(){
 				console.log("ㄹ하ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ");
