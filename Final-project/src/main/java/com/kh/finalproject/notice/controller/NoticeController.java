@@ -164,7 +164,6 @@ public class NoticeController {
 			
 			if(f.getOriginalName() != null) {
 				new File(session.getServletContext().getRealPath("resources/uploadFiles/notice/"+f.getUpdateName())).delete();
-				System.out.println(session.getServletContext().getRealPath("resources/uploadFiles/notice"+f.getUpdateName()));
 				f.setOriginalName(reUpfile.getOriginalFilename());
 				f.setUpdateName(saveFile(reUpfile, session));
 				
