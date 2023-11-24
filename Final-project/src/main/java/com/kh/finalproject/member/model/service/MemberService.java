@@ -1,8 +1,11 @@
 package com.kh.finalproject.member.model.service;
 
+import java.util.ArrayList;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.kh.finalproject.member.model.vo.Member;
 import com.kh.finalproject.member.model.vo.NaverLogin;
-import java.util.ArrayList;
 
 public interface MemberService {
 
