@@ -196,21 +196,11 @@ img{
 				<div>
 					<h5>※필수 입력 사항입니다. </h5>
 					
-					<script>
-						console.log($('#category>option').length());
-						console.log('${ exp.expCategoryNo }');
-						
-							if($('#category>option').each().val() == '${ exp.expCategoryNo }'){
-								$('#category>option').attr('selected', true);
-							}
-					</script>
-					
-					
 					카테고리 : <select id="category" name="expCategoryNo" required>
-								<option value="1">화훼농장</option>
-								<option value="2">과일농장</option>
-								<option value="3">채소농장</option>
-								<option value="4">꽃꽂이</option>
+								<option class="categoryOption" value="1">화훼농장</option>
+								<option class="categoryOption" value="2">과일농장</option>
+								<option class="categoryOption" value="3">채소농장</option>
+								<option class="categoryOption" value="4">꽃꽂이</option>
 							</select>
 					체험학습일 : <input type="date" name="expWorkDate" value="${ exp.expWorkDate }" required />
 					체험시간 : <input type="number" name="expWorkTime" min=1 max=10 value="${ exp.expWorkTime }" required />
@@ -220,6 +210,16 @@ img{
 						<input type="text" name="expAddress" id="expAddress" placeholder="주소" value="${ exp.expAddress }" required readonly />
 						<input type="button" value="주소 검색" onclick="searchAddress();"  /><br>
 						<input type="hidden" name="expArea" id="expArea" />
+						
+						<script>
+							// 선택되어있던 값을 selected해줌
+							$(()=> {
+								$('#category').val('${ exp.expCategoryNo }').attr('seleted', true);
+							});
+						</script>
+						
+						
+						
 						
 				</div>
 			</div>
@@ -247,18 +247,23 @@ img{
 					$('input[type=date]').prop('min', mindate);
 				});
 				
-				
+				const value = '<div>'
+					 +'<input type="file" name="upfiles" />'
+					 +'<img src="" class="file-img" />'
+					 +'<input type="text" name="anno" placeholder=">" />'
+					 +'</div>';	
 				
 				// 버튼 클릭하면 div 생성
-				// 그리고 그 다음 div가 생성됨
 				$(() => {
 					$('#addContent').click(() => {
 						console.log("클릭했음");
+						/* 
 						const value = '<div>'
 							 +'<input type="file" name="upfiles" />'
 							 +'<img src="" class="file-img" />'
 							 +'<input type="text" name="anno" placeholder=">" />'
-							 +'</div>';	
+							 +'</div>';	 
+						*/
 							 
 						$('#content-div').append(value);
 						$('input[type=file]').hide();
@@ -286,10 +291,18 @@ img{
 					<input type="text" name="anno" placeholder=">" />
 				</div>
 				 -->
+				 
+				 <!-- 파일과 주석값이 원래 있었다면 보여주기 -->
+				 
+				 
+				 
+				 
+				 
+				 
 			</div>
 			
 			
-			
+
 			
 			
 			

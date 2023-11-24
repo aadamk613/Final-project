@@ -74,10 +74,11 @@ public class ExperienceController {
 	}
 	
 	// insert메소드 같이 써도 될거같은데 단일책임의원칙 걸려서 따로 씀
-	@PostMapping("yrupdateExpForm.exp")
-	public ModelAndView updateExperienceForm(Experience exp, ModelAndView mv) {
+	@RequestMapping("yrupdateExpForm.exp")
+	public ModelAndView updateExperienceForm(@RequestBody Experience exp, ModelAndView mv) {
 		System.out.println("여긴 체험학습 게시글 수정하기");
 		System.out.println(exp);
+		//System.out.println(files);
 		mv.addObject("exp", exp).setViewName("experience/experienceWrite");
 		return mv;
 	}
@@ -94,6 +95,8 @@ public class ExperienceController {
 	@PostMapping("yrinsertExp.exp")
 	public String insertExperience(Experience exp, ArrayList<MultipartFile> upfiles, String[] anno, HttpSession session) {
 		// for(MultipartFile upfile : upfiles) {
+		System.out.println(upfiles);
+		System.out.println(upfiles);
 		ArrayList<Files> fileList = new ArrayList();
 		for(int i = 0; i < upfiles.size(); i++) {
 			if(!upfiles.get(i).getOriginalFilename().equals("")) {
@@ -139,14 +142,17 @@ public class ExperienceController {
 	
 	@ResponseBody
 	@PostMapping("yrinsertExpReply.exp")
-	public String insertExpReply(@RequestBody String newReply) throws ParseException {
+	public String insertExpReply(@RequestBody ExperienceReply newReply) throws ParseException {
 		
+		System.out.println("왜 이건 안들어가지");
+		newReply.setReplySecret((Integer.parseInt(newReply.getReplySecret()) > 0) ? "Y" : "N");
+		System.out.println(newReply.toString());
 		// {"expNo":"61","replyWriter":"user01","replyContent":"ㅁㄴㅇㄹ","replySecret":0}
 		
 		// 버전 2.8.6
 		//JsonObject jobj = JsonParser.parseString(expReply).getAsJsonObject();
 		// 버전 2.8.5
-		JsonObject jobj = new JsonParser().parse(newReply).getAsJsonObject();
+		//JsonObject jobj = new JsonParser().parse(newReply).getAsJsonObject();
 		// System.out.println(jobj);
 		// {"expNo":"61","replyWriter":"user01","replyContent":"ㅁㄴㅇㄹ","replySecret":0}
 		
@@ -154,13 +160,13 @@ public class ExperienceController {
 		// System.out.println(jobj.get("replyContent")); // "ㅁㄴㅇㄹ"
 		
 		// set해서 넣어줄 수 밖에 없음 (null일수도 있으니까 이렇게 해주는게 맞음)
-		ExperienceReply expReply = new ExperienceReply();
-		expReply.setExpNo(jobj.get("expNo").getAsInt());
-		expReply.setReplyContent(jobj.get("replyContent").getAsString());
-		expReply.setReplyWriter(jobj.get("replyWriter").getAsString());
-		expReply.setReplySecret((jobj.get("replySecret").getAsInt() > 0) ? "Y" : "N");
+//		ExperienceReply expReply = new ExperienceReply();
+//		expReply.setExpNo(jobj.get("expNo").getAsInt());
+//		expReply.setReplyContent(jobj.get("replyContent").getAsString());
+//		expReply.setReplyWriter(jobj.get("replyWriter").getAsString());
+//		expReply.setReplySecret((jobj.get("replySecret").getAsInt() > 0) ? "Y" : "N");
 		
-		return (experienceService.insertExpReply(expReply) > 0) ? "success" : "fail";
+		return (experienceService.insertExpReply(newReply) > 0) ? "success" : "fail";
 	}
 	
 	@ResponseBody

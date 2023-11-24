@@ -132,12 +132,14 @@ th, td{
 				<!-- 작성자만 보이는 버튼 -->
 				<c:if test="${ sessionScope.loginUser.memId eq requestScope.exp.expWriter }">
 					<div id="forWriter">
-						<a class="btn btn-primary" onclick="expSubmit(0);">수정하기</a>
+						<!-- <a class="btn btn-primary" onclick="expSubmit(0);">수정하기</a> -->
+						<a class="btn btn-primary" onclick="expChange();">수정하기</a>
 						<a class="btn btn-danger" onclick="expSubmit(1);">삭제하기</a>
 					</div>
 				</c:if>
 				<!-- 악성유저 방지차원 post방식으로 보내주기 -->
 				<form action="" method="post" id="postForm">
+					<input type="hidden" name="expNo" value="${ exp.expNo }" />
 					<input type="hidden" name="expNo" value="${ exp.expNo }" />
 					<input type="hidden" name="expTitle" value="${ exp.expTitle }" />
 					<input type="hidden" name="expWriter" value="${ exp.expWriter }" />
@@ -153,7 +155,25 @@ th, td{
 					<input type="hidden" name="expArea" value="${ exp.expArea }" />
 					<input type="hidden" name="expAddress" value="${ exp.expAddress }" />
 					<input type="hidden" name="expCategoryNo" value="${ exp.expCategoryNo }" />
+					<input type="hidden" name="files" value="${ files }" />
 				</form>
+				
+				<script>
+					// 수정하기 ajax로 넘겨보기 테스트 중(값이 VO로 넘어가나)
+					function expChange(){
+						
+						$.ajax({
+							url : 'yrupdateExpForm.exp',
+							data : {exp : '${ exp }'},
+							success : result => {
+								console.log(result);
+							},
+							error : () => {
+								console.log('체험학습 게시글 통신오류');
+							}
+						});
+					}
+				</script>
 				
 				<div class="title">
 					<h1>${ exp.expTitle }</h1>
