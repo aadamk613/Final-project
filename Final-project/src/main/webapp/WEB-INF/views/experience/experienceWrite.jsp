@@ -54,6 +54,8 @@ img{
 
 
 
+
+
 </style>
 </head>
 <body>
@@ -76,7 +78,7 @@ img{
 			
 			<input type="hidden" name="expWriter" value="${ loginUser.memId }" />
 			
-			<h1><input type="text" name="expTitle" placeholder="제목을 입력해 주세요." autofocus  /></h1>
+			<h1><input type="text" name="expTitle" placeholder="제목을 입력해 주세요." value="${ exp.expTitle }" autofocus /></h1>
 			<hr>
 			
 			<div id="summary">
@@ -106,8 +108,8 @@ img{
 							const imgId = e.target.id;
 							// console.log("이건 뭔데");
 							// console.log($('img[id=' + imgId +']').siblings().eq(0));
-							console.log("왜 안나와");
-							console.log($(this)); // => 화살표함수.............쓰면 window로 잡힘
+							//console.log("왜 안나와");
+							//console.log($(this)); // => 화살표함수.............쓰면 window로 잡힘
 							// $('img[id=' + imgId +']').siblings().eq(0).click();
 							$(this).siblings().eq(0).click();
 							// console.log("이얍");
@@ -123,20 +125,20 @@ img{
 						// input 파일요소가 바뀌면, 이미지가 보여짐
 						//$('input[type=file]').on('change', function asd(inputFile){
 						$(document).on('change', 'input[type=file]', function asd(inputFile){
-							console.log("바껴라");
+							//console.log("바껴라");
 							//console.log(inputFile.target);
 							//console.log(inputFile.target.files);
 							const changeFile = $(this);
-							console.log(changeFile);
+							//console.log(changeFile);
 							// 파일이 있다면
 							if(inputFile.target.files.length == 1){
 								let reader = new FileReader();
 								reader.readAsDataURL(inputFile.target.files[0]);
 								reader.onload = function(e){
-									console.log("비교");
-									console.log(inputFile.target.files[0]);
-									console.log($(this));
-									console.log(this);
+									//console.log("비교");
+									//console.log(inputFile.target.files[0]);
+									//console.log($(this));
+									//console.log(this);
 									
 									//const inputFileId = inputFile.target.id;
 									
@@ -194,27 +196,38 @@ img{
 				<div>
 					<h5>※필수 입력 사항입니다. </h5>
 					
+					<script>
+						console.log($('#category>option').length());
+						console.log('${ exp.expCategoryNo }');
+						
+							if($('#category>option').each().val() == '${ exp.expCategoryNo }'){
+								$('#category>option').attr('selected', true);
+							}
+					</script>
+					
+					
 					카테고리 : <select id="category" name="expCategoryNo" required>
 								<option value="1">화훼농장</option>
 								<option value="2">과일농장</option>
 								<option value="3">채소농장</option>
 								<option value="4">꽃꽂이</option>
 							</select>
-					체험학습일 : <input type="date" name="expWorkDate" required />
-					체험시간 : <input type="number" name="expWorkTime" min=1 max=10 required />
-					모집인원 : <input type="number" name="expPeople" min=1 max=100 required />
-					모집마감일 : <input type="date" name="expEndDate" required />
+					체험학습일 : <input type="date" name="expWorkDate" value="${ exp.expWorkDate }" required />
+					체험시간 : <input type="number" name="expWorkTime" min=1 max=10 value="${ exp.expWorkTime }" required />
+					모집인원 : <input type="number" name="expPeople" min=1 max=100 value="${ exp.expPeople }" required />
+					모집마감일 : <input type="date" name="expEndDate" value="${ exp.expEndDate }" required />
 					주소 : 
-						<input type="text" name="expAddress" id="expAddress" placeholder="주소" required readonly />
+						<input type="text" name="expAddress" id="expAddress" placeholder="주소" value="${ exp.expAddress }" required readonly />
 						<input type="button" value="주소 검색" onclick="searchAddress();"  /><br>
 						<input type="hidden" name="expArea" id="expArea" />
-						<input type="submit" value="등록하기">
+						
 				</div>
 			</div>
 			<!-- 주소찾기 API -->
 			<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 			<script>
 			    function searchAddress() {
+			    	
 			        new daum.Postcode({
 			            oncomplete: function(data) {
 			                var addr = data.address; // 최종 주소 변수
@@ -258,7 +271,7 @@ img{
 			
 			<br clear="both">
 			
-			<textarea id="content" name="expContent" placeholder="내용을 입력해 주세요." rows="5"></textarea>
+			<textarea id="content" name="expContent" placeholder="내용을 입력해 주세요." rows="5" >${ exp.expContent }</textarea>
 			
 			<div id="content-div">
 				<!-- 
@@ -292,14 +305,16 @@ img{
 			
 			
 			
-			</form>
+			
 			
 			
 			
 			<button type="button" id="addContent">추가하기</button>
 			
 			
+			<input type="submit" class="btn btn-warning" value="등록하기">
 			
+			</form>
 
 		
 		</section>

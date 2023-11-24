@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -54,16 +55,11 @@ public class ExperienceController {
 		if(experienceService.increaseCount(expNo) > 0 ) { 
 			// 게시글 상세조회
 			model.addAttribute("exp", experienceService.selectExperience(expNo));
+			
 			// 첨부파일 조회
-			System.out.println("왜 안나오냐구요");
-			
-			System.out.println(((Experience)model.getAttribute("exp")).getExpNo());
-			
-			
 			// HashMap map = new HashMap();
 			// map.put("refNo", expNo);
 			// map.put("refType", "EXPERIENCE");
-			
 			model.addAttribute("files", commonController.selectFiles(expNo, "experience"));
 			System.out.println("왜 아무것도 안나와");
 			System.out.println(model.getAttribute("files"));
@@ -75,6 +71,62 @@ public class ExperienceController {
 			return "redirect:yrlist.exp";
 			// return "experience/experienceListView";
 		}
+	}
+	
+	// insert메소드 같이 써도 될거같은데 단일책임의원칙 걸려서 따로 씀
+	@PostMapping("yrupdateExpForm.exp")
+	public ModelAndView updateExperienceForm(Experience exp, ModelAndView mv) {
+		System.out.println("여긴 체험학습 게시글 수정하기");
+		System.out.println(exp);
+		mv.addObject("exp", exp).setViewName("experience/experienceWrite");
+		return mv;
+	}
+	
+	public String updateExperience() {
+		return "";
+	}
+	
+	@GetMapping("yrinsertExpForm.exp")
+	public String insertExperienceoForm() {
+		return "experience/experienceWrite";
+	}
+	
+	@PostMapping("yrinsertExp.exp")
+	public String insertExperience(Experience exp, ArrayList<MultipartFile> upfiles, String[] anno, HttpSession session) {
+		// for(MultipartFile upfile : upfiles) {
+		ArrayList<Files> fileList = new ArrayList();
+		for(int i = 0; i < upfiles.size(); i++) {
+			if(!upfiles.get(i).getOriginalFilename().equals("")) {
+				Files file = commonController.setFile(upfiles.get(i), session, "experience");
+				file.setRefNo(exp.getExpNo());
+				file.setFileAnnotation(anno[i]);
+				fileList.add(file);
+			}
+		}
+		
+		if(experienceService.insertExperience(exp, fileList) > 0) {
+			session.setAttribute("alertMsg", "게시글이 등록되었습니다.");
+		} else {
+			session.setAttribute("alertMsg", "게시글 등록에 실패하셨습니다.");
+		}
+		return "redirect:yrlist.exp";
+		
+	}
+	
+
+	
+	@PostMapping("yrdeleteExp.exp")
+	public String deleteExperience(int expNo, HttpSession session) {
+		if(experienceService.deleteExperience(expNo) > 0) {
+			session.setAttribute("success", "체험학습 게시글이 삭제되었습니다.");
+		} else {
+			session.setAttribute("error", "체험학습 게시글 삭제에 실패하셨습니다.");
+		}
+		// ResponseEntity<String> re = new ResponseEntity<String>("체험학습 게시글이 삭제되었습니다.", HttpStatus.OK);
+		// JSONObject객체로 키-밸류로 넘길수도 있음
+		// 이렇게 넘기면 한글은 0~255를 넘기기 때문에 POST방식으로 받아야 함
+		// 받을 때 데이터를 @RequestBody String str 이렇게 받음
+		return "redirect:yrlist.exp";
 	}
 	
 	@ResponseBody
@@ -109,54 +161,6 @@ public class ExperienceController {
 		expReply.setReplySecret((jobj.get("replySecret").getAsInt() > 0) ? "Y" : "N");
 		
 		return (experienceService.insertExpReply(expReply) > 0) ? "success" : "fail";
-	}
-	
-	@GetMapping("yrinsertExpForm.exp")
-	public String insertExperienceoForm() {
-		return "experience/experienceWrite";
-	}
-	
-	@PostMapping("yrinsertExp.exp")
-	public String insertExperience(Experience exp, ArrayList<MultipartFile> upfiles, String[] anno, HttpSession session) {
-		// for(MultipartFile upfile : upfiles) {
-		ArrayList<Files> fileList = new ArrayList();
-		for(int i = 0; i < upfiles.size(); i++) {
-			if(!upfiles.get(i).getOriginalFilename().equals("")) {
-				Files file = commonController.setFile(upfiles.get(i), session, "experience");
-				file.setRefNo(exp.getExpNo());
-				file.setFileAnnotation(anno[i]);
-				fileList.add(file);
-			}
-		}
-		
-		if(experienceService.insertExperience(exp, fileList) > 0) {
-			session.setAttribute("alertMsg", "게시글이 등록되었습니다.");
-		} else {
-			session.setAttribute("alertMsg", "게시글 등록에 실패하셨습니다.");
-		}
-		return "redirect:yrlist.exp";
-		
-	}
-	
-	@GetMapping("yrupdateExp.exp")
-	public String updateExperienceForm(int expNo) {
-		System.out.println("여긴 체험학습 게시글 수정하기");
-		System.out.println(expNo);
-		return "";
-	}
-	
-	@RequestMapping("yrdeleteExp.exp")
-	public String deleteExperience(int expNo, HttpSession session) {
-		if(experienceService.deleteExperience(expNo) > 0) {
-			session.setAttribute("success", "체험학습 게시글이 삭제되었습니다.");
-		} else {
-			session.setAttribute("error", "체험학습 게시글 삭제에 실패하셨습니다.");
-		}
-		// ResponseEntity<String> re = new ResponseEntity<String>("체험학습 게시글이 삭제되었습니다.", HttpStatus.OK);
-		// JSONObject객체로 키-밸류로 넘길수도 있음
-		// 이렇게 넘기면 한글은 0~255를 넘기기 때문에 POST방식으로 받아야 함
-		// 받을 때 데이터를 @RequestBody String str 이렇게 받음
-		return "redirect:yrlist.exp";
 	}
 	
 	@ResponseBody
