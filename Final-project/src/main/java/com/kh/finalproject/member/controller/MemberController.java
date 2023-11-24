@@ -248,14 +248,17 @@ public class MemberController {
     return "redirect:/";
   }
 
-  // ticket object db에서 조회 (아이디로)
+  // ticket object list db에서 조회 (아이디로) return list
   // 작성된 티켓이 이미 있을 경우 작성된 내용을 보이고 수정/삭제 메뉴 보이게
 
   // 답변이 없다면 관리자의 답변을 대기중입니다.. 라고 안내
   // 관리자의 답변이 있다면 AJAX로 답변 로딩..
   @GetMapping("memberTicket.me")
-  public ModelAndView memberTicket(ModelAndView mv) {
-    mv.addObject("list", null).setViewName("member/memberTicketView");
+  public ModelAndView memberTicket(HttpSession session, ModelAndView mv) {
+    Member loginUser = (Member) session.getAttribute("loginUser");
+
+    mv.addObject("list", memberService.getTicketListByMemId(loginUser))
+        .setViewName("member/memberTicketView");
     return mv;
   }
 }

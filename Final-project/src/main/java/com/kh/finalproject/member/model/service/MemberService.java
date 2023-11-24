@@ -2,6 +2,7 @@ package com.kh.finalproject.member.model.service;
 
 import com.kh.finalproject.member.model.vo.Member;
 import com.kh.finalproject.member.model.vo.NaverLogin;
+import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.ArrayList;
 
 public interface MemberService {
@@ -29,7 +30,8 @@ public interface MemberService {
   int addKaKaoProfile(Member m);
 
   int loadImg(String inputFile);
-  
+
   int addGoogleProfile(Member m);
 
+  ArrayList<Ticket> getTicketListByMemId(Member loginUser);
 }

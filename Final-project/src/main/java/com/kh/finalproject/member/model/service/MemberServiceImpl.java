@@ -3,6 +3,7 @@ package com.kh.finalproject.member.model.service;
 import com.kh.finalproject.member.model.dao.MemberDao;
 import com.kh.finalproject.member.model.vo.Member;
 import com.kh.finalproject.member.model.vo.NaverLogin;
+import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +78,10 @@ public class MemberServiceImpl implements MemberService {
   @Override
   public int addGoogleProfile(Member m) {
     return memberDao.addGoogleProfile(sqlSession, m);
+  }
+
+  @Override
+  public ArrayList<Ticket> getTicketListByMemId(Member loginUser) {
+    return memberDao.getTicketListByMemId(sqlSession, loginUser);
   }
 }

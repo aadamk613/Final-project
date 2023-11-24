@@ -2,6 +2,7 @@ package com.kh.finalproject.member.model.dao;
 
 import com.kh.finalproject.member.model.vo.Member;
 import com.kh.finalproject.member.model.vo.NaverLogin;
+import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -59,5 +60,10 @@ public class MemberDao {
 
   public int addGoogleProfile(SqlSessionTemplate sqlSession, Member m) {
     return sqlSession.insert("memberMapper.addGoogleProfile", m);
+  }
+
+  public ArrayList<Ticket> getTicketListByMemId(SqlSessionTemplate sqlSession, Member loginUser) {
+    System.out.println(loginUser);
+    return (ArrayList) sqlSession.selectList("ticketMapper.getTicketListByMemId", loginUser);
   }
 }

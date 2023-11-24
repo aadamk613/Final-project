@@ -37,82 +37,50 @@ textarea {
 		<section id="pageSection">
 			
 			<div id="contentTitle">
-        관리자 문의
+        나의 문의
 			</div>
 			
 			<div id="content">
 				<article>
-          <c:if test="${empty list}">
-            <h5 align="center">작성한 문의 내역이 없습니다.</h5>
-          </c:if>
-					<table class="table table-borderless table-sm" align="center" style="width: 100%">
-						<thead>
-							<tr>
-								<th width="100"></th>
-								<th width="100"></th>
-								<th width="100"></th>
-								<th width="100"></th>
-								<th width="100"></th>
-								<th width="100"></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td colspan="6">
-									<div class="input-group">
-										<div class="input-group-prepend">
-											<span class="input-group-text">제목</span>
-										</div>
-										<input class="form-control" name="title" style="cursor : default">${ticket.ticketTitle}/>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="6">
-									<div class="form-group">
-										<label for="comment">문의 내용: </label>
-										<p
-										class="form-control"
-										id="article"
-										name="content"
-										style="cursor : default"
-										>${ticket.ticketContent}</p>
-									</div>
-								</td>
-							</tr>
-							<form action="resolveTicket.admin" method="post">
-							<tr>
-								<td colspan="6">
-									<div class="input-group mb-3">
-										<div class="input-group-prepend">
-											<span class="input-group-text">제목</span>
-										</div>
-										<input name="answerTitle" type="text" class="form-control" placeholder="답변 제목을 입력해 주세요.">
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="6">
-									<div class="form-group">
-										<label for="comment">답변 작성</label>
-										<textarea name="answerContent" class="form-control" rows="10" id="comment" placeholder="답변 내용을 입력해 주세요."></textarea>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="6">
-									<input type="hidden" name="ticketNo" value="${ticket.ticketNo}">
-									<input type="hidden" name="ticketWriter" value="${sessionScope.loginUser.memId}">
-									<button type="submit" class="btn btn-primary btn-block btn-primary">답변작성</button>
-								</td>
-
-								<!-- <td colspan="2">
-									<a href="#" class="btn btn-primary btn-block btn-danger" >삭제</a>
-								</td> -->
-							</tr>
-						</form>
-						</tbody>
-					</table>
+          <table id="tb" class="table table-sm table-hover" align="center" style="width: 100%" style="cursor:default">
+            <thead class="thead-light">
+              <tr>
+                <th width="50">답변여부</th>
+                <th width="200">제목</th>
+                <th width="120">작성일</th>
+                <th width="120">답변 작성일</th>
+              </tr>
+            </thead>
+            <tbody style="cursor:default">
+              <c:choose>
+                <c:when test="${empty list}">
+                  <tr>
+                    <td colspan="4">작성한 문의 내역이 없습니다.</td>
+                  </tr>
+                </c:when>
+                <c:otherwise>
+                  <c:forEach items="${list}" var="b">
+                    <tr>
+                        <c:choose>
+                          <c:when test="${b.status.equals('R')}">
+                            <td>답변완료</td>
+                          </c:when>
+                          <c:otherwise>
+                            <td>미답변</td>
+                          </c:otherwise>
+                        </c:choose>
+                      <td>${b.ticketTitle}</td>
+                      <td>${b.createDate}</td>
+                      <td>${b.answerModifyDate}</td>
+                    </tr>
+                  </c:forEach>
+                </c:otherwise>
+              </c:choose>
+            </tbody>
+          </table>
+          <div>
+            <button type="submit" class="btn btn-primary btn-block btn-primary">새 문의 작성</button>
+          </div>
 				</article>
 			</div>
 		</section>
