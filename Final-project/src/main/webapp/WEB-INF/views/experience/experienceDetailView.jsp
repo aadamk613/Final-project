@@ -132,18 +132,53 @@ th, td{
 				<!-- 작성자만 보이는 버튼 -->
 				<c:if test="${ sessionScope.loginUser.memId eq requestScope.exp.expWriter }">
 					<div id="forWriter">
-						<a class="btn btn-primary" onclick="expSubmit(0);">수정하기</a>
+						<!-- <a class="btn btn-primary" onclick="expSubmit(0);">수정하기</a> -->
+						<a class="btn btn-primary" onclick="expChange();">수정하기</a>
 						<a class="btn btn-danger" onclick="expSubmit(1);">삭제하기</a>
 					</div>
 				</c:if>
 				<!-- 악성유저 방지차원 post방식으로 보내주기 -->
 				<form action="" method="post" id="postForm">
 					<input type="hidden" name="expNo" value="${ exp.expNo }" />
+					<input type="hidden" name="expNo" value="${ exp.expNo }" />
+					<input type="hidden" name="expTitle" value="${ exp.expTitle }" />
+					<input type="hidden" name="expWriter" value="${ exp.expWriter }" />
+					<input type="hidden" name="expPeople" value="${ exp.expPeople }" />
+					<input type="hidden" name="expContent" value="${ exp.expContent }" />
+					<input type="hidden" name="expCreateDate" value="${ exp.expCreateDate }" />
+					<input type="hidden" name="expWorkDate" value="${ exp.expWorkDate }" />
+					<input type="hidden" name="expWorkTime" value="${ exp.expWorkTime }" />
+					<input type="hidden" name="expEndDate" value="${ exp.expEndDate }" />
+					<input type="hidden" name="expStatus" value="${ exp.expStatus }" />
+					<input type="hidden" name="expCount" value="${ exp.expCount }" />
+					<input type="hidden" name="expUpdateDate" value="${ expUpdateDate }" />
+					<input type="hidden" name="expArea" value="${ exp.expArea }" />
+					<input type="hidden" name="expAddress" value="${ exp.expAddress }" />
+					<input type="hidden" name="expCategoryNo" value="${ exp.expCategoryNo }" />
+					<input type="hidden" name="files" value="${ files }" />
 				</form>
+				
+				<script>
+					// 수정하기 ajax로 넘겨보기 테스트 중(값이 VO로 넘어가나)
+					function expChange(){
+						
+						$.ajax({
+							url : 'yrupdateExpForm.exp',
+							data : {exp : '${ exp }'},
+							success : result => {
+								console.log(result);
+							},
+							error : () => {
+								console.log('체험학습 게시글 통신오류');
+							}
+						});
+					}
+				</script>
 				
 				<div class="title">
 					<h1>${ exp.expTitle }</h1>
 				</div>
+				
 				
 				<div>
 					<div class="count">
@@ -226,11 +261,12 @@ th, td{
 							<label for="secret">비밀댓글로 설정하기</label>
 						</div>
 						<c:choose>
-							<c:when test="${ loginUser ne null }">
-								<div id="submitWrap"><button type="button" onclick="insertReply();">등록</button></div>
+							<c:when test="${ loginUser eq null} && ">
+								<div id="submitWrap"><a onclick="alertify.alert('알림', '로그인 후 이용가능합니다.');">등록</a></div>
 							</c:when>
 							<c:otherwise>
-								<div id="submitWrap"><a onclick="alertify.alert('알림', '로그인 후 이용가능합니다.');">등록</a></div>
+								<div id="submitWrap"><button type="button" onclick="insertReply();">등록</button></div>
+								<label id="submitWrapLabel" style="color : red"></label>
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -246,6 +282,7 @@ th, td{
 									<th>작성일</th>
 									<th>좋아요</th>
 									<th>비밀글</th>
+									<th>비고</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -261,8 +298,11 @@ th, td{
 		<script>
 			// 게시글 수정 및 삭제
 			function expSubmit(type){
+				
+				
+				
 				if(type == 0){
-					$('#postForm').attr('action', 'yrupdateExp.exp').submit();
+					$('#postForm').attr('action', 'yrupdateExpForm.exp').submit();
 				}
 				else{
 					if(confirm('정말로 삭제하시겠습니까?')){
@@ -277,6 +317,8 @@ th, td{
 			// 좋아요 수
 			let likeCount = ${ exp.expLikeCount };
 			$('#likeCount').text('좋아요수 ' + likeCount);
+			
+			
 		
 			$(() => {
 				
@@ -339,8 +381,20 @@ th, td{
 				
 			};
 		
+			// 댓글 수 초기값
+			let replyCount = ${ exp.expReplyCount };
+			
 			// 댓글 작성기능
 			function insertReply(){
+				
+				console.log($('#commentContentInsert').val() == '');
+				
+				if($('#commentContentInsert').val() == ''){
+					$('#submitWrapLabel').text('내용은 필수 입력 사항입니다.');
+					return;
+				}
+				
+				$('#submitWrapLabel').empty();
 				const data = {
 						expNo : '${ exp.expNo }',
 						replyWriter : '${ loginUser.memId }',
@@ -355,7 +409,12 @@ th, td{
 					data :JSON.stringify(data), 
 					success : result => {
 						console.log(result);
+						
 						if(result == 'success'){
+							// 댓글 수 증가
+							replyCount++;
+							$('#replyCount').text('댓글수 ' + replyCount);
+							
 							$('#commentContentInsert').val('');
 							$('input[type=checkbox]:checked').prop('checked', false);
 							selectReply();
@@ -372,7 +431,6 @@ th, td{
 			$(() => {
 				selectReply();
 			});
-			
 			
 			
 			function selectReply(){
@@ -395,18 +453,28 @@ th, td{
 										   // 수정했다면 수정일 보여주기
 										   if(result[i].replyModifyDate != null){
 											   value += '<td>' + result[i].replyModifyDate + '수정됨 </td>'
-										   } else{
+										   } 
+										   else{
 											   value += '<td>' + result[i].replyCreateDate + '</td>'
 										   }
-										   value += '<td>' + '♥' + '</th>'
+										   value += '<td>' + '♥' + '</td>'
 										   if(result[i].replySecret == 'Y'){
-											   value += '<td>' + '<input type="checkbox" disabled checked />' + '</th>';
+											   value += '<td>' + '<input type="checkbox" disabled checked />' + '</td>';
 										   } 
-										   + '</tr>'
+										   else{
+											   value += '<td></td>';
+										   }
+											// 해당 댓글에 맞는 번호를 넘겨줘서 ajax로 delete처리 해야함
+											if(result[i].replyWriter == '${ loginUser.memId}'){
+												value += '<td><a class="btn btn-danger" id="deleteReplyBtn" no="' + result[i].expReplyNo + '" >댓글삭제</a></td>'
+											}
+										   + '</tr>';
 							} 
 							else {
 								value += '<tr><td colspan=6>' + '비밀댓글입니다' + '</td></tr>';
 							}
+							
+							
 						}
 						$('#reply > tbody').html(value);
 					},
@@ -415,6 +483,33 @@ th, td{
 					}
 				});
 			}
+			
+			// 댓글 삭제
+			// 화살표함수를 쓰면 $(this)를 인식못함
+			$('tbody').on('click', 'a', function(){
+				
+				alertify.confirm('알림', '정말로 삭제하시겠습니까?', () => {
+					$.ajax({
+						url : 'yrdeleteExpReply',
+						data : { expReplyNo : $(this).attr('no')},
+						type : 'post',
+						success : result => {
+							console.log(result);
+						},
+						error : () => {
+							console.log("체험학습 댓글 삭제 오류");
+						}
+					});
+					alertify.success('삭제 완료');
+					selectReply()
+					
+				}, () => { alertify.error('삭제 취소') });
+			});
+			
+			
+			
+			
+			
 		</script>
 
 		</section>
