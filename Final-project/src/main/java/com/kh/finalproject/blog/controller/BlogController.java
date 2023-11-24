@@ -1,5 +1,6 @@
 package com.kh.finalproject.blog.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -80,6 +81,7 @@ public class BlogController {
 	@RequestMapping("updateForm.bl") 
 	public ModelAndView updateFormBlog(int blogNo, ModelAndView mv) {
 		Blog blog = (Blog)blogService.selectBlog(blogNo);
+		System.out.println(blog);
 		mv.addObject("blog", blog)
 		  .setViewName("blog/blogUpdateForm");
 		return mv;
@@ -92,14 +94,20 @@ public class BlogController {
 							       HttpSession session,
 							       MultipartFile upfile,
 							       ModelAndView mv) {
-		//System.out.println("블로그 업데이트 하기 전 블로그 정보 셀렉트 : " + beforeBlog);
 		Files file = new Files();
-		if(!upfile.getOriginalFilename().equals("")) {
+		if(upfile.getSize() > 0) { // 첨부한 파일이 있을 경우
+			
+			// 기존의 첨부파일이 있을 경우 있던 첨부파일을 삭제해줌
+			if(beforeBlog.getUpdateName() != null) {
+				new File(session.getServletContext().getRealPath(beforeBlog.getUpdateName())).delete();
+				file.setRefType("blog");
+				file.setRefNo(beforeBlog.getBlogNo());
+				commonController.deleteFiles(file);
+			} 
+			// 기존 첨부파일이 없었을 경우 바로 파일을 저장해줌
 			file = commonController.setFile(upfile, session, "blog");
-			System.out.println(file);
+			file.setRefNo(beforeBlog.getBlogNo());
 		}
-		
-		
 		
 		if(blogService.updateBlog(beforeBlog, file) > 0) { // 블로그 정보 수정 성공
 			Blog afterBlog = (Blog)blogService.selectBlog(beforeBlog.getBlogNo());
@@ -108,7 +116,6 @@ public class BlogController {
 		} else { // 정보 수정 실패
 			mv.addObject("alertMsg", "정보 수정에 실패 했습니다");
 		}
-		
 		mv.setViewName("blog/blogUpdateForm");
 		return mv;
 	}

@@ -43,8 +43,12 @@ public class BlogServiceImpl implements BlogService{
 	@Transactional
 	@Override
 	public int updateBlog(Blog blog, Files file) {
-		blogDao.updateBlog(sqlSession, blog);
-		return commonDao.insertFiles(sqlSession, file);
+		int result = 0;
+		result = blogDao.updateBlog(sqlSession, blog);
+		if(file.getOriginalName() != null) {
+			result *= commonDao.insertFiles(sqlSession, file);
+		}
+		return result;
 	}
 	
 	

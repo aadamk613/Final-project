@@ -70,7 +70,18 @@ public class CommonController {
 
 		return file;
 	}
-
+	
+	public int updateFiles(Files file) {
+		
+		return commonService.updateFiles(file);
+		
+	}
+	
+	public int deleteFiles(Files file) {
+		
+		return commonService.deleteFiles(file);
+		
+	}
 
 
 	
