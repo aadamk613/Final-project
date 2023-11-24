@@ -102,67 +102,50 @@
 	</div>
 	
 	<script>
+	$(function() {
+		// 자주쓰는, 중복되는 요소는 변수로 지정해놓는게 나아서 해놓음
+	    const $idInput = $('#memberId');
+	    const $checkResult = $('#checkResult');
+	    const $joinFormSubmit = $('#join-form :submit');
 
+	    $idInput.on('input', function() {
+	        const inputValue = $idInput.val();
+	        const filteredValue = inputValue.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, ''); // 한글을 필터링
+
+	        $idInput.val(filteredValue); // 한글이 입력된 경우 필터링된 값으로 대체
+			
+	     	// 최소 5글자 이상 입력했을 떄만 AJAX 요청을 보내서 중복체크
+	        if (filteredValue.length >= 5) {
+	            $.ajax({
+	                url: 'idCheck.me',
+	                data: { checkId: filteredValue }, // 필터링된 값으로 중복 체크 요청
+	                success: function(result) {
+	                	
+	                    console.log(result);
+	                    
+	                    if(result.substr(4) === 'N') { // 사용불가능
+	                        $checkResult.show().css('color', 'red').text('이미 사용 중인 아이디입니다.');
+	                        $joinFormSubmit.attr('disabled', true);
+	                    } else { // 사용가능
+	                        $checkResult.show().css('color', 'green').text('멋진 아이디네요!');
+	                        $joinFormSubmit.removeAttr('disabled');
+	                    }
+	                },
+	                error: function() {
+	                    console.log('아이디 중복체크용 AJAX 통신 실패');
+	                }
+	            });
+	        } else {
+	            $checkResult.hide();
+	            $joinFormSubmit.attr('disabled', true);
+	        }
+	    });
+	});
 	
-		function adminCheck(){
-			
-			var memId = document.getElementById('memId');
-			
-			var regExp = /^(?!.*\badmin\b).{3,11}$/;
-			var regExp = ^(?!.*\badmin\b).*{3,11}$/;
-			
-				console.log('memId');
-				
-			if(!regExp.test(memId.value)){
-				alert('다시써~~~~~ 뭐하는거야아~~~~?');
-				memId.select();
-				memId.value = '';
-				return false;
-			}
-
-		
-	$(function(){
-
-			
-			// 자주쓰는, 중복되는 요소는 변수로 지정해놓는게 나아서 해놓음
-			const $idInput = $('#memberId');
-			const $checkResult = $('#checkResult');
-			const $joinFormSubmit = $('#join-form :submit');
-			
-			$idInput.keyup(function(){
-			//console.log($idInput);
-			
-				// 최소 5글자 이상 입력했을 떄만 AJAX 요청을 보내서 중복체크
-				if($idInput.val().length >= 5){
-					//console.log($idInput.val());
-					$.ajax({
-						url : 'idCheck.me',
-						data :  {checkId : $idInput.val()},
-						success : function(result){
-							
-							console.log(result);
-							if(result.substr(4) === 'N'){ // 사용불가능
-								
-								$checkResult.show().css('color', 'red').text('어? 잠시만요! 중복된 아이디가 있네요~?');
-								$joyFormSubmit.attr('disabled', true);
-							}
-							else {  // 사용가능
-								$checkResult.show().css('color', 'green').text('와우~ 아주아주 멋진 아이디인걸요?');
-								$joinFormSubmit.removeAttr('disabled');
-							}
-						},
-						error : function(){
-							console.log('아이디 중복체크용 AJAX 통신실패');
-						}
-					});
-				}
-				else{
-					$checkResult.hide();
-					$joinFormSubmit.attr('disabled', true);
-				}
-				
-		});
-		})
+	// 위 코드에서는 $idInput.on('input', function() {...})을 사용하여 아이디 입력란의 내용이 바뀔 때마다 이벤트를 감지함
+	// 입력된 값에서 한글을 필터링하여 한글이 입력되면 해당 부분을 제거하고, 필터링된 값으로 다시 아이디 입력란에 설정
+	// 그리고 필터링된 값이 5글자 이상일 경우, AJAX를 사용하여 서버에 중복 체크를 요청
+	// 버에서 반환된 결과에 따라 중복 여부를 사용자에게 알려주고
 	</script>
 	</section>
 	<aside id="pageAsideRight" class="aside">
