@@ -141,8 +141,7 @@
 							<div class="modal-body">
 								<div align="center">
 									탈퇴 후 복구가 불가능합니다. <br>
-									후회하지 않을 자신 있습니까? <br>
-									정말로 탈퇴하실거냐고 물었습니다. 고.객.님?
+									탈퇴하시겠습니까?
 								</div>
 								<br>
 									<label for="memPwd">PassWord : </label>
@@ -151,7 +150,7 @@
 							
 							<!-- Modal footer -->
 							<div class="modal-footer" align="center">
-								<button type="submit" class="btn btn-danger">탈퇴? 레알?</button>
+								<button type="submit" class="btn btn-danger">탈퇴</button>
 							</div>
 						</form>
 					

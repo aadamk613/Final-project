@@ -2,6 +2,7 @@ package com.kh.finalproject.blog.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
@@ -16,12 +18,17 @@ import com.kh.finalproject.blog.model.service.BlogService;
 import com.kh.finalproject.blog.model.vo.Blog;
 import com.kh.finalproject.blog.model.vo.BlogBoard;
 import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
+import com.kh.finalproject.common.controller.CommonController;
+import com.kh.finalproject.common.model.vo.Files;
 
 @Controller
 public class BlogController {
 	
 	@Autowired
 	private BlogService blogService;
+	
+	@Autowired
+	private CommonController commonController;
 
 	// 블로그 메인 화면으로 이동
 	@RequestMapping("main.bl") 
@@ -51,7 +58,12 @@ public class BlogController {
 	// 블로그 정보 불러오기
 	@ResponseBody
 	@RequestMapping(value="select.bl", produces="application/json; charset=UTF-8") 
-	public ModelAndView selectBlog(int blogNo, ModelAndView mv) {
+	public ModelAndView selectBlog(int blogNo, ModelAndView mv, HttpSession session) {
+		System.out.println(session.getServletContext().getRealPath("blog/blogView"));
+		System.out.println(session.getServletContext().getRealPath("resources")); // 이거랑
+		System.out.println(session.getServletContext().getRealPath("/resources")); // 이거랑 머가 차이??????
+		System.out.println(session.getServletContext().getContextPath());
+		
 		Blog blog = (Blog)blogService.selectBlog(blogNo);
 		ArrayList<BlogCategorySetting> list = blogService.selectCatogory(blogNo);
 		
@@ -75,12 +87,22 @@ public class BlogController {
 	
 	// 블로그 업데이트하기
 	@RequestMapping("update.bl") 
-	public ModelAndView updateBlog(int blogNo, Blog beforeBlog, ModelAndView mv) {
+	public ModelAndView updateBlog(Blog beforeBlog, 
+							       HttpServletRequest request, 
+							       HttpSession session,
+							       MultipartFile upfile,
+							       ModelAndView mv) {
 		//System.out.println("블로그 업데이트 하기 전 블로그 정보 셀렉트 : " + beforeBlog);
+		Files file = new Files();
+		if(!upfile.getOriginalFilename().equals("")) {
+			file = commonController.setFile(upfile, session, "blog");
+			System.out.println(file);
+		}
 		
-		if(blogService.updateBlog(beforeBlog) > 0) { // 블로그 정보 수정 성공
-			Blog afterBlog = (Blog)blogService.selectBlog(blogNo);
-			//System.out.println("블로그 업데이트 한 후블로그 정보 셀렉트 : " + afterBlog);
+		
+		
+		if(blogService.updateBlog(beforeBlog, file) > 0) { // 블로그 정보 수정 성공
+			Blog afterBlog = (Blog)blogService.selectBlog(beforeBlog.getBlogNo());
 			mv.addObject("alertMsg", "정보가 수정되었습니다")
 			  .addObject("blog", afterBlog);
 		} else { // 정보 수정 실패
@@ -160,15 +182,24 @@ public class BlogController {
 		return "blog/blogBoardInsertForm";
 	}
 	
+	/**@author Jyd
+	 * 
+	 * @param blogBoard: blogInsertForm 작성 화면에서 작성한 블로그 게시글 VO
+	 * @param blogNo: blogView로 redirect하기 위해 필요한 블로그 번호
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("insert.bl_bo")
-	public String insertBlogBoard(BlogBoard blogBoard, HttpSession session) {
+	public String insertBlogBoard(BlogBoard blogBoard, 
+								  int blogNo,
+								  HttpSession session) {
 		if(blogService.insertBlogBoard(blogBoard) > 0 ) {
 			session.setAttribute("alertMsg", "게시글 작성에 성공했습니다");
 		} else {
 			session.setAttribute("alertMsg", "게시글 작성에 실패했습니다");
 		}
 		System.out.println(blogBoard);
-		return "blog/blogView";
+		return "redirect:select.bl?blogNo=" + blogNo;
 	}
 	
 	

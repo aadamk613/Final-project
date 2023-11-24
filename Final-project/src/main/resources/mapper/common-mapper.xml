@@ -64,6 +64,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 		<when test="refType eq 'experience'">
 			 			SEQ_EXPERIENCE.CURRVAL,
 			 		</when>
+			 		<when test="refType eq 'blog'">
+			 			SEQ_BLOG_NO.CURRVAL,
+			 		</when>
 			 		<otherwise>
 			 			#{ refNo },
 			 		</otherwise>
