@@ -63,11 +63,11 @@
 						<td align="center">ID</td>
 						<td><input type="text" class="form-control" id="memId" value="${ sessionScope.loginUser.memId }" name="memId"  readonly></td>
 						<td>닉네임</td>
-						<td width="10" height="60"><input type="text" id="memNick" value="${ sessionScope.loginUser.memNick }" name="memNick"  readonly></td>
+						<td width="10" height="60"><input type="text" id="memNick" value="${ sessionScope.loginUser.memNick }" name="memNick" ></td>
 					</tr>
 					<tr>
 						<td>이메일</td>
-						<td width="130" height="60"><input type="text" id="memNick" value="${ sessionScope.loginUser.email }" name="email" readonly></td>
+						<td width="130" height="60"><input type="text" id="memNick" value="${ sessionScope.loginUser.email }" name="email"></td>
 					</tr>
 					<tr>
 						<td height="60" align="center">블로그주소</td>
@@ -85,6 +85,8 @@
 					</div>
 					</form>
 					<br>
+			</article>
+			
 				<script>
 					function loadImg(inputFile, num){
 						if(inputFile.files.length == 1) { // 파일 첨부
@@ -116,9 +118,40 @@
 					};
 
 				</script>
-				</article>
 			</div>
 			
+			<!-- 회원탈퇴 버튼 클릭시 보열시 모달창 -->
+			<div class="modal fade" id="deleteForm">
+				<div class="modal-dialog modal-sm">
+					<div class="modal-content">
+					
+						<!-- Modal Header -->
+						<div class="modal-header">
+							<h4 class="modal-title">회원탈퇴</h4>
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+						</div>
+						
+						<form action="delete.me" method="post">
+							<!-- Modal body -->
+							<div class="modal-body">
+								<div align="center">
+									탈퇴 후 복구가 불가능합니다. <br>
+									탈퇴하시겠습니까?
+								</div>
+								<br>
+									<label for="memPwd">PassWord : </label>
+									<input type="text" placeholder="Enter your Password" id="memPwd" name="memPwd">
+							</div>
+							
+							<!-- Modal footer -->
+							<div class="modal-footer" align="center">
+								<button type="submit" class="btn btn-danger">탈퇴</button>
+							</div>
+						</form>
+					
+					</div>
+				</div>
+			</div>
 			<div id="pageArea">
 			</div>
 		

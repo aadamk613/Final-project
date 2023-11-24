@@ -11,8 +11,11 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js">
 </script>
-
-
+<style>
+	#commentContentBox > div {
+	 float : none;
+	}
+</style>
 </head>
 <body>
 
@@ -28,13 +31,13 @@
 			
 			<div id="contentTitleWrap">
 				<div id="contentTitle">
-					${ n.category == 1 ? "공지게시글" : '필독게시글'}
+				일반게시글
 				</div>
 			</div>
 			<div id="content">
 				<article>
 					<div id="boardHeader">
-						<div id="title">${ n.noticeTitle }</div>		
+						<div id="title">${ b.boardTitle }</div>		
 					</div>
 					<div id="writerInfoWrap">
 						<div id="writerThumbnail">
@@ -44,7 +47,7 @@
 						</div>
 						<div id="writeIdWrap">
 							<div id="writerId">
-										<a id="writerIdButton">${ n.memNo }</a>
+										<a id="writerIdButton">${ b.memNo }</a>
 							<div id="writeInfoHidden">
 								<ul id="writeInfoHiddenUl">
 									<li><a href="#">게시글 보기</a></li>
@@ -58,7 +61,7 @@
 					</div>
 					<div id="boardInfor">	
 						<div id="boardDate">
-							${ n.noticeCreateDate }&nbsp;&nbsp;&nbsp;&nbsp;조회 ${ n.views }
+							${ b.boardCreateDate }&nbsp;&nbsp;&nbsp;&nbsp;조회 ${ b.views }
 						</div>
 					</div>
 					<hr>
@@ -79,39 +82,70 @@
 					
 					<hr clear="both">
 					<div id="boardContent">
-						${ n.noticeContent }
+						${ b.boardContent }
 					</div>
 					<div id="boardlikeWrap">
 						<c:choose>
 						<c:when test="${ loginUser ne null }" >
 							<c:choose>
-								<c:when test="${ b.likeMem eq 1 }">
+								<c:when test="${ n.likeMem eq 1 }">
 									<img src="resources/images/fullHeart.png" alt="하트" >
-									<a href="#" id="like" class="like">좋아요</a>&nbsp;${ n.likeCount } 
+									<a href="#" id="like" class="like">좋아요</a>&nbsp;${ b.likeCount } 
 								</c:when>
 								<c:otherwise>
 									<img src="resources/images/emptyHeart.png" alt="빈하트">
-									<a href="#" id="like" class="like">좋아요</a>&nbsp;${ n.likeCount } 
+									<a href="#" id="like" class="like">좋아요</a>&nbsp;${ b.likeCount } 
 								</c:otherwise>
 							</c:choose>
 						</c:when>
 						<c:otherwise>
 							<img src="resources/images/fullHeart.png" alt="빈하트">
-					 		<a href='#' onclick="alert('로그인 후 이용 가능한 기능입니다.');" id="like" class="like">좋아요</a>&nbsp;${ n.likeCount } 
+					 		<a href='#' onclick="alert('로그인 후 이용 가능한 기능입니다.');" id="like" class="like">좋아요</a>&nbsp;${ b.likeCount } 
 						</c:otherwise>
 						</c:choose>
 						
 					</div>	
 					<hr clear="both">
+										<!-- 댓글 하나도 없을 시 등록 순 최신순 버튼 비활성화 -->
 					
-				
+					<div id="commentWrap">
+						<div id="commentOption">
+							댓글 <a>등록순</a> <a>최신순</a>
+						</div>
+						<hr>
+							<div id="commentContentBox">
+						<c:forEach var="c" items="${ cList }">
+								<div id="commentWriteMemId">
+									${ c.memNo }
+								</div>
+								<div id="commentContent">
+									${ c.commentContent }
+								</div>
+								<div id="commentCreateDate">
+									${ c.createDate }&nbsp;&nbsp;
+									<a href="#">답글 쓰기</a>
+								</div>
+								<hr>
+						</c:forEach>						
+						<div id="commentInsertBox">
+							<textarea id="commentContentInsert" placeholder="댓글을 남겨보세요"></textarea>
+							<c:choose>
+							<c:when test="${ loginUser ne null }">
+								<div id="submitWrap"><a href='#javascript:void(0);' onclick="insertComment()">등록</a></div>
+							</c:when>
+							<c:otherwise>
+								<div id="submitWrap"><a href='#' onclick="alert('로그인 후 이용 가능한 기능입니다.');">등록</a></div>
+							</c:otherwise>							
+							</c:choose>
+						</div>
+					</div>
 				</article>
 			</div>
 			
 
-			<div id="page">
+
 				<div id="writeWrap">
-						<c:if test="${ loginUser.memNick eq n.memNo }" >
+						<c:if test="${ loginUser.memNick eq b.memNo }" >
 							<a class="btn btn-light" onclick="postFormSubmit(0);">수정</a>
 							<a class="btn btn-light" onclick="postFormSubmit(1);">삭제</a>
 						</c:if>
@@ -120,19 +154,19 @@
 				<div id="upWrap">
 					<a href="#header" class="btn btn-light">^</a>
 				</div>
-			</div>
+
 			
 			<form action="" method="post" id="postForm">
-				<input type="hidden" name="bno" value="${ n.noticeNo }">
+				<input type="hidden" name="bno" value="${ b.boardNo }">
 			</form>
 			
 			<script>
 				function postFormSubmit(num) {
 					if(num == 0) {
-						$('#postForm').attr('action', 'updateForm.no').submit();				
+						$('#postForm').attr('action', 'updateForm.bo').submit();				
 					}
 					else {
-						$('#postForm').attr('action', 'delete.no').submit();				
+						$('#postForm').attr('action', 'delete.bo').submit();				
 					}
 				}
 			</script>

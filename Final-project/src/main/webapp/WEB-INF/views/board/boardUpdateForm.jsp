@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>게시글 작성하기</title>
+<title>게시글 수정하기</title>
 
 <link rel="stylesheet" href="resources/css/board/boardEnrollForm.css">
 
@@ -26,30 +26,34 @@
 		<section id="section">
 			
 			<div id="contentTitle">
-				게시글 작성
+				게시글 수정
 			</div>
 			<div id="content">
 				<article>
-					<form action="insert.no" method="post" enctype="multipart/form-data">
+					<form id="updateForm" action="update.bo" method="post" enctype="multipart/form-data">
+					<input type="hidden" name="boardNo" value="${b.boardNo }">
 					<input type="hidden" name="memNo" value="${loginUser.memNo }">
 					<div id="boardCategoryWrap">
-						<select name="category" id="boardCategory">
-							<option value="1">공지사항</option>
-							<option value="2">필독사항</option>
-                        </select>
+						일반게시글
 					</div>
 					<div id="boardHeader">
-						<input type="text" placeholder="제목을 입력해주세요" name="noticeTitle" required>		
+						<input type="text" placeholder="${b.boardTitle }" name="boardTitle" required>		
 					</div>
 					<div id="fileWrap">
-						<input type="file" name="upfile">
-						<input type="hidden" name="refType" value="notice">
-						<input type="hidden" name="filePath" value="resources/uploadFiles/notice/">
-						
+						<input type="file" name="reUpfile">
+						현재 업로드된 파일:
+						  <c:forEach var="file" items="${f}">
+						<c:if test="${ not empty file.originalName }">
+						    <a href="/finalProject${file.filePath }${file.updateName}" download="${file.originalName}">${file.originalName}</a>
+						    <input type="hidden" value="${ file.originalName }" name="originalName"/>
+						    <input type="hidden" value="${ file.updateName }" name="updateName"/>
+						    <input type="hidden" value="${ file.fileNo}" name="fileNo"/>
+						</c:if>
+						  </c:forEach>
 					</div>
 					<div id="boardContent">
 					<hr>
-						<textarea id="boardContent" placeholder="내용을 입력해주세요" name="noticeContent" required></textarea>
+						<textarea id="boardContent" placeholder="${b.boardContent }" name="boardContent" required></textarea>
 					<hr>
 					</div>
 					<button type="submit" class="btn btn-primary" id="buttonWrite">글 작성</button>

@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- 첨부파일 등록 -->
-	<insert id="insertFiles" parameterType="com.kh.finalproject.common.model.vo.Files" >
+	<insert id="insertFiles" parameterType="files" >
 		INSERT 
 		  INTO
 		  		TB_FILES
@@ -57,11 +57,62 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 	#{ updateName },
 			 	#{ filePath },
 			 	#{ refType },
-			 	SEQ_PLANT_NO.CURRVAL,
+			 	<choose>
+			 		<when test="refType eq 'plant'">
+			 			SEQ_PLANT_NO.CURRVAL,
+			 		</when>
+			 		<when test="refType eq 'experience'">
+			 			SEQ_EXPERIENCE.CURRVAL,
+			 		</when>
+			 		<otherwise>
+			 			#{ refNo },
+			 		</otherwise>
+			 	</choose>
 			 	#{ fileAnnotation },
 			 	SYSDATE
 			 	)		  	
 	
 	</insert>
+	
+	<update id="updateFiles">
+	
+		UPDATE TO TB_FILES
+			SET 
+				(
+			     FILE_NO,
+		         ORIGINAL_NAME,
+		         UPDATE_NAME,
+		         FILE_PATH,
+		         REF_TYPE,
+		         REF_NO,
+		         FILE_ANNOTATION,
+		         UPLOAD_DATE
+				)
+			VALUES
+			 	(
+			 	SEQ_FILE_NO.NEXTVAL, 
+			 	#{ originalName },
+			 	#{ updateName },
+			 	#{ filePath },
+			 	#{ refType },
+				 #{ refNo },
+			 	#{ fileAnnotation },
+			 	SYSDATE
+			 	)		  	
+	
+	
+	</update>
+	
+	
+	<delete id="deleteFiles" parameterType="files">
+	
+		DELETE 
+			  	TB_FILES
+	    	WHERE 
+	    		REF_TYPE = #{ refType }
+	    	AND    
+	    		REF_NO = #{ refNo }
+	
+	</delete>
 	
 </mapper>

@@ -25,6 +25,14 @@ public class MemberDao {
   public int idCheck(SqlSessionTemplate sqlSession, String checkId) {
     return sqlSession.selectOne("memberMapper.idCheck", checkId);
   }
+  public int upateMember(SqlSessionTemplate sqlSession, Member m) {
+	  return sqlSession.update("memberMapper.updateMember", m);
+  }
+  
+  public int deleteMember(SqlSessionTemplate sqlSession, String memId) {
+	  //System.out.print(memId);
+	  return sqlSession.delete("memberMapper.deleteMember", memId);
+  }
 
   public int setLastLogin(SqlSessionTemplate sqlSession, Member m) {
     return sqlSession.update("memberMapper.setLastLogin", m);
@@ -50,9 +58,6 @@ public class MemberDao {
     return sqlSession.update("memberMapper.loadImg");
   }
 
-  public int upateMember(SqlSessionTemplate sqlSession, Member m) {
-    return sqlSession.update("memberMapper.updateMember", m);
-  }
 
   public int addKaKaoProfile(SqlSessionTemplate sqlSession, Member m) {
     return sqlSession.insert("memberMapper.addKakaoProfile", m);

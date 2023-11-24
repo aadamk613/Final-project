@@ -2,9 +2,11 @@ package com.kh.finalproject.board.model.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class Board {
 
 	private int boardNo;
@@ -17,7 +19,7 @@ public class Board {
 	private int likeCount;
 	private int commentCount;
 	private String boardReportCount;
-	private int memNo;
+	private String memNo;
 	private String isBlind;
 	
 }

@@ -149,17 +149,21 @@ a{
                         <form action="insert.bl" method="post" >
                         <input type="hidden" name="memNo" value="${ sessionScope.loginUser.memNo }">
                             <table id="createForm">
-                            <tr>
-                                    <th>블로그 이름</th>
-                                    <td><input type="text" name="blogTitle" placeholder="${ sessionScope.loginUser.memNick }님의 블로그"></td>
-                                </tr>
-                                <tr>
+								<tr>
+									<th>블로그 이름</th>
+									<td><input type="text" name="blogTitle"
+										placeholder="${ sessionScope.loginUser.memNick }님의 블로그"></td>
+								</tr>
+								<tr>
                                     <th>블로그 소개글</th>
                                     <td><textarea name="blogIntroduce" id="" placeholder="${ sessionScope.loginUser.memNick }님의 블로그입니다."></textarea>
                                 </tr>
                                 <tr>
                                     <th>블로그 이미지</th>
-                                    <td><input type="text" name="blogImg" value="g"></td>
+                                    <td>
+	                                    <img src="resources/images/defaultProfile.png" id="imageButton">
+	                                    <input type="file" name="upfile">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>블로그 관심사</th>
@@ -199,7 +203,9 @@ a{
                                 </tr>
                                 <tr>
                                     <th>관심 식물</th>
-                                    <td><input type="text" name="plantPrefer" value="g"></td>
+                                    <td>
+                                    	<input type="text" name="plantPrefer" >
+                                    </td>
                                 </tr>
                             </table>
                             <div id="blogButtonWrap">

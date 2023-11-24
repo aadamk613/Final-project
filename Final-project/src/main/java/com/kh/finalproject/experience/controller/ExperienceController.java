@@ -1,5 +1,6 @@
 package com.kh.finalproject.experience.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
@@ -14,11 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.kh.finalproject.common.model.service.CommonService;
+import com.kh.finalproject.common.controller.CommonController;
 import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
@@ -32,7 +34,7 @@ public class ExperienceController {
 	@Autowired
 	private ExperienceService experienceService;
 	@Autowired
-	private CommonService commonService;
+	private CommonController commonController;
 	
 	@RequestMapping("yrlist.exp")
 	public String seleceExperienceList(@RequestParam(value="page", defaultValue="1") int currentPage, Model model){
@@ -53,10 +55,14 @@ public class ExperienceController {
 			// 게시글 상세조회
 			model.addAttribute("exp", experienceService.selectExperience(expNo));
 			// 첨부파일 조회
-			HashMap map = new HashMap();
-			map.put("refNo", expNo);
-			map.put("refType", "EXPERIENCE");
-			model.addAttribute("files", commonService.selectFiles(map));
+			
+			// HashMap map = new HashMap();
+			// map.put("refNo", expNo);
+			// map.put("refType", "EXPERIENCE");
+			
+			model.addAttribute("files", commonController.selectFiles(expNo, "experience"));
+			System.out.println("왜 아무것도 안나와");
+			System.out.println(model.getAttribute("files"));
 			return "experience/experienceDetailView";
 		// 조회수 증가 실패 시	
 		} else {
@@ -70,25 +76,26 @@ public class ExperienceController {
 	@ResponseBody
 	@RequestMapping(value="yrselectExpReplyList.exp", produces="application/json; charset=UTF-8")
 	public String selectExpReplyList(int expNo) {
+		System.out.println("하하");
+		System.out.println(experienceService.selectExpReplyList(expNo).toString());
 		return new Gson().toJson(experienceService.selectExpReplyList(expNo));
 	}
 	
 	@ResponseBody
 	@PostMapping("yrinsertExpReply.exp")
 	public String insertExpReply(@RequestBody String newReply) throws ParseException {
-		// System.out.println(expNo);
-		System.out.println(newReply);
+		
 		// {"expNo":"61","replyWriter":"user01","replyContent":"ㅁㄴㅇㄹ","replySecret":0}
 		
 		// 버전 2.8.6
 		//JsonObject jobj = JsonParser.parseString(expReply).getAsJsonObject();
 		// 버전 2.8.5
 		JsonObject jobj = new JsonParser().parse(newReply).getAsJsonObject();
-		System.out.println(jobj);
+		// System.out.println(jobj);
 		// {"expNo":"61","replyWriter":"user01","replyContent":"ㅁㄴㅇㄹ","replySecret":0}
 		
-		System.out.println(jobj.get("expNo").getAsInt()); // 61
-		System.out.println(jobj.get("replyContent")); // "ㅁㄴㅇㄹ"
+		// System.out.println(jobj.get("expNo").getAsInt()); // 61
+		// System.out.println(jobj.get("replyContent")); // "ㅁㄴㅇㄹ"
 		
 		// set해서 넣어줄 수 밖에 없음 (null일수도 있으니까 이렇게 해주는게 맞음)
 		ExperienceReply expReply = new ExperienceReply();
@@ -106,25 +113,26 @@ public class ExperienceController {
 	}
 	
 	@PostMapping("yrinsertExp.exp")
-	public String insertExperience(Experience exp, Files file) {
-//		System.out.println(expCategoryNo);
-//		System.out.println(expWorkDate);
-//		System.out.println(expAddress);
-//		System.out.println();
-		System.out.println(exp.toString());
-		System.out.println(exp.getExpCategoryNo());
-		System.out.println(exp.getExpPeople());
-		System.out.println(file.toString());
-		return "";
+	public String insertExperience(Experience exp, ArrayList<MultipartFile> upfiles, String[] anno, HttpSession session) {
+		// for(MultipartFile upfile : upfiles) {
+		ArrayList<Files> fileList = new ArrayList();
+		for(int i = 0; i < upfiles.size(); i++) {
+			if(!upfiles.get(i).getOriginalFilename().equals("")) {
+				Files file = commonController.setFile(upfiles.get(i), session, "experience");
+				file.setRefNo(exp.getExpNo());
+				file.setFileAnnotation(anno[i]);
+				fileList.add(file);
+			}
+		}
+		
+		if(experienceService.insertExperience(exp, fileList) > 0) {
+			session.setAttribute("alertMsg", "게시글이 등록되었습니다.");
+		} else {
+			session.setAttribute("alertMsg", "게시글 등록에 실패하셨습니다.");
+		}
+		return "redirect:yrlist.exp";
+		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	@GetMapping("yrupdateExp.exp")
 	public String updateExperienceForm(int expNo) {
@@ -132,11 +140,6 @@ public class ExperienceController {
 		System.out.println(expNo);
 		return "";
 	}
-	
-	
-	
-	
-	
 	
 	@RequestMapping("yrdeleteExp.exp")
 	public String deleteExperience(int expNo, HttpSession session) {
@@ -151,9 +154,36 @@ public class ExperienceController {
 		// 받을 때 데이터를 @RequestBody String str 이렇게 받음
 		return "redirect:yrlist.exp";
 	}
+	
+	@ResponseBody
+	@GetMapping("yrexpLikeCheck")
+	public int expLikeCheck(int expNo, int memNo) {
+		
+		HashMap map = new HashMap();
+		map.put("expNo", expNo);
+		map.put("memNo", memNo);
+		
+		return experienceService.selectExpLike(map);
+	}
 
-	
-	
+	@ResponseBody
+	@GetMapping(value="yrexpLike")
+	public int expLike(int expNo, int likeVal, int memNo) {
+		
+		HashMap map = new HashMap();
+		map.put("expNo", expNo);
+		map.put("memNo", memNo);
+		
+		// 좋아요라면 
+		if(likeVal > 0) {
+			// 좋아요 등록
+			return experienceService.insertExpLike(map);
+			
+		} else {
+			// 좋아요 취소
+			return experienceService.deleteExpLike(map);
+		}
+	}
 	
 	
 	

@@ -47,9 +47,11 @@ public class BlogPlantController {
 		PageInfo pi = Pagination.getPageInfo(blogService.selectListCountPlant(blogNo), currentPage, 5, 5);
 		
 		ArrayList<Plant> list = blogService.selectListPlant(pi, blogNo);
-		//System.out.println("식물 리스트 : "+list);
+		System.out.println("식물 리스트 : "+list);
 
 		mv.addObject("list", list)
+		  .addObject("pi", pi)
+		  .addObject("blogNo", blogNo)
 		  .setViewName("blog/plantView");
 		return mv;
 	}
@@ -70,7 +72,6 @@ public class BlogPlantController {
 								  HttpSession session,
 								  MultipartFile upfile,
 								  Model model) {
-		//System.out.println("야가 언제찍히니?");
 		plant.setBlogNo(blogNo);
 		Files file = new Files();
 		
@@ -81,7 +82,7 @@ public class BlogPlantController {
 		
 		// 넘어온 첨부파일이 존재하지 않을 경우: plant(제목, 작성자, 내용)
 		// 넘어온 첨부파일이 존재할 경우: plant(제목, 작성자, 내용 ) 
-		//					  + file(originalName, updateName, filePath, refType, refNo, fileAnnotation)
+		//					   + file(originalName, updateName, filePath, refType, refNo, fileAnnotation)
 		
 		if(blogService.insertBlogPlant(plant, file) > 0) { // 성공
 			session.setAttribute("alertMsg", "게시글 작성 성공");
@@ -104,8 +105,6 @@ public class BlogPlantController {
 		System.out.println(plantNo + category + plantNickName);
 		return "blog/reportInsertForm";
 	}
-	
-	
 	
 	// 식물 일지 등록하기
 	@RequestMapping("insert.bl_pr")

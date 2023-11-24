@@ -141,7 +141,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		VALUES
 		      (
 		      SEQ_FILE_NO.NEXTVAL
-		     ,#{refNo}
+		     ,#{refNo} + 1
 		     ,#{originalName}
 		     ,#{updateName}
 		     ,#{filePath}
@@ -190,6 +190,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		 WHERE
  		      NOTICE_NO = #{noticeNo}
  	</update>
+	
+	<delete id="deleteFile" parameterType="_int">
+		DELETE
+		  FROM
+		      TB_FILES
+		 WHERE
+		      REF_NO = #{noticeNo}	
+		   AND
+		      REF_TYPE = 'notice'
+	</delete>
+	
 	
 	<update id="updateNotice" parameterType="notice">
 		UPDATE

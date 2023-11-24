@@ -7,12 +7,12 @@
 <meta charset="UTF-8">
 <title>체험학습 게시글 작성</title>
 
+
 <style>
 * {
     border: 1px solid skyblue;
 	box-sizing: border-box;
 }
-
 
 #summary{
 	width : 100%;
@@ -23,6 +23,7 @@
 	padding : 40px;
 	height : 100%;
 	width : 50%;
+	box-sizing : border-size;
 }
 
 #thumb{
@@ -45,6 +46,11 @@ input, select{
 	height : 500px;
 }
 
+img{
+	width : 800px;
+	height : 400px;
+	object-fit : contain;
+}
 
 
 
@@ -66,59 +72,100 @@ input, select{
 		</aside>
 		
 		<section id="pageSection">
-			<form action="yrinsertExp.exp" method="post">
-			<h1><input type="text" name="expTitle" placeholder="제목을 입력해 주세요."  /></h1>
+			<form enctype="multipart/form-data" action="yrinsertExp.exp" method="post">
+			
+			<input type="hidden" name="expWriter" value="${ loginUser.memId }" />
+			
+			<h1><input type="text" name="expTitle" placeholder="제목을 입력해 주세요." autofocus  /></h1>
 			<hr>
 			
 			<div id="summary">
 				<div>
-					<input type="file" name="originalName" id="thumbFile" />
+					<input type="file" name="upfiles" id="thumbFile" required />
 					<img src="" id="thumb" class="thumbFile" />
+					<input type="hidden" name="anno" value="thumb" placeholder=">"  />
 				</div>
 				
 				<script>
 					// 대표 이미지를 클릭하면 파일 업로드 input
+					/*
 					$(() => {
 						$('#thumbFile').hide();
 						$('#thumb').click(() => {
 							$('#thumbFile').click();
 						});
 					});
+					*/
 					
-					// input 파일요소가 바뀌면, 이미지가 보여짐
-					$('input[type=file]').on('change', (inputFile) =>{
-						console.log("바껴라");
-						console.log(inputFile.target);
-						console.log(inputFile.target.files);
-						if(inputFile.target.files.length == 1){
-							let reader = new FileReader();
-							reader.readAsDataURL(inputFile.target.files[0]);
-							reader.onload = function(e){
-								console.log(inputFile.target);
-								// $('#thumb').attr('src', e.target.result);
-								console.log("ㅇ오");
-								console.log(inputFile.target.id);
-								const inputFileId = inputFile.target.id;
-								console.log(inputFileId);
-								console.log("직직");
-								console.log($('input[id=' + inputFileId + ']').siblings());
-								// input요소 바로 다음 img의 이미지가 바뀜
-								$('input[id=' + inputFileId + ']').siblings().eq(0).attr('src', e.target.result);
-								// console.log($('img[class=inputFileId]'));
-								// $('img[class='+ inputFileId + ']').attr('src', e.target.result);
-								// console.log($('#thumb'));
-								// inputFile.target.siblings().eq(0).attr('src', e.target.result);
-							}
+					$(() => {
+						$('input[type=file]').hide();
+						//$('img').on('click', function abc(e){
+						$(document).on('click', 'img', function abc(e){
+							// console.log("하이드");
+							// console.log(e.target.id);
+							const imgId = e.target.id;
+							// console.log("이건 뭔데");
+							// console.log($('img[id=' + imgId +']').siblings().eq(0));
+							console.log("왜 안나와");
+							console.log($(this)); // => 화살표함수.............쓰면 window로 잡힘
+							// $('img[id=' + imgId +']').siblings().eq(0).click();
+							$(this).siblings().eq(0).click();
+							// console.log("이얍");
+							//console.log($('img').last());
+							// $('img').last().siblings().eq(0).click();
+						});
 						
-							
-							
-							
-							
-						}
-						else{
-							
-						}
+						//console.log($('input[type=file]'));
+						//$('input[type=file]').on('change', ()=>{
+						//	console.log("??");
+						//});
+						
+						// input 파일요소가 바뀌면, 이미지가 보여짐
+						//$('input[type=file]').on('change', function asd(inputFile){
+						$(document).on('change', 'input[type=file]', function asd(inputFile){
+							console.log("바껴라");
+							//console.log(inputFile.target);
+							//console.log(inputFile.target.files);
+							const changeFile = $(this);
+							console.log(changeFile);
+							// 파일이 있다면
+							if(inputFile.target.files.length == 1){
+								let reader = new FileReader();
+								reader.readAsDataURL(inputFile.target.files[0]);
+								reader.onload = function(e){
+									console.log("비교");
+									console.log(inputFile.target.files[0]);
+									console.log($(this));
+									console.log(this);
+									
+									//const inputFileId = inputFile.target.id;
+									
+									// console.log($('input[id=' + inputFileId + ']').siblings());
+									//console.log($('input[type=file]').last());
+									// input요소 바로 다음 img의 이미지가 바뀜
+									//$('input[id=' + inputFileId + ']').siblings().eq(0).attr('src', e.target.result);
+									changeFile.siblings().eq(0).attr('src', e.target.result);
+									// $('input[type=file]').last().siblings().eq(0).attr('src', e.target.result);
+									// console.log($('img[class=inputFileId]'));
+									// $('img[class='+ inputFileId + ']').attr('src', e.target.result);
+									// console.log($('#thumb'));
+									// inputFile.target.siblings().eq(0).attr('src', e.target.result);
+									
+									// 그 이미지가 첨부되어야 주석 input요소가 열림 => 안해도됨
+									// input.attr('display', 'inline-block');
+									
+									
+									
+								}
+								
+							}
+							else{
+								
+							}
+						});
 					});
+					
+					
 					/*
 					// onchange="loadImg(this, 1)" 쓰고 하는법 (수업시간에 한거)
 					function loadImg(inputFile, num){
@@ -147,18 +194,18 @@ input, select{
 				<div>
 					<h5>※필수 입력 사항입니다. </h5>
 					
-					카테고리 : <select id="category" name="expCategoryNo">
+					카테고리 : <select id="category" name="expCategoryNo" required>
 								<option value="1">화훼농장</option>
 								<option value="2">과일농장</option>
 								<option value="3">채소농장</option>
 								<option value="4">꽃꽂이</option>
 							</select>
-					체험학습일 : <input type="date" name="expWorkDate" />
-					체험시간 : <input type="number" name="expWorkTime" min=1 max=10 />
-					모집인원 : <input type="number" name="expPeople" min=1 max=100 />
-					모집마감일 : <input type="date" name="expEndDate" />
+					체험학습일 : <input type="date" name="expWorkDate" required />
+					체험시간 : <input type="number" name="expWorkTime" min=1 max=10 required />
+					모집인원 : <input type="number" name="expPeople" min=1 max=100 required />
+					모집마감일 : <input type="date" name="expEndDate" required />
 					주소 : 
-						<input type="text" name="expAddress" id="expAddress" placeholder="주소" readonly />
+						<input type="text" name="expAddress" id="expAddress" placeholder="주소" required readonly />
 						<input type="button" value="주소 검색" onclick="searchAddress();"  /><br>
 						<input type="hidden" name="expArea" id="expArea" />
 						<input type="submit" value="등록하기">
@@ -186,17 +233,47 @@ input, select{
 				$(() => {
 					$('input[type=date]').prop('min', mindate);
 				});
+				
+				
+				
+				// 버튼 클릭하면 div 생성
+				// 그리고 그 다음 div가 생성됨
+				$(() => {
+					$('#addContent').click(() => {
+						console.log("클릭했음");
+						const value = '<div>'
+							 +'<input type="file" name="upfiles" />'
+							 +'<img src="" class="file-img" />'
+							 +'<input type="text" name="anno" placeholder=">" />'
+							 +'</div>';	
+							 
+						$('#content-div').append(value);
+						$('input[type=file]').hide();
+						// $('#content-div').children().last().addEventListener('click', );
+					});
+				})
+				
+				
 			</script>
 			
 			<br clear="both">
 			
 			<textarea id="content" name="expContent" placeholder="내용을 입력해 주세요." rows="5"></textarea>
 			
-			
-			
-			
-			
-			
+			<div id="content-div">
+				<!-- 
+				<div>
+					<input type="file" name="upfiles" id="inputfileId1" />
+					<img src="" class="file-img" id="file-img1" />
+					<input type="text" name="anno" placeholder=">" />
+				</div>
+				<div>
+					<input type="file" name="upfiles" id="inputfileId2" />
+					<img src="" class="file-img" id="file-img2" />
+					<input type="text" name="anno" placeholder=">" />
+				</div>
+				 -->
+			</div>
 			
 			
 			
@@ -219,7 +296,7 @@ input, select{
 			
 			
 			
-			
+			<button type="button" id="addContent">추가하기</button>
 			
 			
 			

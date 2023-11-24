@@ -5,6 +5,254 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="boardMapper">
 	
+	<resultMap id="boardResultSet" type="board">
+		<result column="BOARD_NO" property="boardNo" />
+		<result column="BOARD_TITLE" property="boardTitle" />
+		<result column="BOARD_CONTENT" property="boardContent" />
+		<result column="VIEWS" property="views" />
+		<result column="BOARD_CREATE_DATE" property="boardCreateDate" />
+		<result column="LIKE_COUNT" property="likeCount" />
+		<result column="COMMENT_COUNT" property="commentCount" />
+		<result column="MEM_NICK" property="memNo" />
+	</resultMap>	
 	
+	<resultMap id="commentResultSet" type="boardComment">
+		<result column="BOARD_COMMENT_NO" property="commentNo"></result>
+		<result column="BOARD_COMMENT_CONTENT" property="commentContent"></result>
+		<result column="BOARD_COMMENT_STATUS" property="commentStatus"></result>
+		<result column="BOARD_CREATE_DATE" property="createDate"></result>
+		<result column="BOARD_UPDATE_DATE" property="updateDate"></result>
+		<result column="BOARD_TOP_COMMENT" property="boardTopComment"></result>
+		<result column="BOARD_NO" property="boardNo"></result>
+		<result column="MEM_NICK" property="memNo"></result>
+	</resultMap>
+		<select id="selectBoardCount" resultType="_int">
+		SELECT
+		      COUNT(*)
+		  FROM
+		      TB_BOARD
+		 WHERE
+		      STATUS = 'Y'
+		   AND
+		      IS_BLIND = 'N'
+	</select>
+	
+	<select id="selectBoardList" resultMap="boardResultSet">
+			SELECT
+			      BOARD_NO
+			     ,BOARD_TITLE
+			     ,BOARD_CONTENT
+			     ,VIEWS
+			     ,TO_CHAR(BOARD_CREATE_DATE, 'YYYY-MM-DD') AS "BOARD_CREATE_DATE"
+			     ,LIKE_COUNT
+			     ,COMMENT_COUNT
+			     ,MEM_NICK
+			 FROM
+			     TB_BOARD
+			INNER
+			 JOIN
+			     MEMBER ON(TB_BOARD.MEM_NO = MEMBER.MEM_NO)
+			WHERE
+			     STATUS='Y'
+			  AND
+			     IS_BLIND = 'N'
+			ORDER
+			   BY
+			     BOARD_NO DESC
+	</select>
+ 
+		<select id="selectBestBoard" resultMap="boardResultSet">
+          SELECT 
+			    BOARD_NO
+			     ,BOARD_TITLE
+			     ,BOARD_CONTENT
+			     ,VIEWS
+			     ,BOARD_CREATE_DATE
+			     ,LIKE_COUNT
+			     ,COMMENT_COUNT
+			     ,MEM_NICK 
+			FROM
+			  (SELECT
+			      BOARD_NO
+			     ,BOARD_TITLE
+			     ,BOARD_CONTENT
+			     ,TB.VIEWS VIEWS
+			     ,TO_CHAR(BOARD_CREATE_DATE, 'YYYY-MM-DD') AS "BOARD_CREATE_DATE"
+			     ,TB.LIKE_COUNT LIKE_COUNT
+			     ,COMMENT_COUNT
+			     ,MEM_NICK
+			FROM
+			    TB_BOARD TB
+	  INNER JOIN
+			    MEMBER ON (TB.MEM_NO = MEMBER.MEM_NO)
+		   WHERE
+			    TB.STATUS = 'Y'
+			 AND 
+			    IS_BLIND = 'N'
+			 AND
+			    TB.LIKE_COUNT &gt; 50
+		ORDER BY
+			    TB.LIKE_COUNT DESC, BOARD_NO DESC)
+	       WHERE 
+	            ROWNUM BETWEEN 1 AND 5
+		</select>
+
+	 	<update id="increaseCount" parameterType="_int">
+	 		UPDATE
+	 		      TB_BOARD
+	 		   SET
+	 		      VIEWS = VIEWS + 1
+	 		 WHERE
+	 		      BOARD_NO = #{boardNo}
+	 		   AND
+	 		      STATUS = 'Y'
+	 		   AND
+	 		      IS_BLIND = 'N'
+	 	</update>
+	 	
+	 	<select id="selectBoard" resultMap="boardResultSet">
+	 		SELECT
+			      BOARD_NO
+			     ,BOARD_TITLE
+			     ,BOARD_CONTENT
+			     ,VIEWS
+			     ,TO_CHAR(BOARD_CREATE_DATE, 'YYYY-MM-DD HH:MI:SS') AS "BOARD_CREATE_DATE"
+			     ,LIKE_COUNT
+			     ,COMMENT_COUNT
+			     ,MEM_NICK
+			 FROM
+			     TB_BOARD
+			INNER
+			 JOIN
+			     MEMBER ON(TB_BOARD.MEM_NO = MEMBER.MEM_NO)
+			WHERE
+			     STATUS='Y'
+			  AND
+			     IS_BLIND = 'N'
+			  AND
+			     BOARD_NO = #{boardNo}
+	 	</select>
+	 	
+	 		<select id="selectFile" resultType="files">
+		SELECT
+		      FILE_NO fileNo
+		     ,ORIGINAL_NAME originalName
+		     ,UPDATE_NAME updateName
+		     ,FILE_PATH filePath
+		     ,REF_TYPE refType
+		     ,REF_NO refNo
+		     ,FILE_ANNOTATION fileAnnotation
+		     ,UPLOAD_DATE uploadDate
+		 FROM
+		     TB_FILES
+	    WHERE
+	         REF_NO = #{boardNo}
+	      AND
+	         REF_TYPE = 'board'
+		      
+	</select>
+	 	
+	 	
+	 	<select id="selectLastBoardNo" resultType="_int">
+		SELECT 
+			  MAX(BOARD_NO)
+		  FROM
+		      TB_BOARD
+		</select>
+	
+		<insert id="insertFile" parameterType="files">
+		INSERT
+		  INTO
+		      TB_FILES
+		      (
+		      FILE_NO
+		     ,REF_NO
+		     ,ORIGINAL_NAME
+		     ,UPDATE_NAME
+		     ,FILE_PATH
+		     ,REF_TYPE
+		     ,FILE_ANNOTATION
+		      )
+		VALUES
+		      (
+		      SEQ_FILE_NO.NEXTVAL
+		     ,#{refNo} + 1
+		     ,#{originalName}
+		     ,#{updateName}
+		     ,#{filePath}
+		     ,#{refType}
+		     ,#{fileAnnotation}
+		      )
+		</insert>
+		
+		<insert id="insertBoard" parameterType="board">
+		INSERT
+		  INTO
+		      TB_BOARD
+		      (
+			  BOARD_NO
+			 ,BOARD_TITLE
+			 ,BOARD_CONTENT
+			 ,MEM_NO
+			 )
+	   VALUES		  
+	   	     (
+	   	     SEQ_BOARD_NO.NEXTVAL
+	   	    ,#{boardTitle}
+	   	    ,#{boardContent}
+	   	    ,#{memNo}
+	   	     )
+		</insert>
+		
+		<delete id="deleteFile" parameterType="_int">
+		DELETE
+		  FROM
+		      TB_FILES
+		 WHERE
+		      REF_NO = #{boardNo}	
+		   AND
+		      REF_TYPE = 'board'
+		</delete>
+		
+		 <update id="deleteBoard" parameterType="_int">
+ 		UPDATE
+ 		      TB_BOARD
+ 		   SET
+ 		      STATUS = 'N'
+ 		 WHERE
+ 		      BOARD_NO = #{boardNo}
+ 		</update>
+		
+		<update id="updateBoard" parameterType="board">
+		UPDATE
+		      TB_BOARD
+		   SET
+		      BOARD_TITLE = #{boardTitle}
+		     ,BOARD_CONTENT = #{boardContent}
+		 WHERE
+		      BOARD_NO = #{boardNo}
+		</update>
+		
+		<select id="selectComment" resultMap="commentResultSet">
+			SELECT
+			      BOARD_COMMENT_NO 
+			     ,BOARD_COMMENT_CONTENT 
+			      ,TO_CHAR(BOARD_CREATE_DATE, 'YYYY-MM-DD HH:MI:SS') AS "BOARD_CREATE_DATE"
+			     ,BOARD_TOP_COMMENT 
+ 			     ,BOARD_NO 
+			     ,MEM_NICK
+			 FROM
+			     TB_BOARD_COMMENT
+		    INNER
+			 JOIN
+			     MEMBER ON(TB_BOARD_COMMENT.MEM_NO = MEMBER.MEM_NO)
+			WHERE
+			     BOARD_NO = #{boardNo}
+			  AND
+			     BOARD_COMMENT_STATUS = 'Y'
+		ORDER BY 
+		        BOARD_COMMENT_NO DESC
+		</select>
+		
 	
 </mapper>

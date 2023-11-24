@@ -16,6 +16,13 @@
     border: 1px solid skyblue;
 	box-sizing: border-box;
 }
+#blogTitle{
+	font-size: 25px; 
+	font-weight: bold; 
+	padding: 20px;
+	color: #00610C;
+}
+
 #plantInfoWrap > div{float: left;}
 #plantInfoWrap{width: 100%; height: auto;}
 
@@ -31,12 +38,12 @@
 #plantCreateDate{font-size: 15px; color: #888;}
 
 #plantComment{width: 100%; height: 160px; padding: 10px;}
-ul{
+article ul{
 	list-style: none;
     padding: 0px;
     margin: 0px;
 }
-li{
+article li{
 	padding: 5px 20px;
     position: relative;
 }
@@ -84,34 +91,12 @@ textarea{
 	</header> 
 	<main>
 		<aside id="pageAsideLeft" class="aside">
-            <div id="blogInfo">
-                <ul id="blogInfoUl">
-                    <li id="blogImg">
-                    <img src=""/>사진 공간</li>
-                    <li id="memId">닉네임(아이디)</li>
-                    <li id="blogIntroduce">${ blog.blogIntroduce }</li>
-                    <li id="">
-	                    <a href="">글 쓰기</a>
-	                    <a href="updateForm.bl?blogNo=${ blog.blogNo }">블로그 관리</a>
-	                    <a href="updateForm.bl_ct?blogNo=${ blog.blogNo }">카테고리 관리</a>
-                    </li>
-                </ul>
-          
-            </div>
-            <div id="categoryWrap">
-                <ul>
-                	<c:forEach var="i" items="${ list }">
-                    	<li><a href="#" >${ i.categoryMemName }</a></li>
-                    </c:forEach>
-                   	
-                </ul>
-            </div>
 		</aside>
 		
 		<section id="pageSection">
 			
 			<div id="blogTitle">
-			   	식물 일지 리스트
+			   	식물 등록
 			</div>
 			
 			<div id="content">
@@ -136,7 +121,7 @@ textarea{
                         </div>
                         <div>
                         	<button type="submit" id="plantCare" class="button forest">등록하기</button>
-                        	<button id="plantCare" class="button forest">돌아가기</button>
+                        	<a href="javascript:window.history.back();"><button id="plantCare" class="button forest">돌아가기</button></a>
                         </div>
                     </div>
                     
@@ -171,8 +156,6 @@ textarea{
 				};
 			    */
 			</script>
-			
-			
 		
 		</section>
 		

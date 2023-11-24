@@ -18,21 +18,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	<select id="loginMember" parameterType="member" resultMap="memberResultSet">
 		SELECT
-      MEM_NO,
+      		MEM_NO,
 			MEM_TEMP,
-      MEM_STATUS,
-      MEM_ID,
+      		MEM_STATUS,
+      		MEM_ID,
 			MEM_PW,
 			EMAIL,
-      MEM_NICK,
-      MEM_IMG,
-      REG_BUSINESS,
-      BLOG_NO,
+      		MEM_NICK,
+      		MEM_IMG,
+      		REG_BUSINESS,
+      		BLOG_NO,
 			TO_CHAR(LAST_LOGIN, 'YYYY/MM/DD HH24:MI:SS') LAST_LOGIN
 		FROM
 			MEMBER
 		WHERE
 			MEM_ID = #{memId}
+		  AND
+		  	MEM_STATUS 
+		  			IN 
+		  				('A','U','B')
 	</select>
 
 	<select id="selectMember" parameterType="_int" resultMap="memberResultSet">
@@ -83,7 +87,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		VALUES
 				(
 				SEQ_MEMBER_NO.NEXTVAL,
-				'U',
+				#{memStatus},
 				#{memId},
 				#{memPwd},
 				#{memNick},
@@ -101,6 +105,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 		MEM_ID = #{checkId}
 	
 	</select>
+	
+	<update id="updateMember" parameterType="member">
+		UPDATE
+				TB_FILE,
+				MEMBER
+		   SET
+				MEM_NICK = #{memNick},
+				EMAIL = #{email}
+		 WHERE
+		 		MEM_ID = #{memId}
+		   		
+	</update>
+	
+	<update id="deleteMember" parameterType="string">
+		UPDATE
+				MEMBER
+		   SET
+		   		MEM_STATUS = 'D'
+		 WHERE
+		 		MEM_ID = #{memId}
+	</update>
 
 	<update id="setLastLogin" parameterType="member">
 		UPDATE
@@ -132,17 +157,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				
 	</insert>
 
-	<update id="updateMember" parameterType="member">
-		UPDATE
-				TB_FILE,
-				MEMBER
-		   SET
-				MEM_NICK = #{memNick},
-				EMAIL = #{email}
-		 WHERE
-		 		MEM_ID = #{memId}
-		   		
-	</update>
 	<update id="editMember" parameterType="member">
 		UPDATE
 			MEMBER

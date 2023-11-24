@@ -83,6 +83,13 @@ textarea{
     border: none;
 }
 
+#page{
+	width : 100%;
+	height : 100px;
+	padding: 20px;
+	text-align: center;
+}
+
 
 </style>
 <body>
@@ -108,12 +115,12 @@ textarea{
                     <div id="plantInfoWrap">
                         <div id="plantImg">
                         	<c:choose>
-                        	<c:when test="${ empty p.filePath }" >
-                        	<img width="100%" height="100%" src="resources/images/defaultPlant.png" class="files" />
-							</c:when>
-							<c:otherwise>
-							<img width="100%" height="100%" src="${ p.filePath }${ p.updateName }" class="files" />
-							</c:otherwise>
+	                        	<c:when test="${ empty p.filePath }" >
+	                        	<img width="100%" height="100%" src="resources/images/filePath.png" class="files" />
+								</c:when>
+								<c:otherwise>
+								<img width="100%" height="100%" src="${ p.filePath }${ p.updateName }" class="files" />
+								</c:otherwise>
 							</c:choose>
 						</div>
                         <div id="plantInfo">
@@ -125,68 +132,68 @@ textarea{
                                 </li>
                                 <li id="plantButtonWrap">
                                 <form action="" method="post" id="postForm">
-                                	
                                 	<input type="hidden" id="plantNo" name="plantNo" value="${ p.plantNo }">
                                 	<input type="hidden" name="plantNickName" value="${ p.plantNickName }">
 									<input type="hidden" id="category" name="category" value="">
 									
-                                	<a id="plantReport" class="button forest" onclick="plantCare(10);">일지 추가</a>
-                                    <a id="plantCare" class="button forest" onclick="plantCare(20);">관리하기</a>
-                                    
+                                	<a id="plantReport" class="button forest" onclick="plantCare(this);">일지 추가</a>
+                                    <a id="plantCare" class="button forest" onclick="plantCare(this);">관리하기</a>
                                 </form>
-                                <!-- 
-                                    <button id="plantReport" class="button forest" onclick="plantCare(${ p.plantNo }, 10, ${ p.plantLogDate });">일지 추가</button>
-                                    <button id="plantCare" class="button forest" onclick="plantCare(${ p.plantNo }, 20, ${ p.plantLogDate });">관리하기</button>
-                                 -->
                                 </li>
                             </ul>
                         </div>
+                        
                     </div>
                     <br clear="both">
 				</article>
 				</c:forEach>
 			</div>
+			<div><a href="javascript:window.history.back();"><button type="button" class="button beige" id="goBlogHome">돌아가기</button></a></div>
 			
 			<script>
 	         	function plantCare(category){
 	            		//console.log($(arguments[0]).parent().children().find($('#plantNo')).val());
-	            		console.log($(arguments[0]).parent().children());
+	            		console.log($(arguments[0]).parent().children().find('input[plantNo]').val());
 	            		
 	            		if(category == 10){ // 일지 추가 클릭 시
-	            			$(arguments[0].children().children(1).attr('value',10));
-	            			//$('#postForm').children().find('#category').attr('value',10);
-	            			//$('#postForm').children().find('input[name=category]').attr('value',10);
+	            			console.log($(arguments[0]).parent().children().find('input[plantNo]').val());
+	            			$(arguments[0]).parent().children().find('input[plantNo]').attr('value', ${ p.plantNo})
 	            			$('#postForm').attr('action', 'insertForm.bl_pr').submit();
 	            		
 	            		}
 	            		else{ // 관리하기 클릭 시
-	            			$(arguments[0].children().children(1).attr('value',20));
-	            			//$('#postForm').children().find('#category').attr('value',20);
-	            			//$('#postForm').children().find('input[name=category]').attr('value',20);
+	            			console.log($(arguments[0]).parent().children().find('input[plantNo]').val());
+	            			$(arguments[0]).parent().children().find('input[plantNo]').attr('value', ${ p.plantNo})
+	            			
 	            			$('#postForm').attr('action', 'insertForm.bl_pr').submit();
 	            		}
 	            	}
-			      
-			    /*
-			    function plantCare(plantNo, category, plantNickName){
-						console.log(category);
-						console.log(plantNo);
-						console.log(plantNickName);
-						
-			    	 location.href= 'insertForm.bl.pr/' +  plantNo + '/' + category + '/' + plantNickName;
-			    };
-			     */
-			    
-			    
-			      
-			      
-			      
 			</script>
+						
 			
+			<div id="page">
+				<c:if test="${ pi.currentPage ne 1 }">
+		        	<button class="btn btn-light" onclick="location.href='select.bl_pl?blogNo=${ blogNo }&currentPage=${ pi.currentPage - 1 }'">&lt;</button>
+		        </c:if> 
+		       
+		        <c:forEach var="i" begin="${ pi.startPage }" end="${ pi.endPage }">
+		       		<c:choose>
+			       		<c:when test="${ pi.currentPage ne i }">
+			          		<button class="btn btn-forest" onclick="location.href='select.bl_pl?blogNo=${ blogNo }&currentPage=${ i }'">${ i }</button>
+			         	</c:when>
+			         	<c:otherwise>
+			         		<button disabled class="btn btn-default">${ i }</button>
+			         	</c:otherwise>
+		         	</c:choose>
+		        </c:forEach>
+		        
+		        <c:if test="${ pi.currentPage ne pi.maxPage }">
+		        	<button class="btn btn-light" onclick="location.href='select.bl_pl?blogNo=${ blogNo }&currentPage=${ pi.currentPage + 1 }'">&gt;</button>
+		        </c:if>
+			</div>
 			
-		
 		</section>
-		
+
 		<aside id="pageAsideRight" class="aside">
 		 달력 부분
 		</aside>

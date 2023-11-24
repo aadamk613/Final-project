@@ -43,6 +43,10 @@ public class NoticeDao {
 	public int deleteNotice(SqlSessionTemplate sqlSession, int noticeNo) {
 		return sqlSession.update("noticeMapper.deleteNotice", noticeNo);
 	}
+	
+	public int deleteFile(SqlSessionTemplate sqlSession, int noticeNo) {
+		return sqlSession.delete("noticeMapper.deleteFile", noticeNo);
+	}
 
 	public int updateNotice(SqlSessionTemplate sqlSession, Notice n) {
 		return sqlSession.update("noticeMapper.updateNotice", n);
@@ -57,8 +61,10 @@ public class NoticeDao {
 	}
 
 	public int updateFiles(SqlSessionTemplate sqlSession, Files f) {
-		return sqlSession.update("noticeMapper.updateFiles");
+		return sqlSession.update("noticeMapper.updateFiles", f);
 	}
+
+
 	
 	
 	
