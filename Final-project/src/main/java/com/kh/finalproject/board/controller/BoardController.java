@@ -23,7 +23,6 @@ import com.kh.finalproject.board.model.vo.Board;
 import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
-import com.kh.finalproject.notice.model.vo.Notice;
 
 @Controller
 public class BoardController {
@@ -39,7 +38,7 @@ public class BoardController {
 											 currentPage,
 											 10,
 											 5);
-
+		
 		model.addAttribute("best", boardService.selectBestBoardList());
 		model.addAttribute("list", boardService.selectBoardList(pi));
 		model.addAttribute("pi", pi);
@@ -116,7 +115,8 @@ public class BoardController {
 						mv.addObject("f", boardService.selectFile(bno)).setViewName("board/boardDetailView");
 						mv.addObject("b", boardService.selectBoard(bno)).setViewName("board/boardDetailView");
 				}
-
+				
+				mv.addObject("cList", boardService.selectComment(bno)).setViewName("board/boardDetailView");
 				mv.addObject("b", boardService.selectBoard(bno)).setViewName("board/boardDetailView");
 			} else {
 				mv.addObject("errorMsg", "게시글 조회 실패").setViewName("common/errorPage");
@@ -155,7 +155,6 @@ public class BoardController {
 				
 				if(f.getOriginalName() != null) {
 					new File(session.getServletContext().getRealPath("resources/uploadFiles/board/"+f.getUpdateName())).delete();
-					System.out.println(session.getServletContext().getRealPath("resources/uploadFiles/board"+f.getUpdateName()));
 					f.setOriginalName(reUpfile.getOriginalFilename());
 					f.setUpdateName(saveFile(reUpfile, session));
 					
@@ -171,5 +170,7 @@ public class BoardController {
 			}
 			
 		}
+		
+		
 
 }
