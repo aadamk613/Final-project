@@ -10,7 +10,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <Style>
 	.content{
-		width:180%;
+		width:30%;
 		margin:auto;
 	}
 	.innerOuter{
@@ -29,6 +29,7 @@
 }
 
 .joinFormWrap{
+	width:150px;
 	font-size:30px;
 	font-weight:bold;
 	line-height:200%;
@@ -40,7 +41,6 @@
 <body>
 
 	<header id="pageHeader">
-	<jsp:include page="../common/header.jsp" />
         &lt;header&gt;
         id=pageHeader
         여기는 헤더
@@ -64,16 +64,16 @@
 		<form action="join.me" method="post" id="join-form">
 			<div class="idWrap">
 				* 아이디 : 
-				<input type="text" id="memberId" name="memId" class="checkId" maxlength="12" min="4" max="12" placeholder="아이디를 잘 입력해주세요" onkeyup="nokorean()" required> 
+				<input type="text" id="memberId" name="memId" class="checkId" maxlength="12" min="4" max="12" placeholder="아이디를 잘 입력해주세요" required> 
 				<div id="checkResult" style="font-size:0.7em; display:none;"></div>
 			</div>
 			<div class="pwdWrap">
 				* 비밀번호 :
-				<input type="password" name="memPwd" maxlength="14" min="6" max="14" onkeyup="enterFn()" required > 
+				<input type="password" name="memPwd" maxlength="14" min="6" max="14" required > 
 			</div>
 			<div class="pwdChkWrap">
 				* 비밀번호 확인 :
-				<input type="password" name="memPwdChk"  maxlength="14" min="6" max="14" onkeyup="enterFn()" required>
+				<input type="password" name="memPwdChk"  maxlength="14" min="6" max="14" required>
 			</div>
 			<div class="nkWrap">
 				닉네임
@@ -93,7 +93,7 @@
 			</div>
 			<br>
 			<div class="btns" align="center">
-				<button type="submit" class="disabled btn-forest" disabled>회원가입</button>			
+				<button type="submit" class="disabled btn-forest">회원가입</button>			
 				<button type="reset" class="btn btn-danger">다시</button>			
 			</div>
 		</form>
@@ -102,21 +102,8 @@
 	</div>
 	
 	<script>
-	
-		function noKorean(){
-			
-			var memId = document.getElementById('memId');
-			
-			var regExp = /^[a-zA-Z0-9]+$/;
-			
-				console.log('memId');
-				
-			if(!regExp.test(memId.value)){
-				alert('해당 아이디는 사용하실 수 없습니다.');
-				memId.select();
-				memId.value = '';
-				return false;
-			}
+		
+	$(function(){
 			
 			// 자주쓰는, 중복되는 요소는 변수로 지정해놓는게 나아서 해놓음
 			const $idInput = $('#memberId');
@@ -129,7 +116,6 @@
 				// 최소 5글자 이상 입력했을 떄만 AJAX 요청을 보내서 중복체크
 				if($idInput.val().length >= 5){
 					//console.log($idInput.val());
-					
 					$.ajax({
 						url : 'idCheck.me',
 						data :  {checkId : $idInput.val()},
@@ -169,7 +155,6 @@
 	<br clear="both">
 	
 	<footer id="pageFooter">
-	<jsp:include page="../common/footer.jsp" />
         &lt;footer&gt; <br>
         id=pageFooter
         여기는 푸터 <br>
