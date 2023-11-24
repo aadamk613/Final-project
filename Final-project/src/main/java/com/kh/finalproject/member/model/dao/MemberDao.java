@@ -63,7 +63,26 @@ public class MemberDao {
   }
 
   public ArrayList<Ticket> getTicketListByMemId(SqlSessionTemplate sqlSession, Member loginUser) {
-    System.out.println(loginUser);
     return (ArrayList) sqlSession.selectList("ticketMapper.getTicketListByMemId", loginUser);
+  }
+
+  public Ticket getTicketByTicketNo(SqlSessionTemplate sqlSession, int bno) {
+    return sqlSession.selectOne("ticketMapper.selectTicket", bno);
+  }
+
+  public int deleteMemberTicket(SqlSessionTemplate sqlSession, int ticketNo) {
+    return sqlSession.delete("ticketMapper.deleteTicket", ticketNo);
+  }
+
+  public int postNewTicket(SqlSessionTemplate sqlSession, Ticket ticket) {
+    return sqlSession.insert("ticketMapper.insertTicket", ticket);
+  }
+
+  public int editMemberTicket(SqlSessionTemplate sqlSession, Ticket ticket) {
+    return sqlSession.update("ticketMapper.editMemberTicket", ticket);
+  }
+
+  public int getAnswerNumber(SqlSessionTemplate sqlSession, Member loginUser) {
+    return sqlSession.selectOne("ticketMapper.getAnswerNumber", loginUser);
   }
 }

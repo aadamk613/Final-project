@@ -14,6 +14,7 @@ import com.kh.finalproject.member.model.service.MemberService;
 import com.kh.finalproject.member.model.service.NaverLoginService;
 import com.kh.finalproject.member.model.vo.Member;
 import com.kh.finalproject.member.model.vo.NaverLogin;
+import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +26,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -111,8 +113,11 @@ public class MemberController {
   }
 
   @RequestMapping("myPage.me")
-  public String myPage() {
-    return "member/mypage";
+  public ModelAndView myPage(ModelAndView mv, HttpSession session) {
+    Member loginUser = (Member) session.getAttribute("loginUser");
+    mv.addObject("numAnswer", memberService.getAnswerNumber(loginUser))
+        .setViewName("member/mypage");
+    return mv;
   }
 
   @RequestMapping("loadImg.me")
@@ -248,15 +253,68 @@ public class MemberController {
     return "redirect:/";
   }
 
-  // ticket object list db에서 조회 (아이디로) return list
-  // 작성된 티켓이 이미 있을 경우 작성된 내용을 보이고 수정/삭제 메뉴 보이게
-
-  // 답변이 없다면 관리자의 답변을 대기중입니다.. 라고 안내
-  // 관리자의 답변이 있다면 AJAX로 답변 로딩..
   @GetMapping("memberTicket.me")
   public ModelAndView memberTicket(HttpSession session, ModelAndView mv) {
     Member loginUser = (Member) session.getAttribute("loginUser");
+    mv.addObject("numAnswer", memberService.getAnswerNumber(loginUser));
+    mv.addObject("list", memberService.getTicketListByMemId(loginUser))
+        .setViewName("member/memberTicketView");
+    return mv;
+  }
 
+  @GetMapping("memberTicketDetailView.me")
+  public ModelAndView memberTicketDetailView(int bno, ModelAndView mv) {
+    mv.addObject("ticket", memberService.getTicketByTicketNo(bno))
+        .setViewName("member/memberTicketDetailView");
+    return mv;
+  }
+
+  @PostMapping("deleteMemberTicket.me")
+  public ModelAndView deleteMemberTicket(HttpSession session, ModelAndView mv, int ticketNo) {
+    if (memberService.deleteMemberTicket(ticketNo) > 0) {
+      session.setAttribute("alertMsg", "작성한 문의가 성공적으로 삭제되었습니다!");
+    } else {
+      mv.addObject("errorMsg", "관리자 문의 삭제 실패!");
+    }
+    Member loginUser = (Member) session.getAttribute("loginUser");
+    mv.addObject("list", memberService.getTicketListByMemId(loginUser))
+        .setViewName("member/memberTicketView");
+    return mv;
+  }
+
+  @GetMapping("addTicket.me")
+  public String addTicket() {
+    return "member/memberTicketPostForm";
+  }
+
+  @PostMapping("postNewTicket.me")
+  public ModelAndView postNewTicket(ModelAndView mv, Ticket ticket, HttpSession session) {
+    Member loginUser = (Member) session.getAttribute("loginUser");
+    ticket.setTicketWriter(loginUser.getMemId());
+    if (memberService.postNewTicket(ticket) > 0) {
+      session.setAttribute("alertMsg", "관리자 문의를 성공적으로 작성하였습니다!");
+    } else {
+      mv.addObject("errorMsg", "관리자 문의 작성 실패!");
+    }
+    mv.addObject("list", memberService.getTicketListByMemId(loginUser))
+        .setViewName("member/memberTicketView");
+    return mv;
+  }
+
+  @PostMapping("editMemberTicketView.me")
+  public ModelAndView editMemberTicketView(ModelAndView mv, Ticket ticket) {
+    mv.addObject("ticket", ticket).setViewName("member/memberTicketEditForm");
+    return mv;
+  }
+
+  @PostMapping("editMemberTicket.me")
+  public ModelAndView editMemberTicket(ModelAndView mv, Ticket ticket, HttpSession session) {
+    Member loginUser = (Member) session.getAttribute("loginUser");
+    if (memberService.editMemberTicket(ticket) > 0) {
+      session.setAttribute("alertMsg", "문의 수정 성공!");
+    } else {
+      mv.addObject("alertMsg", "문의 수정 실패!");
+    }
     mv.addObject("list", memberService.getTicketListByMemId(loginUser))
         .setViewName("member/memberTicketView");
     return mv;

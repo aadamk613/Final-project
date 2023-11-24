@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>문의 상세보기</title>
+<title>문의 수정</title>
 <link rel="stylesheet" href="resources/css/common/template.css">
 
 </head>
@@ -37,7 +37,7 @@ textarea {
 		<section id="pageSection">
 			
 			<div id="contentTitle">
-                고객문의 신규 작성
+                작성한 문의 수정하기
 			</div>
 			
 			<div id="content">
@@ -54,14 +54,14 @@ textarea {
 							</tr>
 						</thead>
 						<tbody>
-							<form action="postNewTicket.me" method="post">
+							<form action="editMemberTicket.me" method="post">
 							<tr>
 								<td colspan="6">
 									<div class="input-group mb-3">
 										<div class="input-group-prepend">
 											<span class="input-group-text">제목</span>
 										</div>
-										<input name="ticketTitle" type="text" class="form-control" placeholder="문의 제목을 입력해 주세요.">
+										<input name="ticketTitle" type="text" class="form-control" value="${ticket.ticketTitle}">
 									</div>
 								</td>
 							</tr>
@@ -69,13 +69,14 @@ textarea {
 								<td colspan="6">
 									<div class="form-group">
 										<label for="comment">내용 작성</label>
-										<textarea name="ticketContent" class="form-control" rows="10" id="comment" placeholder="문의 내용을 입력해 주세요."></textarea>
+										<textarea name="ticketContent" class="form-control" rows="10" id="comment" >${ticket.ticketContent}</textarea>
 									</div>
 								</td>
 							</tr>
 							<tr>
 								<td colspan="6">
-									<button type="submit" class="btn btn-primary btn-block btn-primary">문의작성</button>
+                  <input type="hidden" name="ticketNo" value="${ticket.ticketNo}">
+									<button type="submit" class="btn btn-primary btn-block btn-primary">수정</button>
 								</td>
 							</tr>
 						</form>

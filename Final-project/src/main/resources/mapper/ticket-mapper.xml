@@ -129,4 +129,53 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE
 			TICKET_WRITER = #{memId}
 	</select>
+	<delete id="deleteTicket">
+		DELETE
+			TB_TICKET
+		WHERE 
+			TICKET_NO = #{ticketNo}
+	</delete>
+	<insert id="insertTicket">
+		INSERT
+		INTO
+			TB_TICKET
+			(
+			TICKET_NO,
+			TICKET_WRITER,
+			TICKET_TITLE,
+			TICKET_CONTENT,
+			CREATE_DATE,
+			MODIFY_DATE,
+			STATUS
+			)
+	VALUES
+			(
+			SEQ_TICKET_NO.NEXTVAL,
+			#{ticketWriter},
+			#{ticketTitle},
+			#{ticketContent},
+			SYSDATE,
+			SYSDATE,
+			'P'
+			)
+	</insert>
+	<update id="editMemberTicket" parameterType="ticket">
+		UPDATE
+			TB_TICKET
+		SET 
+			TICKET_TITLE = #{ticketTitle},
+			TICKET_CONTENT = #{ticketContent}
+		WHERE 
+			TICKET_NO = #{ticketNo}
+	</update>
+	<select id="getAnswerNumber" parameterType="member" resultType="_int">
+		SELECT
+			COUNT(*)
+		FROM
+			TB_TICKET
+		WHERE 
+			STATUS = 'R'
+		AND
+			TICKET_WRITER = #{memId}
+	</select>
 </mapper>

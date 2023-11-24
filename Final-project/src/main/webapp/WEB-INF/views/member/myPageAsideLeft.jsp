@@ -38,8 +38,8 @@
 				<a href="myPage.me" class="list-group-item list-group-item-action">내 정보수정</a>
 				<a href="#" class="list-group-item list-group-item-action">내가 쓴 글</a>
 				<a href="#" class="list-group-item list-group-item-action">내가 쓴 댓글</a>
-				<a href="memberTicket.me#" class="list-group-item list-group-item-action">관리자 문의
-				<span class="badge badge-primary badge-pill">${numTicket}</span></a>
+				<a href="memberTicket.me" class="list-group-item list-group-item-action">관리자 문의
+				<span class="badge badge-primary badge-pill">${numAnswer}</span></a>
 			</ul>
 		</div>
 		<div>

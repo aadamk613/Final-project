@@ -69,7 +69,7 @@ textarea {
                             <td>미답변</td>
                           </c:otherwise>
                         </c:choose>
-                      <td>${b.ticketTitle}</td>
+                      <td id="ticket-num" value="${b.ticketNo}">${b.ticketTitle}</td>
                       <td>${b.createDate}</td>
                       <td>${b.answerModifyDate}</td>
                     </tr>
@@ -79,7 +79,7 @@ textarea {
             </tbody>
           </table>
           <div>
-            <button type="submit" class="btn btn-primary btn-block btn-primary">새 문의 작성</button>
+            <a href="addTicket.me" class="btn btn-primary btn-block btn-primary">새 문의 작성</a>
           </div>
 				</article>
 			</div>
@@ -97,6 +97,14 @@ textarea {
 		<jsp:include page="../common/footer.jsp" />
 	</footer>
 
+  <script>
+    $(() => {
+      $('#tb > tbody > tr').click(function() {
+        location.href = "memberTicketDetailView.me?bno=" + $(this).children().eq(1).attr("value");
+      })
 
+
+    });
+  </script>
 </body>
 </html>

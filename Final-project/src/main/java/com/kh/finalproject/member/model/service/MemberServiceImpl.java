@@ -84,4 +84,29 @@ public class MemberServiceImpl implements MemberService {
   public ArrayList<Ticket> getTicketListByMemId(Member loginUser) {
     return memberDao.getTicketListByMemId(sqlSession, loginUser);
   }
+
+  @Override
+  public Ticket getTicketByTicketNo(int bno) {
+    return memberDao.getTicketByTicketNo(sqlSession, bno);
+  }
+
+  @Override
+  public int deleteMemberTicket(int ticketNo) {
+    return memberDao.deleteMemberTicket(sqlSession, ticketNo);
+  }
+
+  @Override
+  public int postNewTicket(Ticket ticket) {
+    return memberDao.postNewTicket(sqlSession, ticket);
+  }
+
+  @Override
+  public int editMemberTicket(Ticket ticket) {
+    return memberDao.editMemberTicket(sqlSession, ticket);
+  }
+
+  @Override
+  public int getAnswerNumber(Member loginUser) {
+    return memberDao.getAnswerNumber(sqlSession, loginUser);
+  }
 }

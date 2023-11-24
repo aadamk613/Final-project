@@ -34,4 +34,14 @@ public interface MemberService {
   int addGoogleProfile(Member m);
 
   ArrayList<Ticket> getTicketListByMemId(Member loginUser);
+
+  Ticket getTicketByTicketNo(int bno);
+
+  int deleteMemberTicket(int ticketNo);
+
+  int postNewTicket(Ticket ticket);
+
+  int editMemberTicket(Ticket ticket);
+
+  int getAnswerNumber(Member loginUser);
 }
