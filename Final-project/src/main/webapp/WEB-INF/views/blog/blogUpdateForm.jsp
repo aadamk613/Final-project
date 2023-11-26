@@ -255,8 +255,6 @@ input[name=upfile]{display: none;}
                	
                </script>
 			
-			
-			
 		</section>
 		
 		<aside id="pageAsideRight" class="aside">
