@@ -87,7 +87,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		VALUES
 				(
 				SEQ_MEMBER_NO.NEXTVAL,
-				'U',
+				#{memStatus},
 				#{memId},
 				#{memPwd},
 				#{memNick},

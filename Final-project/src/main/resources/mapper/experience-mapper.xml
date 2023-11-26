@@ -58,7 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		       TO_CHAR(EXP_CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') EXP_CREATE_DATE,
 		       TO_CHAR(EXP_WORK_DATE, 'YYYY-MM-DD') EXP_WORK_DATE,
 		       EXP_WORK_TIME, 
-		       TO_CHAR(EXP_END_DATE, 'YYYY-MM-DD HH24:MI') EXP_END_DATE,
+		       TO_CHAR(EXP_END_DATE, 'YYYY-MM-DD') EXP_END_DATE,
 		       EXP_STATUS,
 		       EXP_COUNT,
 		       TO_CHAR(EXP_UPDATE_DATE, 'YYYY-MM-DD') EXP_UPDATE_DATE,
@@ -102,7 +102,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		       TO_CHAR(EXP_CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') EXP_CREATE_DATE,
 		       TO_CHAR(EXP_WORK_DATE, 'YYYY-MM-DD') EXP_WORK_DATE,
 		       EXP_WORK_TIME, 
-		       TO_CHAR(EXP_END_DATE, 'YYYY-MM-DD HH24:MI') EXP_END_DATE,
+		       TO_CHAR(EXP_END_DATE, 'YYYY-MM-DD') EXP_END_DATE,
 		       EXP_STATUS,
 		       EXP_COUNT,
 		       TO_CHAR(EXP_UPDATE_DATE, 'YYYY-MM-DD') EXP_UPDATE_DATE,
@@ -176,6 +176,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		       TB_EXPERIENCE_REPLY
 		 WHERE 
 		       EXP_NO = #{ expNo }
+		   AND
+		   	   REPLY_STATUS = 'Y'
 		 ORDER
 		 	BY
 		 	   REPLY_CREATE_DATE DESC
@@ -296,7 +298,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   	   MEM_NO = #{ memNo }
 	</delete>
 	
-	
+	<!-- 체험학습 댓글 삭제 -->
+	<delete id="deleteExpReply" parameterType="_int">
+		UPDATE
+			   TB_EXPERIENCE_REPLY
+		   SET
+		   	   REPLY_STATUS = 'N'
+		 WHERE
+		 	   EXP_REPLY_NO = #{ expReplyNo }
+	</delete>
 	
 	
 	

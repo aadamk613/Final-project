@@ -43,7 +43,9 @@
     text-align: center;
 }
 
-#blogImg{width: 100%; height: 150px;}
+#blogImg{width: 100%; height: 200px;}
+
+#blogImg > div{width: 100%; height: 200px;}
 
 #memId{font-size: 20px; font-weight: bold;}
 
@@ -110,6 +112,8 @@ ul{padding: 10px;}
 	list-style-type: none;
 }
 
+#blogImg img{object-fit: cover; width:200px;}
+
 
 </style>
 <body>
@@ -121,7 +125,9 @@ ul{padding: 10px;}
 		<aside id="pageAsideLeft" class="aside">
             <div id="blogInfo">
                 <ul id="blogInfoUl">
-                    <li id="blogImg"><img src=""/>사진 공간</li>
+                    <li id="blogImg">
+                    <div><img name="blogImg" src="${ blog.filePath }${ blog.updateName }"/></div>
+                    </li>
                     <li id="memId">${ blog.memNick }(${ blog.memId })</li>
                     <li id="blogIntroduce">${ blog.blogIntroduce }</li>
                     <li id="">

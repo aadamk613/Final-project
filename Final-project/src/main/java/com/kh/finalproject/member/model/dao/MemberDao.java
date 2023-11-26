@@ -2,6 +2,7 @@ package com.kh.finalproject.member.model.dao;
 
 import com.kh.finalproject.member.model.vo.Member;
 import com.kh.finalproject.member.model.vo.NaverLogin;
+import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -64,5 +65,29 @@ public class MemberDao {
 
   public int addGoogleProfile(SqlSessionTemplate sqlSession, Member m) {
     return sqlSession.insert("memberMapper.addGoogleProfile", m);
+  }
+
+  public ArrayList<Ticket> getTicketListByMemId(SqlSessionTemplate sqlSession, Member loginUser) {
+    return (ArrayList) sqlSession.selectList("ticketMapper.getTicketListByMemId", loginUser);
+  }
+
+  public Ticket getTicketByTicketNo(SqlSessionTemplate sqlSession, int bno) {
+    return sqlSession.selectOne("ticketMapper.selectTicket", bno);
+  }
+
+  public int deleteMemberTicket(SqlSessionTemplate sqlSession, int ticketNo) {
+    return sqlSession.delete("ticketMapper.deleteTicket", ticketNo);
+  }
+
+  public int postNewTicket(SqlSessionTemplate sqlSession, Ticket ticket) {
+    return sqlSession.insert("ticketMapper.insertTicket", ticket);
+  }
+
+  public int editMemberTicket(SqlSessionTemplate sqlSession, Ticket ticket) {
+    return sqlSession.update("ticketMapper.editMemberTicket", ticket);
+  }
+
+  public int getAnswerNumber(SqlSessionTemplate sqlSession, Member loginUser) {
+    return sqlSession.selectOne("ticketMapper.getAnswerNumber", loginUser);
   }
 }

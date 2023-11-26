@@ -1,5 +1,9 @@
 package com.kh.finalproject.board.model.vo;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data @NoArgsConstructor
 public class BoardComment {
 
 	private int commentNo;
@@ -9,6 +13,6 @@ public class BoardComment {
 	private String updateDate;
 	private int boardTopComment;
 	private int boardNo;
-	private int memNo;
+	private String memNo;
 	
 }

@@ -14,6 +14,7 @@ import com.kh.finalproject.member.model.service.MemberService;
 import com.kh.finalproject.member.model.service.NaverLoginService;
 import com.kh.finalproject.member.model.vo.Member;
 import com.kh.finalproject.member.model.vo.NaverLogin;
+import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +26,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -89,14 +91,13 @@ public class MemberController {
     System.out.println("평문 : " + m.getMemPwd());
 
     String encPwd = bcryptPasswordEncoder.encode(m.getMemPwd());
-    String regex = ".*admin.*";
 
     m.setMemPwd(encPwd); // Member객체의 MemPwd 필드에 평문이 아닌 암호문을 담아서 DB로 보내기
 
     if(memberService.joinMember(m) > 0) { // 성공하면 메인페이지로
       return "redirect:/";
     } else {
-      model.addAttribute("errorMsg", "회원가입 실패/'admin'을 포함한 아이디는 사용할 수 없습니다.");
+      model.addAttribute("errorMsg", "회원가입 실패.");
       return "../common/errorPage.jsp";
     }
   }
@@ -112,8 +113,11 @@ public class MemberController {
   }
 
   @RequestMapping("myPage.me")
-  public String myPage() {
-    return "member/mypage";
+  public ModelAndView myPage(ModelAndView mv, HttpSession session) {
+    Member loginUser = (Member) session.getAttribute("loginUser");
+    mv.addObject("numAnswer", memberService.getAnswerNumber(loginUser))
+        .setViewName("member/mypage");
+    return mv;
   }
 
   @RequestMapping("loadImg.me")
@@ -262,7 +266,6 @@ public class MemberController {
       String familyName = (String) payload.get("family_name");
       String givenName = (String) payload.get("given_name");
 
-      returnMe.put("email", email);
       returnMe.put("name", name);
       returnMe.put("pictureUrl", pictureUrl);
       returnMe.put("userId", userId);
@@ -283,5 +286,72 @@ public class MemberController {
       System.out.println(loginUser);
     }
     return "redirect:/";
+  }
+
+  @GetMapping("memberTicket.me")
+  public ModelAndView memberTicket(HttpSession session, ModelAndView mv) {
+    Member loginUser = (Member) session.getAttribute("loginUser");
+    mv.addObject("numAnswer", memberService.getAnswerNumber(loginUser));
+    mv.addObject("list", memberService.getTicketListByMemId(loginUser))
+        .setViewName("member/memberTicketView");
+    return mv;
+  }
+
+  @GetMapping("memberTicketDetailView.me")
+  public ModelAndView memberTicketDetailView(int bno, ModelAndView mv) {
+    mv.addObject("ticket", memberService.getTicketByTicketNo(bno))
+        .setViewName("member/memberTicketDetailView");
+    return mv;
+  }
+
+  @PostMapping("deleteMemberTicket.me")
+  public ModelAndView deleteMemberTicket(HttpSession session, ModelAndView mv, int ticketNo) {
+    if (memberService.deleteMemberTicket(ticketNo) > 0) {
+      session.setAttribute("alertMsg", "작성한 문의가 성공적으로 삭제되었습니다!");
+    } else {
+      mv.addObject("errorMsg", "관리자 문의 삭제 실패!");
+    }
+    Member loginUser = (Member) session.getAttribute("loginUser");
+    mv.addObject("list", memberService.getTicketListByMemId(loginUser))
+        .setViewName("member/memberTicketView");
+    return mv;
+  }
+
+  @GetMapping("addTicket.me")
+  public String addTicket() {
+    return "member/memberTicketPostForm";
+  }
+
+  @PostMapping("postNewTicket.me")
+  public ModelAndView postNewTicket(ModelAndView mv, Ticket ticket, HttpSession session) {
+    Member loginUser = (Member) session.getAttribute("loginUser");
+    ticket.setTicketWriter(loginUser.getMemId());
+    if (memberService.postNewTicket(ticket) > 0) {
+      session.setAttribute("alertMsg", "관리자 문의를 성공적으로 작성하였습니다!");
+    } else {
+      mv.addObject("errorMsg", "관리자 문의 작성 실패!");
+    }
+    mv.addObject("list", memberService.getTicketListByMemId(loginUser))
+        .setViewName("member/memberTicketView");
+    return mv;
+  }
+
+  @PostMapping("editMemberTicketView.me")
+  public ModelAndView editMemberTicketView(ModelAndView mv, Ticket ticket) {
+    mv.addObject("ticket", ticket).setViewName("member/memberTicketEditForm");
+    return mv;
+  }
+
+  @PostMapping("editMemberTicket.me")
+  public ModelAndView editMemberTicket(ModelAndView mv, Ticket ticket, HttpSession session) {
+    Member loginUser = (Member) session.getAttribute("loginUser");
+    if (memberService.editMemberTicket(ticket) > 0) {
+      session.setAttribute("alertMsg", "문의 수정 성공!");
+    } else {
+      mv.addObject("alertMsg", "문의 수정 실패!");
+    }
+    mv.addObject("list", memberService.getTicketListByMemId(loginUser))
+        .setViewName("member/memberTicketView");
+    return mv;
   }
 }

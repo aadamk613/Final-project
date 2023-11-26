@@ -38,18 +38,13 @@
 	</header> 
 	<main>
 		<aside id="pageAsideLeft" class="aside">
-            &lt;aside1&gt; <br>
-            id=pageAsideLeft <br>
-	            여기는 pageAsideLeft 공백공간 <br>
-	            사이드바 넣을 수도 있음 <br>
-	            필요하면 쓰세요 <br>
-	            중앙정렬되어있어요 <br>
+			<jsp:include page="myPageAsideLeft.jsp"/>
 		</aside>
 		
 		<section id="pageSection">
 			
-			<div id="infoTitle">
-                마이페이지(여긴 마이페이지입니다!)
+			<div id="contentTitle">
+                내 정보수정
 			</div>
 			
 			<div id="content">
@@ -62,7 +57,7 @@
 				<table border="1" align="center">
 					<tr>
 						<td colspan="5" rowspan="6" width="250" height="140">
-							<img src="https://cdn-icons-png.flaticon.com/512/259/259987.png" id="myPhoto" width="300" height="400" readonly>
+							<img src="${sessionScope.loginUser.memImg}" id="myPhoto" width="300" height="400" readonly>
 							<input type="file" name="file1" id="file1" onchange="loadImg(this, 1)">
 						</td>
 						<td align="center">ID</td>
@@ -141,8 +136,7 @@
 							<div class="modal-body">
 								<div align="center">
 									탈퇴 후 복구가 불가능합니다. <br>
-									후회하지 않을 자신 있습니까? <br>
-									정말로 탈퇴하실거냐고 물었습니다. 고.객.님?
+									탈퇴하시겠습니까?
 								</div>
 								<br>
 									<label for="memPwd">PassWord : </label>
@@ -151,7 +145,7 @@
 							
 							<!-- Modal footer -->
 							<div class="modal-footer" align="center">
-								<button type="submit" class="btn btn-danger">탈퇴? 레알?</button>
+								<button type="submit" class="btn btn-danger">탈퇴</button>
 							</div>
 						</form>
 					
@@ -164,6 +158,7 @@
 		</section>
 		
 		<aside id="pageAsideRight" class="aside">
+			<jsp:include page="myPageAsideRight.jsp"/>
 		</aside>
 		
 		
