@@ -19,8 +19,11 @@ import com.kh.finalproject.blog.model.service.BlogService;
 import com.kh.finalproject.blog.model.vo.Blog;
 import com.kh.finalproject.blog.model.vo.BlogBoard;
 import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
+import com.kh.finalproject.blog.model.vo.Plant;
 import com.kh.finalproject.common.controller.CommonController;
 import com.kh.finalproject.common.model.vo.Files;
+import com.kh.finalproject.common.model.vo.PageInfo;
+import com.kh.finalproject.common.teplate.Pagination;
 
 @Controller
 public class BlogController {
@@ -67,13 +70,16 @@ public class BlogController {
 		
 		Blog blog = (Blog)blogService.selectBlog(blogNo);
 		ArrayList<BlogCategorySetting> list = blogService.selectCatogory(blogNo);
+		PageInfo pi = Pagination.getPageInfo(blogService.selectListCountPlant(blogNo), 1, 5, 10);
+		ArrayList<Plant> plantList = blogService.selectListPlant(pi, blogNo);
 		
 		mv.addObject("blog", blog) // blog정보
 		  .addObject("list", list) // 해당 블로그의 BlogCategorySetting정보
+		  .addObject("plantList", plantList)
 		  .setViewName("blog/blogView");
 		
-		//System.out.println("selectBlog에서 카테고리 list : " + list);
-		
+		System.out.println("selectBlog에서  pi : " + pi);
+		System.out.println("selectBlog에서  list : " + plantList);
 		return mv;
 	}
 	

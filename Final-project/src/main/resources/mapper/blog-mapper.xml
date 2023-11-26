@@ -147,13 +147,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			  	(
 			  	CATEGORY_SETTING_NO,
 			  	BLOG_NO, 
-			  	CATEGORY_NO
+			  	CATEGORY_NO,
+			  	CATEGORY_MEM_NAME
 			  	)
 			  VALUES 	
 			  	(
 			  	SEQ_CATEGORY_SETTING_NO.NEXTVAL,
 			  	#{ blogNo },
-			  	#{ categoryNo }
+			  	#{ categoryNo },
+			  	<choose>
+			  		<when test="categoryNo eq '10'">
+			  			'게시판'
+			  		</when>
+			  		<otherwise>
+			  			'---------------'
+			  		</otherwise>
+			  	</choose>
 			  	)
 	</insert>
 	

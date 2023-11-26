@@ -23,7 +23,9 @@
    width: 100%;
    height: auto;
 }
+
 #content{padding: 10px;}
+
 #blogInfo{
     width: 100%;
     height: 100px;
@@ -32,15 +34,40 @@
 
 #plantWrap{
     width: 100%;
-    height: 120px;
+    height: 260px;
+    font-size: 25px;
+    font-weight: bold;
+    color: #448300;
+}
+
+#plantList{
+	padding-left: 10px;
+
+}
+
+#plantWrap > div > div{
+    float: left;
+    height: 220px;
+    text-align: center;
+    color: #448300;
     padding: 10px;
 }
 
-#plantWrap > div {
-    float: left;
-    width: 100px;
-    height: 100px;
-    text-align: center;
+#plantButtonWrap{width: 140px; item-align: center;}
+
+.button{
+	width: 45px;
+	height: 45px;
+	cursor: pointer;
+}
+.forest{
+    font-size: 20px;
+    font-weight: bolder;
+    border-radius: 30px;
+    border:2px solid #afdba3;
+	background-color: #afdba3;
+    color: white;
+	margin: 10px auto;
 }
 
 #blogImg{width: 100%; height: 200px;}
@@ -97,22 +124,11 @@ ul{padding: 10px;}
 	height: auto; 
 	font-size: 15px; 
 	padding: 10px;
-	
-}
-
-#likeCommentWrap{
-	width: 100%; 
-	height: auto;
-	
-}
-
-#likeCommentUl{
-	width: 100%;
-	height: 30px;
-	list-style-type: none;
 }
 
 #blogImg img{object-fit: cover; width:200px;}
+
+img[name=plantImg]{width: 160px; height: 160px; border-radius: 10px;}
 
 
 </style>
@@ -156,17 +172,26 @@ ul{padding: 10px;}
 			
 			<div id="content">
                <div id="plantWrap">
-                        <div>사진</div>
-                        <div>사진</div>
-                        <div>사진</div>
-                        <div>사진</div>
-                        <div>사진</div>
-                        <div>사진</div>
-                        <div>사진</div>
-                        <div>
-                        	<a href="insertForm.bl_pl?blogNo=${ blog.blogNo }">식물추가 + </a>
-                        	<a href="select.bl_pl?blogNo=${ blog.blogNo }">식물 일지</a>
+               <div id="plantList">
+               <a href="select.bl_pl?blogNo=${ blog.blogNo }">식물 일지</a>
+               </div>
+               <div>
+                        <c:forEach var="p" items="${ plantList }">
+	                        <div ><c:choose>
+	                        <c:when test="${ empty p.filePath }">
+	                        <img name="plantImg" src="resources/images/defaultPlant.png"/>
+	                        ${ p.plantNickName }
+	                        </c:when>
+	                        <c:otherwise>
+	                        <div><img name="plantImg" src="${ p.filePath }${ p.updateName }"/></div>
+	                        <div>${ p.plantNickName }</div>
+	                        </c:otherwise>
+	                        </c:choose></div>
+                        </c:forEach>
+                        <div id="plantButtonWrap">
+                        	<a href="insertForm.bl_pl?blogNo=${ blog.blogNo }"><button class="button forest">+</button></a>
                         </div>
+                 </div>
                </div>
 				<article>
 					<div id="blogBoardWrap">
