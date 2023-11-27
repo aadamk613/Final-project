@@ -153,11 +153,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			  VALUES 	
 			  	(
 			  	SEQ_CATEGORY_SETTING_NO.NEXTVAL,
-			  	#{ blogNo },
+			  	<choose>
+			  		<when test="blogNo eq '0'">
+			  			SEQ_BLOG.CURRVAL,
+			  		</when>
+			  		<otherwise>
+					  	#{ blogNo },
+			  		</otherwise>
+			  	</choose>
 			  	#{ categoryNo },
 			  	<choose>
 			  		<when test="categoryNo eq '10'">
 			  			'게시판'
+			  		</when>
+			  		<when test="categoryNo eq '20'">
+			  			'식물일지'
+			  		</when>
+			  		<when test="categoryNo eq '30'">
+			  			'ToDoList'
 			  		</when>
 			  		<otherwise>
 			  			'---------------'
@@ -272,6 +285,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    	PLANT_LOG_DATE DESC
 	
 	</select>
+	
+	<!-- 식물 조회 -->
+	<select id="selectBlogPlant" parameterType="_int" resultMap="PlantResultSet">
+		SELECT 
+		        PLANT_NO, 
+		        BLOG_NO,
+		        PLANT_NAME, 
+		        PLANT_NICKNAME,
+		        CREATE_DATE,  
+		        PLANT_CATEGORY, 
+		        PLANT_LOG_DATE,
+		        
+		        FILE_PATH,
+            	UPDATE_NAME
+	    FROM 
+	        	TB_PLANT
+	    LEFT OUTER JOIN 
+        		TB_FILES ON(PLANT_NO = REF_NO)
+	    WHERE
+	        	PLANT_NO = #{ plantNo }
+	    AND 
+	        	STATUS = 'Y'
+        
+        </select>
+	
+	<!-- 식물 삭제하기 -->
+	<delete id="deleteBlogPlant" parameterType="_int">
+		DELETE 
+				TB_PLANT
+	    	WHERE 
+	    		PLANT_NO = #{ plantNo }
+	
+	</delete>
 	
 	<!-- 식물 일지 등록하기 -->
 	<insert id="insertPlantReport">

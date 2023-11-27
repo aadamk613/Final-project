@@ -69,6 +69,14 @@ textarea{
     border: none;
 }
 
+#imageInputWrap{
+  width: 300px; height: 300px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
 #blogButtonWrap {
    width: 100%;
    height: 100px; 
@@ -123,6 +131,15 @@ a{
     text-decoration: none;
     color: #888;
 	}
+	
+input[name=upfile]{display: none; }
+
+img[name=imageThumbnail]{    
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 </style>
 <body>
 
@@ -161,8 +178,10 @@ a{
                                 <tr>
                                     <th>블로그 이미지</th>
                                     <td>
-	                                    <img src="resources/images/defaultProfile.png" id="imageButton">
+                                    	<div id="imageInputWrap">
 	                                    <input type="file" name="upfile">
+	                                    <img src="resources/images/defaultProfile.png" name="imageThumbnail" onclick="insertImage(this);">
+                                    	</div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -210,13 +229,38 @@ a{
                             </table>
                             <div id="blogButtonWrap">
                                 <div><button type="submit" class="button forest" id="blogCreateButton">블로그 생성</button></div>
-                                <div><button type="button" class="button beige" id="goBlogHome">돌아가기</button></div>
+                                <div><a href="javascript:window.history.back();"><button type="button" class="button beige" id="goBlogHome">돌아가기</button></a></div>
                             </div>
                             </form>
 					</div>
 
 				</article>
 			</div>
+			
+			<script>
+				
+				// 블로그 타이틀 입력 시 포커스되면 input의 value값 ''
+               	$('input[name=blogTitle]').on('focus', () => {
+               		$('input[name=blogTitle]').val('');
+               		return true;
+               	});
+               	
+               	// input type="file"숨기고 이미지 클릭시 파일 첨부
+               	function insertImage(){
+               		$('input[name=upfile]').click();
+               	};
+               	
+               	// 이미지를 첨부했을 시 미리보기 가능하게
+               	$('input[name=upfile]').on('change', function(inputFile){
+					let reader = new FileReader();
+					reader.readAsDataURL(inputFile.target.files[0]);
+					reader.onload = e => {
+						$('img[name=imageThumbnail]').attr('src', e.target.result);
+					}
+				});
+               	
+               </script>
+			
 			
 		
 		</section>

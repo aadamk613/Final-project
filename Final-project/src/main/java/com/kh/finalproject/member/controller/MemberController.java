@@ -38,6 +38,12 @@ public class MemberController {
   @Autowired private NaverLoginService naverLoginService;
   @Autowired private KakaoLoginService kakaoLoginService;
 
+
+	@RequestMapping("loginForm.me")
+	public String loginForm() {
+		return "member/loginForm";
+	}
+
   /**
    * loginForm method - 메인 페이지에서 로그인 버튼 클릭시 로그인 화면 페이지 리디렉션용 메소드
    *
@@ -53,6 +59,7 @@ public class MemberController {
   public String ajaxGetMemberList() {
     return new Gson().toJson(memberService.ajaxGetMemberList());
   }
+
 
   @RequestMapping("login.me")
   public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv) {

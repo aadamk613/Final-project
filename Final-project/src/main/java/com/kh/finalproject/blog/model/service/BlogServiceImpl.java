@@ -32,7 +32,20 @@ public class BlogServiceImpl implements BlogService{
 	@Transactional
 	@Override
 	public int insertBlog(Blog b) {
+		
 		blogDao.insertBlog(sqlSession, b);
+		
+		
+		BlogCategorySetting blogCateSet = new BlogCategorySetting();
+		// i == 새로 생성 할 기본 블로그 카테고리(10: 일반 게시판, 20: 식물일지, 30: ToDoList)
+		// blogNo는 insertBlog에서 생성한 SEQ_BLOG를 이용할 것 => mapper에서 조건식으로 구분하기 위해 일반 생성과 다르게 blogNo를 0으로 세팅
+		
+		for(int i = 10; i <= 30; i += 10) {
+			blogCateSet.setBlogNo(0);
+			blogCateSet.setCategoryNo(i);
+			blogDao.insertCategory(sqlSession, blogCateSet);
+		}
+		
 		return blogDao.updateMemberBlogNo(sqlSession, b);
 	}
 	
@@ -77,8 +90,11 @@ public class BlogServiceImpl implements BlogService{
 	@Transactional
 	@Override
 	public int insertBlogPlant(Plant plant, Files file) {
-		blogDao.insertBlogPlant(sqlSession, plant);
-		return commonDao.insertFiles(sqlSession, file);
+		int result = blogDao.insertBlogPlant(sqlSession, plant);
+		if(file.getOriginalName() != null) {
+			return commonDao.insertFiles(sqlSession, file);
+		}
+		return result;
 	}
 
 	@Override
@@ -93,11 +109,24 @@ public class BlogServiceImpl implements BlogService{
 		return blogDao.selectListPlant(sqlSession, blogNo, rowBounds);
 	}
 	
+	@Override
+	public Plant selectBlogPlant(int plantNo) {
+		Plant plant = blogDao.selectBlogPlant(sqlSession, plantNo);
+		return plant;
+	}
+	
+	@Override
+	public int deleteBlogPlant(int plantNo) {
+		return blogDao.deleteBlogPlant(sqlSession, plantNo);
+	}
+	
 	// 게시판 -----------------------------------------
 	@Override
 	public int insertBlogBoard(BlogBoard blogBoard) {
 		return blogDao.insertBlogBoard(sqlSession, blogBoard);
 	}
+
+
 
 
 

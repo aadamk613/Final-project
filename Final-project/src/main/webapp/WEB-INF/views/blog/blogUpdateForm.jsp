@@ -125,9 +125,21 @@ a{
     color: #888;
 	}
 	
+#imageInputWrap{
+  width: 300px; height: 300px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
 input[name=upfile]{display: none; }
 
-img[name=imageThumbnail]{width: 300px; }
+img[name=imageThumbnail]{    
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
 </style>
 <body>
@@ -175,6 +187,7 @@ img[name=imageThumbnail]{width: 300px; }
 								<tr>
 									<th>블로그 이미지</th>
 									<td>
+									<div id="imageInputWrap">
 									<input type="file" name="upfile" >
 									<c:choose>
 										<c:when test="${ not empty blog.updateName }">
@@ -184,6 +197,7 @@ img[name=imageThumbnail]{width: 300px; }
 											<img src="resources/images/defaultProfile.png" name="imageThumbnail" onclick="insertImage(this);">
 										</c:otherwise>
 									</c:choose>
+									</div>
 									</td>
 								</tr>
 								<tr>
