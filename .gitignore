@@ -133,4 +133,3 @@ Final-project/.settings
 .classpath
 Final-project/src/main/webapp/WEB-INF/lib
 Final-project/src/main/webapp/WEB-INF/spring/root-context.xml
-Final-project/src/main/webapp/resources/uploadFiles/
