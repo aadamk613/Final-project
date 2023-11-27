@@ -78,11 +78,11 @@ public class ExperienceController {
 	
 	// insert메소드 같이 써도 될거같은데 단일책임의원칙 걸려서 따로 씀
 	@PostMapping("yrupdateExpForm.exp")
-	public ModelAndView updateExperienceForm(Experience exp, String[] filePath, String[] updateName, String[] fileAnnotation, ModelAndView mv) {
+	public ModelAndView updateExperienceForm(Experience exp, Integer[] fileNo, String[] filePath, String[] updateName, String[] fileAnnotation, ModelAndView mv) {
 		ArrayList<Files> files = new ArrayList();
 		for(int i = 0; i < filePath.length; i++) {
 			Files file = new Files();
-			//file.setFileNo(fileNo[i]);
+			file.setFileNo(fileNo[i]);
 			file.setFilePath(filePath[i]);
 			file.setUpdateName(updateName[i]);
 			file.setFileAnnotation(fileAnnotation[i]);
@@ -97,10 +97,15 @@ public class ExperienceController {
 	}
 	
 	@PostMapping("yrupdateExp.exp")
-	public String updateExperience(Experience exp, MultipartFile[] upfiles, String[] anno, HttpSession session) {
+	public String updateExperience(Experience exp, MultipartFile[] upfiles, String[] anno, Integer[] oldFileNo, HttpSession session) {
 		System.out.println("들어와라 얍");
 		System.out.println(exp);
 		System.out.println(upfiles);
+		System.out.println("나와라 기존파일!!!!!!!!!!!!!!!!!!!!");
+		System.out.println(oldFileNo);
+		System.out.println(oldFileNo[0]);
+		
+		
 		//System.out.println(fffff);
 		// System.out.println(upfiles[0]);
 		
