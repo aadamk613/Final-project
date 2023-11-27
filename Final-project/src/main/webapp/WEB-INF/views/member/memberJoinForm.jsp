@@ -84,17 +84,17 @@
 				<input type="email"placeholder="@ 기입필수!" name="email" pattern="+@^[0-9a-zA-Z]\.com" required>
 			</div>
 			<div class="Qualification">
-				개인/기업
-				<br>
-				<select name="memStatus">
-				<option value="U">개인</option>
-				<option value="B">기업</option>
-				</select>
-			</div>
-			<br>
-			<div class="btns" align="center">
-				<button type="submit" class="disabled btn-forest">회원가입</button>			
-				<button type="reset" class="btn btn-danger">다시</button>			
+		    개인/기업
+		    <br>
+		    <select name="memStatus" id="memStatus">
+		        <option value="U">개인</option>
+		        <option value="B">기업</option>
+		    </select>
+		</div>
+		<br>
+		<div class="btns" align="center">
+		    <button type="submit" class="disabled btn-forest" onclick="register()">회원가입</button>
+			<button type="reset" class="btn btn-danger">다시</button>			
 			</div>
 		</form>
 	</div>
@@ -140,13 +140,36 @@
 	            $joinFormSubmit.attr('disabled', true);
 	        }
 	    });
-	});
-	
 	// $idInput.on('input', function() {...})을 사용하여 아이디 입력란의 내용이 바뀔 때마다 이벤트를 감지함
 	// 입력된 값에서 한글을 필터링하여 한글이 입력되면 해당 부분을 제거하고, 필터링된 값으로 다시 아이디 입력란에 설정
 	// 그리고 필터링된 값이 5글자 이상일 경우, AJAX를 사용하여 서버에 중복 체크를 요청
 	// 서버에서 반환된 결과에 따라 중복 여부를 사용자에게 알려주고
-	// 폼 제출 버튼을 활성화 하거나 비활성화 해주거나 
+	// 폼 제출 버튼을 활성화 하거나 비활성화 해줌
+	
+	    
+	    function register() {
+	        const selectElement = document.getElementById('memStatus');
+	        const selectedValue = selectElement.value;
+
+	        if (selectedValue === 'B') {
+	            openBusinessPage();
+	        } else {
+	            // 개인 회원가입 처리 로직
+	            // ...
+	            console.log('개인 회원가입');
+	        }
+	    }
+
+	    function openBusinessPage() {
+	        // 여기에서 사업자등록정보 진위확인 뷰페이지를 열도록 처리
+	        // window.open() 등을 사용하여 새 창이나 모달을 열 수 있음
+	        // 예시: 새 창 열기
+	        window.open('businessPage.jsp}', '_blank');
+	    }
+
+	    
+	});
+	
 	</script>
 	</section>
 	<aside id="pageAsideRight" class="aside">
