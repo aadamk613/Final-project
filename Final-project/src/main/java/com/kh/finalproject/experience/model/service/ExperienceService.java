@@ -32,6 +32,9 @@ public interface ExperienceService {
 	// 체험학습 게시글 작성
 	int insertExperience(Experience exp, ArrayList<Files> fileList);
 	
+	// 체험학습 게시글 수정
+	int updateExperience(Experience exp, ArrayList<Files> fileList);
+	
 	
 	
 	// 체험학습 게시글 삭제
@@ -50,6 +53,9 @@ public interface ExperienceService {
 	// 체험학습 게시글 좋아요 취소
 	int deleteExpLike(HashMap map);
 	
+	
+	// 체험학습 댓글 삭제
+	int deleteExpReply(int expReplyNo);
 	
 	
 

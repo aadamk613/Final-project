@@ -8,12 +8,12 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.gson.Gson;
-import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.member.model.service.KakaoLoginService;
 import com.kh.finalproject.member.model.service.MemberService;
 import com.kh.finalproject.member.model.service.NaverLoginService;
 import com.kh.finalproject.member.model.vo.Member;
 import com.kh.finalproject.member.model.vo.NaverLogin;
+import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +25,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -37,22 +38,28 @@ public class MemberController {
   @Autowired private NaverLoginService naverLoginService;
   @Autowired private KakaoLoginService kakaoLoginService;
 
+
+	@RequestMapping("loginForm.me")
+	public String loginForm() {
+		return "member/loginForm";
+	}
+
+  /**
+   * loginForm method - 메인 페이지에서 로그인 버튼 클릭시 로그인 화면 페이지 리디렉션용 메소드
+   *
+   * @return String 리디렉션할 로그인 페이지 주소
+   */
   @RequestMapping("loginForm.me")
   public String loginForm() {
     return "member/loginForm";
   }
-
-  //  @ResponseBody
-  //  @RequestMapping(value = "select.me", produces = "application/json; charset=UTF-8")
-  //  public String selectMember(int memNo, HttpSession session, ModelAndView mv) {
-  //    return new Gson().toJson(memberService.selectMember(memNo));
-  //  }
 
   @ResponseBody
   @GetMapping(value = "getMemberList.me", produces = "application/json; charset=UTF-8")
   public String ajaxGetMemberList() {
     return new Gson().toJson(memberService.ajaxGetMemberList());
   }
+
 
   @RequestMapping("login.me")
   public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv) {
@@ -92,7 +99,7 @@ public class MemberController {
 
     m.setMemPwd(encPwd); // Member객체의 MemPwd 필드에 평문이 아닌 암호문을 담아서 DB로 보내기
 
-    if(memberService.joinMember(m) > 0) { // 성공하면 메인페이지로
+    if (memberService.joinMember(m) > 0) { // 성공하면 메인페이지로
       return "redirect:/";
     } else {
       model.addAttribute("errorMsg", "회원가입 실패.");
@@ -111,8 +118,11 @@ public class MemberController {
   }
 
   @RequestMapping("myPage.me")
-  public String myPage() {
-    return "member/mypage";
+  public ModelAndView myPage(ModelAndView mv, HttpSession session) {
+    Member loginUser = (Member) session.getAttribute("loginUser");
+    mv.addObject("numAnswer", memberService.getAnswerNumber(loginUser))
+        .setViewName("member/mypage");
+    return mv;
   }
 
   @RequestMapping("loadImg.me")
@@ -124,26 +134,26 @@ public class MemberController {
   @RequestMapping("update.me")
   public String updateMember(Member m, Model model, HttpSession session) {
 
-	  if(memberService.updateMember(m) > 0){
-		  
-		session.setAttribute("loginUser", memberService.loginMember(m));
-			
-		// session에 일회성 알라문구 띄워주기 
-		session.setAttribute("alertMsg", "정보수정에 성공했습니다~~");
-			
-		// 마이페이지 화면이 띄워지도록~  유지보수를 용이하게 하기 위해
-		return "redirect:myPage.me";
-			
-		} else { // 수정 실패 => 에러문구를 담아서 에러페이지로 포워딩
-			model.addAttribute("errorMsg", "정보수정에 실패했습니다.");
-			// /WEB-INF/views/ 		common/errorPage		.jsp
-			return "common/errorPage";
-		}
+    if (memberService.updateMember(m) > 0) {
+
+      session.setAttribute("loginUser", memberService.loginMember(m));
+
+      // session에 일회성 알라문구 띄워주기
+      session.setAttribute("alertMsg", "정보수정에 성공했습니다~~");
+
+      // 마이페이지 화면이 띄워지도록~  유지보수를 용이하게 하기 위해
+      return "redirect:myPage.me";
+
+    } else { // 수정 실패 => 에러문구를 담아서 에러페이지로 포워딩
+      model.addAttribute("errorMsg", "정보수정에 실패했습니다.");
+      // /WEB-INF/views/ 		common/errorPage		.jsp
+      return "common/errorPage";
+    }
   }
 
-  
   @RequestMapping("delete.me")
   public String deleteMember(String memPwd, HttpSession session) {
+
 	  
 	  Member loginUser = ((Member)session.getAttribute("loginUser"));
 		
@@ -167,10 +177,7 @@ public class MemberController {
 			session.setAttribute("alertMsg", "비밀번호가 틀렸어요. 다시 확인해보세요~~~");
 			return "redirect:myPage.me";
 		}
-    }
-  
-
-
+    
   @GetMapping("naverLogin.me")
   public String naverLogin() {
     return "member/naverLoginCallback";
@@ -261,7 +268,6 @@ public class MemberController {
       String familyName = (String) payload.get("family_name");
       String givenName = (String) payload.get("given_name");
 
-      returnMe.put("email", email);
       returnMe.put("name", name);
       returnMe.put("pictureUrl", pictureUrl);
       returnMe.put("userId", userId);
@@ -289,5 +295,71 @@ public class MemberController {
 	  
 	return "member/businessPage.me";
   }
-  
+
+  @GetMapping("memberTicket.me")
+  public ModelAndView memberTicket(HttpSession session, ModelAndView mv) {
+    Member loginUser = (Member) session.getAttribute("loginUser");
+    mv.addObject("numAnswer", memberService.getAnswerNumber(loginUser));
+    mv.addObject("list", memberService.getTicketListByMemId(loginUser))
+        .setViewName("member/memberTicketView");
+    return mv;
+  }
+
+  @GetMapping("memberTicketDetailView.me")
+  public ModelAndView memberTicketDetailView(int bno, ModelAndView mv) {
+    mv.addObject("ticket", memberService.getTicketByTicketNo(bno))
+        .setViewName("member/memberTicketDetailView");
+    return mv;
+  }
+
+  @PostMapping("deleteMemberTicket.me")
+  public ModelAndView deleteMemberTicket(HttpSession session, ModelAndView mv, int ticketNo) {
+    if (memberService.deleteMemberTicket(ticketNo) > 0) {
+      session.setAttribute("alertMsg", "작성한 문의가 성공적으로 삭제되었습니다!");
+    } else {
+      mv.addObject("errorMsg", "관리자 문의 삭제 실패!");
+    }
+    Member loginUser = (Member) session.getAttribute("loginUser");
+    mv.addObject("list", memberService.getTicketListByMemId(loginUser))
+        .setViewName("member/memberTicketView");
+    return mv;
+  }
+
+  @GetMapping("addTicket.me")
+  public String addTicket() {
+    return "member/memberTicketPostForm";
+  }
+
+  @PostMapping("postNewTicket.me")
+  public ModelAndView postNewTicket(ModelAndView mv, Ticket ticket, HttpSession session) {
+    Member loginUser = (Member) session.getAttribute("loginUser");
+    ticket.setTicketWriter(loginUser.getMemId());
+    if (memberService.postNewTicket(ticket) > 0) {
+      session.setAttribute("alertMsg", "관리자 문의를 성공적으로 작성하였습니다!");
+    } else {
+      mv.addObject("errorMsg", "관리자 문의 작성 실패!");
+    }
+    mv.addObject("list", memberService.getTicketListByMemId(loginUser))
+        .setViewName("member/memberTicketView");
+    return mv;
+  }
+
+  @PostMapping("editMemberTicketView.me")
+  public ModelAndView editMemberTicketView(ModelAndView mv, Ticket ticket) {
+    mv.addObject("ticket", ticket).setViewName("member/memberTicketEditForm");
+    return mv;
+  }
+
+  @PostMapping("editMemberTicket.me")
+  public ModelAndView editMemberTicket(ModelAndView mv, Ticket ticket, HttpSession session) {
+    Member loginUser = (Member) session.getAttribute("loginUser");
+    if (memberService.editMemberTicket(ticket) > 0) {
+      session.setAttribute("alertMsg", "문의 수정 성공!");
+    } else {
+      mv.addObject("alertMsg", "문의 수정 실패!");
+    }
+    mv.addObject("list", memberService.getTicketListByMemId(loginUser))
+        .setViewName("member/memberTicketView");
+    return mv;
+  }
 }

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>블로그 메인</title>
+<title>식물 일지 작성</title>
 <link rel="stylesheet" href="resources/css/common/template.css">
 
 </head>

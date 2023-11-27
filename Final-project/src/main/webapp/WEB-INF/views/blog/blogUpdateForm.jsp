@@ -115,6 +115,7 @@ input[type=text] {
     color: rgb(83, 57, 32);
 	margin: 10px auto;
 }
+
 a{
     cursor: pointer;
 	display: inline-block;
@@ -124,7 +125,21 @@ a{
     color: #888;
 	}
 	
-input[name=upfile]{display: none;}
+#imageInputWrap{
+  width: 300px; height: 300px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+input[name=upfile]{display: none; }
+
+img[name=imageThumbnail]{    
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
 </style>
 <body>
@@ -151,9 +166,10 @@ input[name=upfile]{display: none;}
 				<article id="pageArticle">
 				
 					<div id="createFormWrap">
-                        <form action="update.bl" method="post" >
+                        <form action="update.bl" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="blogNo" value="${ blog.blogNo }">
                         <input type="hidden" name="memNo" value="${ blog.memNo }">
+                        <input type="hidden" name="updateName" value="${ blog.updateName }">
 							<table id="createForm">
 								<tr>
 									<th>블로그 이름</th>
@@ -171,15 +187,17 @@ input[name=upfile]{display: none;}
 								<tr>
 									<th>블로그 이미지</th>
 									<td>
+									<div id="imageInputWrap">
 									<input type="file" name="upfile" >
 									<c:choose>
-										<c:when test="${ b.filePath }">
-										<img src="${ b.filePath }${ b.updateName }" name="imageThumbnail" onclick="insertImage(this);" >
+										<c:when test="${ not empty blog.updateName }">
+											<img src="${ blog.filePath }${ blog.updateName }" name="imageThumbnail" onclick="insertImage(this);" >
 										</c:when>
 										<c:otherwise>
 											<img src="resources/images/defaultProfile.png" name="imageThumbnail" onclick="insertImage(this);">
 										</c:otherwise>
 									</c:choose>
+									</div>
 									</td>
 								</tr>
 								<tr>
@@ -223,7 +241,7 @@ input[name=upfile]{display: none;}
 							</table>
 							<div id="blogButtonWrap">
                                 <div><button type="submit" class="button forest" id="blogUpdateButton">정보 수정</button></div>
-                                <div><a href="javascript:window.history.back();"><button type="button" class="button beige" id="goBlogHome">돌아가기</button></a></div>
+                                <div><a href="select.bl?blogNo=${ blog.blogNo }"><button type="button" class="button beige" id="goBlogHome">돌아가기</button></a></div>
                             </div>
                             </form>
 					</div>
@@ -254,8 +272,6 @@ input[name=upfile]{display: none;}
 				});
                	
                </script>
-			
-			
 			
 		</section>
 		

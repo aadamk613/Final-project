@@ -24,5 +24,17 @@ public class CommonServiceImpl implements CommonService{
 		System.out.println("첨부파일 조회 service " + map);
 		return commonDao.selectFiles(sqlSession, map);
 	}
+	
+	// 첨부파일 업데이트
+	@Override
+	public int updateFiles(Files file) {
+		return commonDao.updateFiles(sqlSession, file);
+	}
+
+	// 첨부파일 삭제
+	@Override
+	public int deleteFiles(Files file) {
+		return commonDao.deleteFiles(sqlSession, file);
+	}
 
 }

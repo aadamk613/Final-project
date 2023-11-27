@@ -3,6 +3,8 @@ package com.kh.finalproject.board.model.service;
 import java.util.ArrayList;
 
 import com.kh.finalproject.board.model.vo.Board;
+import com.kh.finalproject.board.model.vo.BoardComment;
+import com.kh.finalproject.board.model.vo.BoardReport;
 import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.common.model.vo.PageInfo;
 
@@ -46,4 +48,10 @@ public interface BoardService {
 
 	// 파일 삭제
 	int deleteFile(int noticeNo);
+	
+	// 댓글 조회
+	ArrayList<BoardComment> selectComment(int boardNo);
+	
+	// 게시글신고
+	int insertReport(BoardReport br);
 }

@@ -3,6 +3,7 @@ package com.kh.finalproject.member.model.service;
 import com.kh.finalproject.member.model.dao.MemberDao;
 import com.kh.finalproject.member.model.vo.Member;
 import com.kh.finalproject.member.model.vo.NaverLogin;
+import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Param;
@@ -84,5 +85,35 @@ public class MemberServiceImpl implements MemberService {
   @Override
   public int addGoogleProfile(Member m) {
     return memberDao.addGoogleProfile(sqlSession, m);
+  }
+
+  @Override
+  public ArrayList<Ticket> getTicketListByMemId(Member loginUser) {
+    return memberDao.getTicketListByMemId(sqlSession, loginUser);
+  }
+
+  @Override
+  public Ticket getTicketByTicketNo(int bno) {
+    return memberDao.getTicketByTicketNo(sqlSession, bno);
+  }
+
+  @Override
+  public int deleteMemberTicket(int ticketNo) {
+    return memberDao.deleteMemberTicket(sqlSession, ticketNo);
+  }
+
+  @Override
+  public int postNewTicket(Ticket ticket) {
+    return memberDao.postNewTicket(sqlSession, ticket);
+  }
+
+  @Override
+  public int editMemberTicket(Ticket ticket) {
+    return memberDao.editMemberTicket(sqlSession, ticket);
+  }
+
+  @Override
+  public int getAnswerNumber(Member loginUser) {
+    return memberDao.getAnswerNumber(sqlSession, loginUser);
   }
 }

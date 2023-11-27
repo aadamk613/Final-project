@@ -36,10 +36,75 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- 첨부파일 등록 -->
-	<insert id="insertFiles" parameterType="com.kh.finalproject.common.model.vo.Files" >
+	<insert id="insertFiles" parameterType="files" >
 		INSERT 
 		  INTO
 		  		TB_FILES
+				(
+			     FILE_NO,
+		         ORIGINAL_NAME,
+		         UPDATE_NAME,
+		         FILE_PATH,
+		         REF_TYPE,
+		         REF_NO,
+		         FILE_ANNOTATION,
+		         UPLOAD_DATE
+				)
+			VALUES
+			 	(
+			 	SEQ_FILE_NO.NEXTVAL,
+			 	#{ originalName },
+			 	#{ updateName },
+			 	#{ filePath },
+			 	#{ refType },
+			 	<choose>
+			 		<when test="refType eq 'plant'">
+			 			SEQ_PLANT_NO.CURRVAL,
+			 		</when>
+			 		<when test="refType eq 'experience'">
+			 			SEQ_EXPERIENCE.CURRVAL,
+			 		</when>
+			 		<otherwise>
+			 			#{ refNo },
+			 		</otherwise>
+			 	</choose>
+			 	#{ fileAnnotation },
+			 	SYSDATE
+			 	)		  	
+	</insert>
+	
+
+	<delete id="deleteFiles" parameterType="files">
+		DELETE 
+		  FROM
+		  	   TB_FILES
+		 WHERE
+		 	   REF_NO = #{ refNo }
+		   AND
+		   	   REF_TYPE = #{ refType }
+	</delete>
+
+	<!-- 
+	<update id="updateFiles" parameterType="files">
+		UPDATE
+			   TB_FILES
+		   SET
+		   	   ORIGINAL_NAME = #{ originalName },
+		       UPDATE_NAME = #{ updateName },
+		       FILE_PATH = #{ filePath },
+		       FILE_ANNOTATION = #{ fileAnnotation },
+		       UPLOAD_DATE = SYSDATE
+		 WHERE
+		 	   FILE_NO = #{ fileNo }
+		   AND
+		   	   REF_TYPE = #{ refType }
+	</update>
+	 -->
+
+	<update id="updateFiles">
+	
+		UPDATE TO TB_FILES
+			SET 
 				(
 			     FILE_NO,
 		         ORIGINAL_NAME,
@@ -57,24 +122,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 	#{ updateName },
 			 	#{ filePath },
 			 	#{ refType },
-			 	<choose>
-			 		<when test="refType eq 'plant'">
-			 			SEQ_PLANT_NO.CURRVAL,
-			 		</when>
-			 		<when test="refType eq 'experience'">
-			 			SEQ_EXPERIENCE.CURRVAL,
-			 		</when>
-			 		<when test="refType eq 'blog'">
-			 			SEQ_BLOG_NO.CURRVAL,
-			 		</when>
-			 		<otherwise>
-			 			#{ refNo },
-			 		</otherwise>
-			 	</choose>
+				 #{ refNo },
 			 	#{ fileAnnotation },
 			 	SYSDATE
 			 	)		  	
 	
-	</insert>
+	
+	</update>
+	
 	
 </mapper>
