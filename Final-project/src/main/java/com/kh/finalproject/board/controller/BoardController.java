@@ -15,14 +15,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.kh.finalproject.board.model.service.BoardService;
 import com.kh.finalproject.board.model.vo.Board;
+import com.kh.finalproject.board.model.vo.BoardReport;
 import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
+import com.kh.finalproject.member.model.vo.Member;
 
 @Controller
 public class BoardController {
@@ -166,6 +170,23 @@ public class BoardController {
 				return "redirect:detail.bo?bno=" + b.getBoardNo();
 			} else {
 				session.setAttribute("errorMsg", "실패!");
+				return "common/errorPage";
+			}
+		}
+		@ResponseBody
+		@GetMapping(value="cList.do", produces="application/json; charset=UTF-8")
+		public String ajaxSelectComment(int boardNo) {
+			
+			return new Gson().toJson(boardService.selectComment(boardNo));
+		}
+		
+		@RequestMapping("report.bo")
+		public String insertReport(BoardReport br, Model model) {
+			
+			if(boardService.insertReport(br) > 0) {
+				System.out.println("성공");
+				return "redirect:detail.bo?bno=" + br.getRefBoardNo();
+			} else {
 				return "common/errorPage";
 			}
 			
