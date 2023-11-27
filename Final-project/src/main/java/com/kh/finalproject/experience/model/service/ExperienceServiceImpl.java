@@ -90,6 +90,11 @@ public class ExperienceServiceImpl implements ExperienceService {
 		return experienceDao.deleteExpLike(sqlSession, map);
 	}
 
+	@Override
+	public int deleteExpReply(int expReplyNo) {
+		return experienceDao.deleteExpReply(sqlSession, expReplyNo);
+	}
+
 	
 	
 

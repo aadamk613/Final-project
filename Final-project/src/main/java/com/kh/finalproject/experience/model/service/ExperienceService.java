@@ -51,6 +51,9 @@ public interface ExperienceService {
 	int deleteExpLike(HashMap map);
 	
 	
+	// 체험학습 댓글 삭제
+	int deleteExpReply(int expReplyNo);
+	
 	
 
 

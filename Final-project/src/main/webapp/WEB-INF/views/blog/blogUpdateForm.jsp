@@ -259,8 +259,6 @@ img[name=imageThumbnail]{width: 300px; }
                	
                </script>
 			
-			
-			
 		</section>
 		
 		<aside id="pageAsideRight" class="aside">

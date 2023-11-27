@@ -57,6 +57,10 @@ public class ExperienceDao {
 	public int deleteExpLike(SqlSessionTemplate sqlSession, HashMap map) {
 		return sqlSession.delete("experienceMapper.deleteExpLike", map);
 	}
+	
+	public int deleteExpReply(SqlSessionTemplate sqlSession, int expReplyNo) {
+		return sqlSession.delete("experienceMapper.deleteExpReply", expReplyNo);
+	}
 
 	
 	

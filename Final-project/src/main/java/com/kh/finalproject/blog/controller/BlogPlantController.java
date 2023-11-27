@@ -44,7 +44,7 @@ public class BlogPlantController {
 									    int blogNo, 
 									    ModelAndView mv) {
 
-		PageInfo pi = Pagination.getPageInfo(blogService.selectListCountPlant(blogNo), currentPage, 5, 5);
+		PageInfo pi = Pagination.getPageInfo(blogService.selectListCountPlant(blogNo), currentPage, 5, 10);
 		
 		ArrayList<Plant> list = blogService.selectListPlant(pi, blogNo);
 		System.out.println("식물 리스트 : "+list);
