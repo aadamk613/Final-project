@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>블로그 메인</title>
+<title>식물 등록</title>
 <link rel="stylesheet" href="resources/css/common/template.css">
 
 </head>
@@ -26,9 +26,9 @@
 #plantInfoWrap > div{float: left;}
 #plantInfoWrap{width: 100%; height: auto;}
 
-#plantImg{width: 20%; height: 180px; float: middle;}
+#plantImg{width: 20%; height: 200px; float: middle;}
 
-#plantImgInput{width:100%; height: 160px;}
+#plantImgInput{width:100%; height: 200px;}
 
 #plantImfo{width: 80%; height: auto;}
 #plantName{font-size: 20px; font-weight: bold;}
@@ -105,7 +105,7 @@ textarea{
 					<input type="hidden" name="blogNo" value="${ blogNo }"/>
                     <div id="plantInfoWrap">
                         <div id="plantImg"><input type="file" name="upfile" id="plantInput"/>
-                        	<img src="resources/images/defaultPlant.png" id="plantImgInput">
+                        	<img src="resources/images/defaultPlant.png" id="plantImgInput" name="plantThumbnail">
                         </div>
                         <div id="plantImfo">
                             <ul>
@@ -129,34 +129,24 @@ textarea{
 					</form>
 				</article>
 			</div>
-			
+
 			<script>
 			    
 			      plantImgInput.addEventListener('click', function(){
 			    	  plantInput.click();
 			      });
 			      
-			      /*
-			      function loadImg(inputFile){
-					
-					if(inputFile.files.length == 1){ // 파일이 첨부O
-						
-						let reader = new FileReader();
-						reader.readAsDataURL(inputFile.files[0]);
-
-						reader.onload = function(e){
-							console.log(e.target);
-								$('#plantInput').attr('src', e.target.result);
+	              // 이미지를 첨부했을 시 미리보기 가능하게
+	              $('input[name=upfile]').on('change', function(inputFile){
+				  	let reader = new FileReader();
+					reader.readAsDataURL(inputFile.target.files[0]);
+					reader.onload = e => {
+					$('img[name=plantThumbnail]').attr('src', e.target.result);
 						}
-					} 
-					else {
-						const str = "resources/images/defaultPlant.png" id="plantInput";
-						$('#plantInput').attr('src', str);
-					}
-				};
-			    */
+				  });
+			       
 			</script>
-		
+
 		</section>
 		
 		<aside id="pageAsideRight" class="aside">

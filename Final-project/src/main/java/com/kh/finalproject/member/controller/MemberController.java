@@ -39,22 +39,22 @@ public class MemberController {
   @Autowired private NaverLoginService naverLoginService;
   @Autowired private KakaoLoginService kakaoLoginService;
 
-  @RequestMapping("loginForm.me")
-  public String loginForm() {
-    return "member/loginForm";
-  }
+	@RequestMapping("loginForm.me")
+	public String loginForm() {
+		return "member/loginForm";
+	}
 
-  //  @ResponseBody
-  //  @RequestMapping(value = "select.me", produces = "application/json; charset=UTF-8")
-  //  public String selectMember(int memNo, HttpSession session, ModelAndView mv) {
-  //    return new Gson().toJson(memberService.selectMember(memNo));
-  //  }
+	@ResponseBody
+	@RequestMapping(value = "select.me", produces = "application/json; charset=UTF-8")
+	public String selectMember(int memNo, HttpSession session, ModelAndView mv) {
+		return new Gson().toJson(memberService.selectMember(memNo));
+	}
 
-  @ResponseBody
-  @GetMapping(value = "getMemberList.me", produces = "application/json; charset=UTF-8")
-  public String ajaxGetMemberList() {
-    return new Gson().toJson(memberService.ajaxGetMemberList());
-  }
+	@ResponseBody
+	@GetMapping(value = "getMemberList.me", produces = "application/json; charset=UTF-8")
+	public String ajaxGetMemberList() {
+		return new Gson().toJson(memberService.ajaxGetMemberList());
+	}
 
   @RequestMapping("login.me")
   public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv) {

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>식물 상세보기</title>
+<title>식물 전체 리스트</title>
 <link rel="stylesheet" href="resources/css/common/template.css">
 
 </head>
@@ -34,11 +34,11 @@ article{padding: 10px;}
 
 #plantInfo{width: 80%; height: 160px;}
 
-#plantName{font-size: 20px; font-weight: bold; }
+#plantName{font-size: 20px; font-weight: bold;}
 
-#plantName div{float: left; width:50%; height: 30px;}
+#plantName div{display: inline; padding: 10px;}
 
-#deleteWrap{margin: 0px;}
+#deleteWrap{float: right; padding: 0 0 0 200px !important; margin: 0px;}
 
 #plantNick{font-size: 17px; font-weight: bold; color: #448300;}
 
@@ -56,8 +56,6 @@ article{padding: 10px;}
 #plantInfo li{
 	padding: 5px 20px;
     position: relative;
-    width: 100%;
-    height: 100%;
 }
 .button{
 	width: 130px;
@@ -73,15 +71,6 @@ article{padding: 10px;}
 	background-color: #afdba3;
     color: white;
 	margin: 5px 15px 5px 0px;
-}
-
-.beige{
-    font-size: 20px;
-    font-weight: bolder;
-    border-radius: 10px;
-    border:2px solid beige;
-	background-color: beige;
-    color: rgb(83, 57, 32);
 }
 
 .delete{
@@ -103,6 +92,8 @@ article{padding: 10px;}
 	}
 	
 input[type=file]{display: none;}
+
+img[name=plantImg]:hover{cursor: pointer; }
 
 textarea{
     resize: none;
@@ -134,41 +125,39 @@ textarea{
 		<section id="pageSection">
 			
 			<div id="blogTitle">
-			   	${ plant.plantName }
+			   	${ sessionScope.loginUser.memNick }의 정원
 			</div>
 			
 			<div id="content">
                 
+                <c:forEach var="p" items="${ list }">
 				<article>
                     <div id="plantInfoWrap">
                         <div id="plantImg">
                         	<c:choose>
-	                        	<c:when test="${ empty plant.filePath }" >
-	                        	<img width="100%" height="100%" src="resources/images/defaultPlant.png" class="files" />
+	                        	<c:when test="${ empty p.filePath }" >
+	                        	<img width="100%" height="100%" src="resources/images/defaultPlant.png" class="files" name="plantImg" value="${ p.plantNo }"/>
 								</c:when>
 								<c:otherwise>
-								<img width="100%" height="100%" src="${ plant.filePath }${ plant.updateName }" class="files" />
+								<img width="100%" height="100%" src="${ p.filePath }${ p.updateName }" class="files" name="plantImg" value="${ p.plantNo }"/>
 								</c:otherwise>
 							</c:choose>
 						</div>
                         <div id="plantInfo">
                             <ul>
                                 <li id="plantName">
-                                	<div>식물 이름 : ${ plant.plantName }</div>
-                                	<div id="deleteWrap">
-									<button class="button beige" onclick="updatePlant();">수정하기</button>		                                	
-                                	<button class="button forest delete" onclick="deletePlant();">-</button>
-                                	</div>
-                                	<clear="both">
+                                	<div>식물 이름 : ${ p.plantName }</div>
+                                	<div id="deleteWrap"><button class="button forest delete" onclick="deletePlant(this);">-</button></div>
                                 </li>
                                 <li id="plantNick">
-	                                <div>별명 : ${ plant.plantNickName }</div>
-	                                <div id="plantCreateDate">D+${ plant.plantLogDate }</div>
+	                                <div>별명 : ${ p.plantNickName }</div>
+	                                <div id="plantCreateDate">D+${ p.plantLogDate }</div>
                                 </li>
                                 <li id="plantButtonWrap">
                                 <form action="" method="post" id="postForm">
-                                	<input type="hidden" id="plantNo" name="plantNo" value="${ plant.plantNo }">
-                                	<input type="hidden" name="plantNickName" value="${ plant.plantNickName }">
+                                	<input type="hidden" id="plantNo" name="plantNo" value="${ p.plantNo }">
+                                	<input type="hidden" name="plantNickName" value="${ p.plantNickName }">
+									<input type="hidden" id="category" name="category" value="">
 									
                                 	<a id="plantReport" class="button forest" onclick="plantCare(this);">일지 추가</a>
                                     <a id="plantCare" class="button forest" onclick="plantCare(this);">관리하기</a>
@@ -180,6 +169,7 @@ textarea{
                     </div>
                     <br clear="both">
 				</article>
+				</c:forEach>
 			</div>
 			<div><a href="javascript:window.history.back();"><button type="button" class="button beige" id="goBlogHome">돌아가기</button></a></div>
 			
@@ -191,42 +181,60 @@ textarea{
 	            		
 	            		if(category == 10){ // 일지 추가 클릭 시
 	            			console.log($(arguments[0]).parent().children().find('input[plantNo]').val());
-	            			$(arguments[0]).parent().children().find('input[plantNo]').attr('value', ${ p.plantNo});
+	            			$(arguments[0]).parent().children().find('input[plantNo]').attr('value', ${ p.plantNo})
 	            			$('#postForm').attr('action', 'insertForm.bl_pr').submit();
 	            		
 	            		}
 	            		else{ // 관리하기 클릭 시
 	            			console.log($(arguments[0]).parent().children().find('input[plantNo]').val());
-	            			$(arguments[0]).parent().children().find('input[plantNo]').attr('value', ${ p.plantNo});
+	            			$(arguments[0]).parent().children().find('input[plantNo]').attr('value', ${ p.plantNo})
 	            			
 	            			$('#postForm').attr('action', 'insertForm.bl_pr').submit();
 	            		}
 	            	}
 	         	
 	         		// 식물 삭제하기
-		         	function deletePlant(){
+		         	function deletePlant(plantNo){
 		         		
-	         			console.log(${ plant.plantNo });
-	         			
 	         			if(confirm("해당 식물의 모든 정보와 일지를 삭제합니다. 식물을 삭제하시겠습니까?")){
 
-	         				location.href = "delete.bl_pl?plantNo=" + ${ plant.plantNo } + "&blogNo=" + ${ plant.blogNo };
-
+	    	         		$.ajax({
+								url: 'delete.bl_pl',
+								data: {plantNo: plantNo,
+									   currentPage: ${ pi.currentPage }},
+								success: data => {
+									console.log(data);
+									
+								},
+								error: () => {
+									console.log('식물 삭제 통신 실패');
+								}
+			         		});
 	         			}
 		         	}
+	         		
+	         		
+		        	
+		       	 $('img[name=plantImg]').on('click', function(e){
+		       		console.log($(e.target).attr('value'));
+		       		var plantNo = $(e.target).attr('value');
+		       		location.href = "select.bl_pl?plantNo=" + plantNo ; 
+		       		 
+		       	 });
+		       	 
 	         	
 			</script>
 						
 			
 			<div id="page">
 				<c:if test="${ pi.currentPage ne 1 }">
-		        	<button class="btn btn-light" onclick="location.href='select.bl_pl?blogNo=${ blogNo }&currentPage=${ pi.currentPage - 1 }'">&lt;</button>
+		        	<button class="btn btn-light" onclick="location.href='selectList.bl_pl?blogNo=${ blogNo }&currentPage=${ pi.currentPage - 1 }'">&lt;</button>
 		        </c:if> 
 		       
 		        <c:forEach var="i" begin="${ pi.startPage }" end="${ pi.endPage }">
 		       		<c:choose>
 			       		<c:when test="${ pi.currentPage ne i }">
-			          		<button class="btn btn-forest" onclick="location.href='select.bl_pl?blogNo=${ blogNo }&currentPage=${ i }'">${ i }</button>
+			          		<button class="btn btn-forest" onclick="location.href='selectList.bl_pl?blogNo=${ blogNo }&currentPage=${ i }'">${ i }</button>
 			         	</c:when>
 			         	<c:otherwise>
 			         		<button disabled class="btn btn-default">${ i }</button>
@@ -235,7 +243,7 @@ textarea{
 		        </c:forEach>
 		        
 		        <c:if test="${ pi.currentPage ne pi.maxPage }">
-		        	<button class="btn btn-light" onclick="location.href='select.bl_pl?blogNo=${ blogNo }&currentPage=${ pi.currentPage + 1 }'">&gt;</button>
+		        	<button class="btn btn-light" onclick="location.href='selectList.bl_pl?blogNo=${ blogNo }&currentPage=${ pi.currentPage + 1 }'">&gt;</button>
 		        </c:if>
 			</div>
 			

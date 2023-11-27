@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>식물 일지 작성</title>
+<title>식물 수정</title>
 <link rel="stylesheet" href="resources/css/common/template.css">
 
 </head>
@@ -16,34 +16,34 @@
     border: 1px solid skyblue;
 	box-sizing: border-box;
 }
-
 #blogTitle{
 	font-size: 25px; 
 	font-weight: bold; 
 	padding: 20px;
 	color: #00610C;
 }
-	
+
 #plantInfoWrap > div{float: left;}
 #plantInfoWrap{width: 100%; height: auto;}
 
-#plantImg{width: 20%; height: 180px; float: middle;}
+#plantImg{width: 20%; height: 200px; float: middle;}
 
-#plantImgInput{width:100%; height: 160px;}
+#plantImgInput{width:100%; height: 200px;}
 
 #plantImfo{width: 80%; height: auto;}
+#plantName{font-size: 20px; font-weight: bold;}
 #plantNick{font-size: 17px; font-weight: bold; color: #448300;}
 #plantNick > div{display: inline; padding: 10px;}
 
 #plantCreateDate{font-size: 15px; color: #888;}
 
 #plantComment{width: 100%; height: 160px; padding: 10px;}
-ul{
+article ul{
 	list-style: none;
     padding: 0px;
     margin: 0px;
 }
-li{
+article li{
 	padding: 5px 20px;
     position: relative;
 }
@@ -61,6 +61,15 @@ li{
 	background-color: #afdba3;
     color: white;
 	margin: 5px 15px 5px 0px;
+}
+.beige{
+    font-size: 20px;
+    font-weight: bolder;
+    border-radius: 10px;
+    border:2px solid beige;
+	background-color: beige;
+    color: rgb(83, 57, 32);
+	margin: 10px auto;
 }
 
 #blogIntroduce a{
@@ -91,58 +100,37 @@ textarea{
 	</header> 
 	<main>
 		<aside id="pageAsideLeft" class="aside">
-            <div id="blogInfo">
-                <ul id="blogInfoUl">
-                    <li id="blogImg">
-                    <img src=""/>사진 공간</li>
-                    <li id="memId">닉네임(아이디)</li>
-                    <li id="blogIntroduce">${ blog.blogIntroduce }</li>
-                    <li id="">
-	                    <a href="">글 쓰기</a>
-	                    <a href="updateForm.bl?blogNo=${ blog.blogNo }">블로그 관리</a>
-	                    <a href="updateForm.bl_ct?blogNo=${ blog.blogNo }">카테고리 관리</a>
-                    </li>
-                </ul>
-          
-            </div>
-            <div id="categoryWrap">
-                <ul>
-                	<c:forEach var="i" items="${ list }">
-                    	<li><a href="#" >${ i.categoryMemName }</a></li>
-                    </c:forEach>
-                   	
-                </ul>
-            </div>
 		</aside>
 		
 		<section id="pageSection">
 			
 			<div id="blogTitle">
-			   	식물 일지 리스트
+			   	식물 등록
 			</div>
 			
 			<div id="content">
 				<article>
-					<form method="post" action="insert.bl_pl" enctype="multipart/form-data" enctype="multipart/form-data">  
+					<form method="post" action="insert.bl_pl" enctype="multipart/form-data">  
 					<input type="hidden" name="blogNo" value="${ blogNo }"/>
                     <div id="plantInfoWrap">
                         <div id="plantImg"><input type="file" name="upfile" id="plantInput"/>
-                        	<img src="resources/images/defaultPlant.png" id="plantImgInput">
+                        	<img src="resources/images/defaultPlant.png" id="plantImgInput" name="plantThumbnail">
                         </div>
                         <div id="plantImfo">
                             <ul>
+                                <li id="plantName">식물명 : <input type="text" name="plantName"/></li>
                                 <li id="plantNickName">
-	                                <div>${ plantNickName }의 기록입니다
-	                                </div>기록 일자: <div id="plantLogDate"><input type="date" name="plantLogDate"></div>
+	                                <div>애칭 : <input type="text" name="plantNickName" />
+	                                </div>키우기 시작한 일자: <div id="plantLogDate"><input type="date" name="plantLogDate"></div>
                                 </li>
                                 <li id="plantComment" >
-                                	<textarea placeholder="식물에 대한 기록을 작성해주세요. 최대  1000자 까지 작성할 수 있습니다. " name="plantComment"></textarea>
+                                	<textarea placeholder="식물에 대한 코멘트를 작성해주세요" name="plantComment"></textarea>
                                 </li>
                             </ul>
                         </div>
                         <div>
-                        	<button type="submit" id="plantCare" class="button forest" onclick="plantCare(10);">등록하기</button>
-                        	<button id="plantCare" class="button forest" >돌아가기</button>
+                        	<button type="submit" id="plantCare" class="button forest">등록하기</button>
+                        	<a href="javascript:window.history.back();"><button id="plantCare" class="button forest">돌아가기</button></a>
                         </div>
                     </div>
                     
@@ -150,17 +138,24 @@ textarea{
 					</form>
 				</article>
 			</div>
-			
+
 			<script>
 			    
 			      plantImgInput.addEventListener('click', function(){
 			    	  plantInput.click();
 			      });
 			      
+	              // 이미지를 첨부했을 시 미리보기 가능하게
+	              $('input[name=upfile]').on('change', function(inputFile){
+				  	let reader = new FileReader();
+					reader.readAsDataURL(inputFile.target.files[0]);
+					reader.onload = e => {
+					$('img[name=plantThumbnail]').attr('src', e.target.result);
+						}
+				  });
+			       
 			</script>
-			
-			
-		
+
 		</section>
 		
 		<aside id="pageAsideRight" class="aside">
