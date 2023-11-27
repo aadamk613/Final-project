@@ -53,7 +53,7 @@
 					</div>
 					<div id="boardContent">
 					<hr>
-						<textarea id="boardContent" placeholder="${b.boardContent }" name="noticeContent" required></textarea>
+						<textarea id="boardContent" placeholder="${b.boardContent }" name="boardContent" required></textarea>
 					<hr>
 					</div>
 					<button type="submit" class="btn btn-primary" id="buttonWrite">글 작성</button>

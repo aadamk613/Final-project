@@ -63,9 +63,18 @@ public class BlogDao {
 		return (ArrayList)sqlSession.selectList("blogMapper.selectListPlant", blogNo, rowBounds);
 	}
 
+	public Plant selectBlogPlant(SqlSessionTemplate sqlSession, int plantNo) {
+		return sqlSession.selectOne("blogMapper.selectBlogPlant", plantNo);
+	}
+	
+	public int deleteBlogPlant(SqlSessionTemplate sqlSession, int plantNo) {
+		return sqlSession.delete("blogMapper.deleteBlogPlant", plantNo);
+	}
+	
 	public int insertBlogBoard(SqlSessionTemplate sqlSession, BlogBoard blogBoard) {
 		return sqlSession.insert("blogMapper.insertBlogBoard", blogBoard);
 	}
+
 
 
 

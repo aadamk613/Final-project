@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>화면 틀입니다 복사해서 사용해주세요</title>
+<title>블로그 게시글 작성 화면</title>
 <link rel="stylesheet" href="resources/css/common/template.css">
 
 </head>

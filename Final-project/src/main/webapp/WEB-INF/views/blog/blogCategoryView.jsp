@@ -201,6 +201,24 @@
 			console.log($('#rename').val());
 		}
 
+		function insertBlogCategory(cateNo){
+			
+			$.ajax({
+				url: 'insert.bl_ct',
+				data: {
+					blogNo : ${ blogNo}, 
+					categoryNo : cateNo
+				},
+				success: data => {
+					selectBlogCategory();
+					console.log(data);
+				},
+				error: () => {
+					console.log('카테고리 생성 통신 실패');
+				}
+			})
+			
+		}
 		
 		
 		function categoryRename(cateNo, cateName){
@@ -245,26 +263,6 @@
 			}
 		}
 		
-		function insertBlogCategory(cateNo){
-			
-			$.ajax({
-				url: 'insert.bl_ct',
-				data: {
-					blogNo : ${ blogNo}, 
-					categoryNo : cateNo
-				},
-				success: data => {
-					selectBlogCategory();
-					console.log(data);
-				},
-				error: () => {
-					console.log('카테고리 생성 통신 실패');
-				}
-			})
-			
-		}
-		
-
 		
 	</script>
 	

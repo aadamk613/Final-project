@@ -17,13 +17,15 @@
 	box-sizing: border-box;
 }
 
-#pageAsideLeft{display: block;}
+#pageAsideLeft{display: block; padding: 30px;}
 
 #pageAsideLeft div{
    width: 100%;
    height: auto;
 }
+
 #content{padding: 10px;}
+
 #blogInfo{
     width: 100%;
     height: 100px;
@@ -32,18 +34,45 @@
 
 #plantWrap{
     width: 100%;
-    height: 120px;
+    height: 260px;
+    font-size: 25px;
+    font-weight: bold;
+    color: #448300;
+}
+
+#plantList{
+	padding-left: 10px;
+
+}
+
+#plantWrap > div > div{
+    float: left;
+    height: 220px;
+    text-align: center;
+    color: #448300;
     padding: 10px;
 }
 
-#plantWrap > div {
-    float: left;
-    width: 100px;
-    height: 100px;
-    text-align: center;
+#plantButtonWrap{width: 140px; item-align: center;}
+
+.button{
+	width: 45px;
+	height: 45px;
+	cursor: pointer;
+}
+.forest{
+    font-size: 20px;
+    font-weight: bolder;
+    border-radius: 30px;
+    border:2px solid #afdba3;
+	background-color: #afdba3;
+    color: white;
+	margin: 10px auto;
 }
 
-#blogImg{width: 100%; height: 150px;}
+#blogImg{width: 100%; height: 200px;}
+
+#blogImg > div{width: 100%; height: 200px;}
 
 #memId{font-size: 20px; font-weight: bold;}
 
@@ -95,21 +124,27 @@ ul{padding: 10px;}
 	height: auto; 
 	font-size: 15px; 
 	padding: 10px;
-	
 }
 
-#likeCommentWrap{
-	width: 100%; 
-	height: auto;
-	
+#blogImg img{object-fit: cover; width:200px;}
+
+img[name=plantImg]{width: 160px; height: 160px; border-radius: 10px;}
+
+img[name=plantImg]:hover{cursor: pointer; }
+
+#imageInputWrap{
+  width: 300px; height: 300px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 }
 
-#likeCommentUl{
-	width: 100%;
-	height: 30px;
-	list-style-type: none;
+img[name=imageThumbnail]{    
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
-
 
 </style>
 <body>
@@ -121,7 +156,9 @@ ul{padding: 10px;}
 		<aside id="pageAsideLeft" class="aside">
             <div id="blogInfo">
                 <ul id="blogInfoUl">
-                    <li id="blogImg"><img src=""/>사진 공간</li>
+                    <li id="blogImg">
+                    <div id="imageInputWrap"><img name="imageThumbnail" src="${ blog.filePath }${ blog.updateName }"/></div>
+                    </li>
                     <li id="memId">${ blog.memNick }(${ blog.memId })</li>
                     <li id="blogIntroduce">${ blog.blogIntroduce }</li>
                     <li id="">
@@ -150,17 +187,30 @@ ul{padding: 10px;}
 			
 			<div id="content">
                <div id="plantWrap">
-                        <div>사진</div>
-                        <div>사진</div>
-                        <div>사진</div>
-                        <div>사진</div>
-                        <div>사진</div>
-                        <div>사진</div>
-                        <div>사진</div>
-                        <div>
-                        	<a href="insertForm.bl_pl?blogNo=${ blog.blogNo }">식물추가 + </a>
-                        	<a href="select.bl_pl?blogNo=${ blog.blogNo }">식물 일지</a>
+               <div id="plantList">
+               <a href="selectList.bl_pl?blogNo=${ blog.blogNo }">식물 일지</a>
+               </div>
+               <div>
+                        <c:forEach var="p" items="${ plantList }">
+	                        <div ><c:choose>
+		                        <c:when test="${ empty p.filePath }">
+		                        <div>
+		                        <img name="plantImg" src="resources/images/defaultPlant.png" value="${ p.plantNo }"/>
+		                        </div>
+		                        <div>
+		                        ${ p.plantNickName }
+		                        </div>
+		                        </c:when>
+		                        <c:otherwise>
+		                        <div><img name="plantImg" src="${ p.filePath }${ p.updateName }" value="${ p.plantNo }"/></div>
+		                        <div>${ p.plantNickName }</div>
+		                        </c:otherwise>
+	                        </c:choose></div>
+                        </c:forEach>
+                        <div id="plantButtonWrap">
+                        	<a href="insertForm.bl_pl?blogNo=${ blog.blogNo }"><button class="button forest">+</button></a>
                         </div>
+                 </div>
                </div>
 				<article>
 					<div id="blogBoardWrap">
@@ -198,6 +248,17 @@ ul{padding: 10px;}
 		</aside>
 		
 	</main>
+	
+	<script>
+	
+	 $('img[name=plantImg]').on('click', function(e){
+		var plantNo = $(e.target).attr('value');
+		location.href = "select.bl_pl?plantNo=" + plantNo ; 
+		 
+	 });
+	 
+	</script>
+	
 	
 	<br clear="both">
 	
