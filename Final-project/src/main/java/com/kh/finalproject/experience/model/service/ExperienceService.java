@@ -32,6 +32,9 @@ public interface ExperienceService {
 	// 체험학습 게시글 작성
 	int insertExperience(Experience exp, ArrayList<Files> fileList);
 	
+	// 체험학습 게시글 수정
+	int updateExperience(Experience exp, ArrayList<Files> fileList);
+	
 	
 	
 	// 체험학습 게시글 삭제
