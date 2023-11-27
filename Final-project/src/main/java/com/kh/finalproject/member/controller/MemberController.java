@@ -164,7 +164,7 @@ public class MemberController {
 			 }
 			
 		} else {
-			session.setAttribute("alertMsg", "비밀번호가 틀렸어요!!틀렸다구요!!!! 정말 제대로 입력한게 맞아요? 다시 확인해보세요~~~");
+			session.setAttribute("alertMsg", "비밀번호가 틀렸어요. 다시 확인해보세요~~~");
 			return "redirect:myPage.me";
 		}
     }
@@ -283,4 +283,11 @@ public class MemberController {
     }
     return "redirect:/";
   }
+  
+  @RequestMapping("businessPage.me")
+  public String businessPage() {
+	  
+	return "member/businessPage.me";
+  }
+  
 }
