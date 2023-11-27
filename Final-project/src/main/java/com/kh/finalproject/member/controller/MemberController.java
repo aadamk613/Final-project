@@ -156,7 +156,7 @@ public class MemberController {
 			if(memberService.deleteMember(memId) > 0) {
 				// 탈퇴처리 성공 => session에서 loginUser지움, alert문구 담기 => 메인페이지로 잘가라고~~~~
 				session.removeAttribute("loginUser");
-				session.setAttribute("alertMsg", "잘가고~~~ 다신 보지말자~~~~");
+				session.setAttribute("alertMsg", "안녕히 가세요");
 				return "redirect:/";
 			 } else {
 				 session.setAttribute("errorMsg", "탈퇴처리 실패");
