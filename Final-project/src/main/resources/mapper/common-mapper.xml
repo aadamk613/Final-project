@@ -73,6 +73,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 	)		  	
 	</insert>
 	
+
 	<delete id="deleteFiles" parameterType="files">
 		DELETE 
 		  FROM
@@ -82,13 +83,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   AND
 		   	   REF_TYPE = #{ refType }
 	</delete>
-	
-	
-	
-	
-	
-	
-	
+
 	<!-- 
 	<update id="updateFiles" parameterType="files">
 		UPDATE
@@ -105,5 +100,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   	   REF_TYPE = #{ refType }
 	</update>
 	 -->
+
+	<update id="updateFiles">
+	
+		UPDATE TO TB_FILES
+			SET 
+				(
+			     FILE_NO,
+		         ORIGINAL_NAME,
+		         UPDATE_NAME,
+		         FILE_PATH,
+		         REF_TYPE,
+		         REF_NO,
+		         FILE_ANNOTATION,
+		         UPLOAD_DATE
+				)
+			VALUES
+			 	(
+			 	SEQ_FILE_NO.NEXTVAL, 
+			 	#{ originalName },
+			 	#{ updateName },
+			 	#{ filePath },
+			 	#{ refType },
+				 #{ refNo },
+			 	#{ fileAnnotation },
+			 	SYSDATE
+			 	)		  	
+	
+	
+	</update>
+	
 	
 </mapper>

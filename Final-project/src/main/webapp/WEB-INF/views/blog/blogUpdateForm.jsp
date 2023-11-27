@@ -115,6 +115,7 @@ input[type=text] {
     color: rgb(83, 57, 32);
 	margin: 10px auto;
 }
+
 a{
     cursor: pointer;
 	display: inline-block;
@@ -124,7 +125,9 @@ a{
     color: #888;
 	}
 	
-input[name=upfile]{display: none;}
+input[name=upfile]{display: none; }
+
+img[name=imageThumbnail]{width: 300px; }
 
 </style>
 <body>
@@ -147,73 +150,84 @@ input[name=upfile]{display: none;}
                    	블로그 관심사와 관심 식물 카테고리를 설정하시면 관련 글을 추천해드립니다
                </div>
                
+               
 				<article id="pageArticle">
 				
 					<div id="createFormWrap">
-                        <form action="update.bl" method="post" >
+                        <form action="update.bl" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="blogNo" value="${ blog.blogNo }">
                         <input type="hidden" name="memNo" value="${ blog.memNo }">
-                            <table id="createForm">
-                            <tr>
-                                    <th>블로그 이름</th>
-                                    <td><input type="text" id="blogTitle"name="blogTitle" placeholder="${ sessionScope.loginUser.memNick }님의 블로그" 
-                                    value="${ blog.blogTitle }" onfocus="this.value=''; return true"></td>
-                                </tr>
-                                <tr>
-                                    <th>블로그 소개글</th>
-                                    <td><textarea id="blogIntroduce" name="blogIntroduce" id="" placeholder="${ sessionScope.loginUser.memNick }님의 블로그입니다." onfocus="this.value=''; return true">${ blog.blogIntroduce }</textarea>
-                                </tr>
-                                <tr>
-                                    <th>블로그 이미지</th>
-                                    <td>
-                                    <img src="resources/images/defaultProfile.png" id="imageButton">
-                                    <input type="file" name="upfile">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>블로그 관심사</th>
-                                    <td>
-                                        <select name="blogInterest" value="blogInterest">
-                                            <option value="no">선택안함</option>
-                                            <option value="book">문학&middot;책</option>
-                                            <option value="movie">영화</option>
-                                            <option value="art">미술&middot;디자인</option>
-                                            <option value="show">공연&middot;전시</option>
-                                            <option value="music">음악</option>
-                                            <option value="drama">드라마</option>
-                                            <option value="enter">스타&middot;연예인</option>
-                                            <option value="animation">만화&middot;애니</option>
-                                            <option value="broadcast">방송</option>
-                                            <option value="daily">일상&middot;생각</option>
-                                            <option value="parenting">육아&middot;결혼</option>
-                                            <option value="pet">반려동물</option>
-                                            <option value="fasion">패션&middot;미용</option>
-                                            <option value="interior">인테리어&middot;DIY</option>
-                                            <option value="cook">요리&middot;레시피</option>
-                                            <option value="review">상품리뷰</option>
-                                            <option value="game">게임</option>
-                                            <option value="sport">스포츠</option>
-                                            <option value="picture">사진</option>
-                                            <option value="car">자동차</option>
-                                            <option value="hobby">취미</option>
-                                            <option value="travel">여행</option>
-                                            <option value="restaurant">맛집</option>
-                                            <option value="computer">IT&middot;컴퓨터</option>
-                                            <option value="health">건강</option>
-                                            <option value="economy">경제</option>
-                                            <option value="language">외국어</option>
-                                            <option value="edu">교육</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>관심 식물</th>
-                                    <td><input type="text" name="plantPrefer" value="g"></td>
-                                </tr>
-                            </table>
-                            <div id="blogButtonWrap">
+                        <input type="hidden" name="updateName" value="${ blog.updateName }">
+							<table id="createForm">
+								<tr>
+									<th>블로그 이름</th>
+									<td><input type="text" id="blogTitle" name="blogTitle"
+										placeholder="${ sessionScope.loginUser.memNick }님의 블로그"
+										value="${ blog.blogTitle }">
+									</td>
+								</tr>
+								<tr>
+									<th>블로그 소개글</th>
+									<td><textarea id="blogIntroduce" name="blogIntroduce"
+											placeholder="${ sessionScope.loginUser.memNick }님의 블로그입니다.">${ blog.blogIntroduce }
+										</textarea></td>
+								</tr>
+								<tr>
+									<th>블로그 이미지</th>
+									<td>
+									<input type="file" name="upfile" >
+									<c:choose>
+										<c:when test="${ not empty blog.updateName }">
+											<img src="${ blog.filePath }${ blog.updateName }" name="imageThumbnail" onclick="insertImage(this);" >
+										</c:when>
+										<c:otherwise>
+											<img src="resources/images/defaultProfile.png" name="imageThumbnail" onclick="insertImage(this);">
+										</c:otherwise>
+									</c:choose>
+									</td>
+								</tr>
+								<tr>
+									<th>블로그 관심사</th>
+									<td><select name="blogInterest" value="blogInterest">
+											<option value="no">선택안함</option>
+											<option value="book">문학&middot;책</option>
+											<option value="movie">영화</option>
+											<option value="art">미술&middot;디자인</option>
+											<option value="show">공연&middot;전시</option>
+											<option value="music">음악</option>
+											<option value="drama">드라마</option>
+											<option value="enter">스타&middot;연예인</option>
+											<option value="animation">만화&middot;애니</option>
+											<option value="broadcast">방송</option>
+											<option value="daily">일상&middot;생각</option>
+											<option value="parenting">육아&middot;결혼</option>
+											<option value="pet">반려동물</option>
+											<option value="fasion">패션&middot;미용</option>
+											<option value="interior">인테리어&middot;DIY</option>
+											<option value="cook">요리&middot;레시피</option>
+											<option value="review">상품리뷰</option>
+											<option value="game">게임</option>
+											<option value="sport">스포츠</option>
+											<option value="picture">사진</option>
+											<option value="car">자동차</option>
+											<option value="hobby">취미</option>
+											<option value="travel">여행</option>
+											<option value="restaurant">맛집</option>
+											<option value="computer">IT&middot;컴퓨터</option>
+											<option value="health">건강</option>
+											<option value="economy">경제</option>
+											<option value="language">외국어</option>
+											<option value="edu">교육</option>
+									</select></td>
+								</tr>
+								<tr>
+									<th>관심 식물</th>
+									<td><input type="text" name="plantPrefer" value="g"></td>
+								</tr>
+							</table>
+							<div id="blogButtonWrap">
                                 <div><button type="submit" class="button forest" id="blogUpdateButton">정보 수정</button></div>
-                                <div><a href="javascript:window.history.back();"><button type="button" class="button beige" id="goBlogHome">돌아가기</button></a></div>
+                                <div><a href="select.bl?blogNo=${ blog.blogNo }"><button type="button" class="button beige" id="goBlogHome">돌아가기</button></a></div>
                             </div>
                             </form>
 					</div>
@@ -222,15 +236,28 @@ input[name=upfile]{display: none;}
 			</div>
 
 			<script>
-				$('#imageButton').on('click', function() {
-					$('input[name=upfile]').click();
+				
+				// 블로그 타이틀 입력 시 포커스되면 input의 value값 ''
+               	$('input[name=blogTitle]').on('focus', () => {
+               		$('input[name=blogTitle]').val('');
+               		return true;
+               	});
+               	
+               	// input type="file"숨기고 이미지 클릭시 파일 첨부
+               	function insertImage(){
+               		$('input[name=upfile]').click();
+               	};
+               	
+               	// 이미지를 첨부했을 시 미리보기 가능하게
+               	$('input[name=upfile]').on('change', function(inputFile){
+					let reader = new FileReader();
+					reader.readAsDataURL(inputFile.target.files[0]);
+					reader.onload = e => {
+						$('img[name=imageThumbnail]').attr('src', e.target.result);
+					}
 				});
-				
-				$('input[name=upfile]').onChange
-				
-			</script>
-			
-			
+               	
+               </script>
 			
 		</section>
 		

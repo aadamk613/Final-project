@@ -24,6 +24,7 @@ public class CommonDao {
 		return sqlSession.insert("commonMapper.insertFiles", file);
 	}
 
+
 	// 첨부파일 수정
 	public int updateFiles(SqlSessionTemplate sqlSession, Files file) {
 		return sqlSession.update("commonMapper.updateFiles", file);
@@ -31,6 +32,7 @@ public class CommonDao {
 
 	// 첨부파일 삭제
 	public int deleteFiles(SqlSessionTemplate sqlSession, Files file) {
+		System.out.println("삭제 후 결과 " + sqlSession.delete("commonMapper.deleteFiles", file));
 		return sqlSession.delete("commonMapper.deleteFiles", file);
 	}
 

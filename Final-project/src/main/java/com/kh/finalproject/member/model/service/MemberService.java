@@ -1,8 +1,15 @@
 package com.kh.finalproject.member.model.service;
 
+import java.util.ArrayList;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.kh.finalproject.member.model.vo.Member;
 import com.kh.finalproject.member.model.vo.NaverLogin;
+
+import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.ArrayList;
+
 
 public interface MemberService {
 
@@ -31,8 +38,19 @@ public interface MemberService {
   int addKaKaoProfile(Member m);
 
   int loadImg(String inputFile);
-  
+
   int addGoogleProfile(Member m);
 
+  ArrayList<Ticket> getTicketListByMemId(Member loginUser);
+
+  Ticket getTicketByTicketNo(int bno);
+
+  int deleteMemberTicket(int ticketNo);
+
+  int postNewTicket(Ticket ticket);
+
+  int editMemberTicket(Ticket ticket);
+
+  int getAnswerNumber(Member loginUser);
 
 }

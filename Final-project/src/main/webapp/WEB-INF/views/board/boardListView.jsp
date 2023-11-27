@@ -102,13 +102,13 @@
 			
 			<div id="page">
 				<c:if test="${ pi.currentPage ne 1 }">
-		        	<button class="btn btn-light" onclick="location.href='list.no?cPage=${ pi.currentPage - 1 }'">&lt;</button>
+		        	<button class="btn btn-light" onclick="location.href='list.bo?cPage=${ pi.currentPage - 1 }'">&lt;</button>
 		        </c:if> 
 		       
 		        <c:forEach var="i" begin="${ pi.startPage }" end="${ pi.endPage }">
 		       		<c:choose>
 			       		<c:when test="${ pi.currentPage ne i }">
-			          		<button class="btn btn-light" onclick="location.href='list.no?cPage=${ i }'">${ i }</button>
+			          		<button class="btn btn-light" onclick="location.href='list.bo?cPage=${ i }'">${ i }</button>
 			         	</c:when>
 			         	<c:otherwise>
 			         		<button disabled class="btn btn-default">${ i }</button>
@@ -117,7 +117,7 @@
 		        </c:forEach>
 		        
 		        <c:if test="${ pi.currentPage ne pi.maxPage }">
-		        	<button class="btn btn-light" onclick="location.href='list.no?cPage=${ pi.currentPage + 1 }'">&gt;</button>
+		        	<button class="btn btn-light" onclick="location.href='list.bo?cPage=${ pi.currentPage + 1 }'">&gt;</button>
 		        </c:if>
 			</div>
 			
