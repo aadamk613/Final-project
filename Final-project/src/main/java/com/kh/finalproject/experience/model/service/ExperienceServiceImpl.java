@@ -64,6 +64,15 @@ public class ExperienceServiceImpl implements ExperienceService {
 		return result;
 	}
 	
+	@Override
+	public int updateExperience(Experience exp, ArrayList<Files> fileList) {
+		int result = experienceDao.updateExperience(sqlSession, exp);
+		result *= commonDao.deleteFiles(sqlSession, fileList.get(0));
+		for(Files file : fileList) {
+			result *= commonDao.insertFiles(sqlSession, file);
+		}
+		return result;
+	}
 	
 	@Override
 	public int deleteExperience(int expNo) {
@@ -94,6 +103,8 @@ public class ExperienceServiceImpl implements ExperienceService {
 	public int deleteExpReply(int expReplyNo) {
 		return experienceDao.deleteExpReply(sqlSession, expReplyNo);
 	}
+
+	
 
 	
 	

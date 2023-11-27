@@ -24,7 +24,8 @@ public class CommonDao {
 		return sqlSession.insert("commonMapper.insertFiles", file);
 	}
 
-	// 첨부파일 업데이트
+
+	// 첨부파일 수정
 	public int updateFiles(SqlSessionTemplate sqlSession, Files file) {
 		return sqlSession.update("commonMapper.updateFiles", file);
 	}

@@ -56,6 +56,9 @@ public class ExperienceController {
 			// 게시글 상세조회
 			model.addAttribute("exp", experienceService.selectExperience(expNo));
 			
+			System.out.println("파일넘버 나와라");
+			System.out.println(model.getAttribute("exp"));
+			
 			// 첨부파일 조회
 			// HashMap map = new HashMap();
 			// map.put("refNo", expNo);
@@ -74,17 +77,51 @@ public class ExperienceController {
 	}
 	
 	// insert메소드 같이 써도 될거같은데 단일책임의원칙 걸려서 따로 씀
-	@RequestMapping("yrupdateExpForm.exp")
-	public ModelAndView updateExperienceForm(@RequestBody Experience exp, ModelAndView mv) {
-		System.out.println("여긴 체험학습 게시글 수정하기");
-		System.out.println(exp);
-		//System.out.println(files);
-		mv.addObject("exp", exp).setViewName("experience/experienceWrite");
+	@PostMapping("yrupdateExpForm.exp")
+	public ModelAndView updateExperienceForm(Experience exp, String[] filePath, String[] updateName, String[] fileAnnotation, ModelAndView mv) {
+		ArrayList<Files> files = new ArrayList();
+		for(int i = 0; i < filePath.length; i++) {
+			Files file = new Files();
+			//file.setFileNo(fileNo[i]);
+			file.setFilePath(filePath[i]);
+			file.setUpdateName(updateName[i]);
+			file.setFileAnnotation(fileAnnotation[i]);
+			files.add(file);
+		}
+		System.out.println("파일이다 받아라");
+		System.out.println(files.toString());
+		mv.addObject("exp", exp)
+		  .addObject("files", files)
+		  .setViewName("experience/experienceWrite");
 		return mv;
 	}
 	
-	public String updateExperience() {
-		return "";
+	@PostMapping("yrupdateExp.exp")
+	public String updateExperience(Experience exp, MultipartFile[] upfiles, String[] anno, HttpSession session) {
+		System.out.println("들어와라 얍");
+		System.out.println(exp);
+		System.out.println(upfiles);
+		//System.out.println(fffff);
+		// System.out.println(upfiles[0]);
+		
+		
+		ArrayList<Files> fileList = new ArrayList();
+		for(int i = 0; i < upfiles.length; i++) {
+			if(!upfiles[i].getOriginalFilename().equals("")) {
+				Files file = commonController.setFile(upfiles[i], session, "experience");
+				file.setRefNo(exp.getExpNo());
+				file.setFileAnnotation(anno[i]);
+				fileList.add(file);
+			}
+		} 
+		
+		if(experienceService.updateExperience(exp, fileList) > 0) {
+			session.setAttribute("alertMsg", "게시글이 수정되었습니다.");
+		} else {
+			session.setAttribute("alertMsg", "게시글 수정에 실패하셨습니다.");
+		}
+		
+		return "redirect:yrlist.exp";
 	}
 	
 	@GetMapping("yrinsertExpForm.exp")
@@ -93,14 +130,26 @@ public class ExperienceController {
 	}
 	
 	@PostMapping("yrinsertExp.exp")
-	public String insertExperience(Experience exp, ArrayList<MultipartFile> upfiles, String[] anno, HttpSession session) {
+	public String insertExperience(Experience exp, 
+								   MultipartFile[] upfiles, 
+								   String[] anno, 
+								   HttpSession session) {
 		// for(MultipartFile upfile : upfiles) {
-		System.out.println(upfiles);
-		System.out.println(upfiles);
+//		System.out.println("인서트");
+//		System.out.println(upfiles);
+//		System.out.println(upfiles[0]);
+//		System.out.println(exp);
+		
+		
 		ArrayList<Files> fileList = new ArrayList();
-		for(int i = 0; i < upfiles.size(); i++) {
-			if(!upfiles.get(i).getOriginalFilename().equals("")) {
-				Files file = commonController.setFile(upfiles.get(i), session, "experience");
+		for(int i = 0; i < upfiles.length; i++) {
+			if(!upfiles[i].getOriginalFilename().equals("")) {
+				
+				System.out.println("나오자 좀");
+				System.out.println(upfiles[i]);
+				System.out.println(anno[i]);
+				
+				Files file = commonController.setFile(upfiles[i], session, "experience");
 				file.setRefNo(exp.getExpNo());
 				file.setFileAnnotation(anno[i]);
 				fileList.add(file);
