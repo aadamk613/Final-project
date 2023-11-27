@@ -30,7 +30,7 @@
 	</header> 
 	<main>
 		<aside id="pageAsideLeft" class="aside">
-        	<jsp:include page="adminAsideLeft.jsp"/>
+			<jsp:include page="adminAsideLeft.jsp"/>
 		</aside>
 		
 		<section id="pageSection">
