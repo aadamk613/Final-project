@@ -9,8 +9,8 @@ public class BoardComment {
 	private int commentNo;
 	private String commentContent;
 	private String commentStatus;
-	private String createDate;
-	private String updateDate;
+	private String commentCreateDate;
+	private String commentUpdateDate;
 	private int boardTopComment;
 	private int boardNo;
 	private String memNo;

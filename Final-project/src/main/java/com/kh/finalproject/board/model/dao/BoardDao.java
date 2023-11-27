@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.finalproject.board.model.vo.Board;
 import com.kh.finalproject.board.model.vo.BoardComment;
+import com.kh.finalproject.board.model.vo.BoardReport;
 import com.kh.finalproject.common.model.vo.Files;
 
 @Repository
@@ -68,6 +69,10 @@ public class BoardDao {
 
 	public ArrayList<BoardComment> selectComment(SqlSessionTemplate sqlSession, int boardNo) {
 		return (ArrayList)sqlSession.selectList("boardMapper.selectComment", boardNo);
+	}
+
+	public int insertReport(SqlSessionTemplate sqlSession, BoardReport br) {
+		return sqlSession.insert("boardMapper.insertReport", br);
 	}
 
 
