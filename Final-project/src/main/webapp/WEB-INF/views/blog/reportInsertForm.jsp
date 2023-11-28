@@ -127,7 +127,7 @@ textarea{
 					<input type="hidden" name="blogNo" value="${ blogNo }"/>
                     <div id="plantInfoWrap">
                         <div id="plantImg"><input type="file" name="upfile" id="plantInput"/>
-                        	<img src="resources/images/defaultPlant.png" id="plantImgInput">
+                        	<img src="resources/images/defaultPlant.png" id="plantImgInput" name="plantThumbnail">
                         </div>
                         <div id="plantImfo">
                             <ul>
@@ -162,23 +162,27 @@ textarea{
 			</div>
 			
 			<script>
-				// 현재 날짜를 알아낸 후 식물 등록 일자에서 현재 날짜 이후는 입력 불가
+				// 식물 관리 날짜: 식물 등록일 ~ 오늘 날짜
 				var nowDate = Date.now();
 				var timeOff = new Date().getTimezoneOffset()*60000;
 				var today = new Date(nowDate-timeOff).toISOString().split("T")[0];
-				console.log(today);
+				var logDate = '${ plant.plantLogDate}';
 				
-				console.log($('input[name=plantLogDate]'));
-				$('input[name=plantLogDate]').attr("max", today);
-				
-				console.log(${ plant.plantLogDate});
-			
-					
+				$('input[name=plantLogDate]').attr("min", logDate).attr("max", today);
 
+				
 			      plantImgInput.addEventListener('click', function(){
 			    	  plantInput.click();
 			      });
 			      
+	              // 이미지를 첨부했을 시 미리보기 가능하게
+	              $('input[name=upfile]').on('change', function(inputFile){
+				  	let reader = new FileReader();
+					reader.readAsDataURL(inputFile.target.files[0]);
+					reader.onload = e => {
+					$('img[name=plantThumbnail]').attr('src', e.target.result);
+						}
+				  });
 			</script>
 			
 			
