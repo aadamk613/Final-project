@@ -301,15 +301,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			        FROM MEMBER
 			        WHERE MEM_NICK = #{refMemberNo})
 			     ,#{memNo}
+			     ,#{refBoardNo}
 			      )
 		</insert>
 		
 		<select id="selectCommentReport" resultType="commentReport">
 			SELECT
-			      MEM_NO memNo
+			      REF_COMMENT_NO refCommentNo
 			  FROM
 			      TB_COMMENT_REPORT
 			 WHERE
-			      REF_COMMENT_NO = #{refCommentNo}
+			      MEM_NO = #{memNo}
+			   AND
+			      REF_BOARD_NO = #{refBoardNo}
 		</select>
 </mapper>

@@ -128,7 +128,7 @@ public class BoardController {
 					}
 						mv.addObject("f", boardService.selectFile(bno)).setViewName("board/boardDetailView");
 				}
-				
+				System.out.println(boardService.selectCommentReport(cr));
 				mv.addObject("cr", boardService.selectCommentReport(cr))
 				  .addObject("br", boardService.selectBoardReport(bno))
 				  .addObject("cList", boardService.selectComment(bno))
