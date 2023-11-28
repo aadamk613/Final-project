@@ -205,10 +205,10 @@ public class MemberController {
     nv.setEmail((String) responseObj.get("email"));
     nv.setProfile_image((String) responseObj.get("profile_image"));
     // 지금 로그인한 네이버 프로필이 DB에 없으면 DB에 추가
-    Member loginUser = memberService.selectNaverProfile(nv.getId());
+    Member loginUser = memberService.selectSocialProfile(nv.getId());
     if (loginUser == null) {
       memberService.addNaverProfile(nv);
-      loginUser = memberService.selectNaverProfile(nv.getId());
+      loginUser = memberService.selectSocialProfile(nv.getId());
     }
     memberService.setLastLogin(loginUser);
     session.setAttribute("loginUser", loginUser);
@@ -223,14 +223,14 @@ public class MemberController {
     System.out.println("printing map" + profileMap.toString());
     // 지금 로그인한 카카오톡 프로필이 DB에 없으면 DB에 추가.
     // 네이버용으로 작성한 select문이지만 카카오 계정에도 적용가능.
-    Member loginUser = memberService.selectNaverProfile(profileMap.get("id"));
+    Member loginUser = memberService.selectSocialProfile(profileMap.get("id"));
     Member m = new Member();
     m.setMemId(profileMap.get("id"));
     m.setMemNick(profileMap.get("nickname"));
     m.setMemImg(profileMap.get("profile_image"));
     if (loginUser == null) {
       memberService.addKaKaoProfile(m);
-      memberService.selectNaverProfile(profileMap.get("id"));
+      memberService.selectSocialProfile(profileMap.get("id"));
     }
     memberService.setLastLogin(loginUser);
     session.setAttribute("loginUser", loginUser);
@@ -251,37 +251,26 @@ public class MemberController {
             // .setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
             .build();
     GoogleIdToken idToken = verifier.verify(credential);
-    Map<String, String> returnMe = new HashMap<>();
     if (idToken != null) {
       Payload payload = idToken.getPayload();
 
-      // Print user identifier
+      // Print user identifier; userId = unique identifier
       String userId = payload.getSubject();
-      System.out.println("User ID: " + userId);
 
       // Get profile information from payload
       String email = payload.getEmail();
-      boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
       String name = (String) payload.get("name");
       String pictureUrl = (String) payload.get("picture");
-      String locale = (String) payload.get("locale");
-      String familyName = (String) payload.get("family_name");
-      String givenName = (String) payload.get("given_name");
 
-      returnMe.put("name", name);
-      returnMe.put("pictureUrl", pictureUrl);
-      returnMe.put("userId", userId);
-      System.out.println(returnMe);
-      Member loginUser = memberService.selectNaverProfile(returnMe.get("userId"));
+      Member loginUser = memberService.selectSocialProfile(userId);
       Member m = new Member();
-      m.setMemId(returnMe.get("userId"));
-      m.setMemNick(returnMe.get("name"));
-      m.setMemImg(returnMe.get("pictureUrl"));
-      m.setEmail(returnMe.get("email"));
+      m.setMemId(userId);
+      m.setMemNick(name);
+      m.setMemImg(pictureUrl);
+      m.setEmail(email);
       if (loginUser == null) {
         memberService.addGoogleProfile(m);
-        memberService.selectNaverProfile(returnMe.get("id"));
-        loginUser = m;
+        loginUser = memberService.selectSocialProfile(userId);
       }
       memberService.setLastLogin(loginUser);
       session.setAttribute("loginUser", loginUser);
