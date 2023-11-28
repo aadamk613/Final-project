@@ -144,6 +144,7 @@
 						<hr>
 							<div id="commentContentBox">
 								<c:forEach var="c" items="${ cList }">
+								<c:forEach var="cr" items="${ cr }">
 								<div class="commentNo" style="display:none">${ c.commentNo }</div>
 								<div class="memNo" style="display:none">${ c.memNo }</div>
 								<div id="commentWriteMemId">
@@ -151,9 +152,9 @@
 								</div>
 								<div id="commentContent">
 									${ c.commentContent }
-									
+
 									<c:choose>
-										<c:when test="${ loginUser.memNick ne c.memNo && !empty loginUser && empty cr}">
+										<c:when test="${ loginUser.memNick ne c.memNo && !empty loginUser && c.commentNo ne cr.refCommentNo}">
 											<button id="commentReportBtn" class="commentReportBtn btn btn-primary">신고하기</button>
 										</c:when>
 										<c:otherwise>
@@ -169,6 +170,7 @@
 									<a href="#">답글 쓰기</a>
 								</div>
 								<hr>
+								</c:forEach>
 								</c:forEach>						
 						<div id="commentInsertBox">
 							<textarea id="commentContentInsert" placeholder="댓글을 남겨보세요"></textarea>
