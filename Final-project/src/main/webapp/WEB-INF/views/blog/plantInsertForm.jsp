@@ -131,7 +131,18 @@ textarea{
 			</div>
 
 			<script>
-			    
+			
+				// 현재 날짜를 알아낸 후 식물 등록 일자에서 현재 날짜 이후는 입력 불가
+				var nowDate = Date.now();
+				var timeOff = new Date().getTimezoneOffset()*60000;
+				var today = new Date(nowDate-timeOff).toISOString().split("T")[0];
+				console.log(today);
+				
+				console.log($('input[name=plantLogDate]'));
+				$('input[name=plantLogDate]').attr("max", today);
+				
+				
+				// input type="file"을 숨긴 후 기본이미지 클릭 시 이벤트 수행되게
 			      plantImgInput.addEventListener('click', function(){
 			    	  plantInput.click();
 			      });

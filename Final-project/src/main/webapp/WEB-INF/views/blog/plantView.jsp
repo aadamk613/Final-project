@@ -34,6 +34,8 @@ article{padding: 10px;}
 
 #plantInfo{width: 80%; height: 160px;}
 
+#plantReport{width: 100%; height: auto; padding: 20px;}
+
 #plantName{font-size: 20px; font-weight: bold; }
 
 #plantName div{float: left; width:50%; height: 30px;}
@@ -156,8 +158,8 @@ textarea{
                                 <li id="plantName">
                                 	<div>식물 이름 : ${ plant.plantName }</div>
                                 	<div id="deleteWrap">
-									<button class="button beige" onclick="updatePlant();">수정하기</button>		                                	
-                                	<button class="button forest delete" onclick="deletePlant();">-</button>
+									<button class="button beige" onclick="plantManage(update);">수정하기</button>		                                	
+                                	<button class="button forest delete" onclick="plantManage(del);">-</button>
                                 	</div>
                                 	<clear="both">
                                 </li>
@@ -170,11 +172,28 @@ textarea{
                                 	<input type="hidden" id="plantNo" name="plantNo" value="${ plant.plantNo }">
                                 	<input type="hidden" name="plantNickName" value="${ plant.plantNickName }">
 									
-                                	<a id="plantReport" class="button forest" onclick="plantCare(this);">일지 추가</a>
-                                    <a id="plantCare" class="button forest" onclick="plantCare(this);">관리하기</a>
+                                	<a id="plantReportButton" class="button forest" onclick="plantCare(this);">일지 추가</a>
+                                    <a id="plantCareButton" class="button forest" onclick="plantCare(this);">관리하기</a>
                                 </form>
                                 </li>
                             </ul>
+                        </div>
+                        
+                        <div id="plantReport">
+                        	<table>
+                        		<tr>
+                        			2023-11-20 11일전
+                        		</tr>
+                        		<tr>
+                        			식물 일지 or 식물 관리
+                        		</tr>
+                        		<tr>
+                        			내용
+                        		</tr>
+                        		
+                        		
+                        	</table>
+                        
                         </div>
                         
                     </div>
@@ -204,15 +223,23 @@ textarea{
 	            	}
 	         	
 	         		// 식물 삭제하기
-		         	function deletePlant(){
-		         		
-	         			console.log(${ plant.plantNo });
+		         	function plantManage(str){
+		         		console.log(str);
 	         			
-	         			if(confirm("해당 식물의 모든 정보와 일지를 삭제합니다. 식물을 삭제하시겠습니까?")){
+						if(str.equals("update")){
+							console.log(str);	
+						}	
+						else{
+							console.log(str);
+			      			console.log(${ plant.plantNo });
+		         			
+		         			if(confirm("해당 식물의 모든 정보와 일지를 삭제합니다. 식물을 삭제하시겠습니까?")){
 
-	         				location.href = "delete.bl_pl?plantNo=" + ${ plant.plantNo } + "&blogNo=" + ${ plant.blogNo };
+		         				location.href = "delete.bl_pl?plantNo=" + ${ plant.plantNo } + "&blogNo=" + ${ plant.blogNo };
 
-	         			}
+		         			}
+						}
+	   
 		         	}
 	         	
 			</script>
