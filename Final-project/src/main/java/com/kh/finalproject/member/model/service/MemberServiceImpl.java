@@ -1,16 +1,16 @@
 package com.kh.finalproject.member.model.service;
 
-import com.kh.finalproject.member.model.dao.MemberDao;
-import com.kh.finalproject.member.model.vo.Member;
-import com.kh.finalproject.member.model.vo.NaverLogin;
-import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.ArrayList;
 
-import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.kh.finalproject.member.model.dao.MemberDao;
+import com.kh.finalproject.member.model.vo.Member;
+import com.kh.finalproject.member.model.vo.NaverLogin;
+import com.kh.finalproject.ticket.model.vo.Ticket;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -116,4 +116,10 @@ public class MemberServiceImpl implements MemberService {
   public int getAnswerNumber(Member loginUser) {
     return memberDao.getAnswerNumber(sqlSession, loginUser);
   }
+  
+  @Override
+  public int businessPage(Member memStatus) {
+	  return memberDao.businessPage(sqlSession, memStatus);
+		  
+	  }
 }

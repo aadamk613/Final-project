@@ -1,5 +1,24 @@
 package com.kh.finalproject.member.controller;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -14,21 +33,6 @@ import com.kh.finalproject.member.model.service.NaverLoginService;
 import com.kh.finalproject.member.model.vo.Member;
 import com.kh.finalproject.member.model.vo.NaverLogin;
 import com.kh.finalproject.ticket.model.vo.Ticket;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import javax.servlet.http.HttpSession;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class MemberController {
@@ -49,10 +53,7 @@ public class MemberController {
    *
    * @return String 리디렉션할 로그인 페이지 주소
    */
-  @RequestMapping("loginForm.me")
-  public String loginForm() {
-    return "member/loginForm";
-  }
+  
 
   @ResponseBody
   @GetMapping(value = "getMemberList.me", produces = "application/json; charset=UTF-8")
@@ -177,6 +178,7 @@ public class MemberController {
 			session.setAttribute("alertMsg", "비밀번호가 틀렸어요. 다시 확인해보세요~~~");
 			return "redirect:myPage.me";
 		}
+  }
     
   @GetMapping("naverLogin.me")
   public String naverLogin() {
@@ -289,11 +291,18 @@ public class MemberController {
     }
     return "redirect:/";
   }
-  
   @RequestMapping("businessPage.me")
   public String businessPage() {
-	  
-	return "member/businessPage.me";
+	  return "member/businessPage";
+  }
+  @RequestMapping("businessPage1.me")
+  public ResponseEntity<String> businessPage(String memStatus) {
+	  if ("B".equals(memStatus)) { // 기업인 경우에만 진위 확인 페이지를 연다고 가정
+		  memberService.businessPage(memStatus);
+          return ResponseEntity.ok("진위 확인 페이지가 열렸습니다.");
+      } else {
+          return ResponseEntity.badRequest().body("기업이 아닙니다.");
+      }
   }
 
   @GetMapping("memberTicket.me")

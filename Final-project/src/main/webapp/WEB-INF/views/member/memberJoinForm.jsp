@@ -35,6 +35,10 @@
 	line-height:200%;
 	color: #88c080;
 }
+.error {
+            color: red;
+            font-size: 0.7em;
+        }
 
 </Style>
 </head>
@@ -81,7 +85,8 @@
 			</div>
 			<div class="emailWrap">
 				이메일
-				<input type="email"placeholder="@ 기입필수!" name="email" pattern="+@^[0-9a-zA-Z]\.com" required>
+				<input type="email"placeholder="@기입필수!" name="email" pattern="/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
+" required>
 			</div>
 			<div class="Qualification">
 		    개인/기업
@@ -102,75 +107,75 @@
 	</div>
 	
 	<script>
-	$(function() {
+	$(function(){
 		// 자주쓰는, 중복되는 요소는 변수로 지정해놓는게 나아서 해놓음
-	    const $idInput = $('#memberId');
-	    const $checkResult = $('#checkResult');
-	    const $joinFormSubmit = $('#join-form :submit');
-
-	    $idInput.on('input', function() {
-        const inputValue = $idInput.val();
-        const filteredValue = inputValue.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, ''); // 한글을 필터링
-
-	        $idInput.val(filteredValue); // 한글이 입력된 경우 필터링된 값으로 대체
+		const $idInput = $('.joinFormWrap #memberId');
+		const $checkResult = $('#checkResult');
+		const $joinFormSubmit = $('#join-form : submit');
+		
+		$idInput.keyup(function(){
+			if($idInput.val().length >= 5){
+				$.ajax({
+					url : 'idCheck.me',
+					data :  {checkId : $idInput.val()},
+					success : function(){
+						if(result.substr(4) === 'N'){// 사용불가능 
+							$checkResult.show().css('color', 'crimson').text('어? 중복된 아이디가 있네요~?');
+							$joinFormSubmit.attr('disabled', true);
+						}
+						else { // 사용가능
+							$checkResult.show().css('color', 'lightgreen').text('와우~ 아주아주 멋진 아이디인걸요?');
+							$joinFormSubmit.removeAttr('disabled');
+						}
+					},
+					error : function(){
+						console.log('아이디 중복체크용 AJAX 통신실패');
+					}
+				});
+			}
+			else{
+				$checkResult.hide();
+				$joinFormSubmit.attr('disabled', true);
+			}
 			
-	     	// 최소 5글자 이상 입력했을 떄만 AJAX 요청을 보내서 중복체크
-	        if (filteredValue.length >= 5) {
-	            $.ajax({
-	                url: 'idCheck.me',
-	                data: { checkId: filteredValue }, // 필터링된 값으로 중복 체크 요청
-	                success: function(result) {
-	                	
-	                    console.log(result);
-	                    
-	                    if(result.substr(4) === 'N') { // 사용불가능
-	                        $checkResult.show().css('color', 'red').text('이미 사용 중인 아이디입니다.');
-	                        $joinFormSubmit.attr('disabled', true);
-	                    } else { // 사용가능
-	                        $checkResult.show().css('color', 'green').text('멋진 아이디네요!');
-	                        $joinFormSubmit.removeAttr('disabled');
-	                    }
-	                },
-	                error: function() {
-	                    console.log('아이디 중복체크용 AJAX 통신 실패');
-	                }
-	            });
-	        } else {
-	            $checkResult.hide();
-	            $joinFormSubmit.attr('disabled', true);
-	        }
-	    });
+		});
+	})
 	// $idInput.on('input', function() {...})을 사용하여 아이디 입력란의 내용이 바뀔 때마다 이벤트를 감지함
 	// 입력된 값에서 한글을 필터링하여 한글이 입력되면 해당 부분을 제거하고, 필터링된 값으로 다시 아이디 입력란에 설정
 	// 그리고 필터링된 값이 5글자 이상일 경우, AJAX를 사용하여 서버에 중복 체크를 요청
 	// 서버에서 반환된 결과에 따라 중복 여부를 사용자에게 알려주고
 	// 폼 제출 버튼을 활성화 하거나 비활성화 해줌
-	
-	    
-	    function register() {
-	        const selectElement = document.getElementById('memStatus');
-	        const selectedValue = selectElement.value;
 
-	        if (selectedValue === 'B') {
-	            openBusinessPage();
-	        } else {
-	            // 개인 회원가입 처리 로직
-	            // ...
-	            console.log('개인 회원가입');
-	        }
-	    }
+    
+   $(function() {
+        $('#join-form').submit(function(e) {
+            e.preventDefault(); // 기존의 폼 제출 이벤트 막기
 
-	    function openBusinessPage() {
-	        // 여기에서 사업자등록정보 진위확인 뷰페이지를 열도록 처리
-	        // window.open() 등을 사용하여 새 창이나 모달을 열 수 있음
-	        // 예시: 새 창 열기
-	        window.open('businessPage.jsp}', '_blank');
-	    }
+            const formData = $(this).serialize(); // 폼 데이터 직렬화
 
-	    
-	});
-	
-	</script>
+            $.ajax({	
+                type: 'POST',
+                url: 'join.me',
+                data: formData,
+                success: function(response) {
+
+                    const memStatus = $("#memStatus option:selected").val();	
+
+                    if (memStatus === 'B') {
+                        window.location.href = 'http://localhost:8001/final/businessPage.me'; // 기업인 경우, businessPage.jsp로 이동
+                    } else {
+                        window.location.href = 'http://localhost:8001/final/';
+                        // 개인 회원가입 로직 처리
+                    }
+                },
+                error: function() {
+                    console.log('서버 요청 실패');
+                }
+            });
+        });
+    });
+</script>
+
 	</section>
 	<aside id="pageAsideRight" class="aside">
        

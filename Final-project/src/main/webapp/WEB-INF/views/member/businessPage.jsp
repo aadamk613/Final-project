@@ -44,21 +44,34 @@ button:hover {
   </style>
 </head>
 <body>
-  <div class="container">
+
+
+	<header id="pageHeader">
+        &lt;header&gt;
+        id=pageHeader
+        여기는 헤더
+	</header> 
+	
+	<main>
+	<aside id="pageAsideLeft" class="aside">
+	</aside>
+		
+	<section id="section">
+
     <form action="businessPage.me" method="post" id="business-regist">
+  <div class="container">
     <h1>사업자등록정보 진위확인</h1>
     <label for="businessNumber">사업자 등록 번호:</label>
     <input type="text" id="businessNumber" placeholder="사업자 등록 번호 입력">
     <button id="checkButton">확인</button>
     <div id="result"></div>
-  </form>
   </div>
+  </form>
 
-  <!-- JavaScript 파일 링크 -->
+  <!-- 
   <script src="script.js"></script>
-</body>
 
-<!-- 
+
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
 	  const checkButton = document.getElementById('checkButton');
@@ -85,6 +98,27 @@ button:hover {
 	  }
 	});
 </script>
-	  -->
-</Body>
+-->
+</section>
+	<aside id="pageAsideRight" class="aside">
+       
+	</aside>
+	
+	</main>
+	
+	<br clear="both">
+	
+	<footer id="pageFooter">
+        &lt;footer&gt; <br>
+        id=pageFooter
+        여기는 푸터 <br>
+        여기는 푸터 <br>
+        여기는 푸터 <br>
+        여기는 푸터 <br>
+        여기는 푸터 <br>
+        여기는 푸터 <br>
+        쓰는만큼 늘어나요<br>
+	</footer>
+
+</body>
 </html>

@@ -90,4 +90,8 @@ public class MemberDao {
   public int getAnswerNumber(SqlSessionTemplate sqlSession, Member loginUser) {
     return sqlSession.selectOne("ticketMapper.getAnswerNumber", loginUser);
   }
+  
+  public int businessPage(SqlSessionTemplate sqlSession, Member memStatus) {
+	  return sqlSession.selectOne("memberMapper.businessPage", "B");
+  }
 }
