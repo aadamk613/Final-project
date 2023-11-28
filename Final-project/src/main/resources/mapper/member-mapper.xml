@@ -105,7 +105,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 		MEM_ID = #{checkId}
 	
 	</select>
-	
+
 	<update id="updateMember" parameterType="member">
 		UPDATE
 				TB_FILE,
@@ -117,7 +117,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 		MEM_ID = #{memId}
 		   		
 	</update>
-	
+
 	<update id="deleteMember" parameterType="string">
 		UPDATE
 				MEMBER
@@ -169,7 +169,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE 
 			MEM_NO = #{memNo}
 	</update>
-	<select id="selectNaverProfile" parameterType="string" resultMap="memberResultSet">
+	<select id="selectSocialProfile" parameterType="string" resultMap="memberResultSet">
 		SELECT
 			MEM_NO,
 			MEM_STATUS,

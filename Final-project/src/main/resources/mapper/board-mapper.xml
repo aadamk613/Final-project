@@ -257,24 +257,59 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<insert id="insertReport" parameterType="boardReport">
 			INSERT
 			  INTO
-			  	  TB_BOARD_REPORT
-			  	  (
+			      TB_BOARD_REPORT
+			      (
 			      REPORT_NO
 			     ,REPORT_CONTENT
 			     ,REPORT_DATE
 			     ,REF_BOARD_NO
-			     ,REF_MEMBER_NICK
+			     ,REF_MEMBER_NO
 			     ,MEM_NO
 			     )
-		   VALUES
-		        (
-		         SEQ_BOARD_REPORT_NO.NEXTVAL
-		        ,#{reportContent}
-		        ,SYSDATE
-		        ,#{refBoardNo}
-		        ,#{refMemberNo}
-		        ,#{memNo}
-		        )
+			VALUES(
+			     SEQ_BOARD_REPORT_NO.NEXTVAL
+			     ,#{reportContent}
+			     ,SYSDATE
+			     ,#{refBoardNo}
+			     , (SELECT MEM_NO
+			        FROM MEMBER
+			        WHERE MEM_NICK = #{refMemberNo})
+			     ,#{memNo}
+			     )
 		</insert>
 	
+		<select id="selectBoardReport" resultType="boardReport">
+		   SELECT
+			      MEM_NO memNo
+			 FROM
+			     TB_BOARD_REPORT
+			WHERE
+			     REF_BOARD_NO = ${boardNo}
+		</select>
+		
+		<insert id="insertCommentReport" parameterType="commentReport">
+			INSERT
+			  INTO
+			      TB_COMMENT_REPORT
+			VALUES
+			      (
+			      SEQ_COMMENT_REPORT_NO.NEXTVAL
+			     ,#{reportContent}
+			     ,SYSDATE
+			     ,#{refCommentNo}
+			     , (SELECT MEM_NO
+			        FROM MEMBER
+			        WHERE MEM_NICK = #{refMemberNo})
+			     ,#{memNo}
+			      )
+		</insert>
+		
+		<select id="selectCommentReport" resultType="commentReport">
+			SELECT
+			      MEM_NO memNo
+			  FROM
+			      TB_COMMENT_REPORT
+			 WHERE
+			      REF_COMMENT_NO = #{refCommentNo}
+		</select>
 </mapper>

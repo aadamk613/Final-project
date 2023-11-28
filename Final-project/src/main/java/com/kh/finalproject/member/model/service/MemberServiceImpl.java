@@ -1,7 +1,6 @@
 package com.kh.finalproject.member.model.service;
 
 import java.util.ArrayList;
-
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,14 +31,15 @@ public class MemberServiceImpl implements MemberService {
   public int idCheck(String checkId) {
     return memberDao.idCheck(sqlSession, checkId);
   }
+
   @Override
   public int updateMember(Member m) {
-	  return memberDao.upateMember(sqlSession, m);
+    return memberDao.upateMember(sqlSession, m);
   }
-  
+
   @Override
   public int deleteMember(String memId) {
-	  return memberDao.deleteMember(sqlSession, memId);
+    return memberDao.deleteMember(sqlSession, memId);
   }
 
   @Override
@@ -57,7 +57,6 @@ public class MemberServiceImpl implements MemberService {
     return memberDao.loadImg(sqlSession, inputFile);
   }
 
-
   public Member selectMember(int memNo) {
     return memberDao.selectMember(sqlSession, memNo);
   }
@@ -73,8 +72,8 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
-  public Member selectNaverProfile(String memId) {
-    return memberDao.selectNaverProfile(sqlSession, memId);
+  public Member selectSocialProfile(String memId) {
+    return memberDao.selectSocialProfile(sqlSession, memId);
   }
 
   @Override

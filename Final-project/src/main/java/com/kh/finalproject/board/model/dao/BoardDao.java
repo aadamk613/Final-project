@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.finalproject.board.model.vo.Board;
 import com.kh.finalproject.board.model.vo.BoardComment;
 import com.kh.finalproject.board.model.vo.BoardReport;
+import com.kh.finalproject.board.model.vo.CommentReport;
 import com.kh.finalproject.common.model.vo.Files;
 
 @Repository
@@ -73,6 +74,18 @@ public class BoardDao {
 
 	public int insertReport(SqlSessionTemplate sqlSession, BoardReport br) {
 		return sqlSession.insert("boardMapper.insertReport", br);
+	}
+	
+	public ArrayList<BoardReport> selectBoardReport(SqlSessionTemplate sqlSession, int boardNo) {
+		return (ArrayList)sqlSession.selectList("boardMapper.selectBoardReport", boardNo);
+	}
+
+	public int insertCommentReport(SqlSessionTemplate sqlSession, CommentReport cr) {
+		return sqlSession.insert("boardMapper.insertCommentReport", cr);
+	}
+
+	public ArrayList<CommentReport> selectCommentReport(SqlSessionTemplate sqlSession, CommentReport cr) {
+		return (ArrayList)sqlSession.selectList("boardMapper.selectCommentReport", cr);
 	}
 
 
