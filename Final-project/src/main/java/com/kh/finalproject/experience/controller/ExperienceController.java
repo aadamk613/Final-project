@@ -117,6 +117,8 @@ public class ExperienceController {
 			// oldFile.substring(oldFile.lastIndexOf("/"));
 		}
 		
+		System.out.println("여기까진 온거야?");
+		
 		// 2. 새로 들어온 파일 MultipartFile insert 
 		ArrayList<Files> fileList = new ArrayList();
 		System.out.println(fileList);
@@ -163,22 +165,43 @@ public class ExperienceController {
 //		System.out.println(upfiles[0]);
 //		System.out.println(exp);
 		
+		System.out.println("갑자기 널?");
+		System.out.println(upfiles[0]);
+		System.out.println(upfiles[1]);
+		System.out.println(upfiles[2]);
+		
+		System.out.println(anno[0]);
+		System.out.println(anno[1]);
+		
+		
+		
 		
 		ArrayList<Files> fileList = new ArrayList();
 		for(int i = 0; i < upfiles.length; i++) {
+			
+			System.out.println(i);
+			
 			if(!upfiles[i].getOriginalFilename().equals("")) {
 				
 				System.out.println("나오자 좀");
 				System.out.println(upfiles[i]);
-				System.out.println(anno[i]);
+				
 				
 				Files file = commonController.setFile(upfiles[i], session, "experience");
 				System.out.println("엥  여기 번호가 있음?????");
 				System.out.println(exp.getExpNo()); // 0
 				//file.setRefNo(exp.getExpNo());
+				System.out.println(anno[i]);
 				file.setFileAnnotation(anno[i]);
 				fileList.add(file);
-			}
+			} 
+			
+			
+			
+			
+			
+			
+			
 		}
 		
 		if(experienceService.insertExperience(exp, fileList) > 0) {

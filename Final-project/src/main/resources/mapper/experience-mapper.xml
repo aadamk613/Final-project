@@ -333,9 +333,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  FROM
 		  	   TB_FILES
 		 WHERE
-		 	   UPDATE_NAME = SUBSTR('resources/uploadFiles/experience/2023112812200118248.jpg', INSTR('resources/uploadFiles/experience/2023112812200118248.jpg', '/', - 1) + 1)
+		 	   UPDATE_NAME = SUBSTR(#{ oldFile }, INSTR(#{ oldFile }, '/', - 1) + 1)
 		   AND
-		   	   REF_TYPE = #{ refType }
+		   	   REF_TYPE = 'experience'
 	</delete>
 	
 	
