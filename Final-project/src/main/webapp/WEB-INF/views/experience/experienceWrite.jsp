@@ -81,7 +81,7 @@ img{
 					<input type="file" name="upfiles" id="thumbFile" />
 					<img src="${ files[0].filePath }/${ files[0].updateName }" id="thumb" class="thumbFile" required />
 					<input type="hidden" name="anno" value="thumb" placeholder="사진첨부 후 작성해 주세요"  />
-					<input type="hidden" name="oldFileNo" value="${ files[0].fileNo }" />
+					<input type="hidden" name="" value="${ files[0].filePath }${ files[0].updateName }" />
 					<!-- 기존의 파일을 지우거나 삭제하지 않기 위해 파일번호를 가져감 -->
 					<script>
 						console.log('${ files }');
@@ -105,8 +105,6 @@ img{
 						$('input[type=file]').hide();
 						//$('img').on('click', function abc(e){
 						$(document).on('click', 'img', function abc(e){
-							// console.log("하이드");
-							// console.log(e.target.id);
 							const imgId = e.target.id;
 							// console.log("이건 뭔데");
 							// console.log($('img[id=' + imgId +']').siblings().eq(0));
@@ -132,12 +130,23 @@ img{
 							
 							// 기존파일이 있다면 기존파일의 oldFileNo를 아예 지워버림(왜 여기서 하냐면, 파일을 누르는 순간 기존 파일은 변경되거나 취소를 누르면 삭제됨)
 							console.log("지울 파일 요소...");
-							console.log(changeFile.siblings().eq(2).val());
-							changeFile.siblings().eq(2)
+							console.log(changeFile.siblings().eq(2).attr('name'));
+							//changeFile.siblings().eq(2).attr('name', '');
+							console.log(changeFile.siblings().eq(2).attr('name'));
+							
+							//changeFile.siblings().eq(2)
 							
 							
 							// 파일이 있다면
 							if(inputFile.target.files.length == 1){
+								
+								changeFile.siblings().eq(2).attr('name', 'oldFiles');
+								//changeFile.siblings().eq(1).attr('name', 'newAnno');
+								//console.log(changeFile.siblings().eq(1).attr('name'));
+								console.log("왜 안넘어가");
+								console.log(changeFile.siblings().eq(1).attr('name'));
+								console.log(changeFile.siblings().eq(1).val());
+								
 								let reader = new FileReader();
 								reader.readAsDataURL(inputFile.target.files[0]);
 								reader.onload = function(e){
@@ -171,10 +180,24 @@ img{
 							}
 							// 파일 첨부하기 취소를 누르면
 							else{
+								/*
+							
+								console.log(changeFile);
+								console.log(changeFile.siblings().eq(0));
+								console.log(changeFile.siblings().eq(1));
+							
 								changeFile.siblings().eq(0).attr('src', '');
 								changeFile.siblings().eq(1).val('');
 								changeFile.siblings().eq(1).attr('disabled', true);
+								*/
 							}
+							
+							
+							
+							
+							
+							
+							
 						});
 					});
 					
@@ -259,11 +282,11 @@ img{
 				});
 				
 				const value = '<div>'
-					 +'<input type="file" name="upfiles" />'
-					 +'<img src="" class="file-img" />'
-					 +'<input type="text" name="anno" placeholder="사진첨부 후 작성해 주세요" disabled />'
-					 +'<button onclick="deleteFile($(this));">삭제하기</button>'
-					 +'</div>';	
+							 +'<input type="file" name="upfiles" />'
+							 +'<img src="" class="file-img" />'
+							 +'<input type="text" name="anno" placeholder="사진첨부 후 작성해 주세요" disabled />'
+							 +'<button onclick="deleteFile($(this));">삭제하기</button>'
+							 +'</div>';	
 				
 				// 버튼 클릭하면 div 생성
 				$(() => {
@@ -284,7 +307,7 @@ img{
 				});
 				
 				
-				if('${ exp }' != ''){
+				if('${ expNo }' != ''){
 					$('form').attr('action', 'yrupdateExp.exp');
 				}
 				else{
@@ -304,8 +327,8 @@ img{
 						<div>
 							<input type="file" name="upfiles" />
 							<img src="${ f.filePath }${ f.updateName }" class="file-img" />
-							<input type="text" name="anno" value="${ f.fileAnnotation }" placeholder="사진첨부 후 작성해 주세요" />
-							<input type="hidden" name="oldFileNo" value="${ f.fileNo }" />
+							<input type="text" name="anno" value="${ f.fileAnnotation }" placeholder="사진첨부 후 작성해 주세요" disabled />
+							<input type="hidden" name="" value="${ f.filePath }${ f.updateName }" />
 							<button onclick="deleteFile();">삭제하기</button>
 						</div>
 					</c:forEach>
@@ -318,13 +341,6 @@ img{
 					
 					console.log("삭제삭제삭제");
 					console.log(e);
-					console.log(e.target);
-					console.log(e.eq(-1));
-					console.log(e.eq(-2));
-					console.log(e.eq(2));
-					console.log(e.eq(3));
-					console.log(e.eq(4));
-					
 				
 					/* changeFile.siblings().eq(0).attr('src', '');
 					changeFile.siblings().eq(1).val('');

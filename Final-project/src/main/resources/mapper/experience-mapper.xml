@@ -327,7 +327,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   EXP_NO = #{ expNo }
 	</update>
 	
-	
+	<!-- 체험학습 게시글 첨부파일 수정 삭제 -->
+	<delete id="deleteExpFiles" parameterType="string">
+		DELETE 
+		  FROM
+		  	   TB_FILES
+		 WHERE
+		 	   UPDATE_NAME = SUBSTR('resources/uploadFiles/experience/2023112812200118248.jpg', INSTR('resources/uploadFiles/experience/2023112812200118248.jpg', '/', - 1) + 1)
+		   AND
+		   	   REF_TYPE = #{ refType }
+	</delete>
 	
 	
 	

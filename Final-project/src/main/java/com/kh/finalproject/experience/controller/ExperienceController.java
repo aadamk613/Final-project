@@ -1,5 +1,6 @@
 package com.kh.finalproject.experience.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -19,8 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.kh.finalproject.common.controller.CommonController;
 import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.common.model.vo.PageInfo;
@@ -97,35 +96,54 @@ public class ExperienceController {
 	}
 	
 	@PostMapping("yrupdateExp.exp")
-	public String updateExperience(Experience exp, MultipartFile[] upfiles, String[] anno, Integer[] oldFileNo, HttpSession session) {
-		System.out.println("들어와라 얍");
-		System.out.println(exp);
-		System.out.println(upfiles);
+	public String updateExperience(Experience exp, MultipartFile[] upfiles, String[] anno, String[] oldFiles, HttpSession session) {
+		
 		System.out.println("나와라 기존파일!!!!!!!!!!!!!!!!!!!!");
-		System.out.println(oldFileNo);
-		System.out.println(oldFileNo[0]);
+		//System.out.println(oldFileNo);
+		//System.out.println(oldFileNo[0]);
+		System.out.println(anno.toString());
+//		System.out.println(oldFileUpdateName[0]);
+//		System.out.println(oldFileUpdateName[1]);
+//		System.out.println(oldFileUpdateName[2]);
 		
+		// 1. 원래 있던 파일 지우고 oldFileNo delete
 		
-		//System.out.println(fffff);
-		// System.out.println(upfiles[0]);
+		for(String oldFile : oldFiles) {
+			System.out.println("지워질 파일 이름");
+			System.out.println(oldFile);
+			System.out.println(session.getServletContext().getRealPath(oldFile));
+			new File(session.getServletContext().getRealPath(oldFile)).delete();
+			
+			// oldFile.substring(oldFile.lastIndexOf("/"));
+		}
 		
-		
+		// 2. 새로 들어온 파일 MultipartFile insert 
 		ArrayList<Files> fileList = new ArrayList();
+		System.out.println(fileList);
 		for(int i = 0; i < upfiles.length; i++) {
+			
+			Files file = new Files();
+			
 			if(!upfiles[i].getOriginalFilename().equals("")) {
-				Files file = commonController.setFile(upfiles[i], session, "experience");
+				System.out.println("하나하나");
+				System.out.println(upfiles[i]);
+				file = commonController.setFile(upfiles[i], session, "experience");
 				file.setRefNo(exp.getExpNo());
-				file.setFileAnnotation(anno[i]);
-				fileList.add(file);
+				System.out.println("여기가 문제라고?");
+			} else {
+				continue;
 			}
+			System.out.println(anno[i]);
+			file.setFileAnnotation(anno[i]);
+			fileList.add(file);
+			
 		} 
 		
-		if(experienceService.updateExperience(exp, fileList) > 0) {
+		if(experienceService.updateExperience(exp, fileList, oldFiles) > 0) {
 			session.setAttribute("alertMsg", "게시글이 수정되었습니다.");
 		} else {
 			session.setAttribute("alertMsg", "게시글 수정에 실패하셨습니다.");
 		}
-		
 		return "redirect:yrlist.exp";
 	}
 	
@@ -155,7 +173,9 @@ public class ExperienceController {
 				System.out.println(anno[i]);
 				
 				Files file = commonController.setFile(upfiles[i], session, "experience");
-				file.setRefNo(exp.getExpNo());
+				System.out.println("엥  여기 번호가 있음?????");
+				System.out.println(exp.getExpNo()); // 0
+				//file.setRefNo(exp.getExpNo());
 				file.setFileAnnotation(anno[i]);
 				fileList.add(file);
 			}

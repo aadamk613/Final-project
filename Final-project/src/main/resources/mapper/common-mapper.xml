@@ -58,6 +58,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 	#{ filePath },
 			 	#{ refType },
 			 	<choose>
+			 		<when test="refNo gt 0">
+			 			#{ refNo },
+			 		</when>
 			 		<when test="refType eq 'plant'">
 			 			SEQ_PLANT_NO.CURRVAL,
 			 		</when>
@@ -99,7 +102,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   AND
 		   	   REF_TYPE = #{ refType }
 	</update>
-	 -->
+	 
 
 	<update id="updateFiles">
 	
@@ -129,6 +132,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	
 	</update>
-	
+	-->
 	
 </mapper>

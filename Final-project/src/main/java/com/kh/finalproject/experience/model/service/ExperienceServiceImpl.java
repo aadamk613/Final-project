@@ -1,5 +1,6 @@
 package com.kh.finalproject.experience.model.service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -65,11 +66,17 @@ public class ExperienceServiceImpl implements ExperienceService {
 	}
 	
 	@Override
-	public int updateExperience(Experience exp, ArrayList<Files> fileList) {
+	@Transactional
+	public int updateExperience(Experience exp, ArrayList<Files> fileList, String[] oldFiles) {
 		int result = experienceDao.updateExperience(sqlSession, exp);
-		result *= commonDao.deleteFiles(sqlSession, fileList.get(0));
+		System.out.println("게시글 업데이트 하나");
+		for(String oldFile : oldFiles) {
+			result *= experienceDao.deleteFiles(sqlSession, oldFile);
+			System.out.println("문제찾기 파일 딜리트");
+		}
 		for(Files file : fileList) {
 			result *= commonDao.insertFiles(sqlSession, file);
+			System.out.println("문제찾기 파일 인서트");
 		}
 		return result;
 	}
