@@ -96,6 +96,19 @@ public class BlogServiceImpl implements BlogService{
 		}
 		return result;
 	}
+	
+
+	@Override
+	public int updateBlogPlant(Plant plant, Files file) {
+		int result = 0;
+		result = blogDao.updateBlogPlant(sqlSession, plant);
+		if(file.getOriginalName() != null) {
+			result *= commonDao.insertFiles(sqlSession, file);
+		}
+		return result;
+		
+		
+	}
 
 	@Override
 	public int selectListCountPlant(int blogNo) {
@@ -125,6 +138,7 @@ public class BlogServiceImpl implements BlogService{
 	public int insertBlogBoard(BlogBoard blogBoard) {
 		return blogDao.insertBlogBoard(sqlSession, blogBoard);
 	}
+
 
 
 

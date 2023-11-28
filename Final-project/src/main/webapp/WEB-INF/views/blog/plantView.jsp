@@ -158,8 +158,8 @@ textarea{
                                 <li id="plantName">
                                 	<div>식물 이름 : ${ plant.plantName }</div>
                                 	<div id="deleteWrap">
-									<button class="button beige" onclick="plantManage(update);">수정하기</button>		                                	
-                                	<button class="button forest delete" onclick="plantManage(del);">-</button>
+									<button class="button beige" onclick="plantManage('update');">수정하기</button>		                                	
+                                	<button class="button forest delete" onclick="plantManage('del');">-</button>
                                 	</div>
                                 	<clear="both">
                                 </li>
@@ -201,7 +201,7 @@ textarea{
 				</article>
 			</div>
 			<div><a href="javascript:window.history.back();"><button type="button" class="button beige" id="goBlogHome">돌아가기</button></a></div>
-			
+
 			<script>
 				// 식물 관리하기
 	         	function plantCare(category){
@@ -222,16 +222,14 @@ textarea{
 	            		}
 	            	}
 	         	
-	         		// 식물 삭제하기
+	         		// 식물 수정하기(str == update), 삭제하기(str == del)
 		         	function plantManage(str){
-		         		console.log(str);
 	         			
-						if(str.equals("update")){
-							console.log(str);	
+						if(str == "update"){
+							location.href = "updateForm.bl_pl?plantNo=" + ${ plant.plantNo } + "&blogNo=" + ${ plant.blogNo };	
 						}	
 						else{
-							console.log(str);
-			      			console.log(${ plant.plantNo });
+			      			// console.log(${ plant.plantNo });
 		         			
 		         			if(confirm("해당 식물의 모든 정보와 일지를 삭제합니다. 식물을 삭제하시겠습니까?")){
 
@@ -243,8 +241,8 @@ textarea{
 		         	}
 	         	
 			</script>
-						
-			
+
+
 			<div id="page">
 				<c:if test="${ pi.currentPage ne 1 }">
 		        	<button class="btn btn-light" onclick="location.href='select.bl_pl?blogNo=${ blogNo }&currentPage=${ pi.currentPage - 1 }'">&lt;</button>

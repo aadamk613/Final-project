@@ -48,6 +48,9 @@ public interface BlogService {
 	// 식물 조회
 	Plant selectBlogPlant(int plantNo);
 	
+	// 식물 수정
+	int updateBlogPlant(Plant plant, Files file);
+	
 	// 식물 등록
 	int insertBlogPlant(Plant plant, Files file);
 
