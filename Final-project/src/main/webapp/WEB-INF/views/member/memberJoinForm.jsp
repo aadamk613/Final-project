@@ -35,6 +35,10 @@
 	line-height:200%;
 	color: #88c080;
 }
+.error {
+            color: red;
+            font-size: 0.7em;
+        }
 
 </Style>
 </head>
@@ -81,7 +85,8 @@
 			</div>
 			<div class="emailWrap">
 				이메일
-				<input type="email"placeholder="@ 기입필수!" name="email" pattern="+@^[0-9a-zA-Z]\.com" required>
+				<input type="email"placeholder="@기입필수!" name="email" pattern="/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
+" required>
 			</div>
 			<div class="Qualification">
 		    개인/기업
@@ -104,73 +109,81 @@
 	<script>
 	$(function() {
 		// 자주쓰는, 중복되는 요소는 변수로 지정해놓는게 나아서 해놓음
-	    const $idInput = $('#memberId');
-	    const $checkResult = $('#checkResult');
-	    const $joinFormSubmit = $('#join-form :submit');
+		    const $idInput = $('#memberId');
+		    const $checkResult = $('#checkResult');
+		    const $joinFormSubmit = $('#join-form :submit');
 
-	    $idInput.on('input', function() {
-        const inputValue = $idInput.val();
-        const filteredValue = inputValue.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, ''); // 한글을 필터링
+		    $idInput.on('input', function() {
+		        const inputValue = $idInput.val();
+		        const filteredValue = inputValue.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, ''); // 한글을 필터링
 
-	        $idInput.val(filteredValue); // 한글이 입력된 경우 필터링된 값으로 대체
-			
-	     	// 최소 5글자 이상 입력했을 떄만 AJAX 요청을 보내서 중복체크
-	        if (filteredValue.length >= 5) {
-	            $.ajax({
-	                url: 'idCheck.me',
-	                data: { checkId: filteredValue }, // 필터링된 값으로 중복 체크 요청
-	                success: function(result) {
-	                	
-	                    console.log(result);
-	                    
-	                    if(result.substr(4) === 'N') { // 사용불가능
-	                        $checkResult.show().css('color', 'red').text('이미 사용 중인 아이디입니다.');
-	                        $joinFormSubmit.attr('disabled', true);
-	                    } else { // 사용가능
-	                        $checkResult.show().css('color', 'green').text('멋진 아이디네요!');
-	                        $joinFormSubmit.removeAttr('disabled');
-	                    }
-	                },
-	                error: function() {
-	                    console.log('아이디 중복체크용 AJAX 통신 실패');
-	                }
-	            });
-	        } else {
-	            $checkResult.hide();
-	            $joinFormSubmit.attr('disabled', true);
-	        }
-	    });
+		        $idInput.val(filteredValue); // 한글이 입력된 경우 필터링된 값으로 대체
+
+		        if (filteredValue.length >= 5) {
+		            // AJAX 요청을 통해 아이디 중복 체크
+		            $.ajax({
+		                url: 'idCheck.me',
+		                data: { checkId: filteredValue }, // 필터링된 값으로 중복 체크 요청
+		                success: function(result) {
+		                    console.log(result);
+		                    if (result.substr(4) === 'N') {// 사용불가능 
+		                        $checkResult.show().css('color', 'red').text('이미 사용 중인 아이디입니다.');
+		                        $joinFormSubmit.attr('disabled', true);
+		                    } else {
+		                        $checkResult.show().css('color', 'green').text('사용 가능한 아이디입니다.');
+		                        $joinFormSubmit.removeAttr('disabled');
+		                    }
+		                },
+		                error: function() {
+		                    console.log('아이디 중복체크용 AJAX 통신 실패');
+		                }
+		            });
+		        } else {
+		            $checkResult.hide();
+		            $joinFormSubmit.attr('disabled', true);
+		        }
+		    });
+		});
 	// $idInput.on('input', function() {...})을 사용하여 아이디 입력란의 내용이 바뀔 때마다 이벤트를 감지함
 	// 입력된 값에서 한글을 필터링하여 한글이 입력되면 해당 부분을 제거하고, 필터링된 값으로 다시 아이디 입력란에 설정
 	// 그리고 필터링된 값이 5글자 이상일 경우, AJAX를 사용하여 서버에 중복 체크를 요청
 	// 서버에서 반환된 결과에 따라 중복 여부를 사용자에게 알려주고
 	// 폼 제출 버튼을 활성화 하거나 비활성화 해줌
-	
-	    
-	    function register() {
-	        const selectElement = document.getElementById('memStatus');
-	        const selectedValue = selectElement.value;
 
-	        if (selectedValue === 'B') {
-	            openBusinessPage();
-	        } else {
-	            // 개인 회원가입 처리 로직
-	            // ...
-	            console.log('개인 회원가입');
-	        }
-	    }
+    
+   $(function() {
+        $('#join-form').submit(function(e) {
+            e.preventDefault(); // 기존의 폼 제출 이벤트 막기
 
-	    function openBusinessPage() {
-	        // 여기에서 사업자등록정보 진위확인 뷰페이지를 열도록 처리
-	        // window.open() 등을 사용하여 새 창이나 모달을 열 수 있음
-	        // 예시: 새 창 열기
-	        window.open('businessPage.jsp}', '_blank');
-	    }
+            const formData = $(this).serialize(); // 폼 데이터 직렬화, 직렬화는 입력받은 여러 데이터를 하나의 쿼리 문자열로 만들어주는것
 
-	    
-	});
-	
-	</script>
+            $.ajax({	// 페이지를 새로고침하지 않고 데이터를 서버로 보낼 수 있는 방법으로 ajax를 사용했다 
+                type: 'POST',
+                url: 'join.me',
+                data: formData,
+                success: function(response) {
+
+                    const memStatus = $("#memStatus option:selected").val();	 // 물론 다른페이지로 이동하는 방법은 자바스크립트 영역이라 
+																				 // 
+                    if (memStatus === 'B') {
+                        location.href = 'http://localhost:8001/final/businessPage.me'; 
+                        // 기업인 경우, businessPage.jsp로 이동
+                    } else {
+                        location.href = 'http://localhost:8001/final/';
+                        // 개인 회원가입 로직 처리
+                    }
+                    // 이렇게 한 이유 ? 회원가입 폼에서 회원 상태를 선택하고 회원가입 버튼을 클릭하면 
+                    // 해당 회원 상태에 따라 페이지를 이동할 수 있음. 선택된 값이 "B"면 businessPage.jsp로 이동하고
+                    // 그렇지 않은 경우에는 일반 유저로 분류되어 메인페이지로 이동한다. 
+                },
+                error: function() {
+                    console.log('서버 요청 실패');
+                }
+            });
+        });
+    });
+</script>
+
 	</section>
 	<aside id="pageAsideRight" class="aside">
        

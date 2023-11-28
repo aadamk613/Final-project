@@ -47,4 +47,7 @@ public interface MemberService {
   int editMemberTicket(Ticket ticket);
 
   int getAnswerNumber(Member loginUser);
+  
+  int businessPage(String memStatus);
+int businessPage(Member m, String memStatus);
 }
