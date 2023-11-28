@@ -295,7 +295,7 @@ public class MemberController {
   public String businessPage() {
 	  return "member/businessPage";
   }
-  @RequestMapping("businessPage1.me")
+  @RequestMapping("businessPage1.me") //수정예정 공공API로 활용할 예정
   public ResponseEntity<String> businessPage(String memStatus) {
 	  if ("B".equals(memStatus)) { // 기업인 경우에만 진위 확인 페이지를 연다고 가정
 		  memberService.businessPage(memStatus);
