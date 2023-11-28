@@ -23,7 +23,8 @@
     <!-- 부트스트랩에서 제공하고 있는 스크립트 -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <style>
-	#testBtn { float : right; }
+	#boardReportBtn { float : right; }
+	.commentReportBtn {float : right; }
 	#commentContentBox > div { float : none;}
 	.form-control {height: 200px;}
 </style>
@@ -49,10 +50,15 @@
 				<article>
 					<div id="boardHeader">
 						<div id="title">${ b.boardTitle }</div>
-						<!-- 로그인이 되어있고, 자신의 게시글이 아닌경우에만 보임 -->
-						<c:if test="${ loginUser.memNick ne b.memNo && !empty loginUser}" >
-						<button id="testBtn" class="btn btn-primary">신고하기</button>
-						</c:if>
+						<!-- 로그인이 되어있고, 자신의 게시글이 아니고, 신고를 안했을경우에만 보임 -->
+						<c:choose>
+							<c:when test="${ loginUser.memNick ne b.memNo && !empty loginUser && empty br }" >
+							<button id="boardReportBtn" class="btn btn-primary">신고하기</button>
+							</c:when>
+							<c:otherwise>
+							<button disabled id="boardReportBtn" class="btn btn-primary">신고하기</button>
+							</c:otherwise>
+						</c:choose>
 					</div>
 					<div id="writerInfoWrap">
 						<div id="writerThumbnail">
@@ -138,14 +144,25 @@
 						<hr>
 							<div id="commentContentBox">
 								<c:forEach var="c" items="${ cList }">
+								<div class="commentNo" style="display:none">${ c.commentNo }</div>
+								<div class="memNo" style="display:none">${ c.memNo }</div>
 								<div id="commentWriteMemId">
 									${ c.memNo }
 								</div>
 								<div id="commentContent">
 									${ c.commentContent }
-									<c:if test="${ loginUser.memNick ne c.memNo && !empty loginUser}" >
-									<button id="testBtn" class="btn btn-primary">신고하기</button>
-									</c:if>
+									
+									<c:choose>
+										<c:when test="${ loginUser.memNick ne c.memNo && !empty loginUser && empty cr}">
+											<button id="commentReportBtn" class="commentReportBtn btn btn-primary">신고하기</button>
+										</c:when>
+										<c:otherwise>
+											<button disabled id="commentReportBtn" class="commentReportBtn btn btn-primary">신고하기</button>
+										</c:otherwise>
+									</c:choose>
+									
+						<c:if test="${ loginUser.memNick ne c.memNo && !empty loginUser}" >
+						</c:if>
 								</div>
 								<div id="commentCreateDate">
 									${ c.commentCreateDate }
@@ -171,7 +188,7 @@
 		 
 		  
 			<!-- Modal -->
-			<div class="modal fade modal-dialog modal-dialog-centered modal-dialog-scrollable" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal fade modal-dialog modal-dialog-centered modal-dialog-scrollable" id="boardReport" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 			  <div class="modal-dialog">
 			    <div class="modal-content">
 			      <div class="modal-header">
@@ -179,7 +196,7 @@
 			        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
 			      </div>
 			      
-			      <form action="report.bo" method="post">
+			      <form action="report.co" method="post">
 			      <div class="modal-body">
 			      <textarea class="form-control" style="height: 200px;" placeholder="신고내용을 입력하세요" id="message-text" name="reportContent"></textarea>
 			      </div>
@@ -194,13 +211,71 @@
 			    </div>
 			  </div>
 			</div>
+			
+			<!-- Modal -->
+			<div class="modal fade modal-dialog modal-dialog-centered modal-dialog-scrollable commentReport" id="commentReport" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="staticBackdropLabel">신고하기</h5>
+			        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+			      </div>
+			      
+			      <div class="modal-body">
+			      <textarea class="form-control" style="height: 200px;" placeholder="신고내용을 입력하세요" id="reportContent" name="reportContent"></textarea>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소하기</button>
+			        <button id="commentReportSubmit" type="submit" class="btn btn-danger">신고하기</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
 	
 			<script>
-				$('#testBtn').click(function(e){
+				$('#boardReportBtn').click(function(e){
 					e.preventDefault();
-					$('.modal').modal("show");
+					$('#boardReport').modal("show");
 				});
 			</script>
+			
+			<script>
+			$(function(){
+				  $('.commentReportBtn').each(function(index) {
+				    $(this).click(function(e) {
+				      var selectedComment = $(this).closest('#commentContentBox');
+				      var refCommentNo = selectedComment.find('.commentNo').eq(index).text().trim(); // 피신고댓글번호
+				      var refMemberNo = selectedComment.find('.memNo').eq(index).text().trim(); // 피신고자번호
+				      e.preventDefault();
+				    
+				     $(function() {
+				    	 $('#commentReportSubmit').click(function(e) {
+				     $.ajax({
+				    	    url: 'report.co',
+				    	    data: {
+				    	    	refCommentNo: refCommentNo,
+				    	    	refMemberNo: refMemberNo,
+				    	        refBoardNo : ${b.boardNo},
+				     			reportContent : $('#reportContent').val(),
+				     			memNo : '${loginUser.memNo}'
+				    	    },
+				    	    success: function() {
+				    	    	alert('신고성공!');
+				    	    	location.href = 'detail.bo?bno=' + ${b.boardNo};// + '&refCommentNo='+refCommentNo+'&refMemberNo='+refMemberNo+'&refBoardNo='+${b.boardNo}+'&reportContent='+$('#reportContent').val()+'&memNo=${loginUser.memNo}';
+				    	    },
+				    	    error: function() {
+				    	        console.error('AJAX 요청 실패:', error);
+				    	    }
+				    	});
+				   	});
+				      
+				      $('.commentReport').modal("show");
+				    });
+				  });
+				});
+			});
+			</script>
+			
 
 				<div id="writeWrap">
 						<c:if test="${ loginUser.memNick eq b.memNo }" >

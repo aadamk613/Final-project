@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.kh.finalproject.board.model.vo.Board;
 import com.kh.finalproject.board.model.vo.BoardComment;
 import com.kh.finalproject.board.model.vo.BoardReport;
+import com.kh.finalproject.board.model.vo.CommentReport;
 import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.common.model.vo.PageInfo;
 
@@ -54,4 +55,13 @@ public interface BoardService {
 	
 	// 게시글신고
 	int insertReport(BoardReport br);
+	
+	// 신고조회
+	ArrayList<BoardReport> selectBoardReport(int boardNo);
+	
+	// 댓글신고
+	int insertCommentReport(CommentReport cr);
+	
+	// 댓글신고 조회
+	ArrayList<CommentReport> selectCommentReport(CommentReport cr);
 }

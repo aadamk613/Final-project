@@ -122,7 +122,7 @@
 			</div>
 			
 
-			            <form id="searchForm" action="" method="get" align="center">
+			 <form id="searchForm" action="" method="get" align="center">
                 <div class="select">
                     <select class="custom-select" name="condition">
                         <option value="writer">작성자</option>

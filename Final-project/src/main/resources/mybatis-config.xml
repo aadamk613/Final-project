@@ -20,6 +20,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<typeAlias type="com.kh.finalproject.board.model.vo.Board" alias="board"/>
 		<typeAlias type="com.kh.finalproject.board.model.vo.BoardComment" alias="boardComment"/>
 		<typeAlias type="com.kh.finalproject.board.model.vo.BoardReport" alias="boardReport"/>
+		<typeAlias type="com.kh.finalproject.board.model.vo.CommentReport" alias="commentReport"/>
 		<typeAlias type="com.kh.finalproject.chat.model.vo.Chat" alias="chat"/>
 		<typeAlias type="com.kh.finalproject.common.model.vo.Files" alias="files"/>
 		<typeAlias type="com.kh.finalproject.experience.model.vo.Experience" alias="experience"/>
