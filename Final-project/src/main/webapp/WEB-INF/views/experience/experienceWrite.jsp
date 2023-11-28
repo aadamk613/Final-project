@@ -81,7 +81,7 @@ img{
 					<input type="file" name="upfiles" id="thumbFile" />
 					<img src="${ files[0].filePath }/${ files[0].updateName }" id="thumb" class="thumbFile" required />
 					<input type="hidden" name="anno" value="thumb" placeholder="사진첨부 후 작성해 주세요"  />
-					<input type="hidden" name="" value="${ files[0].filePath }${ files[0].updateName }" />
+					<input type="hidden" name="" class="old" value="${ files[0].filePath }${ files[0].updateName }" />
 					<!-- 기존의 파일을 지우거나 삭제하지 않기 위해 파일번호를 가져감 -->
 					<script>
 						console.log('${ files }');
@@ -117,13 +117,20 @@ img{
 							// $('img').last().siblings().eq(0).click();
 							
 							// 클릭된 파일은 무조건 사라짐
-							/*
+							
+							
 							if('${ exp.expNo }' != ''){
-								$(this).siblings().eq(2).attr('name', 'oldFiles');
+								$(this).siblings('input.old').attr('name', 'oldFiles');
 							}
-							*/
+							
+							$(this).attr('src', '');
+							$(this).siblings().eq(1).val('');
+							$(this).siblings().eq(1).attr('readonly', true);
+							
+							
+							
 							console.log("이거 클릭하면 이름속성 바꿔줄거임");
-							console.log($(this).siblings().eq(2));
+							console.log($(this).nextAll('input.old'));
 							
 							
 							
@@ -363,7 +370,7 @@ img{
 							<input type="file" name="upfiles" />
 							<img src="${ f.filePath }${ f.updateName }" class="file-img" />
 							<input type="text" name="anno" value="${ f.fileAnnotation }" placeholder="사진첨부 후 작성해 주세요" readonly />
-							<input type="hidden" name="" value="${ f.filePath }${ f.updateName }" />
+							<input type="hidden" name="" class="old" value="${ f.filePath }${ f.updateName }" />
 							<button onclick="deleteFile();">삭제하기</button>
 						</div>
 					</c:forEach>

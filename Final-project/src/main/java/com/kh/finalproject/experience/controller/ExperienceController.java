@@ -102,9 +102,9 @@ public class ExperienceController {
 		//System.out.println(oldFileNo);
 		//System.out.println(oldFileNo[0]);
 		System.out.println(anno.toString());
-//		System.out.println(oldFileUpdateName[0]);
-//		System.out.println(oldFileUpdateName[1]);
-//		System.out.println(oldFileUpdateName[2]);
+		//System.out.println(oldFiles[0]);
+		//System.out.println(oldFiles[1]);
+//		System.out.println(oldFiles[2]);
 		
 		// 1. 원래 있던 파일 지우고 oldFileNo delete
 		

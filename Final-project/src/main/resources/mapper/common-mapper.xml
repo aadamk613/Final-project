@@ -33,9 +33,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		       REF_TYPE = #{ refType }
 		   AND 
 		       REF_NO = #{ refNo }
-		 ORDER
-		    BY
-		       FILE_NO DESC
 	</select>
 	
 	<!-- 첨부파일 등록 -->
