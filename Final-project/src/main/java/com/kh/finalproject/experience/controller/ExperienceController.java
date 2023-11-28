@@ -1,5 +1,6 @@
 package com.kh.finalproject.experience.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -19,8 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.kh.finalproject.common.controller.CommonController;
 import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.common.model.vo.PageInfo;
@@ -78,11 +77,11 @@ public class ExperienceController {
 	
 	// insert메소드 같이 써도 될거같은데 단일책임의원칙 걸려서 따로 씀
 	@PostMapping("yrupdateExpForm.exp")
-	public ModelAndView updateExperienceForm(Experience exp, String[] filePath, String[] updateName, String[] fileAnnotation, ModelAndView mv) {
+	public ModelAndView updateExperienceForm(Experience exp, Integer[] fileNo, String[] filePath, String[] updateName, String[] fileAnnotation, ModelAndView mv) {
 		ArrayList<Files> files = new ArrayList();
 		for(int i = 0; i < filePath.length; i++) {
 			Files file = new Files();
-			//file.setFileNo(fileNo[i]);
+			file.setFileNo(fileNo[i]);
 			file.setFilePath(filePath[i]);
 			file.setUpdateName(updateName[i]);
 			file.setFileAnnotation(fileAnnotation[i]);
@@ -97,30 +96,56 @@ public class ExperienceController {
 	}
 	
 	@PostMapping("yrupdateExp.exp")
-	public String updateExperience(Experience exp, MultipartFile[] upfiles, String[] anno, HttpSession session) {
-		System.out.println("들어와라 얍");
-		System.out.println(exp);
-		System.out.println(upfiles);
-		//System.out.println(fffff);
-		// System.out.println(upfiles[0]);
+	public String updateExperience(Experience exp, MultipartFile[] upfiles, String[] anno, String[] oldFiles, HttpSession session) {
 		
+		System.out.println("나와라 기존파일!!!!!!!!!!!!!!!!!!!!");
+		//System.out.println(oldFileNo);
+		//System.out.println(oldFileNo[0]);
+		System.out.println(anno.toString());
+		//System.out.println(oldFiles[0]);
+		//System.out.println(oldFiles[1]);
+//		System.out.println(oldFiles[2]);
 		
+		// 1. 원래 있던 파일 지우고 oldFileNo delete
+		
+		for(String oldFile : oldFiles) {
+			System.out.println("지워질 파일 이름");
+			System.out.println(oldFile);
+			System.out.println(session.getServletContext().getRealPath(oldFile));
+			new File(session.getServletContext().getRealPath(oldFile)).delete();
+			
+			// oldFile.substring(oldFile.lastIndexOf("/"));
+		}
+		
+		System.out.println("여기까진 온거야?");
+		
+		// 2. 새로 들어온 파일 MultipartFile insert 
 		ArrayList<Files> fileList = new ArrayList();
+		System.out.println(fileList);
 		for(int i = 0; i < upfiles.length; i++) {
+			
+			Files file = new Files();
+			
 			if(!upfiles[i].getOriginalFilename().equals("")) {
-				Files file = commonController.setFile(upfiles[i], session, "experience");
+				System.out.println("하나하나");
+				System.out.println(upfiles[i]);
+				file = commonController.setFile(upfiles[i], session, "experience");
 				file.setRefNo(exp.getExpNo());
-				file.setFileAnnotation(anno[i]);
-				fileList.add(file);
+				System.out.println("여기가 문제라고?");
+			} else {
+				continue;
 			}
+			System.out.println(anno[i]);
+			file.setFileAnnotation(anno[i]);
+			fileList.add(file);
+			
 		} 
 		
-		if(experienceService.updateExperience(exp, fileList) > 0) {
+		if(experienceService.updateExperience(exp, fileList, oldFiles) > 0) {
 			session.setAttribute("alertMsg", "게시글이 수정되었습니다.");
 		} else {
 			session.setAttribute("alertMsg", "게시글 수정에 실패하셨습니다.");
 		}
-		
 		return "redirect:yrlist.exp";
 	}
 	
@@ -140,20 +165,43 @@ public class ExperienceController {
 //		System.out.println(upfiles[0]);
 //		System.out.println(exp);
 		
+		System.out.println("갑자기 널?");
+		System.out.println(upfiles[0]);
+		System.out.println(upfiles[1]);
+		System.out.println(upfiles[2]);
+		
+		System.out.println(anno[0]);
+		System.out.println(anno[1]);
+		
+		
+		
 		
 		ArrayList<Files> fileList = new ArrayList();
 		for(int i = 0; i < upfiles.length; i++) {
+			
+			System.out.println(i);
+			
 			if(!upfiles[i].getOriginalFilename().equals("")) {
 				
 				System.out.println("나오자 좀");
 				System.out.println(upfiles[i]);
-				System.out.println(anno[i]);
+				
 				
 				Files file = commonController.setFile(upfiles[i], session, "experience");
-				file.setRefNo(exp.getExpNo());
+				System.out.println("엥  여기 번호가 있음?????");
+				System.out.println(exp.getExpNo()); // 0
+				//file.setRefNo(exp.getExpNo());
+				System.out.println(anno[i]);
 				file.setFileAnnotation(anno[i]);
 				fileList.add(file);
-			}
+			} 
+			
+			
+			
+			
+			
+			
+			
 		}
 		
 		if(experienceService.insertExperience(exp, fileList) > 0) {
