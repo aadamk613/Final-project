@@ -1,5 +1,6 @@
 package com.kh.finalproject.blog.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -114,6 +115,57 @@ public class BlogPlantController {
 		}
 	}
 	
+	// 식물 수정 페이지로 이동
+	@RequestMapping("updateForm.bl_pl")
+	public ModelAndView updateBlogPlantForm(int plantNo,
+							      		int blogNo,
+							      		ModelAndView mv) {
+		Plant plant = blogService.selectBlogPlant(plantNo);
+		mv.addObject("plant", plant)
+		  .setViewName("blog/plantUpdateForm");
+		return mv;
+	}
+	
+	// 식물 수정
+	@RequestMapping("update.bl_pl")
+	public ModelAndView updateBlogPlant(Plant plant,
+							      		HttpServletRequest request, 
+									    HttpSession session,
+									    MultipartFile upfile,
+							      		ModelAndView mv) {
+		System.out.println("식물 수정하기 컨트롤러");
+		System.out.println("plant" + plant);
+		System.out.println("upfile" + upfile);
+		Files file = new Files();
+		
+		if(upfile.getSize() > 0) { // 첨부한 파일이 있을 경우
+			
+			// 기존의 첨부파일이 있을 경우 있던 첨부파일을 삭제해줌
+			if(plant.getUpdateName() != null) {
+				new File(session.getServletContext().getRealPath(plant.getUpdateName())).delete();
+				file.setRefType("plant");
+				file.setRefNo(plant.getPlantNo());
+				commonController.deleteFiles(file);
+			} 
+			// 기존 첨부파일이 없었을 경우 바로 파일을 저장해줌
+			file = commonController.setFile(upfile, session, "plant");
+			file.setRefNo(plant.getPlantNo());
+		}
+		
+		
+		// 첨부 파일 없을 경우 바로 실행
+		if(blogService.updateBlogPlant(plant, file) > 0) {
+			Plant afterPlant = (Plant)blogService.selectBlogPlant(plant.getPlantNo());
+			System.out.println("afterPlant" + afterPlant);
+			mv.addObject("plant", afterPlant)
+			  .addObject("alertMsg", "식물 정보 수정에 성공했습니다");
+		} else {
+			mv.addObject("alertMsg", "식물 정보 수정에 실패했습니다");
+		}
+		mv.setViewName("blog/plantUpdateForm");
+		return mv;
+	}
+	
 	// 식물 삭제
 	@RequestMapping("delete.bl_pl")
 	public String deleteBlogPlant(int plantNo,
@@ -125,15 +177,19 @@ public class BlogPlantController {
 		//return "redirect:select.bl_pl?blogNo=" + blogNo + "&currentPage=" + currentPage;
 	}
 	
+	
 	// ---------- 블로그 식물 일지 관련 메서드 ---------- 
 	// 식물 일지 등록 페이지로 이동
 	@RequestMapping("insertForm.bl_pr")
-	public String insertFormPlantReport(int plantNo,
+	public ModelAndView insertFormPlantReport(int plantNo,
 								        String category,
-									    String plantNickName) {
-		
+									    String plantNickName,
+									    ModelAndView mv) {
+		Plant plant = blogService.selectBlogPlant(plantNo);
+		mv.addObject("plant", plant)
+		  .setViewName("blog/reportInsertForm");
 		System.out.println(plantNo + category + plantNickName);
-		return "blog/reportInsertForm";
+		return mv;
 	}
 	
 	// 식물 일지 등록하기
