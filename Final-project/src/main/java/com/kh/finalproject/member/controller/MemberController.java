@@ -7,7 +7,6 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
-import com.google.gson.Gson;
 import com.kh.finalproject.member.model.service.KakaoLoginService;
 import com.kh.finalproject.member.model.service.MemberService;
 import com.kh.finalproject.member.model.service.NaverLoginService;
@@ -27,16 +26,27 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class MemberController {
 
-  @Autowired private BCryptPasswordEncoder bcryptPasswordEncoder;
-  @Autowired private MemberService memberService;
-  @Autowired private NaverLoginService naverLoginService;
-  @Autowired private KakaoLoginService kakaoLoginService;
+  private final BCryptPasswordEncoder bcryptPasswordEncoder;
+  private final MemberService memberService;
+  private final NaverLoginService naverLoginService;
+  private final KakaoLoginService kakaoLoginService;
+
+  @Autowired
+  public MemberController(
+      BCryptPasswordEncoder bcryptPasswordEncoder,
+      MemberService memberService,
+      NaverLoginService naverLoginService,
+      KakaoLoginService kakaoLoginService) {
+    this.bcryptPasswordEncoder = bcryptPasswordEncoder;
+    this.memberService = memberService;
+    this.naverLoginService = naverLoginService;
+    this.kakaoLoginService = kakaoLoginService;
+  }
 
   /**
    * loginForm method - 메인 페이지에서 로그인 버튼 클릭시 로그인 화면 페이지 리디렉션용 메소드
@@ -46,12 +56,6 @@ public class MemberController {
   @RequestMapping("loginForm.me")
   public String loginForm() {
     return "member/loginForm";
-  }
-
-  @ResponseBody
-  @GetMapping(value = "getMemberList.me", produces = "application/json; charset=UTF-8")
-  public String ajaxGetMemberList() {
-    return new Gson().toJson(memberService.ajaxGetMemberList());
   }
 
   @RequestMapping("login.me")
@@ -100,16 +104,6 @@ public class MemberController {
     }
   }
 
-  @ResponseBody // 포워딩 해줄게 아니라서
-  @RequestMapping("idCheck.me")
-  public String idCheck(String checkId) {
-
-    // System.out.println(checkId);
-    int count = memberService.idCheck(checkId);
-    System.out.println(count);
-    return count > 0 ? "NNNNN" : "NNNNY";
-  }
-
   @RequestMapping("myPage.me")
   public ModelAndView myPage(ModelAndView mv, HttpSession session) {
     Member loginUser = (Member) session.getAttribute("loginUser");
@@ -146,15 +140,11 @@ public class MemberController {
 
   @RequestMapping("delete.me")
   public String deleteMember(String memPwd, HttpSession session) {
-
     Member loginUser = ((Member) session.getAttribute("loginUser"));
-
     String encPwd = ((Member) session.getAttribute("loginUser")).getMemPwd();
     // 비밃먼호가 사용자가 입력한 평문으로 만든 암호문일 경우
     if (bcryptPasswordEncoder.matches(memPwd, encPwd)) {
-
       String memId = loginUser.getMemId();
-
       if (memberService.deleteMember(memId) > 0) {
         // 탈퇴처리 성공 => session에서 loginUser지움, alert문구 담기 => 메인페이지로 잘가라고~~~~
         session.removeAttribute("loginUser");
@@ -164,7 +154,6 @@ public class MemberController {
         session.setAttribute("errorMsg", "탈퇴처리 실패");
         return "common/errorPage";
       }
-
     } else {
       session.setAttribute("alertMsg", "비밀번호가 틀렸어요!!틀렸다구요!!!! 정말 제대로 입력한게 맞아요? 다시 확인해보세요~~~");
       return "redirect:myPage.me";

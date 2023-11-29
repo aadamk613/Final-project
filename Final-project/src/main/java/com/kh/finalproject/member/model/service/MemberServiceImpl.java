@@ -12,8 +12,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MemberServiceImpl implements MemberService {
-  @Autowired private MemberDao memberDao;
-  @Autowired private SqlSessionTemplate sqlSession;
+
+  private final MemberDao memberDao;
+  private final SqlSessionTemplate sqlSession;
+
+  @Autowired
+  public MemberServiceImpl(MemberDao memberDao, SqlSessionTemplate sqlSession) {
+    this.memberDao = memberDao;
+    this.sqlSession = sqlSession;
+  }
 
   @Override
   public Member loginMember(Member m) {
