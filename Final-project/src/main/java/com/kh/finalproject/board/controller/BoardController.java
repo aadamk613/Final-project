@@ -114,7 +114,7 @@ public class BoardController {
 /*
 		public ModelAndView selectBoard(int bno, ModelAndView mv, Attachment f, MultipartFile upfile, HttpSession session)  {
 */
-		public ModelAndView selectBoard(CommentReport cr, BoardReport br, int bno, ModelAndView mv, Files f, MultipartFile upfile, HttpSession session)   {
+		public ModelAndView selectBoard(CommentReport cr, BoardReport br, int bno, ModelAndView mv, Attachment f, MultipartFile upfile, HttpSession session)   {
 			
 			
 			Member loginUser = (Member) session.getAttribute("loginUser"); 
