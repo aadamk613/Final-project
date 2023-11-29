@@ -52,7 +52,7 @@
 						<div id="title">${ b.boardTitle }</div>
 						<!-- 로그인이 되어있고, 자신의 게시글이 아니고, 신고를 안했을경우에만 보임 -->
 						<c:choose>
-							<c:when test="${ loginUser.memNick ne b.memNo && !empty loginUser && empty br }" >
+							<c:when test="${ loginUser.memNick ne b.memNo && not empty loginUser && empty br }" >
 							<button id="boardReportBtn" class="btn btn-primary">신고하기</button>
 							</c:when>
 							<c:otherwise>
@@ -130,6 +130,10 @@
 										<!-- 댓글 하나도 없을 시 등록 순 최신순 버튼 비활성화 -->
 					<div id="commentWrap">
 					<c:choose>
+					
+					
+					
+					
 						<c:when test="${ empty cList }">
 						<div id="commentOption">
 							댓글 <a>등록순</a> <a>최신순</a>
@@ -143,8 +147,27 @@
 					</c:choose>					
 						<hr>
 							<div id="commentContentBox">
+							
+							<c:forEach var="c" items="${ cList }">
+								<div class="commentNo" style="display:none">${ c.commentNo }</div>
+								<div class="memNo" style="display:none">${ c.memNo }</div>
+								<div id="commentWriteMemId">
+								${ c.memNo }
+								</div>
+								<div id="commentContent">
+								${ c.commentContent }
+								<button <c:if test="${loginUser.memNick eq c.memNo || empty loginUser}">disabled</c:if> id="${ c.commentNo }" class="commentReportBtn btn btn-primary">신고하기</button>
+								</div>
+								<div id="commentCreateDate">
+									${ c.commentCreateDate }
+									<a href="#">답글 쓰기</a>
+								</div>
+								<hr>
+							</c:forEach>
+							
+							
+						    	<!-- 
 								<c:forEach var="c" items="${ cList }">
-								<c:forEach var="cr" items="${ cr }">
 								<div class="commentNo" style="display:none">${ c.commentNo }</div>
 								<div class="memNo" style="display:none">${ c.memNo }</div>
 								<div id="commentWriteMemId">
@@ -152,18 +175,13 @@
 								</div>
 								<div id="commentContent">
 									${ c.commentContent }
-
-									<c:choose>
-										<c:when test="${ loginUser.memNick ne c.memNo && !empty loginUser && c.commentNo ne cr.refCommentNo}">
-											<button id="commentReportBtn" class="commentReportBtn btn btn-primary">신고하기</button>
-										</c:when>
-										<c:otherwise>
-											<button disabled id="commentReportBtn" class="commentReportBtn btn btn-primary">신고하기</button>
-										</c:otherwise>
-									</c:choose>
-									
-						<c:if test="${ loginUser.memNick ne c.memNo && !empty loginUser}" >
-						</c:if>
+									<c:set var="doneLoop" value="false"/>
+									<c:forEach var="cr" items="${ cr }">
+									<c:if test="${not doneLoop}">
+									<button <c:if test="${(loginUser.memNick eq c.memNo && c.commentNo eq cr.refCommentNo )|| empty loginUser}">disabled</c:if> id="commentReportBtn" class="commentReportBtn btn btn-primary">신고하기</button>
+									<c:set var="doneLoop" value="true" />
+									</c:if>
+									</c:forEach>
 								</div>
 								<div id="commentCreateDate">
 									${ c.commentCreateDate }
@@ -171,7 +189,9 @@
 								</div>
 								<hr>
 								</c:forEach>
-								</c:forEach>						
+								-->
+								
+								
 						<div id="commentInsertBox">
 							<textarea id="commentContentInsert" placeholder="댓글을 남겨보세요"></textarea>
 							<c:choose>
@@ -242,6 +262,46 @@
 			</script>
 			
 			<script>
+				$(() => {
+					
+					$.ajax({
+						url : 'sdfds',
+						data : {
+							refBoardNo : ${b.boardNo},
+							memNo : '${loginUser.memNo}'
+						},
+						success : data => {
+							console.log(data);
+							
+							const btns = $('.commentReportBtn');
+							
+							const nums = data.map((a, b) => {
+								//console.log(a);
+								return a.refCommentNo;
+							});
+							
+							//console.log(btns);
+							//console.log(nums);
+							
+							btns.map((b, i) => {
+								nums.map((n, j) => {
+								console.log(n);
+									if(i.id == n){
+										$(i).attr('disabled', true);
+									}
+								})
+							})
+							
+						}
+						
+					})
+					
+				})
+				
+			</script>
+			
+			
+			<script>
 			$(function(){
 				  $('.commentReportBtn').each(function(index) {
 				    $(this).click(function(e) {
@@ -276,6 +336,8 @@
 				  });
 				});
 			});
+			
+
 			</script>
 			
 
