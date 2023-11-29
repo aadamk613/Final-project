@@ -95,7 +95,7 @@ public class BlogServiceImpl implements BlogService{
 		blogDao.insertBlogPlant(sqlSession, plant);
 		return commonDao.insertFiles(sqlSession, file);
 	}
-	 */
+	 */	
 	public int insertBlogPlant(Plant plant, Attachment file) {
 		int result = blogDao.insertBlogPlant(sqlSession, plant);
 		if(file.getOriginalName() != null) {
