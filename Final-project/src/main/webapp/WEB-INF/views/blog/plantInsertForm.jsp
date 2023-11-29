@@ -109,13 +109,13 @@ textarea{
                         </div>
                         <div id="plantImfo">
                             <ul>
-                                <li id="plantName">식물명 : <input type="text" name="plantName"/></li>
+                                <li id="plantName">식물명 : <input type="text" name="plantName" required/></li>
                                 <li id="plantNickName">
 	                                <div>애칭 : <input type="text" name="plantNickName" />
 	                                </div>키우기 시작한 일자: <div id="plantLogDate"><input type="date" name="plantLogDate"></div>
                                 </li>
                                 <li id="plantComment" >
-                                	<textarea placeholder="식물에 대한 코멘트를 작성해주세요" name="plantComment"></textarea>
+                                	<textarea placeholder="식물에 대한 코멘트를 작성해주세요" name="plantComment" required></textarea>
                                 </li>
                             </ul>
                         </div>
@@ -132,6 +132,20 @@ textarea{
 
 			<script>
 			
+				$(function(){
+					
+				// 식물 애칭 입력하지 않았을 시 식물 이름으로 설정	
+				var nickName = $('input[name=plantNickName]').val();
+				var plantName = $('input[name=plantName]').val();
+				
+				if(nickName == ''){
+					nickName('plantName');
+				}
+				console.log(plantName);
+				})
+				
+				
+				
 				// 현재 날짜를 알아낸 후 식물 등록 일자에서 현재 날짜 이후는 입력 불가
 				var nowDate = Date.now();
 				var timeOff = new Date().getTimezoneOffset()*60000;
@@ -139,7 +153,7 @@ textarea{
 				console.log(today);
 				
 				console.log($('input[name=plantLogDate]'));
-				$('input[name=plantLogDate]').attr("max", today);
+				$('input[name=plantLogDate]').attr("max", today).val(today);
 				
 				
 				// input type="file"을 숨긴 후 기본이미지 클릭 시 이벤트 수행되게
