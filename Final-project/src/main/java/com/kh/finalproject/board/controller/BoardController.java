@@ -110,12 +110,13 @@ public class BoardController {
 		@GetMapping("detail.bo")
 		public ModelAndView selectBoard(CommentReport cr, BoardReport br, int bno, ModelAndView mv, Files f, MultipartFile upfile, HttpSession session)   {
 			
-			Member loginUser = (Member) session.getAttribute("loginUser"); 
-			int memNo = loginUser.getMemNo();
 			
+			Member loginUser = (Member) session.getAttribute("loginUser"); 
+			if(loginUser != null) {
+			int memNo = loginUser.getMemNo();
 			cr.setMemNo(memNo);
 			cr.setRefBoardNo(bno);
-			
+			};
 			
 			
 			if(boardService.increaseCount(bno) > 0 ) {
@@ -128,8 +129,12 @@ public class BoardController {
 					}
 						mv.addObject("f", boardService.selectFile(bno)).setViewName("board/boardDetailView");
 				}
-				System.out.println(boardService.selectCommentReport(cr));
-				mv.addObject("cr", boardService.selectCommentReport(cr))
+				ArrayList<CommentReport> cList = boardService.selectCommentReport(cr);
+				System.out.println(cList);
+				
+				
+				
+				mv.addObject("cr", cList)
 				  .addObject("br", boardService.selectBoardReport(bno))
 				  .addObject("cList", boardService.selectComment(bno))
 				  .addObject("b", boardService.selectBoard(bno))
@@ -138,6 +143,12 @@ public class BoardController {
 				mv.addObject("errorMsg", "게시글 조회 실패").setViewName("common/errorPage");
 			}
 			return mv;
+		}
+		
+		@ResponseBody
+		@GetMapping(value = "sdfds", produces="application/json; charset=UTF-8")
+		public String absdfsd(CommentReport cr) {
+			return new Gson().toJson(boardService.selectCommentReport(cr));
 		}
 		
 		// 공지사항 삭제
