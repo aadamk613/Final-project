@@ -7,7 +7,6 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
-import com.google.gson.Gson;
 import com.kh.finalproject.member.model.service.KakaoLoginService;
 import com.kh.finalproject.member.model.service.MemberService;
 import com.kh.finalproject.member.model.service.NaverLoginService;
@@ -17,43 +16,68 @@ import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.servlet.http.HttpSession;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.gson.Gson;
+import com.kh.finalproject.member.model.service.KakaoLoginService;
+import com.kh.finalproject.member.model.service.MemberService;
+import com.kh.finalproject.member.model.service.NaverLoginService;
+import com.kh.finalproject.member.model.vo.Member;
+import com.kh.finalproject.member.model.vo.NaverLogin;
+import com.kh.finalproject.ticket.model.vo.Ticket;
 
 @Controller
 public class MemberController {
 
-  @Autowired private BCryptPasswordEncoder bcryptPasswordEncoder;
-  @Autowired private MemberService memberService;
-  @Autowired private NaverLoginService naverLoginService;
-  @Autowired private KakaoLoginService kakaoLoginService;
+  private final BCryptPasswordEncoder bcryptPasswordEncoder;
+  private final MemberService memberService;
+  private final NaverLoginService naverLoginService;
+  private final KakaoLoginService kakaoLoginService;
+
+  @Autowired
+  public MemberController(
+      BCryptPasswordEncoder bcryptPasswordEncoder,
+      MemberService memberService,
+      NaverLoginService naverLoginService,
+      KakaoLoginService kakaoLoginService) {
+    this.bcryptPasswordEncoder = bcryptPasswordEncoder;
+    this.memberService = memberService;
+    this.naverLoginService = naverLoginService;
+    this.kakaoLoginService = kakaoLoginService;
+  }
+
+
+	@RequestMapping("loginForm.me")
+	public String loginForm() {
+		return "member/loginForm";
+	}
 
   /**
    * loginForm method - 메인 페이지에서 로그인 버튼 클릭시 로그인 화면 페이지 리디렉션용 메소드
    *
    * @return String 리디렉션할 로그인 페이지 주소
    */
-  @RequestMapping("loginForm.me")
-  public String loginForm() {
-    return "member/loginForm";
-  }
-
-  @ResponseBody
-  @GetMapping(value = "getMemberList.me", produces = "application/json; charset=UTF-8")
-  public String ajaxGetMemberList() {
-    return new Gson().toJson(memberService.ajaxGetMemberList());
-  }
-
+  
   @RequestMapping("login.me")
   public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv) {
     // login 시 DB에 저장된 암호화된 암호의 솔트값을 알아내면
@@ -100,16 +124,6 @@ public class MemberController {
     }
   }
 
-  @ResponseBody // 포워딩 해줄게 아니라서
-  @RequestMapping("idCheck.me")
-  public String idCheck(String checkId) {
-
-    // System.out.println(checkId);
-    int count = memberService.idCheck(checkId);
-    System.out.println(count);
-    return count > 0 ? "NNNNN" : "NNNNY";
-  }
-
   @RequestMapping("myPage.me")
   public ModelAndView myPage(ModelAndView mv, HttpSession session) {
     Member loginUser = (Member) session.getAttribute("loginUser");
@@ -146,15 +160,11 @@ public class MemberController {
 
   @RequestMapping("delete.me")
   public String deleteMember(String memPwd, HttpSession session) {
-
     Member loginUser = ((Member) session.getAttribute("loginUser"));
-
     String encPwd = ((Member) session.getAttribute("loginUser")).getMemPwd();
     // 비밃먼호가 사용자가 입력한 평문으로 만든 암호문일 경우
     if (bcryptPasswordEncoder.matches(memPwd, encPwd)) {
-
       String memId = loginUser.getMemId();
-
       if (memberService.deleteMember(memId) > 0) {
         // 탈퇴처리 성공 => session에서 loginUser지움, alert문구 담기 => 메인페이지로 잘가라고~~~~
         session.removeAttribute("loginUser");
@@ -164,13 +174,12 @@ public class MemberController {
         session.setAttribute("errorMsg", "탈퇴처리 실패");
         return "common/errorPage";
       }
-
     } else {
       session.setAttribute("alertMsg", "비밀번호가 틀렸어요!!틀렸다구요!!!! 정말 제대로 입력한게 맞아요? 다시 확인해보세요~~~");
       return "redirect:myPage.me";
     }
   }
-
+    
   @GetMapping("naverLogin.me")
   public String naverLogin() {
     return "member/naverLoginCallback";
@@ -198,10 +207,10 @@ public class MemberController {
     nv.setEmail((String) responseObj.get("email"));
     nv.setProfile_image((String) responseObj.get("profile_image"));
     // 지금 로그인한 네이버 프로필이 DB에 없으면 DB에 추가
-    Member loginUser = memberService.selectNaverProfile(nv.getId());
+    Member loginUser = memberService.selectSocialProfile(nv.getId());
     if (loginUser == null) {
       memberService.addNaverProfile(nv);
-      loginUser = memberService.selectNaverProfile(nv.getId());
+      loginUser = memberService.selectSocialProfile(nv.getId());
     }
     memberService.setLastLogin(loginUser);
     session.setAttribute("loginUser", loginUser);
@@ -216,14 +225,14 @@ public class MemberController {
     System.out.println("printing map" + profileMap.toString());
     // 지금 로그인한 카카오톡 프로필이 DB에 없으면 DB에 추가.
     // 네이버용으로 작성한 select문이지만 카카오 계정에도 적용가능.
-    Member loginUser = memberService.selectNaverProfile(profileMap.get("id"));
+    Member loginUser = memberService.selectSocialProfile(profileMap.get("id"));
     Member m = new Member();
     m.setMemId(profileMap.get("id"));
     m.setMemNick(profileMap.get("nickname"));
     m.setMemImg(profileMap.get("profile_image"));
     if (loginUser == null) {
       memberService.addKaKaoProfile(m);
-      memberService.selectNaverProfile(profileMap.get("id"));
+      memberService.selectSocialProfile(profileMap.get("id"));
     }
     memberService.setLastLogin(loginUser);
     session.setAttribute("loginUser", loginUser);
@@ -244,43 +253,45 @@ public class MemberController {
             // .setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
             .build();
     GoogleIdToken idToken = verifier.verify(credential);
-    Map<String, String> returnMe = new HashMap<>();
     if (idToken != null) {
       Payload payload = idToken.getPayload();
 
-      // Print user identifier
+      // Print user identifier; userId = unique identifier
       String userId = payload.getSubject();
-      System.out.println("User ID: " + userId);
 
       // Get profile information from payload
       String email = payload.getEmail();
-      boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
       String name = (String) payload.get("name");
       String pictureUrl = (String) payload.get("picture");
-      String locale = (String) payload.get("locale");
-      String familyName = (String) payload.get("family_name");
-      String givenName = (String) payload.get("given_name");
 
-      returnMe.put("name", name);
-      returnMe.put("pictureUrl", pictureUrl);
-      returnMe.put("userId", userId);
-      System.out.println(returnMe);
-      Member loginUser = memberService.selectNaverProfile(returnMe.get("userId"));
+      Member loginUser = memberService.selectSocialProfile(userId);
       Member m = new Member();
-      m.setMemId(returnMe.get("userId"));
-      m.setMemNick(returnMe.get("name"));
-      m.setMemImg(returnMe.get("pictureUrl"));
-      m.setEmail(returnMe.get("email"));
+      m.setMemId(userId);
+      m.setMemNick(name);
+      m.setMemImg(pictureUrl);
+      m.setEmail(email);
       if (loginUser == null) {
         memberService.addGoogleProfile(m);
-        memberService.selectNaverProfile(returnMe.get("id"));
-        loginUser = m;
+        loginUser = memberService.selectSocialProfile(userId);
       }
       memberService.setLastLogin(loginUser);
       session.setAttribute("loginUser", loginUser);
       System.out.println(loginUser);
     }
     return "redirect:/";
+  }
+  @RequestMapping("businessPage.me")
+  public String businessPage() {
+	  return "member/businessPage";
+  }
+  @RequestMapping("businessPage1.me") //수정예정 공공API로 활용할 예정
+  public ResponseEntity<String> businessPage(String memStatus) {
+	  if ("B".equals(memStatus)) { // 기업인 경우에만 진위 확인 페이지를 연다고 가정
+		  memberService.businessPage(memStatus);
+          return ResponseEntity.ok("진위 확인 페이지가 열렸습니다.");
+      } else {
+          return ResponseEntity.badRequest().body("기업이 아닙니다.");
+      }
   }
 
   @GetMapping("memberTicket.me")

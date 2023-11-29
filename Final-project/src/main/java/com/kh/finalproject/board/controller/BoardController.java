@@ -15,14 +15,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.kh.finalproject.board.model.service.BoardService;
 import com.kh.finalproject.board.model.vo.Board;
+
 import com.kh.finalproject.common.model.vo.Attachment;
+
+import com.kh.finalproject.board.model.vo.BoardReport;
+import com.kh.finalproject.board.model.vo.CommentReport;
+
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
+import com.kh.finalproject.member.model.vo.Member;
 
 @Controller
 public class BoardController {
@@ -101,8 +109,21 @@ public class BoardController {
 
 		
 	// 일반게시글 상세조회
+		@ResponseBody
 		@GetMapping("detail.bo")
+/*
 		public ModelAndView selectBoard(int bno, ModelAndView mv, Attachment f, MultipartFile upfile, HttpSession session)  {
+*/
+		public ModelAndView selectBoard(CommentReport cr, BoardReport br, int bno, ModelAndView mv, Files f, MultipartFile upfile, HttpSession session)   {
+			
+			Member loginUser = (Member) session.getAttribute("loginUser"); 
+			int memNo = loginUser.getMemNo();
+			
+			cr.setMemNo(memNo);
+			cr.setRefBoardNo(bno);
+			
+			
+
 			
 			if(boardService.increaseCount(bno) > 0 ) {
 				
@@ -113,11 +134,13 @@ public class BoardController {
 						f.setRefType(file.getRefType());
 					}
 						mv.addObject("f", boardService.selectFile(bno)).setViewName("board/boardDetailView");
-						mv.addObject("b", boardService.selectBoard(bno)).setViewName("board/boardDetailView");
 				}
-				
-				mv.addObject("cList", boardService.selectComment(bno)).setViewName("board/boardDetailView");
-				mv.addObject("b", boardService.selectBoard(bno)).setViewName("board/boardDetailView");
+				System.out.println(boardService.selectCommentReport(cr));
+				mv.addObject("cr", boardService.selectCommentReport(cr))
+				  .addObject("br", boardService.selectBoardReport(bno))
+				  .addObject("cList", boardService.selectComment(bno))
+				  .addObject("b", boardService.selectBoard(bno))
+				  .setViewName("board/boardDetailView");
 			} else {
 				mv.addObject("errorMsg", "게시글 조회 실패").setViewName("common/errorPage");
 			}
@@ -168,9 +191,30 @@ public class BoardController {
 				session.setAttribute("errorMsg", "실패!");
 				return "common/errorPage";
 			}
+		}
+		@ResponseBody
+		@GetMapping(value="cList.do", produces="application/json; charset=UTF-8")
+		public String ajaxSelectComment(int boardNo) {
 			
+			
+			return new Gson().toJson(boardService.selectComment(boardNo));
 		}
 		
+		@RequestMapping("report.bo")
+		public String insertReport(BoardReport br) {
+			
+			if(boardService.insertReport(br) > 0) {
+				return "redirect:detail.bo?bno=" + br.getRefBoardNo();
+			} else {
+				return "common/errorPage";
+			}
+		}
+		
+		@ResponseBody
+		@RequestMapping(value="report.co")
+		public String insertCommentReport(CommentReport cr) {
+			return boardService.insertCommentReport(cr) > 0 ? "success" : "fail";
+		}
 		
 
 }

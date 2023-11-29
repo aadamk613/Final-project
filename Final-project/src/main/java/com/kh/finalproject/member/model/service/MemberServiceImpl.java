@@ -1,21 +1,27 @@
 package com.kh.finalproject.member.model.service;
 
-import com.kh.finalproject.member.model.dao.MemberDao;
-import com.kh.finalproject.member.model.vo.Member;
-import com.kh.finalproject.member.model.vo.NaverLogin;
-import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.ArrayList;
-
-import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kh.finalproject.member.model.dao.MemberDao;
+import com.kh.finalproject.member.model.vo.Member;
+import com.kh.finalproject.member.model.vo.NaverLogin;
+import com.kh.finalproject.ticket.model.vo.Ticket;
+
 @Service
 public class MemberServiceImpl implements MemberService {
-  @Autowired private MemberDao memberDao;
-  @Autowired private SqlSessionTemplate sqlSession;
+
+  private final MemberDao memberDao;
+  private final SqlSessionTemplate sqlSession;
+
+  @Autowired
+  public MemberServiceImpl(MemberDao memberDao, SqlSessionTemplate sqlSession) {
+    this.memberDao = memberDao;
+    this.sqlSession = sqlSession;
+  }
 
   @Override
   public Member loginMember(Member m) {
@@ -32,14 +38,15 @@ public class MemberServiceImpl implements MemberService {
   public int idCheck(String checkId) {
     return memberDao.idCheck(sqlSession, checkId);
   }
+
   @Override
   public int updateMember(Member m) {
-	  return memberDao.upateMember(sqlSession, m);
+    return memberDao.upateMember(sqlSession, m);
   }
-  
+
   @Override
   public int deleteMember(String memId) {
-	  return memberDao.deleteMember(sqlSession, memId);
+    return memberDao.deleteMember(sqlSession, memId);
   }
 
   @Override
@@ -57,7 +64,6 @@ public class MemberServiceImpl implements MemberService {
     return memberDao.loadImg(sqlSession, inputFile);
   }
 
-
   public Member selectMember(int memNo) {
     return memberDao.selectMember(sqlSession, memNo);
   }
@@ -73,8 +79,8 @@ public class MemberServiceImpl implements MemberService {
   }
 
   @Override
-  public Member selectNaverProfile(String memId) {
-    return memberDao.selectNaverProfile(sqlSession, memId);
+  public Member selectSocialProfile(String memId) {
+    return memberDao.selectSocialProfile(sqlSession, memId);
   }
 
   @Override
@@ -116,4 +122,10 @@ public class MemberServiceImpl implements MemberService {
   public int getAnswerNumber(Member loginUser) {
     return memberDao.getAnswerNumber(sqlSession, loginUser);
   }
+  
+  @Override
+  public int businessPage(Member memStatus) {
+	  return memberDao.businessPage(sqlSession, memStatus);
+		  
+	  }
 }
