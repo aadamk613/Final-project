@@ -92,6 +92,7 @@ public class MemberController {
 
   @RequestMapping("join.me")
   public String joinMember(Member m, Model model) {
+	  
       System.out.println(m);
       System.out.println("평문 : " + m.getMemPwd());
 
@@ -115,17 +116,17 @@ public class MemberController {
       return "member/businessPage"; // businessPage.jsp로 리다이렉트
   }
 
-  /*
-  @RequestMapping("businessPage")
-  public String goToBusinessPage(Member m) {
-      if ("B".equals(m.getMemStatus())) {
-          return "businessPage"; // memStatus가 "B"일 때는 businessPage.jsp로 리턴
+
+  @RequestMapping("businessPage1.me") //수정예정 공공API로 활용할 예정
+  public ResponseEntity<String> businessPage1(String memStatus) {
+	  if ("B".equals(memStatus)) { // 기업인 경우에만 진위 확인 페이지를 연다고 가정
+		  memberService.businessPage(memStatus);
+          return ResponseEntity.ok("진위 확인 페이지가 열렸습니다.");
       } else {
-          return "../common/main"; // 그 외의 경우는 main.jsp로 리턴
+          return ResponseEntity.badRequest().body("기업이 아닙니다.");
       }
   }
-  */
-
+  
 
   @ResponseBody // 포워딩 해줄게 아니라서
   @RequestMapping("idCheck.me")
@@ -298,16 +299,6 @@ public class MemberController {
       System.out.println(loginUser);
     }
     return "redirect:/";
-  }
-  
-  @RequestMapping("businessPage1.me") //수정예정 공공API로 활용할 예정
-  public ResponseEntity<String> businessPage1(String memStatus) {
-	  if ("B".equals(memStatus)) { // 기업인 경우에만 진위 확인 페이지를 연다고 가정
-		  memberService.businessPage(memStatus);
-          return ResponseEntity.ok("진위 확인 페이지가 열렸습니다.");
-      } else {
-          return ResponseEntity.badRequest().body("기업이 아닙니다.");
-      }
   }
 
   @GetMapping("memberTicket.me")

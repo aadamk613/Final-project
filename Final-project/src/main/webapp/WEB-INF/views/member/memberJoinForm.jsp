@@ -84,10 +84,19 @@
 				<input type="text" name="memNick" placeholder="한글/영문/숫자가능" required>
 			</div>
 			<div class="emailWrap">
-				이메일
-				<input type="email"placeholder="@기입필수!" name="email" pattern="/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
-" required>
-			</div>
+		    이메일
+		    <input class="box" id="local-part" type="text" name="email" placeholder="아이디 입력" required>
+		    @
+		    <input class="box" id="domain-txt" type="text" placeholder="도메인 입력">
+		    <select class="box" id="domain-list">
+		        <option value="type">직접 입력</option>
+		        <option value="naver.com">naver.com</option>
+		        <option value="gmail.com">gmail.com</option>
+		        <option value="hanmail.net">hanmail.net</option>
+		        <option value="nate.com">nate.com</option>
+		        <option value="kakao.com">kakao.com</option>
+		    </select>
+		</div>
 			<div class="Qualification">
 		    개인/기업
 		    <br>
@@ -149,8 +158,31 @@
 	// 그리고 필터링된 값이 5글자 이상일 경우, AJAX를 사용하여 서버에 중복 체크를 요청
 	// 서버에서 반환된 결과에 따라 중복 여부를 사용자에게 알려주고
 	// 폼 제출 버튼을 활성화 하거나 비활성화 해줌
+	
+	const localPart = document.getElementById('local-part');
+    const domainTxt = document.getElementById('domain-txt');
+    const domainList = document.getElementById('domain-list');
 
-    
+    domainList.addEventListener('change', function() {
+        const selectedDomain = this.value;
+        if (selectedDomain !== 'type') {
+            domainTxt.value = selectedDomain;
+            domainTxt.setAttribute('disabled', true);
+        } else {
+            domainTxt.value = '';
+            domainTxt.removeAttribute('disabled');
+            domainTxt.focus();
+        }
+    });
+
+    localPart.addEventListener('input', function() {
+        this.value = this.value.replace(/[^a-zA-Z0-9._-]/g, ''); // 특수 문자 제거
+    });
+
+    domainTxt.addEventListener('input', function() {
+        const selectedDomain = this.value;
+        domainList.value = selectedDomain;
+    });
    
 </script>
 
