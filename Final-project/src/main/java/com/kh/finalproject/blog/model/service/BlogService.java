@@ -22,6 +22,8 @@ public interface BlogService {
 	
 	// 블로그 정보 수정
 	int updateBlog(Blog b, Files file);
+	
+	// --------------------------------------------------------
 
 	// 블로그 카테고리 select
 	ArrayList<BlogCategorySetting> selectCatogory(int blogNo);
@@ -35,18 +37,31 @@ public interface BlogService {
 	// 블로그 카테고리 삭제
 	int deleteCatogory(int categorySettingNo);
 	
+	// --------------------------------------------------------
+	
 	// 블로그 식물 수 조회
 	int selectListCountPlant(int blogNo);
 	
 	// 식물 전체 리스트로 이동
 	ArrayList<Plant> selectListPlant(PageInfo pi, int blogNo);
 	
+	// 식물 조회
+	Plant selectBlogPlant(int plantNo);
+	
+	// 식물 수정
+	int updateBlogPlant(Plant plant, Files file);
+	
 	// 식물 등록
 	int insertBlogPlant(Plant plant, Files file);
 
+	// 식물 삭제
+	int deleteBlogPlant(int plantNo);
+	
+	// --------------------------------------------------------
+	
 	// 블로그 일반 글 쓰기
 	int insertBlogBoard(BlogBoard blogBoard);
-	
+
 	
 	// 블로그 일반 글 삭제
 	

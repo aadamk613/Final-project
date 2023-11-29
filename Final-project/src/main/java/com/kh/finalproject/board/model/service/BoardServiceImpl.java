@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.kh.finalproject.board.model.dao.BoardDao;
 import com.kh.finalproject.board.model.vo.Board;
 import com.kh.finalproject.board.model.vo.BoardComment;
+import com.kh.finalproject.board.model.vo.BoardReport;
+import com.kh.finalproject.board.model.vo.CommentReport;
 import com.kh.finalproject.common.model.vo.Files;
 import com.kh.finalproject.common.model.vo.PageInfo;
 
@@ -96,4 +98,24 @@ public class BoardServiceImpl implements BoardService {
 		return boardDao.selectComment(sqlSession, boardNo);
 	}
 
+	@Override
+	public int insertReport(BoardReport br) {
+		return boardDao.insertReport(sqlSession, br);
+	}
+
+	@Override
+	public ArrayList<BoardReport> selectBoardReport(int boardNo) {
+		return boardDao.selectBoardReport(sqlSession, boardNo);
+	}
+
+	@Override
+	public int insertCommentReport(CommentReport cr) {
+		return boardDao.insertCommentReport(sqlSession, cr);
+	}
+
+	@Override
+	public ArrayList<CommentReport> selectCommentReport(CommentReport cr) {
+		return boardDao.selectCommentReport(sqlSession, cr);
+	}
+	
 }

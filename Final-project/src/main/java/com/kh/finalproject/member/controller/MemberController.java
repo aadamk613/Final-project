@@ -16,10 +16,13 @@ import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.servlet.http.HttpSession;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +30,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.gson.Gson;
+import com.kh.finalproject.member.model.service.KakaoLoginService;
+import com.kh.finalproject.member.model.service.MemberService;
+import com.kh.finalproject.member.model.service.NaverLoginService;
+import com.kh.finalproject.member.model.vo.Member;
+import com.kh.finalproject.member.model.vo.NaverLogin;
+import com.kh.finalproject.ticket.model.vo.Ticket;
 
 @Controller
 public class MemberController {
@@ -48,16 +66,18 @@ public class MemberController {
     this.kakaoLoginService = kakaoLoginService;
   }
 
+
+	@RequestMapping("loginForm.me")
+	public String loginForm() {
+		return "member/loginForm";
+	}
+
   /**
    * loginForm method - 메인 페이지에서 로그인 버튼 클릭시 로그인 화면 페이지 리디렉션용 메소드
    *
    * @return String 리디렉션할 로그인 페이지 주소
    */
-  @RequestMapping("loginForm.me")
-  public String loginForm() {
-    return "member/loginForm";
-  }
-
+  
   @RequestMapping("login.me")
   public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv) {
     // login 시 DB에 저장된 암호화된 암호의 솔트값을 알아내면
@@ -159,7 +179,7 @@ public class MemberController {
       return "redirect:myPage.me";
     }
   }
-
+    
   @GetMapping("naverLogin.me")
   public String naverLogin() {
     return "member/naverLoginCallback";
@@ -259,6 +279,19 @@ public class MemberController {
       System.out.println(loginUser);
     }
     return "redirect:/";
+  }
+  @RequestMapping("businessPage.me")
+  public String businessPage() {
+	  return "member/businessPage";
+  }
+  @RequestMapping("businessPage1.me") //수정예정 공공API로 활용할 예정
+  public ResponseEntity<String> businessPage(String memStatus) {
+	  if ("B".equals(memStatus)) { // 기업인 경우에만 진위 확인 페이지를 연다고 가정
+		  memberService.businessPage(memStatus);
+          return ResponseEntity.ok("진위 확인 페이지가 열렸습니다.");
+      } else {
+          return ResponseEntity.badRequest().body("기업이 아닙니다.");
+      }
   }
 
   @GetMapping("memberTicket.me")

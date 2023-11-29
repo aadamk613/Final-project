@@ -52,12 +52,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				)
 			VALUES
 			 	(
-			 	SEQ_FILE_NO.NEXTVAL, 
+			 	SEQ_FILE_NO.NEXTVAL,
 			 	#{ originalName },
 			 	#{ updateName },
 			 	#{ filePath },
 			 	#{ refType },
 			 	<choose>
+			 		<when test="refNo gt 0">
+			 			#{ refNo },
+			 		</when>
 			 		<when test="refType eq 'plant'">
 			 			SEQ_PLANT_NO.CURRVAL,
 			 		</when>
@@ -71,9 +74,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 	#{ fileAnnotation },
 			 	SYSDATE
 			 	)		  	
-	
 	</insert>
 	
+
+	<delete id="deleteFiles" parameterType="files">
+		DELETE 
+		  FROM
+		  	   TB_FILES
+		 WHERE
+		 	   REF_NO = #{ refNo }
+		   AND
+		   	   REF_TYPE = #{ refType }
+	</delete>
+
+	<!-- 
+	<update id="updateFiles" parameterType="files">
+		UPDATE
+			   TB_FILES
+		   SET
+		   	   ORIGINAL_NAME = #{ originalName },
+		       UPDATE_NAME = #{ updateName },
+		       FILE_PATH = #{ filePath },
+		       FILE_ANNOTATION = #{ fileAnnotation },
+		       UPLOAD_DATE = SYSDATE
+		 WHERE
+		 	   FILE_NO = #{ fileNo }
+		   AND
+		   	   REF_TYPE = #{ refType }
+	</update>
+	 
+
 	<update id="updateFiles">
 	
 		UPDATE TO TB_FILES
@@ -102,17 +132,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	
 	</update>
-	
-	
-	<delete id="deleteFiles" parameterType="files">
-	
-		DELETE 
-			  	TB_FILES
-	    	WHERE 
-	    		REF_TYPE = #{ refType }
-	    	AND    
-	    		REF_NO = #{ refNo }
-	
-	</delete>
+	-->
 	
 </mapper>

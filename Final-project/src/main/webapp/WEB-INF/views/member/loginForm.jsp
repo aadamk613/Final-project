@@ -20,13 +20,11 @@
 </script>
 </head>
 <style>
-
-/* 화면틀입니다 안에 부분은 자기가 맡은 파트로 채워주세요 */
 * {
     border: 1px solid skyblue;
 	box-sizing: border-box;
 }
-
+#pageHeader{height: 200px;}
 #id_pw_wrap{width: 400px; height: 300px; margin: 40px auto;}
 
 #id_pw_wrap > div{float: left;}
@@ -105,16 +103,13 @@ a{
 <body>
 
 	<header id="pageHeader">
-        &lt;header&gt;
-        id=pageHeader
-        여기는 헤더
 	</header> 
 	<main>
 		<aside id="pageAsideLeft" class="aside">
       
 		</aside>
 		
-		<section id="section">
+		<section id="pageSection">
 	
 			<div id="content">
                 
@@ -208,15 +203,6 @@ a{
 	<br clear="both">
 	
 	<footer id="pageFooter">
-        &lt;footer&gt; <br>
-        id=pageFooter
-        여기는 푸터 <br>
-        여기는 푸터 <br>
-        여기는 푸터 <br>
-        여기는 푸터 <br>
-        여기는 푸터 <br>
-        여기는 푸터 <br>
-        쓰는만큼 늘어나요<br>
 	</footer>
 
 

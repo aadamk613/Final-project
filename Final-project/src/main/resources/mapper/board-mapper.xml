@@ -20,8 +20,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="BOARD_COMMENT_NO" property="commentNo"></result>
 		<result column="BOARD_COMMENT_CONTENT" property="commentContent"></result>
 		<result column="BOARD_COMMENT_STATUS" property="commentStatus"></result>
-		<result column="BOARD_CREATE_DATE" property="createDate"></result>
-		<result column="BOARD_UPDATE_DATE" property="updateDate"></result>
+		<result column="COMMENT_CREATE_DATE" property="commentCreateDate"></result>
+		<result column="COMMENT_UPDATE_DATE" property="commentUpdateDate"></result>
 		<result column="BOARD_TOP_COMMENT" property="boardTopComment"></result>
 		<result column="BOARD_NO" property="boardNo"></result>
 		<result column="MEM_NICK" property="memNo"></result>
@@ -237,7 +237,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			SELECT
 			      BOARD_COMMENT_NO 
 			     ,BOARD_COMMENT_CONTENT 
-			      ,TO_CHAR(BOARD_CREATE_DATE, 'YYYY-MM-DD HH:MI:SS') AS "BOARD_CREATE_DATE"
+			     ,TO_CHAR(COMMENT_CREATE_DATE, 'YYYY-MM-DD HH:MI:SS') AS "COMMENT_CREATE_DATE"
 			     ,BOARD_TOP_COMMENT 
  			     ,BOARD_NO 
 			     ,MEM_NICK
@@ -254,5 +254,65 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		        BOARD_COMMENT_NO DESC
 		</select>
 		
+		<insert id="insertReport" parameterType="boardReport">
+			INSERT
+			  INTO
+			      TB_BOARD_REPORT
+			      (
+			      REPORT_NO
+			     ,REPORT_CONTENT
+			     ,REPORT_DATE
+			     ,REF_BOARD_NO
+			     ,REF_MEMBER_NO
+			     ,MEM_NO
+			     )
+			VALUES(
+			     SEQ_BOARD_REPORT_NO.NEXTVAL
+			     ,#{reportContent}
+			     ,SYSDATE
+			     ,#{refBoardNo}
+			     , (SELECT MEM_NO
+			        FROM MEMBER
+			        WHERE MEM_NICK = #{refMemberNo})
+			     ,#{memNo}
+			     )
+		</insert>
 	
+		<select id="selectBoardReport" resultType="boardReport">
+		   SELECT
+			      MEM_NO memNo
+			 FROM
+			     TB_BOARD_REPORT
+			WHERE
+			     REF_BOARD_NO = ${boardNo}
+		</select>
+		
+		<insert id="insertCommentReport" parameterType="commentReport">
+			INSERT
+			  INTO
+			      TB_COMMENT_REPORT
+			VALUES
+			      (
+			      SEQ_COMMENT_REPORT_NO.NEXTVAL
+			     ,#{reportContent}
+			     ,SYSDATE
+			     ,#{refCommentNo}
+			     , (SELECT MEM_NO
+			        FROM MEMBER
+			        WHERE MEM_NICK = #{refMemberNo})
+			     ,#{memNo}
+			     ,#{refBoardNo}
+			      )
+		</insert>
+		
+		<select id="selectCommentReport" resultType="commentReport">
+			SELECT
+			      REF_COMMENT_NO refCommentNo
+			  FROM
+			      TB_COMMENT_REPORT
+			 WHERE
+			      MEM_NO = #{memNo}
+			   AND
+			      REF_BOARD_NO = #{refBoardNo}
+		</select>
 </mapper>

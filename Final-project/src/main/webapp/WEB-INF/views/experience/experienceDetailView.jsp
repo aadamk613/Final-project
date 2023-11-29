@@ -54,6 +54,10 @@ h1 {
 	height : 400px;
 }
 
+#content-div{
+	
+}
+
 .files{
 	width : 80%;
 	height : 400px;
@@ -67,7 +71,6 @@ h1 {
 .summary li {
 	list-style : none;
 	align : center;
-	
 }
 
 <!-- 댓글 --!>
@@ -133,13 +136,12 @@ th, td{
 				<c:if test="${ sessionScope.loginUser.memId eq requestScope.exp.expWriter }">
 					<div id="forWriter">
 						<!-- <a class="btn btn-primary" onclick="expSubmit(0);">수정하기</a> -->
-						<a class="btn btn-primary" onclick="expChange();">수정하기</a>
+						<a class="btn btn-primary" onclick="expSubmit(0);">수정하기</a>
 						<a class="btn btn-danger" onclick="expSubmit(1);">삭제하기</a>
 					</div>
 				</c:if>
 				<!-- 악성유저 방지차원 post방식으로 보내주기 -->
-				<form action="" method="post" id="postForm">
-					<input type="hidden" name="expNo" value="${ exp.expNo }" />
+				<form action="" method="post" id="postForm" >
 					<input type="hidden" name="expNo" value="${ exp.expNo }" />
 					<input type="hidden" name="expTitle" value="${ exp.expTitle }" />
 					<input type="hidden" name="expWriter" value="${ exp.expWriter }" />
@@ -155,12 +157,22 @@ th, td{
 					<input type="hidden" name="expArea" value="${ exp.expArea }" />
 					<input type="hidden" name="expAddress" value="${ exp.expAddress }" />
 					<input type="hidden" name="expCategoryNo" value="${ exp.expCategoryNo }" />
-					<input type="hidden" name="files" value="${ files }" />
-				</form>
+					<c:if test="${ not empty requestScope.files }">
+						<c:forEach var="f" items="${ requestScope.files }">
+							<input type="hidden" name="fileNo" value="${ f.fileNo }" />
+							<input type="hidden" name="filePath" value="${ f.filePath }" />
+							<input type="hidden" name="updateName" value="${ f.updateName }" />
+							<input type="hidden" name="fileAnnotation" value="${ f.fileAnnotation }" />
+						</c:forEach>
+					</c:if>
+					
+				</form>	
 				
 				<script>
+				console.log("왜 안나와ㅠㅠ");
+				console.log('${ exp.expNo }');
 					// 수정하기 ajax로 넘겨보기 테스트 중(값이 VO로 넘어가나)
-					function expChange(){
+					/* function expChange(){
 						
 						$.ajax({
 							url : 'yrupdateExpForm.exp',
@@ -172,13 +184,12 @@ th, td{
 								console.log('체험학습 게시글 통신오류');
 							}
 						});
-					}
+					} */
 				</script>
 				
 				<div class="title">
 					<h1>${ exp.expTitle }</h1>
 				</div>
-				
 				
 				<div>
 					<div class="count">
@@ -235,9 +246,9 @@ th, td{
 				<div>
 					<p>${ exp.expContent }</p>
 				</div>
-				<div id="">
+				<div id="content-div">
 					<c:if test="${ not empty requestScope.files }">
-						<c:forEach var="f" items="${ requestScope.files }">
+						<c:forEach var="f" items="${ requestScope.files }"  begin="1">
 							<img src="${ f.filePath }${ f.updateName }" class="files" />
 							<p>${ f.fileAnnotation }</p>
 						</c:forEach>
@@ -298,9 +309,6 @@ th, td{
 		<script>
 			// 게시글 수정 및 삭제
 			function expSubmit(type){
-				
-				
-				
 				if(type == 0){
 					$('#postForm').attr('action', 'yrupdateExpForm.exp').submit();
 				}

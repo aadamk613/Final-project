@@ -308,6 +308,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 	   EXP_REPLY_NO = #{ expReplyNo }
 	</delete>
 	
+	<!-- 체험학습 게시글 수정 -->
+	<update id="updateExperience" parameterType="experience">
+		UPDATE
+			   TB_EXPERIENCE
+		   SET
+			   EXP_TITLE = #{ expTitle },
+			   EXP_PEOPLE = #{ expPeople },
+			   EXP_CONTENT = #{ expContent } ,
+			   EXP_WORK_DATE = #{ expWorkDate },
+			   EXP_WORK_TIME = #{ expWorkTime },
+			   EXP_END_DATE = #{ expEndDate },
+			   EXP_UPDATE_DATE = SYSDATE,
+			   EXP_AREA = #{ expArea },
+			   EXP_ADDRESS = #{ expAddress },
+			   EXP_CATEGORY_NO = #{ expCategoryNo }
+		WHERE 
+			   EXP_NO = #{ expNo }
+	</update>
+	
+	<!-- 체험학습 게시글 첨부파일 수정 삭제 -->
+	<delete id="deleteExpFiles" parameterType="string">
+		DELETE 
+		  FROM
+		  	   TB_FILES
+		 WHERE
+		 	   UPDATE_NAME = SUBSTR(#{ oldFile }, INSTR(#{ oldFile }, '/', - 1) + 1)
+		   AND
+		   	   REF_TYPE = 'experience'
+	</delete>
 	
 	
 	

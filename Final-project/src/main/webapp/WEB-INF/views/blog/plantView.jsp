@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>블로그 메인</title>
+<title>식물 상세보기</title>
 <link rel="stylesheet" href="resources/css/common/template.css">
 
 </head>
@@ -25,14 +25,25 @@
 	}
 
 article{padding: 10px;}
+
 #plantInfoWrap > div{float: left;}
+
 #plantInfoWrap{width: 100%; height: auto;}
 
 #plantImg{width: 20%; height: 160px; float: middle;}
 
 #plantInfo{width: 80%; height: 160px;}
-#plantName{font-size: 20px; font-weight: bold;}
+
+#plantReport{width: 100%; height: auto; padding: 20px;}
+
+#plantName{font-size: 20px; font-weight: bold; }
+
+#plantName div{float: left; width:50%; height: 30px;}
+
+#deleteWrap{margin: 0px;}
+
 #plantNick{font-size: 17px; font-weight: bold; color: #448300;}
+
 #plantNick > div{display: inline; padding: 10px;}
 
 #plantCreateDate{font-size: 15px; color: #888;}
@@ -47,6 +58,8 @@ article{padding: 10px;}
 #plantInfo li{
 	padding: 5px 20px;
     position: relative;
+    width: 100%;
+    height: 100%;
 }
 .button{
 	width: 130px;
@@ -62,6 +75,24 @@ article{padding: 10px;}
 	background-color: #afdba3;
     color: white;
 	margin: 5px 15px 5px 0px;
+}
+
+.beige{
+    font-size: 20px;
+    font-weight: bolder;
+    border-radius: 10px;
+    border:2px solid beige;
+	background-color: beige;
+    color: rgb(83, 57, 32);
+}
+
+.delete{
+	width: 35px;
+ 	border-radius: 30px;
+    border:2px solid #FF9090;
+	background-color: #FF9090;
+    color: white;
+
 }
 
 #blogIntroduce a{
@@ -90,6 +121,8 @@ textarea{
 	text-align: center;
 }
 
+.displayNone{display: none; }
+#plantCareModal{background-color: white; z-index: 2; position:absolute; width:300px; height: 300px;}
 
 </style>
 <body>
@@ -105,72 +138,143 @@ textarea{
 		<section id="pageSection">
 			
 			<div id="blogTitle">
-			   	${ sessionScope.loginUser.memNick }의 정원
+			   	${ plant.plantName }
 			</div>
 			
 			<div id="content">
                 
-                <c:forEach var="p" items="${ list }">
 				<article>
                     <div id="plantInfoWrap">
                         <div id="plantImg">
                         	<c:choose>
-	                        	<c:when test="${ empty p.filePath }" >
-	                        	<img width="100%" height="100%" src="resources/images/filePath.png" class="files" />
+	                        	<c:when test="${ empty plant.filePath }" >
+	                        	<img width="100%" height="100%" src="resources/images/defaultPlant.png" class="files" />
 								</c:when>
 								<c:otherwise>
-								<img width="100%" height="100%" src="${ p.filePath }${ p.updateName }" class="files" />
+								<img width="100%" height="100%" src="${ plant.filePath }${ plant.updateName }" class="files" />
 								</c:otherwise>
 							</c:choose>
 						</div>
                         <div id="plantInfo">
                             <ul>
-                                <li id="plantName">식물 이름 : ${ p.plantName }</li>
+                                <li id="plantName">
+                                	<div>식물 이름 : ${ plant.plantName }</div>
+                                	<div id="deleteWrap">
+									<button class="button beige" onclick="plantManage('update');">수정하기</button>		                                	
+                                	<button class="button forest delete" onclick="plantManage('del');">-</button>
+                                	</div>
+                                	<clear="both">
+                                </li>
                                 <li id="plantNick">
-	                                <div>별명 : ${ p.plantNickName }</div>
-	                                <div id="plantCreateDate">D+${ p.plantLogDate }</div>
+	                                <div>별명 : ${ plant.plantNickName }</div>
+	                                <div id="plantCreateDate">D+${ plant.plantLogDate }</div>
                                 </li>
                                 <li id="plantButtonWrap">
-                                <form action="" method="post" id="postForm">
-                                	<input type="hidden" id="plantNo" name="plantNo" value="${ p.plantNo }">
-                                	<input type="hidden" name="plantNickName" value="${ p.plantNickName }">
-									<input type="hidden" id="category" name="category" value="">
+                                <form action="insertForm.bl_pr" method="post" id="postForm">
+                                	<input type="hidden" id="plantNo" name="plantNo" value="${ plant.plantNo }">
+                                	<input type="hidden" name="plantNickName" value="${ plant.plantNickName }">
 									
-                                	<a id="plantReport" class="button forest" onclick="plantCare(this);">일지 추가</a>
-                                    <a id="plantCare" class="button forest" onclick="plantCare(this);">관리하기</a>
+                                	<button type="submit" class="button forest" id="plantReportButton">일지 추가</button>
+                                    <a id="plantCareButton" class="button forest" onclick="plantCareModal();">관리하기</a>
                                 </form>
                                 </li>
+                               <div id="plantCareModal" class="displayNone" >
+                                    	<form action="insert.bl_pr" method="post" >
+                                    	<div>${ plant.plantNickName } 관리하기</div>
+                                    	<div>
+                                    	<input type="date" name="plantLogDate">
+                                    	
+                                    	</div>
+                                    	<div>
+                                    		<select name="plantReportCategoryName">
+	                                		<option value="20">물주기</option>
+	                                		<option value="30">물갈이하기</option>
+	                                		<option value="40">가지치기</option>
+	                                		<option value="50">영양관리</option>
+	                                		<option value="60">분갈이하기</option>
+                                			</select>
+                                    	</div>
+                                    	<div>
+                                    		<button type="submit">기록하기</button>
+                                    	</div>
+                                    </form>	
+                                    </div>
+                                    
                             </ul>
+                        </div>
+                        
+                        <div id="plantReport">
+                        	<table>
+                        		<tr>
+                        			2023-11-20 11일전
+                        		</tr>
+                        		<tr>
+                        			식물 일지 or 식물 관리
+                        		</tr>
+                        		<tr>
+                        			내용
+                        		</tr>
+                        		
+                        		
+                        	</table>
+                        
                         </div>
                         
                     </div>
                     <br clear="both">
 				</article>
-				</c:forEach>
 			</div>
 			<div><a href="javascript:window.history.back();"><button type="button" class="button beige" id="goBlogHome">돌아가기</button></a></div>
-			
+
 			<script>
+			
+				function plantCareModal(){
+					$('#plantCareModal').removeClass('displayNone');
+				} 
+			
+			
+				// 식물 관리하기
 	         	function plantCare(category){
-	            		//console.log($(arguments[0]).parent().children().find($('#plantNo')).val());
-	            		console.log($(arguments[0]).parent().children().find('input[plantNo]').val());
 	            		
 	            		if(category == 10){ // 일지 추가 클릭 시
 	            			console.log($(arguments[0]).parent().children().find('input[plantNo]').val());
-	            			$(arguments[0]).parent().children().find('input[plantNo]').attr('value', ${ p.plantNo})
+	            			$(arguments[0]).parent().children().find('input[plantNo]').attr('value', ${ p.plantNo});
 	            			$('#postForm').attr('action', 'insertForm.bl_pr').submit();
 	            		
 	            		}
+	            		/*
 	            		else{ // 관리하기 클릭 시
-	            			console.log($(arguments[0]).parent().children().find('input[plantNo]').val());
-	            			$(arguments[0]).parent().children().find('input[plantNo]').attr('value', ${ p.plantNo})
+	            					
+	            			//입력할 값이 많지 않아서 모달 창 뜨는걸로 변경 예정
+	            			//console.log($(arguments[0]).parent().children().find('input[plantNo]').val());
+	            			$(arguments[0]).parent().children().find('input[plantNo]').attr('value', ${ p.plantNo});
 	            			
-	            			$('#postForm').attr('action', 'insertForm.bl_pr').submit();
+	            			//$('#postForm').attr('action', 'insertForm.bl_pr').submit();
 	            		}
+	            		*/
 	            	}
+	         	
+	         		// 식물 수정하기(str == update), 삭제하기(str == del)
+		         	function plantManage(str){
+	         			
+						if(str == "update"){
+							location.href = "updateForm.bl_pl?plantNo=" + ${ plant.plantNo } + "&blogNo=" + ${ plant.blogNo };	
+						}	
+						else{
+			      			// console.log(${ plant.plantNo });
+		         			
+		         			if(confirm("해당 식물의 모든 정보와 일지를 삭제합니다. 식물을 삭제하시겠습니까?")){
+
+		         				location.href = "delete.bl_pl?plantNo=" + ${ plant.plantNo } + "&blogNo=" + ${ plant.blogNo };
+
+		         			}
+						}
+	   
+		         	}
+	         	
 			</script>
-						
-			
+
+
 			<div id="page">
 				<c:if test="${ pi.currentPage ne 1 }">
 		        	<button class="btn btn-light" onclick="location.href='select.bl_pl?blogNo=${ blogNo }&currentPage=${ pi.currentPage - 1 }'">&lt;</button>

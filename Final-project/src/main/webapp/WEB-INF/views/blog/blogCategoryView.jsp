@@ -151,6 +151,7 @@
 						var categoryMemName = data[i].categoryMemName;
 						var categoryNo = data[i].categoryNo;
 						
+						// createElement append child
 						if(categoryNo == 99){
 							value += '<ul>'
 							       + '<li id="aa"><button onclick="selectCategory(' 

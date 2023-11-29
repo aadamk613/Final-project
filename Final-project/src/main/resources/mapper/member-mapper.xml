@@ -250,4 +250,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{profile_image}
 				)
 	</insert>
+	
+	
 </mapper>
