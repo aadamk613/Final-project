@@ -304,10 +304,10 @@ public class ExperienceController {
 		return (experienceService.insertExpReply(newReply) > 0) ? "success" : "fail";
 	}
 	
-	// 좋아요
+	// 좋아요 눌려있는지 체크
 	/**
-	 * @param expNo : 
-	 * @param memNo
+	 * @param expNo : 좋아요 누른 게시글 번호
+	 * @param memNo : 좋아요 누른 회원 번호
 	 * @return
 	 */
 	@ResponseBody
@@ -321,6 +321,13 @@ public class ExperienceController {
 		return experienceService.selectExpLike(map);
 	}
 
+	// 좋아요 등록/취소
+	/**
+	 * @param expNo : 좋아요 누른 게시글 번호
+	 * @param likeVal : 좋아요 눌렀으면 1, 취소하면 0
+	 * @param memNo : 좋아요 누른 회원 번호
+	 * @return
+	 */
 	@ResponseBody
 	@GetMapping(value="yrexpLike")
 	public int expLike(int expNo, int likeVal, int memNo) {
