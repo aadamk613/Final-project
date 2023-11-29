@@ -306,9 +306,9 @@ public class ExperienceController {
 	
 	// 좋아요 눌려있는지 체크
 	/**
-	 * @param expNo : 좋아요 누른 게시글 번호
-	 * @param memNo : 좋아요 누른 회원 번호
-	 * @return
+	 * @param expNo : 좋아요 확인할 게시글 번호
+	 * @param memNo : 좋아요 확인할 회원 번호
+	 * @return : 눌렀으면 1, 안눌렀으면 0반환
 	 */
 	@ResponseBody
 	@GetMapping("yrexpLikeCheck")
@@ -326,7 +326,7 @@ public class ExperienceController {
 	 * @param expNo : 좋아요 누른 게시글 번호
 	 * @param likeVal : 좋아요 눌렀으면 1, 취소하면 0
 	 * @param memNo : 좋아요 누른 회원 번호
-	 * @return
+	 * @return : 
 	 */
 	@ResponseBody
 	@GetMapping(value="yrexpLike")
@@ -348,6 +348,10 @@ public class ExperienceController {
 	}
 	
 	// 체험학습 댓글 삭제
+	/**
+	 * @param expReplyNo : 삭제할 댓글 번호
+	 * @return : 성공 / 실패시 결과값 반환
+	 */
 	@ResponseBody
 	@PostMapping("yrdeleteExpReply")
 	public String deleteExpReply(int expReplyNo) {
