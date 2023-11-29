@@ -263,41 +263,30 @@
 			
 			<script>
 				$(() => {
-					
 					$.ajax({
-						url : 'sdfds',
+						url : 'disabled.btn',
 						data : {
 							refBoardNo : ${b.boardNo},
 							memNo : '${loginUser.memNo}'
 						},
 						success : data => {
-							console.log(data);
-							
+						console.log(data);
 							const btns = $('.commentReportBtn');
-							
+							//console.log(btns);
 							const nums = data.map((a, b) => {
-								//console.log(a);
 								return a.refCommentNo;
 							});
-							
-							//console.log(btns);
 							//console.log(nums);
-							
 							btns.map((b, i) => {
 								nums.map((n, j) => {
-								console.log(n);
 									if(i.id == n){
 										$(i).attr('disabled', true);
 									}
 								})
 							})
-							
 						}
-						
 					})
-					
 				})
-				
 			</script>
 			
 			
