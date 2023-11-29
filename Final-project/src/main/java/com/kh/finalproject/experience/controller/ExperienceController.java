@@ -130,42 +130,25 @@ public class ExperienceController {
 	@PostMapping("yrupdateExp.exp")
 	public String updateExperience(Experience exp, MultipartFile[] upfiles, String[] anno, String[] oldFiles, HttpSession session) {
 		
-		System.out.println("나와라 기존파일!!!!!!!!!!!!!!!!!!!!");
-		System.out.println(anno.toString());
-		
 		// 1. 원래 있던 파일 지우고 oldFileNo delete
-		
-		for(String oldFile : oldFiles) {
-			System.out.println("지워질 파일 이름");
-			System.out.println(oldFile);
-			System.out.println(session.getServletContext().getRealPath(oldFile));
-			new File(session.getServletContext().getRealPath(oldFile)).delete();
-			
-			// oldFile.substring(oldFile.lastIndexOf("/"));
+		if(oldFiles != null) {
+			for(String oldFile : oldFiles) {
+				new File(session.getServletContext().getRealPath(oldFile)).delete();
+			}
 		}
-		
-		System.out.println("여기까진 온거야?");
 		
 		// 2. 새로 들어온 파일 MultipartFile insert 
 		ArrayList<Attachment> fileList = new ArrayList();
-		System.out.println(fileList);
 		for(int i = 0; i < upfiles.length; i++) {
-			
 			Attachment file = new Attachment();
-			
 			if(!upfiles[i].getOriginalFilename().equals("")) {
-				System.out.println("하나하나");
-				System.out.println(upfiles[i]);
 				file = commonController.setFile(upfiles[i], session, "experience");
 				file.setRefNo(exp.getExpNo());
-				System.out.println("여기가 문제라고?");
 			} else {
 				continue;
 			}
-			System.out.println(anno[i]);
 			file.setFileAnnotation(anno[i]);
 			fileList.add(file);
-			
 		} 
 		
 		if(experienceService.updateExperience(exp, fileList, oldFiles) > 0) {
