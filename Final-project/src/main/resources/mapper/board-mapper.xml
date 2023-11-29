@@ -133,7 +133,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			     BOARD_NO = #{boardNo}
 	 	</select>
 	 	
-	 		<select id="selectFile" resultType="files">
+	 		<select id="selectFile" resultType="attachment">
 		SELECT
 		      FILE_NO fileNo
 		     ,ORIGINAL_NAME originalName
@@ -144,7 +144,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		     ,FILE_ANNOTATION fileAnnotation
 		     ,UPLOAD_DATE uploadDate
 		 FROM
-		     TB_FILES
+		     TB_ATTACHMENT
 	    WHERE
 	         REF_NO = #{boardNo}
 	      AND
@@ -160,10 +160,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		      TB_BOARD
 		</select>
 	
-		<insert id="insertFile" parameterType="files">
+		<insert id="insertFile" parameterType="attachment">
 		INSERT
 		  INTO
-		      TB_FILES
+		      TB_ATTACHMENT
 		      (
 		      FILE_NO
 		     ,REF_NO
@@ -207,7 +207,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<delete id="deleteFile" parameterType="_int">
 		DELETE
 		  FROM
-		      TB_FILES
+		      TB_ATTACHMENT
 		 WHERE
 		      REF_NO = #{boardNo}	
 		   AND

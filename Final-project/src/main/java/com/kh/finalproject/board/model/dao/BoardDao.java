@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.finalproject.board.model.vo.Board;
 import com.kh.finalproject.board.model.vo.BoardComment;
-import com.kh.finalproject.common.model.vo.Files;
+import com.kh.finalproject.common.model.vo.Attachment;
 
 @Repository
 public class BoardDao {
@@ -38,7 +38,7 @@ public class BoardDao {
 		return sqlSession.selectOne("boardMapper.selectLastBoardNo");
 	}
 
-	public int insertFile(SqlSessionTemplate sqlSession, Files f) {
+	public int insertFile(SqlSessionTemplate sqlSession, Attachment f) {
 		return sqlSession.insert("boardMapper.insertFile", f);
 	}
 
@@ -46,7 +46,7 @@ public class BoardDao {
 		return sqlSession.insert("boardMapper.insertBoard", b);
 	}
 
-	public ArrayList<Files> selectFile(SqlSessionTemplate sqlSession, int boardNo) {
+	public ArrayList<Attachment> selectFile(SqlSessionTemplate sqlSession, int boardNo) {
 		return (ArrayList)sqlSession.selectList("boardMapper.selectFile", boardNo);
 	}
 
@@ -62,7 +62,7 @@ public class BoardDao {
 		return sqlSession.update("boardMapper.updateBoard", b);
 	}
 
-	public int updateFiles(SqlSessionTemplate sqlSession, Files f) {
+	public int updateFiles(SqlSessionTemplate sqlSession, Attachment f) {
 		return sqlSession.update("noticeMapper.updateFiles", f);
 	}
 

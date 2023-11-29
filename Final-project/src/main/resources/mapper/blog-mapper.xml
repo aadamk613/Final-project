@@ -118,7 +118,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		    JOIN
                 MEMBER USING(BLOG_NO)
 			LEFT OUTER JOIN
-                TB_FILES ON (REF_NO = BLOG_NO)
+                TB_ATTACHMENT ON (REF_NO = BLOG_NO)
 			WHERE
 				BLOG_NO = #{ blogNo }
 	
@@ -263,7 +263,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    FROM 
 	        TB_PLANT
         LEFT OUTER JOIN 
-        	TB_FILES ON(PLANT_NO = REF_NO)
+        	TB_ATTACHMENT ON(PLANT_NO = REF_NO)
 	    WHERE
 	        STATUS = 'Y'
 	    AND 

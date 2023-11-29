@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.kh.finalproject.common.model.vo.Files;
+import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
 import com.kh.finalproject.notice.model.service.NoticeService;
@@ -63,7 +63,7 @@ public class NoticeController {
 	
 	// 공지사항 작성
 	@RequestMapping("insert.no")
-	public String insertNotice(Notice n, Files f, Model model, MultipartFile upfile, HttpSession session) {
+	public String insertNotice(Notice n, Attachment f, Model model, MultipartFile upfile, HttpSession session) {
 		if(!upfile.getOriginalFilename().equals("")) {
 			saveFile(upfile, session);
 			int lastNo = noticeService.selectLastNoticeNo();
@@ -111,13 +111,13 @@ public class NoticeController {
 	
 	// 공지사항 상세조회
 	@GetMapping("detail.no")
-	public ModelAndView selectNotice(int bno, ModelAndView mv, Files f, MultipartFile upfile, HttpSession session)  {
+	public ModelAndView selectNotice(int bno, ModelAndView mv, Attachment f, MultipartFile upfile, HttpSession session)  {
 		
 		if(noticeService.increaseCount(bno) > 0 ) {
 			
 			if(!noticeService.selectFile(bno).isEmpty()) {
-				ArrayList<Files> fileList = noticeService.selectFile(bno);
-				for(Files file : fileList) {
+				ArrayList<Attachment> fileList = noticeService.selectFile(bno);
+				for(Attachment file : fileList) {
 					f.setRefNo(file.getRefNo());
 					f.setRefType(file.getRefType());
 				}
@@ -158,7 +158,7 @@ public class NoticeController {
 	
 	// 공지사항 수정
 	@PostMapping("update.no")
-	public String updateNotice(Notice n, Files f, Model model, MultipartFile reUpfile, HttpSession session) {
+	public String updateNotice(Notice n, Attachment f, Model model, MultipartFile reUpfile, HttpSession session) {
 		
 		if(!reUpfile.getOriginalFilename().equals("")) {
 			

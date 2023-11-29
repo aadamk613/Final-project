@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-public class Files {
+public class Attachment {
   private int fileNo;
   private String originalName;
   private String updateName;

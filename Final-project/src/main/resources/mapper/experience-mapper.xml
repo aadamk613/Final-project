@@ -331,7 +331,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deleteExpFiles" parameterType="string">
 		DELETE 
 		  FROM
-		  	   TB_FILES
+		  	   TB_ATTACHMENT
 		 WHERE
 		 	   UPDATE_NAME = SUBSTR(#{ oldFile }, INSTR(#{ oldFile }, '/', - 1) + 1)
 		   AND

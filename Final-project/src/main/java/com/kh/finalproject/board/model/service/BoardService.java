@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.kh.finalproject.board.model.vo.Board;
 import com.kh.finalproject.board.model.vo.BoardComment;
-import com.kh.finalproject.common.model.vo.Files;
+import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 
 public interface BoardService {
@@ -22,7 +22,7 @@ public interface BoardService {
 	int insertBoard(Board n);
 	
 	// 파일첨부
-	int insertFile(Files f);
+	int insertFile(Attachment f);
 	
 	// 조회수 증가
 	int increaseCount(int boardNo);
@@ -40,10 +40,10 @@ public interface BoardService {
 	int selectLastBoardNo();
 	
 	// 파일 가져오기
-	ArrayList<Files> selectFile(int boardNo);
+	ArrayList<Attachment> selectFile(int boardNo);
 	
 	// 파일 수정
-	int updateFiles(Files f);
+	int updateFiles(Attachment f);
 
 	// 파일 삭제
 	int deleteFile(int noticeNo);

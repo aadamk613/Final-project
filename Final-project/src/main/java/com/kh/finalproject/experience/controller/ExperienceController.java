@@ -21,7 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.kh.finalproject.common.controller.CommonController;
-import com.kh.finalproject.common.model.vo.Files;
+import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
 import com.kh.finalproject.experience.model.service.ExperienceService;
@@ -78,9 +78,9 @@ public class ExperienceController {
 	// insert메소드 같이 써도 될거같은데 단일책임의원칙 걸려서 따로 씀
 	@PostMapping("yrupdateExpForm.exp")
 	public ModelAndView updateExperienceForm(Experience exp, Integer[] fileNo, String[] filePath, String[] updateName, String[] fileAnnotation, ModelAndView mv) {
-		ArrayList<Files> files = new ArrayList();
+		ArrayList<Attachment> files = new ArrayList();
 		for(int i = 0; i < filePath.length; i++) {
-			Files file = new Files();
+			Attachment file = new Attachment();
 			file.setFileNo(fileNo[i]);
 			file.setFilePath(filePath[i]);
 			file.setUpdateName(updateName[i]);
@@ -120,11 +120,11 @@ public class ExperienceController {
 		System.out.println("여기까진 온거야?");
 		
 		// 2. 새로 들어온 파일 MultipartFile insert 
-		ArrayList<Files> fileList = new ArrayList();
+		ArrayList<Attachment> fileList = new ArrayList();
 		System.out.println(fileList);
 		for(int i = 0; i < upfiles.length; i++) {
 			
-			Files file = new Files();
+			Attachment file = new Attachment();
 			
 			if(!upfiles[i].getOriginalFilename().equals("")) {
 				System.out.println("하나하나");
@@ -176,7 +176,7 @@ public class ExperienceController {
 		
 		
 		
-		ArrayList<Files> fileList = new ArrayList();
+		ArrayList<Attachment> fileList = new ArrayList();
 		for(int i = 0; i < upfiles.length; i++) {
 			
 			System.out.println(i);
@@ -187,7 +187,7 @@ public class ExperienceController {
 				System.out.println(upfiles[i]);
 				
 				
-				Files file = commonController.setFile(upfiles[i], session, "experience");
+				Attachment file = commonController.setFile(upfiles[i], session, "experience");
 				System.out.println("엥  여기 번호가 있음?????");
 				System.out.println(exp.getExpNo()); // 0
 				//file.setRefNo(exp.getExpNo());

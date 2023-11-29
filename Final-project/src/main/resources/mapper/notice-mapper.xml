@@ -125,10 +125,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	   	     )
 	</insert>
 	
-	<insert id="insertFile" parameterType="files">
+	<insert id="insertFile" parameterType="attachment">
 		INSERT
 		  INTO
-		      TB_FILES
+		      TB_ATTACHMENT
 		      (
 		      FILE_NO
 		     ,REF_NO
@@ -194,7 +194,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deleteFile" parameterType="_int">
 		DELETE
 		  FROM
-		      TB_FILES
+		      TB_ATTACHMENT
 		 WHERE
 		      REF_NO = #{noticeNo}	
 		   AND
@@ -219,7 +219,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		      TB_NOTICE
 	</select>
 	
-	<select id="selectFile" resultType="files">
+	<select id="selectFile" resultType="attachment">
 		SELECT
 		      FILE_NO fileNo
 		     ,ORIGINAL_NAME originalName
@@ -230,7 +230,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		     ,FILE_ANNOTATION fileAnnotation
 		     ,UPLOAD_DATE uploadDate
 		 FROM
-		     TB_FILES
+		     TB_ATTACHMENT
 	    WHERE
 	         REF_NO = #{noticeNo}
 	      AND
@@ -238,9 +238,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		      
 	</select>
 
-	<update id="updateFiles" parameterType="files">
+	<update id="updateFiles" parameterType="attachment">
 		UPDATE
-		      TB_FILES
+		      TB_ATTACHMENT
 		   SET
 		      ORIGINAL_NAME = #{originalName}
 		     ,UPDATE_NAME = #{updateName}
