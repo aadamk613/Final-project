@@ -303,7 +303,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    FROM 
 	        	TB_PLANT
 	    LEFT OUTER JOIN 
-        		TB_FILES ON(PLANT_NO = REF_NO)
+        		TB_ATTACHMENT ON(PLANT_NO = REF_NO)
 	    WHERE
 	        	PLANT_NO = #{ plantNo }
 	    AND 

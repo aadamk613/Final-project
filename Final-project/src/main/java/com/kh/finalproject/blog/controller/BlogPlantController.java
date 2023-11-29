@@ -136,7 +136,7 @@ public class BlogPlantController {
 		System.out.println("식물 수정하기 컨트롤러");
 		System.out.println("plant" + plant);
 		System.out.println("upfile" + upfile);
-		Files file = new Files();
+		Attachment file = new Attachment();
 		
 		if(upfile.getSize() > 0) { // 첨부한 파일이 있을 경우
 			
