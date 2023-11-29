@@ -36,6 +36,12 @@ public class ExperienceController {
 	@Autowired
 	private CommonController commonController;
 	
+	// 체험학습 목록조회
+	/**
+	 * @param currentPage : 체험학습 게시글 현재 페이지 (기본값 1페이지)
+	 * @param model : 데이터를 담아 보내줄 Model
+	 * @return : 체험학습 게시글 목록으로 이동
+	 */
 	@RequestMapping("yrlist.exp")
 	public String seleceExperienceList(@RequestParam(value="page", defaultValue="1") int currentPage, Model model){
 		// 페이지는 기본값 1로 설정
@@ -46,6 +52,13 @@ public class ExperienceController {
 		return "experience/experienceListView";
 	}
 	
+	// 체험학습 게시글 상세조회
+	/**
+	 * @param expNo : 게시글 번호
+	 * @param model : 데이터 담아 보내줄 Model객체
+	 * @param session : 데이터 담아 보내줄 Session객체
+	 * @return : 성공 시 상세조회 페이지로 이동 / 실패 시 게시글 목록으로 이동
+	 */
 	@RequestMapping("yrdetail.exp")
 	public String selectExperience(int expNo, Model model, HttpSession session) {
 		System.out.println(expNo);
@@ -75,7 +88,17 @@ public class ExperienceController {
 		}
 	}
 	
+	// 수정하기 페이지로 이동
 	// insert메소드 같이 써도 될거같은데 단일책임의원칙 걸려서 따로 씀
+	/**
+	 * @param exp : 수정할 때 기본으로 입력되어있을 게시글 정보
+	 * @param fileNo : 게시글에 첨부된 파일 번호
+	 * @param filePath : 게시글에 첨부된 파일 경로
+	 * @param updateName : 게시글에 첨부된 파일 수정된 이름
+	 * @param fileAnnotation : 게시글에 첨부된 파일 주석
+	 * @param mv : 데이터 담아 보내줄 ModelAndView 객체
+	 * @return : ModelAndView객체로 게시글 작성 페이지로 이동
+	 */
 	@PostMapping("yrupdateExpForm.exp")
 	public ModelAndView updateExperienceForm(Experience exp, Integer[] fileNo, String[] filePath, String[] updateName, String[] fileAnnotation, ModelAndView mv) {
 		ArrayList<Attachment> files = new ArrayList();
@@ -95,16 +118,20 @@ public class ExperienceController {
 		return mv;
 	}
 	
+	// 게시글 수정
+	/**
+	 * @param exp : 수정된 게시글 정보
+	 * @param upfiles : 게시글에 첨부된 파일 배열
+	 * @param anno : 게시글에 첨부된 파일의 주석 배열
+	 * @param oldFiles : 게시글에 첨부되었다가 수정되기 전 파일의 (경로 + 수정명)의 배열
+	 * @param session : Session 객체
+	 * @return : 게시글 목록으로 이동
+	 */
 	@PostMapping("yrupdateExp.exp")
 	public String updateExperience(Experience exp, MultipartFile[] upfiles, String[] anno, String[] oldFiles, HttpSession session) {
 		
 		System.out.println("나와라 기존파일!!!!!!!!!!!!!!!!!!!!");
-		//System.out.println(oldFileNo);
-		//System.out.println(oldFileNo[0]);
 		System.out.println(anno.toString());
-		//System.out.println(oldFiles[0]);
-		//System.out.println(oldFiles[1]);
-//		System.out.println(oldFiles[2]);
 		
 		// 1. 원래 있던 파일 지우고 oldFileNo delete
 		
@@ -149,11 +176,23 @@ public class ExperienceController {
 		return "redirect:yrlist.exp";
 	}
 	
+	// 게시글 작성 페이지로 이동
+	/**
+	 * @return : 작성화면으로 이동
+	 */
 	@GetMapping("yrinsertExpForm.exp")
 	public String insertExperienceoForm() {
 		return "experience/experienceWrite";
 	}
 	
+	// 게시글 작성
+	/**
+	 * @param exp : 작성된 게시글의 정보
+	 * @param upfiles : 게시글에 첨부된 파일 배열
+	 * @param anno : 게시글에 첨부된 파일의 주석 배열
+	 * @param session : Session객체
+	 * @return : 게시글 목록으로 이동
+	 */
 	@PostMapping("yrinsertExp.exp")
 	public String insertExperience(Experience exp, 
 								   MultipartFile[] upfiles, 
@@ -167,14 +206,7 @@ public class ExperienceController {
 		
 		System.out.println("갑자기 널?");
 		System.out.println(upfiles[0]);
-		System.out.println(upfiles[1]);
-		System.out.println(upfiles[2]);
-		
 		System.out.println(anno[0]);
-		System.out.println(anno[1]);
-		
-		
-		
 		
 		ArrayList<Attachment> fileList = new ArrayList();
 		for(int i = 0; i < upfiles.length; i++) {
@@ -186,7 +218,6 @@ public class ExperienceController {
 				System.out.println("나오자 좀");
 				System.out.println(upfiles[i]);
 				
-				
 				Attachment file = commonController.setFile(upfiles[i], session, "experience");
 				System.out.println("엥  여기 번호가 있음?????");
 				System.out.println(exp.getExpNo()); // 0
@@ -195,13 +226,6 @@ public class ExperienceController {
 				file.setFileAnnotation(anno[i]);
 				fileList.add(file);
 			} 
-			
-			
-			
-			
-			
-			
-			
 		}
 		
 		if(experienceService.insertExperience(exp, fileList) > 0) {
@@ -210,11 +234,14 @@ public class ExperienceController {
 			session.setAttribute("alertMsg", "게시글 등록에 실패하셨습니다.");
 		}
 		return "redirect:yrlist.exp";
-		
 	}
 	
-
-	
+	// 게시글 삭제
+	/**
+	 * @param expNo : 삭제할 게시글 번호
+	 * @param session : Alert 데이터 담을 Session객체
+	 * @return : 게시글 목록으로 이동
+	 */
 	@PostMapping("yrdeleteExp.exp")
 	public String deleteExperience(int expNo, HttpSession session) {
 		if(experienceService.deleteExperience(expNo) > 0) {
@@ -229,6 +256,11 @@ public class ExperienceController {
 		return "redirect:yrlist.exp";
 	}
 	
+	// 댓글 조회
+	/**
+	 * @param expNo : 조회할 댓글의 게시글 번호
+	 * @return : 댓글의 리스트 반환
+	 */
 	@ResponseBody
 	@RequestMapping(value="yrselectExpReplyList.exp", produces="application/json; charset=UTF-8")
 	public String selectExpReplyList(int expNo) {
@@ -237,6 +269,12 @@ public class ExperienceController {
 		return new Gson().toJson(experienceService.selectExpReplyList(expNo));
 	}
 	
+	// 댓글 작성
+	/**
+	 * @param newReply : 작성한 댓글의 정보
+	 * @return : 댓글작성 성공여부
+	 * @throws ParseException
+	 */
 	@ResponseBody
 	@PostMapping("yrinsertExpReply.exp")
 	public String insertExpReply(@RequestBody ExperienceReply newReply) throws ParseException {
@@ -266,6 +304,12 @@ public class ExperienceController {
 		return (experienceService.insertExpReply(newReply) > 0) ? "success" : "fail";
 	}
 	
+	// 좋아요 눌려있는지 체크
+	/**
+	 * @param expNo : 좋아요 누른 게시글 번호
+	 * @param memNo : 좋아요 누른 회원 번호
+	 * @return
+	 */
 	@ResponseBody
 	@GetMapping("yrexpLikeCheck")
 	public int expLikeCheck(int expNo, int memNo) {
@@ -277,6 +321,13 @@ public class ExperienceController {
 		return experienceService.selectExpLike(map);
 	}
 
+	// 좋아요 등록/취소
+	/**
+	 * @param expNo : 좋아요 누른 게시글 번호
+	 * @param likeVal : 좋아요 눌렀으면 1, 취소하면 0
+	 * @param memNo : 좋아요 누른 회원 번호
+	 * @return
+	 */
 	@ResponseBody
 	@GetMapping(value="yrexpLike")
 	public int expLike(int expNo, int likeVal, int memNo) {
