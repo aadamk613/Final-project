@@ -98,7 +98,7 @@
 		</div>
 		<br>
 		<div class="btns" align="center">
-		    <button type="submit" class="disabled btn-forest" onclick="register()">회원가입</button>
+		    <button type="submit" class="disabled btn-forest">회원가입</button>
 			<button type="reset" class="btn btn-danger">다시</button>			
 			</div>
 		</form>
@@ -151,37 +151,7 @@
 	// 폼 제출 버튼을 활성화 하거나 비활성화 해줌
 
     
-   $(function() {
-        $('#join-form').submit(function(e) {
-            e.preventDefault(); // 기존의 폼 제출 이벤트 막기
-
-            const formData = $(this).serialize(); // 폼 데이터 직렬화, 직렬화는 입력받은 여러 데이터를 하나의 쿼리 문자열로 만들어주는것
-
-            $.ajax({	// 페이지를 새로고침하지 않고 데이터를 서버로 보낼 수 있는 방법으로 ajax를 사용했다 
-                type: 'POST',
-                url: 'join.me',
-                data: formData,
-                success: function(response) {
-
-                    const memStatus = $("#memStatus option:selected").val();	 // 물론 다른페이지로 이동하는 방법은 자바스크립트 영역이라 
-																				 // 
-                    if (memStatus === 'B') {
-                        location.href = 'http://localhost:8001/final/businessPage.me'; 
-                        // 기업인 경우, businessPage.jsp로 이동
-                    } else {
-                        location.href = 'http://localhost:8001/final/';
-                        // 개인 회원가입 로직 처리
-                    }
-                    // 이렇게 한 이유 ? 회원가입 폼에서 회원 상태를 선택하고 회원가입 버튼을 클릭하면 
-                    // 해당 회원 상태에 따라 페이지를 이동할 수 있음. 선택된 값이 "B"면 businessPage.jsp로 이동하고
-                    // 그렇지 않은 경우에는 일반 유저로 분류되어 메인페이지로 이동한다. 
-                },
-                error: function() {
-                    console.log('서버 요청 실패');
-                }
-            });
-        });
-    });
+   
 </script>
 
 	</section>

@@ -92,21 +92,40 @@ public class MemberController {
 
   @RequestMapping("join.me")
   public String joinMember(Member m, Model model) {
+      System.out.println(m);
+      System.out.println("평문 : " + m.getMemPwd());
 
-    System.out.println(m);
-    System.out.println("평문 : " + m.getMemPwd());
+      String encPwd = bcryptPasswordEncoder.encode(m.getMemPwd());
+      m.setMemPwd(encPwd); // 암호화된 비밀번호를 Member 객체에 저장하여 DB로 전송
 
-    String encPwd = bcryptPasswordEncoder.encode(m.getMemPwd());
-
-    m.setMemPwd(encPwd); // Member객체의 MemPwd 필드에 평문이 아닌 암호문을 담아서 DB로 보내기
-
-    if (memberService.joinMember(m) > 0) { // 성공하면 메인페이지로
-      return "redirect:/";
-    } else {
-      model.addAttribute("errorMsg", "회원가입 실패.");
-      return "../common/errorPage.jsp";
-    }
+      if (memberService.joinMember(m) > 0) {
+          if ("B".equals(m.getMemStatus())) { // memStatus가 "B"인지 확인
+              return "redirect:businessPage"; // businessPage.jsp로 리다이렉트
+          } else {
+              return "redirect:/"; // 그 외의 경우는 main.jsp로 리다이렉트
+          }
+      } else {
+          model.addAttribute("errorMsg", "회원가입 실패.");
+          return "../common/errorPage.jsp";
+      }
   }
+  
+  @RequestMapping("businessPage")
+  public String goToBusinessPage() {
+      return "member/businessPage"; // businessPage.jsp로 리다이렉트
+  }
+
+  /*
+  @RequestMapping("businessPage")
+  public String goToBusinessPage(Member m) {
+      if ("B".equals(m.getMemStatus())) {
+          return "businessPage"; // memStatus가 "B"일 때는 businessPage.jsp로 리턴
+      } else {
+          return "../common/main"; // 그 외의 경우는 main.jsp로 리턴
+      }
+  }
+  */
+
 
   @ResponseBody // 포워딩 해줄게 아니라서
   @RequestMapping("idCheck.me")
@@ -280,12 +299,9 @@ public class MemberController {
     }
     return "redirect:/";
   }
-  @RequestMapping("businessPage.me")
-  public String businessPage() {
-	  return "member/businessPage";
-  }
+  
   @RequestMapping("businessPage1.me") //수정예정 공공API로 활용할 예정
-  public ResponseEntity<String> businessPage(String memStatus) {
+  public ResponseEntity<String> businessPage1(String memStatus) {
 	  if ("B".equals(memStatus)) { // 기업인 경우에만 진위 확인 페이지를 연다고 가정
 		  memberService.businessPage(memStatus);
           return ResponseEntity.ok("진위 확인 페이지가 열렸습니다.");
@@ -309,7 +325,7 @@ public class MemberController {
         .setViewName("member/memberTicketDetailView");
     return mv;
   }
-
+ 
   @PostMapping("deleteMemberTicket.me")
   public ModelAndView deleteMemberTicket(HttpSession session, ModelAndView mv, int ticketNo) {
     if (memberService.deleteMemberTicket(ticketNo) > 0) {
