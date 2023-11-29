@@ -46,13 +46,14 @@ public class BlogController {
 		return "blog/blogInsertForm";
 	}
 	
-	// 블로그 생성하기
+	// 블로그 생성하기 + 기본 카테고리 생성하기
 	@RequestMapping("insert.bl") 
 	public String insertBlog(Blog b, HttpSession session) {
 		if(blogService.insertBlog(b) > 0) {
-			session.setAttribute("alertMsg", "블로그 생성에 실패했습니다.");
+			session.setAttribute("alertMsg", "블로그가 생성되었습니다");
 			return "blog/blogMainView";
 		} else {
+			session.setAttribute("alertMsg", "블로그가 생성을 실패하였습니다");
 			return "blog/blogMainView";
 		}
 	}
@@ -75,11 +76,9 @@ public class BlogController {
 		
 		mv.addObject("blog", blog) // blog정보
 		  .addObject("list", list) // 해당 블로그의 BlogCategorySetting정보
-		  .addObject("plantList", plantList)
+		  .addObject("plantList", plantList) // 해당 블로그의 Plant정보
 		  .setViewName("blog/blogView");
 		
-		System.out.println("selectBlog에서  pi : " + pi);
-		System.out.println("selectBlog에서  list : " + plantList);
 		return mv;
 	}
 	
@@ -87,7 +86,6 @@ public class BlogController {
 	@RequestMapping("updateForm.bl") 
 	public ModelAndView updateFormBlog(int blogNo, ModelAndView mv) {
 		Blog blog = (Blog)blogService.selectBlog(blogNo);
-		System.out.println(blog);
 		mv.addObject("blog", blog)
 		  .setViewName("blog/blogUpdateForm");
 		return mv;
@@ -160,7 +158,6 @@ public class BlogController {
 		return new Gson().toJson(list);
 	}
 	
-
 	// 블로그 카테고리 수정
 	@ResponseBody
 	@RequestMapping(value="update.bl_ct", produces="text/html; charset=UTF-8")
@@ -181,9 +178,7 @@ public class BlogController {
 	@RequestMapping(value="delete.bl_ct", produces="text/html; charset=UTF-8")
 	public String deleteCategoryBlog(int blogNo, int categorySettingNo, 
 									 ModelAndView mv) {
-		
 		return (blogService.deleteCatogory(categorySettingNo) > 0) ? "카테고리 삭제 성공" : "카테고리 삭제 실패";
-		
 	}
 	
 	// ---------- 블로그 게시글 관련 메서드 ----------

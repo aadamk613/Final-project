@@ -11,9 +11,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class AdminServiceImpl implements AdminService {
 
-  @Autowired private AdminDao adminDao;
+  private final AdminDao adminDao;
+  private final SqlSessionTemplate sqlSession;
 
-  @Autowired private SqlSessionTemplate sqlSession;
+  @Autowired
+  public AdminServiceImpl(AdminDao adminDao, SqlSessionTemplate sqlSession) {
+    this.adminDao = adminDao;
+    this.sqlSession = sqlSession;
+  }
 
   @Override
   public ArrayList<Ticket> getTicketListView() {

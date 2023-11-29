@@ -17,7 +17,7 @@
 	box-sizing: border-box;
 }
 
-#pageAsideLeft{display: block;}
+#pageAsideLeft{display: block; padding: 30px;}
 
 #pageAsideLeft div{
    width: 100%;
@@ -130,6 +130,21 @@ ul{padding: 10px;}
 
 img[name=plantImg]{width: 160px; height: 160px; border-radius: 10px;}
 
+img[name=plantImg]:hover{cursor: pointer; }
+
+#imageInputWrap{
+  width: 300px; height: 300px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+img[name=imageThumbnail]{    
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
 </style>
 <body>
@@ -142,7 +157,7 @@ img[name=plantImg]{width: 160px; height: 160px; border-radius: 10px;}
             <div id="blogInfo">
                 <ul id="blogInfoUl">
                     <li id="blogImg">
-                    <div><img name="blogImg" src="${ blog.filePath }${ blog.updateName }"/></div>
+                    <div id="imageInputWrap"><img name="imageThumbnail" src="${ blog.filePath }${ blog.updateName }"/></div>
                     </li>
                     <li id="memId">${ blog.memNick }(${ blog.memId })</li>
                     <li id="blogIntroduce">${ blog.blogIntroduce }</li>
@@ -173,19 +188,23 @@ img[name=plantImg]{width: 160px; height: 160px; border-radius: 10px;}
 			<div id="content">
                <div id="plantWrap">
                <div id="plantList">
-               <a href="select.bl_pl?blogNo=${ blog.blogNo }">식물 일지</a>
+               <a href="selectList.bl_pl?blogNo=${ blog.blogNo }">식물 일지</a>
                </div>
                <div>
                         <c:forEach var="p" items="${ plantList }">
 	                        <div ><c:choose>
-	                        <c:when test="${ empty p.filePath }">
-	                        <img name="plantImg" src="resources/images/defaultPlant.png"/>
-	                        ${ p.plantNickName }
-	                        </c:when>
-	                        <c:otherwise>
-	                        <div><img name="plantImg" src="${ p.filePath }${ p.updateName }"/></div>
-	                        <div>${ p.plantNickName }</div>
-	                        </c:otherwise>
+		                        <c:when test="${ empty p.filePath }">
+		                        <div>
+		                        <img name="plantImg" src="resources/images/defaultPlant.png" value="${ p.plantNo }"/>
+		                        </div>
+		                        <div>
+		                        ${ p.plantNickName }
+		                        </div>
+		                        </c:when>
+		                        <c:otherwise>
+		                        <div><img name="plantImg" src="${ p.filePath }${ p.updateName }" value="${ p.plantNo }"/></div>
+		                        <div>${ p.plantNickName }</div>
+		                        </c:otherwise>
 	                        </c:choose></div>
                         </c:forEach>
                         <div id="plantButtonWrap">
@@ -229,6 +248,17 @@ img[name=plantImg]{width: 160px; height: 160px; border-radius: 10px;}
 		</aside>
 		
 	</main>
+	
+	<script>
+	
+	 $('img[name=plantImg]').on('click', function(e){
+		var plantNo = $(e.target).attr('value');
+		location.href = "select.bl_pl?plantNo=" + plantNo ; 
+		 
+	 });
+	 
+	</script>
+	
 	
 	<br clear="both">
 	

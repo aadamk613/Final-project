@@ -8,13 +8,25 @@
 <title>게시글 상세보기</title>
 
 <link rel="stylesheet" href="resources/css/board/boardDetailView.css">
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js">
-</script>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+		
+		<!-- CSS -->
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+		<!-- Default theme -->
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+		<!-- Semantic UI theme -->
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+    <!-- jQuery 라이브러리 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- 부트스트랩에서 제공하고 있는 스타일 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- 부트스트랩에서 제공하고 있는 스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <style>
-	#commentContentBox > div {
-	 float : none;
-	}
+	#boardReportBtn { float : right; }
+	.commentReportBtn {float : right; }
+	#commentContentBox > div { float : none;}
+	.form-control {height: 200px;}
 </style>
 </head>
 <body>
@@ -37,7 +49,16 @@
 			<div id="content">
 				<article>
 					<div id="boardHeader">
-						<div id="title">${ b.boardTitle }</div>		
+						<div id="title">${ b.boardTitle }</div>
+						<!-- 로그인이 되어있고, 자신의 게시글이 아니고, 신고를 안했을경우에만 보임 -->
+						<c:choose>
+							<c:when test="${ loginUser.memNick ne b.memNo && !empty loginUser && empty br }" >
+							<button id="boardReportBtn" class="btn btn-primary">신고하기</button>
+							</c:when>
+							<c:otherwise>
+							<button disabled id="boardReportBtn" class="btn btn-primary">신고하기</button>
+							</c:otherwise>
+						</c:choose>
 					</div>
 					<div id="writerInfoWrap">
 						<div id="writerThumbnail">
@@ -107,26 +128,50 @@
 					</div>	
 					<hr clear="both">
 										<!-- 댓글 하나도 없을 시 등록 순 최신순 버튼 비활성화 -->
-					
 					<div id="commentWrap">
+					<c:choose>
+						<c:when test="${ empty cList }">
 						<div id="commentOption">
 							댓글 <a>등록순</a> <a>최신순</a>
 						</div>
+						</c:when>
+						<c:otherwise>
+						<div id="commentOption">
+							댓글 <a href="">등록순</a> <a href="#">최신순</a>
+						</div>
+						</c:otherwise>
+					</c:choose>					
 						<hr>
 							<div id="commentContentBox">
-						<c:forEach var="c" items="${ cList }">
+								<c:forEach var="c" items="${ cList }">
+								<c:forEach var="cr" items="${ cr }">
+								<div class="commentNo" style="display:none">${ c.commentNo }</div>
+								<div class="memNo" style="display:none">${ c.memNo }</div>
 								<div id="commentWriteMemId">
 									${ c.memNo }
 								</div>
 								<div id="commentContent">
 									${ c.commentContent }
+
+									<c:choose>
+										<c:when test="${ loginUser.memNick ne c.memNo && !empty loginUser && c.commentNo ne cr.refCommentNo}">
+											<button id="commentReportBtn" class="commentReportBtn btn btn-primary">신고하기</button>
+										</c:when>
+										<c:otherwise>
+											<button disabled id="commentReportBtn" class="commentReportBtn btn btn-primary">신고하기</button>
+										</c:otherwise>
+									</c:choose>
+									
+						<c:if test="${ loginUser.memNick ne c.memNo && !empty loginUser}" >
+						</c:if>
 								</div>
 								<div id="commentCreateDate">
-									${ c.createDate }&nbsp;&nbsp;
+									${ c.commentCreateDate }
 									<a href="#">답글 쓰기</a>
 								</div>
 								<hr>
-						</c:forEach>						
+								</c:forEach>
+								</c:forEach>						
 						<div id="commentInsertBox">
 							<textarea id="commentContentInsert" placeholder="댓글을 남겨보세요"></textarea>
 							<c:choose>
@@ -141,8 +186,98 @@
 					</div>
 				</article>
 			</div>
+		
+		 
+		  
+			<!-- Modal -->
+			<div class="modal fade modal-dialog modal-dialog-centered modal-dialog-scrollable" id="boardReport" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="staticBackdropLabel">신고하기</h5>
+			        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+			      </div>
+			      
+			      <form action="report.co" method="post">
+			      <div class="modal-body">
+			      <textarea class="form-control" style="height: 200px;" placeholder="신고내용을 입력하세요" id="message-text" name="reportContent"></textarea>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소하기</button>
+			        <button type="submit" class="btn btn-danger">신고하기</button>
+			        <input type="hidden" name="refBoardNo" value="${ b.boardNo }">
+			        <input type="hidden" name="refMemberNo" value="${ b.memNo }">
+			        <input type="hidden" name="memNo" value="${ loginUser.memNo }">
+			      </div>
+			      </form>
+			    </div>
+			  </div>
+			</div>
 			
-
+			<!-- Modal -->
+			<div class="modal fade modal-dialog modal-dialog-centered modal-dialog-scrollable commentReport" id="commentReport" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="staticBackdropLabel">신고하기</h5>
+			        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+			      </div>
+			      
+			      <div class="modal-body">
+			      <textarea class="form-control" style="height: 200px;" placeholder="신고내용을 입력하세요" id="reportContent" name="reportContent"></textarea>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소하기</button>
+			        <button id="commentReportSubmit" type="submit" class="btn btn-danger">신고하기</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+	
+			<script>
+				$('#boardReportBtn').click(function(e){
+					e.preventDefault();
+					$('#boardReport').modal("show");
+				});
+			</script>
+			
+			<script>
+			$(function(){
+				  $('.commentReportBtn').each(function(index) {
+				    $(this).click(function(e) {
+				      var selectedComment = $(this).closest('#commentContentBox');
+				      var refCommentNo = selectedComment.find('.commentNo').eq(index).text().trim(); // 피신고댓글번호
+				      var refMemberNo = selectedComment.find('.memNo').eq(index).text().trim(); // 피신고자번호
+				      e.preventDefault();
+				    
+				     $(function() {
+				    	 $('#commentReportSubmit').click(function(e) {
+				     $.ajax({
+				    	    url: 'report.co',
+				    	    data: {
+				    	    	refCommentNo: refCommentNo,
+				    	    	refMemberNo: refMemberNo,
+				    	        refBoardNo : ${b.boardNo},
+				     			reportContent : $('#reportContent').val(),
+				     			memNo : '${loginUser.memNo}'
+				    	    },
+				    	    success: function() {
+				    	    	alert('신고성공!');
+				    	    	location.href = 'detail.bo?bno=' + ${b.boardNo};// + '&refCommentNo='+refCommentNo+'&refMemberNo='+refMemberNo+'&refBoardNo='+${b.boardNo}+'&reportContent='+$('#reportContent').val()+'&memNo=${loginUser.memNo}';
+				    	    },
+				    	    error: function() {
+				    	        console.error('AJAX 요청 실패:', error);
+				    	    }
+				    	});
+				   	});
+				      
+				      $('.commentReport').modal("show");
+				    });
+				  });
+				});
+			});
+			</script>
+			
 
 				<div id="writeWrap">
 						<c:if test="${ loginUser.memNick eq b.memNo }" >
@@ -171,7 +306,46 @@
 				}
 			</script>
 		
-		
+		<!-- 
+			<script>
+				$(function(){
+					selectComment();
+				})	
+			
+				function selectComment(){
+					$.ajax({
+						url : 'clist.do',
+						data : {boardNo : ${ b.boardNo }},
+						success : function(list){
+							for (var comment of list) {
+				                $('<div></div>')
+				                    .attr('id', 'commentWriteMemId')
+				                    .text(comment.commentMemNo)
+				                    .appendTo('body');
+
+				                $('<div></div>')
+				                    .attr('id', 'commentContent')
+				                    .text(comment.BoardCommentContent)
+				                    .appendTo('body');
+
+				                $('<div></div>')
+				                    .attr('id', 'commentCreateDate')
+				                    .html('<a href="#">답글 쓰기</a>')
+				                    .appendTo('body');
+
+				                $('<hr>').appendTo('body');
+				            }
+				        },
+						error : function(){
+							console.log('실패!');
+						}
+						
+					});					
+					
+				}
+
+			</script>
+ -->
 		</section>
 		
 		<aside id="aside2" class="aside">
