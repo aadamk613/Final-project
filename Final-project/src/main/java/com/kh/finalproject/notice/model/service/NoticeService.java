@@ -2,7 +2,7 @@ package com.kh.finalproject.notice.model.service;
 
 import java.util.ArrayList;
 
-import com.kh.finalproject.common.model.vo.Files;
+import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.notice.model.vo.Notice;
 
@@ -22,7 +22,7 @@ public interface NoticeService {
 	int insertNotice(Notice n);
 	
 	// 파일첨부
-	int insertFile(Files f);
+	int insertFile(Attachment f);
 	
 	// 조회수 증가
 	int increaseCount(int noticeNo);
@@ -43,9 +43,9 @@ public interface NoticeService {
 	int selectLastNoticeNo();
 	
 	// 파일 가져오기
-	ArrayList<Files> selectFile(int noticeNo);
+	ArrayList<Attachment> selectFile(int noticeNo);
 	
 	// 파일 수정
-	int updateFiles(Files f);
+	int updateFiles(Attachment f);
 	
 }

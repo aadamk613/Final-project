@@ -21,7 +21,7 @@ import com.kh.finalproject.blog.model.vo.BlogBoard;
 import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
 import com.kh.finalproject.blog.model.vo.Plant;
 import com.kh.finalproject.common.controller.CommonController;
-import com.kh.finalproject.common.model.vo.Files;
+import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
 
@@ -98,7 +98,7 @@ public class BlogController {
 							       HttpSession session,
 							       MultipartFile upfile,
 							       ModelAndView mv) {
-		Files file = new Files();
+		Attachment file = new Attachment();
 		if(upfile.getSize() > 0) { // 첨부한 파일이 있을 경우
 			
 			// 기존의 첨부파일이 있을 경우 있던 첨부파일을 삭제해줌

@@ -10,9 +10,13 @@ import org.springframework.stereotype.Service;
 import com.kh.finalproject.board.model.dao.BoardDao;
 import com.kh.finalproject.board.model.vo.Board;
 import com.kh.finalproject.board.model.vo.BoardComment;
+
+import com.kh.finalproject.common.model.vo.Attachment;
+
 import com.kh.finalproject.board.model.vo.BoardReport;
 import com.kh.finalproject.board.model.vo.CommentReport;
-import com.kh.finalproject.common.model.vo.Files;
+
+
 import com.kh.finalproject.common.model.vo.PageInfo;
 
 @Service
@@ -58,7 +62,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public int insertFile(Files f) {
+	public int insertFile(Attachment f) {
 		return boardDao.insertFile(sqlSession, f);
 	}
 
@@ -84,12 +88,12 @@ public class BoardServiceImpl implements BoardService {
 
 
 	@Override
-	public ArrayList<Files> selectFile(int boardNo) {
+	public ArrayList<Attachment> selectFile(int boardNo) {
 		return boardDao.selectFile(sqlSession, boardNo);
 	}
 
 	@Override
-	public int updateFiles(Files f) {
+	public int updateFiles(Attachment f) {
 		return boardDao.updateFiles(sqlSession, f);
 	}
 

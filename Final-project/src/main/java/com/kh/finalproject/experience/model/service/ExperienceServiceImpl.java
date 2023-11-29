@@ -1,6 +1,5 @@
 package com.kh.finalproject.experience.model.service;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.finalproject.common.model.dao.CommonDao;
-import com.kh.finalproject.common.model.vo.Files;
+import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.experience.model.dao.ExperienceDao;
 import com.kh.finalproject.experience.model.vo.Experience;
@@ -57,9 +56,9 @@ public class ExperienceServiceImpl implements ExperienceService {
 
 	@Override
 	@Transactional
-	public int insertExperience(Experience exp, ArrayList<Files> fileList) {
+	public int insertExperience(Experience exp, ArrayList<Attachment> fileList) {
 		int result = experienceDao.insertExperience(sqlSession, exp);
-		for(Files file : fileList) {
+		for(Attachment file : fileList) {
 			result *= commonDao.insertFiles(sqlSession, file);
 		}
 		return result;
@@ -67,7 +66,7 @@ public class ExperienceServiceImpl implements ExperienceService {
 	
 	@Override
 	@Transactional
-	public int updateExperience(Experience exp, ArrayList<Files> fileList, String[] oldFiles) {
+	public int updateExperience(Experience exp, ArrayList<Attachment> fileList, String[] oldFiles) {
 		int result = experienceDao.updateExperience(sqlSession, exp);
 		System.out.println(result);
 		System.out.println("게시글 업데이트 하나");
@@ -79,7 +78,7 @@ public class ExperienceServiceImpl implements ExperienceService {
 			System.out.println(result);
 			System.out.println("문제찾기 파일 딜리트");
 		}
-		for(Files file : fileList) {
+		for(Attachment file : fileList) {
 			result *= commonDao.insertFiles(sqlSession, file);
 			System.out.println(result);
 			System.out.println("문제찾기 파일 인서트");

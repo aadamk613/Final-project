@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="commonMapper">
 
-	<resultMap id="fileResultSet" type="files">
+	<resultMap id="fileResultSet" type="attachment">
 		<result column="FILE_NO" property="fileNo"/>
 		<result column="ORIGINAL_NAME" property="originalName"/>
 		<result column="UPDATE_NAME" property="updateName"/>
@@ -28,7 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		       FILE_ANNOTATION,
 		       UPLOAD_DATE
 		  FROM
-		       TB_FILES
+		       TB_ATTACHMENT
 		 WHERE 
 		       REF_TYPE = #{ refType }
 		   AND 
@@ -36,10 +36,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- 첨부파일 등록 -->
-	<insert id="insertFiles" parameterType="files" >
+	<insert id="insertFiles" parameterType="attachment" >
 		INSERT 
 		  INTO
-		  		TB_FILES
+		  		TB_ATTACHMENT
 				(
 			     FILE_NO,
 		         ORIGINAL_NAME,
@@ -52,7 +52,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				)
 			VALUES
 			 	(
-			 	SEQ_FILE_NO.NEXTVAL,
+			 	SEQ_ATTACHMENT_NO.NEXTVAL,
 			 	#{ originalName },
 			 	#{ updateName },
 			 	#{ filePath },
@@ -77,61 +77,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 
-	<delete id="deleteFiles" parameterType="files">
+	<delete id="deleteFiles" parameterType="attachment">
 		DELETE 
 		  FROM
-		  	   TB_FILES
+		  	   TB_ATTACHMENT
 		 WHERE
 		 	   REF_NO = #{ refNo }
 		   AND
 		   	   REF_TYPE = #{ refType }
 	</delete>
 
-	<!-- 
-	<update id="updateFiles" parameterType="files">
-		UPDATE
-			   TB_FILES
-		   SET
-		   	   ORIGINAL_NAME = #{ originalName },
-		       UPDATE_NAME = #{ updateName },
-		       FILE_PATH = #{ filePath },
-		       FILE_ANNOTATION = #{ fileAnnotation },
-		       UPLOAD_DATE = SYSDATE
-		 WHERE
-		 	   FILE_NO = #{ fileNo }
-		   AND
-		   	   REF_TYPE = #{ refType }
-	</update>
-	 
 
-	<update id="updateFiles">
-	
-		UPDATE TO TB_FILES
-			SET 
-				(
-			     FILE_NO,
-		         ORIGINAL_NAME,
-		         UPDATE_NAME,
-		         FILE_PATH,
-		         REF_TYPE,
-		         REF_NO,
-		         FILE_ANNOTATION,
-		         UPLOAD_DATE
-				)
-			VALUES
-			 	(
-			 	SEQ_FILE_NO.NEXTVAL, 
-			 	#{ originalName },
-			 	#{ updateName },
-			 	#{ filePath },
-			 	#{ refType },
-				 #{ refNo },
-			 	#{ fileAnnotation },
-			 	SYSDATE
-			 	)		  	
-	
-	
-	</update>
-	-->
 	
 </mapper>

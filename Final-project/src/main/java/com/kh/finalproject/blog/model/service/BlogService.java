@@ -6,7 +6,7 @@ import com.kh.finalproject.blog.model.vo.Blog;
 import com.kh.finalproject.blog.model.vo.BlogBoard;
 import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
 import com.kh.finalproject.blog.model.vo.Plant;
-import com.kh.finalproject.common.model.vo.Files;
+import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.experience.model.vo.Experience;
 
@@ -21,9 +21,10 @@ public interface BlogService {
 	int insertBlog(Blog b);
 	
 	// 블로그 정보 수정
-	int updateBlog(Blog b, Files file);
-	
-	// --------------------------------------------------------
+
+	int updateBlog(Blog b, Attachment file);
+
+
 
 	// 블로그 카테고리 select
 	ArrayList<BlogCategorySetting> selectCatogory(int blogNo);
@@ -52,7 +53,7 @@ public interface BlogService {
 	int updateBlogPlant(Plant plant, Files file);
 	
 	// 식물 등록
-	int insertBlogPlant(Plant plant, Files file);
+	int insertBlogPlant(Plant plant, Attachment file);
 
 	// 식물 삭제
 	int deleteBlogPlant(int plantNo);

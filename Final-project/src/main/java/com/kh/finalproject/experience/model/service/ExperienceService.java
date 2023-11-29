@@ -3,7 +3,7 @@ package com.kh.finalproject.experience.model.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.kh.finalproject.common.model.vo.Files;
+import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.experience.model.vo.Experience;
 import com.kh.finalproject.experience.model.vo.ExperienceReply;
@@ -30,10 +30,10 @@ public interface ExperienceService {
 	ArrayList<ExperienceReply> selectExpReplyList(int expNo);
 	
 	// 체험학습 게시글 작성
-	int insertExperience(Experience exp, ArrayList<Files> fileList);
+	int insertExperience(Experience exp, ArrayList<Attachment> fileList);
 	
 	// 체험학습 게시글 수정
-	int updateExperience(Experience exp, ArrayList<Files> fileList, String[] oldFiles);
+	int updateExperience(Experience exp, ArrayList<Attachment> fileList, String[] oldFiles);
 	
 	
 	

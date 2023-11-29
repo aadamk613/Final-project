@@ -21,7 +21,7 @@ import com.kh.finalproject.blog.model.service.BlogService;
 import com.kh.finalproject.blog.model.vo.Plant;
 import com.kh.finalproject.common.controller.CommonController;
 import com.kh.finalproject.common.model.service.CommonService;
-import com.kh.finalproject.common.model.vo.Files;
+import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
 
@@ -85,7 +85,7 @@ public class BlogPlantController {
 								  MultipartFile upfile,
 								  Model model) {
 		plant.setBlogNo(blogNo);
-		Files file = new Files();
+		Attachment file = new Attachment();
 		
 		if(!upfile.getOriginalFilename().equals("")) { // 첨부파일이 있을 경우
 			file = commonController.setFile(upfile, session, "plant");

@@ -22,9 +22,12 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.kh.finalproject.board.model.service.BoardService;
 import com.kh.finalproject.board.model.vo.Board;
+
+import com.kh.finalproject.common.model.vo.Attachment;
+
 import com.kh.finalproject.board.model.vo.BoardReport;
 import com.kh.finalproject.board.model.vo.CommentReport;
-import com.kh.finalproject.common.model.vo.Files;
+
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
 import com.kh.finalproject.member.model.vo.Member;
@@ -60,7 +63,7 @@ public class BoardController {
 	
 	// 일반게시글 작성
 		@RequestMapping("insert.bo")
-		public String insertBoard(Board b, Files f, Model model, MultipartFile upfile, HttpSession session) {
+		public String insertBoard(Board b, Attachment f, Model model, MultipartFile upfile, HttpSession session) {
 			if(!upfile.getOriginalFilename().equals("")) {
 				saveFile(upfile, session);
 				int lastNo = boardService.selectLastBoardNo();
@@ -108,6 +111,9 @@ public class BoardController {
 	// 일반게시글 상세조회
 		@ResponseBody
 		@GetMapping("detail.bo")
+/*
+		public ModelAndView selectBoard(int bno, ModelAndView mv, Attachment f, MultipartFile upfile, HttpSession session)  {
+*/
 		public ModelAndView selectBoard(CommentReport cr, BoardReport br, int bno, ModelAndView mv, Files f, MultipartFile upfile, HttpSession session)   {
 			
 			Member loginUser = (Member) session.getAttribute("loginUser"); 
@@ -117,12 +123,13 @@ public class BoardController {
 			cr.setRefBoardNo(bno);
 			
 			
+
 			
 			if(boardService.increaseCount(bno) > 0 ) {
 				
 				if(!boardService.selectFile(bno).isEmpty()) {
-					ArrayList<Files> fileList = boardService.selectFile(bno);
-					for(Files file : fileList) {
+					ArrayList<Attachment> fileList = boardService.selectFile(bno);
+					for(Attachment file : fileList) {
 						f.setRefNo(file.getRefNo());
 						f.setRefType(file.getRefType());
 					}
@@ -165,7 +172,7 @@ public class BoardController {
 		
 		// 일반게시글 수정
 		@PostMapping("update.bo")
-		public String updateNotice(Board b, Files f, Model model, MultipartFile reUpfile, HttpSession session) {
+		public String updateNotice(Board b, Attachment f, Model model, MultipartFile reUpfile, HttpSession session) {
 			
 			if(!reUpfile.getOriginalFilename().equals("")) {
 				

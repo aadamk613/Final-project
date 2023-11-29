@@ -7,7 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kh.finalproject.common.model.vo.Files;
+import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.notice.model.dao.NoticeDao;
 import com.kh.finalproject.notice.model.vo.Notice;
@@ -46,7 +46,7 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
-	public int insertFile(Files f) {
+	public int insertFile(Attachment f) {
 		return noticeDao.insertFile(sqlSession, f);
 	}
 
@@ -79,12 +79,12 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
-	public ArrayList<Files> selectFile(int noticeNo) {
+	public ArrayList<Attachment> selectFile(int noticeNo) {
 		return noticeDao.selectFile(sqlSession, noticeNo);
 	}
 
 	@Override
-	public int updateFiles(Files f) {
+	public int updateFiles(Attachment f) {
 		return noticeDao.updateFiles(sqlSession, f);
 	}
 	
