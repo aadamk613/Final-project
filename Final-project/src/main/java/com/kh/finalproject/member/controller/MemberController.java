@@ -100,7 +100,7 @@ public class MemberController {
           m.setEmail(email); // Member 객체에 이메일 설정
       } else {
           // 파라미터가 제대로 전달되지 않은 경우 처리
-          model.addAttribute("errorMsg", "이메일 파라미터가 올바르게 전송되지 않았습니다.");
+          model.addAttribute("errorMsg", "이메일양식 값들이 제대로 전송되지 않았습니다.");
           return "common/errorPage";
       }
 

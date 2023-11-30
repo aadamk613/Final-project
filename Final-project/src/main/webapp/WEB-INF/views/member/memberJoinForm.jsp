@@ -85,10 +85,10 @@
 			</div>
 			<div class="emailWrap">
 		    이메일
-		    <input class="box" id="local-part" type="text" name="email" placeholder="아이디 입력" required>
+		    <input class="box" id="local-part" type="text" name="local-part" placeholder="아이디 입력" required>
 		    @
-		    <input class="box" id="domain-txt" type="text" placeholder="도메인 입력">
-		    <select class="box" id="domain-list">
+		    <input class="box" id="domain-txt" type="text" name="domain-txt" placeholder="도메인 입력">
+		    <select class="box" id="domain-list" name="domain-select">
 		        <option value="type">직접 입력</option>
 		        <option value="naver.com">naver.com</option>
 		        <option value="gmail.com">gmail.com</option>
@@ -96,7 +96,7 @@
 		        <option value="nate.com">nate.com</option>
 		        <option value="kakao.com">kakao.com</option>
 		    </select>
-		</div>
+			</div>
 			<div class="Qualification">
 		    개인/기업
 		    <br>
@@ -159,15 +159,17 @@
 	// 서버에서 반환된 결과에 따라 중복 여부를 사용자에게 알려주고
 	// 폼 제출 버튼을 활성화 하거나 비활성화 해줌
 	
-	const localPart = document.getElementById('local-part');
+	const joinForm = document.getElementById('joinForm');
+    const localPart = document.getElementById('local-part');
     const domainTxt = document.getElementById('domain-txt');
     const domainList = document.getElementById('domain-list');
 
-    domainList.addEventListener('change', function() {
+    domainList.addEventListener('change', function () {
         const selectedDomain = this.value;
+        
         if (selectedDomain !== 'type') {
             domainTxt.value = selectedDomain;
-            domainTxt.setAttribute('disabled', true);
+           // domainTxt.setAttribute('disabled', 'disabled');
         } else {
             domainTxt.value = '';
             domainTxt.removeAttribute('disabled');
@@ -175,15 +177,36 @@
         }
     });
 
-    localPart.addEventListener('input', function() {
+    localPart.addEventListener('input', function () {
         this.value = this.value.replace(/[^a-zA-Z0-9._-]/g, ''); // 특수 문자 제거
     });
 
-    domainTxt.addEventListener('input', function() {
+    domainTxt.addEventListener('input', function () {
         const selectedDomain = this.value;
         domainList.value = selectedDomain;
     });
-   
+
+    joinForm.addEventListener('submit', function (event) {
+    	
+    	domainTxt.removeAttribute('disabled');  // 속성 제거 
+        // submit 이벤트 발생 시에 입력값들을 서버로 전송
+        event.preventDefault(); // 기본 동작 취소
+        const formData = new FormData(this);
+        
+        fetch(this.action, {
+            method: this.method,
+            body: formData,
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        }).then(data => {
+            console.log(data); // 서버 응답 데이터 확인
+        }).catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
+    });
 </script>
 
 	</section>
