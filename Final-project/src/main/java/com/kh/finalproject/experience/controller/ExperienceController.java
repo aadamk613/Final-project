@@ -42,7 +42,7 @@ public class ExperienceController {
 	 * @param model : 데이터를 담아 보내줄 Model
 	 * @return : 체험학습 게시글 목록으로 이동
 	 */
-	@RequestMapping("yrlist.exp")
+	@GetMapping("yrlist.exp")
 	public String seleceExperienceList(@RequestParam(value="page", defaultValue="1") int currentPage, Model model){
 		// 페이지는 기본값 1로 설정
 		// System.out.println(success);
@@ -59,7 +59,7 @@ public class ExperienceController {
 	 * @param session : 데이터 담아 보내줄 Session객체
 	 * @return : 성공 시 상세조회 페이지로 이동 / 실패 시 게시글 목록으로 이동
 	 */
-	@RequestMapping("yrdetail.exp")
+	@GetMapping("yrdetail.exp")
 	public String selectExperience(int expNo, Model model, HttpSession session) {
 		System.out.println(expNo);
 		
@@ -130,42 +130,28 @@ public class ExperienceController {
 	@PostMapping("yrupdateExp.exp")
 	public String updateExperience(Experience exp, MultipartFile[] upfiles, String[] anno, String[] oldFiles, HttpSession session) {
 		
-		System.out.println("나와라 기존파일!!!!!!!!!!!!!!!!!!!!");
-		System.out.println(anno.toString());
-		
 		// 1. 원래 있던 파일 지우고 oldFileNo delete
-		
-		for(String oldFile : oldFiles) {
-			System.out.println("지워질 파일 이름");
-			System.out.println(oldFile);
-			System.out.println(session.getServletContext().getRealPath(oldFile));
-			new File(session.getServletContext().getRealPath(oldFile)).delete();
-			
-			// oldFile.substring(oldFile.lastIndexOf("/"));
+		if(oldFiles != null) {
+			for(String oldFile : oldFiles) {
+				new File(session.getServletContext().getRealPath(oldFile)).delete();
+			}
 		}
-		
-		System.out.println("여기까진 온거야?");
 		
 		// 2. 새로 들어온 파일 MultipartFile insert 
 		ArrayList<Attachment> fileList = new ArrayList();
-		System.out.println(fileList);
 		for(int i = 0; i < upfiles.length; i++) {
-			
 			Attachment file = new Attachment();
-			
 			if(!upfiles[i].getOriginalFilename().equals("")) {
-				System.out.println("하나하나");
+				System.out.println("그래도 찍어봐야지");
 				System.out.println(upfiles[i]);
+				System.out.println(anno[i]);
 				file = commonController.setFile(upfiles[i], session, "experience");
 				file.setRefNo(exp.getExpNo());
-				System.out.println("여기가 문제라고?");
-			} else {
-				continue;
-			}
-			System.out.println(anno[i]);
-			file.setFileAnnotation(anno[i]);
-			fileList.add(file);
-			
+				file.setFileAnnotation(anno[i]);
+				fileList.add(file);
+			} 
+			// anno가 disabled였다면 값이 안넘어왔겠지만 readonly라서 비어있으면 빈문자열이 넘어옴
+			// else {continue;}
 		} 
 		
 		if(experienceService.updateExperience(exp, fileList, oldFiles) > 0) {
@@ -306,9 +292,9 @@ public class ExperienceController {
 	
 	// 좋아요 눌려있는지 체크
 	/**
-	 * @param expNo : 좋아요 누른 게시글 번호
-	 * @param memNo : 좋아요 누른 회원 번호
-	 * @return
+	 * @param expNo : 좋아요 확인할 게시글 번호
+	 * @param memNo : 좋아요 확인할 회원 번호
+	 * @return : 눌렀으면 1, 안눌렀으면 0반환
 	 */
 	@ResponseBody
 	@GetMapping("yrexpLikeCheck")
@@ -326,7 +312,7 @@ public class ExperienceController {
 	 * @param expNo : 좋아요 누른 게시글 번호
 	 * @param likeVal : 좋아요 눌렀으면 1, 취소하면 0
 	 * @param memNo : 좋아요 누른 회원 번호
-	 * @return
+	 * @return : 
 	 */
 	@ResponseBody
 	@GetMapping(value="yrexpLike")
@@ -348,6 +334,10 @@ public class ExperienceController {
 	}
 	
 	// 체험학습 댓글 삭제
+	/**
+	 * @param expReplyNo : 삭제할 댓글 번호
+	 * @return : 성공 / 실패시 결과값 반환
+	 */
 	@ResponseBody
 	@PostMapping("yrdeleteExpReply")
 	public String deleteExpReply(int expReplyNo) {

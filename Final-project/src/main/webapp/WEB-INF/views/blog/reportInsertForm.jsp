@@ -146,7 +146,7 @@ textarea{
                                 	</select>
                                 </li>
                                 <li id="plantComment" >
-                                	<textarea placeholder="식물에 대한 기록을 작성해주세요. 최대  1000자 까지 작성할 수 있습니다. " name="plantComment"></textarea>
+                                	<textarea placeholder="식물에 대한 기록을 작성해주세요. 최대  1000자 까지 작성할 수 있습니다. " name="plantComment" required></textarea>
                                 </li>
                             </ul>
                         </div>
@@ -168,7 +168,7 @@ textarea{
 				var today = new Date(nowDate-timeOff).toISOString().split("T")[0];
 				var logDate = '${ plant.plantLogDate}';
 				
-				$('input[name=plantLogDate]').attr("min", logDate).attr("max", today);
+				$('input[name=plantLogDate]').attr("min", logDate).attr("max", today).val(today);
 
 				
 			      plantImgInput.addEventListener('click', function(){
