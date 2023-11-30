@@ -51,11 +51,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			     TB_BOARD
 			INNER
 			 JOIN
-			     MEMBER ON(TB_BOARD.MEM_NO = MEMBER.MEM_NO)
+			     TB_MEMBER ON(TB_BOARD.MEM_NO = TB_MEMBER.MEM_NO)
 			WHERE
 			     STATUS='Y'
 			  AND
 			     IS_BLIND = 'N'
+			  AND
+			     BOARD_NO NOT IN
+			     (
+			       SELECT 
+					      BOARD_NO
+					FROM
+					  (SELECT
+					      BOARD_NO
+					FROM
+					    TB_BOARD TB
+			  INNER JOIN
+					    TB_MEMBER ON (TB.MEM_NO = TB_MEMBER.MEM_NO)
+				   WHERE
+					    TB.STATUS = 'Y'
+					 AND 
+					    IS_BLIND = 'N'
+					 AND
+					    TB.LIKE_COUNT &gt; 50
+				ORDER BY
+					    TB.LIKE_COUNT DESC, BOARD_NO DESC)
+			       WHERE 
+			            ROWNUM BETWEEN 1 AND 5
+			     )
 			ORDER
 			   BY
 			     BOARD_NO DESC
@@ -84,7 +107,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			FROM
 			    TB_BOARD TB
 	  INNER JOIN
-			    MEMBER ON (TB.MEM_NO = MEMBER.MEM_NO)
+			    TB_MEMBER ON (TB.MEM_NO = TB_MEMBER.MEM_NO)
 		   WHERE
 			    TB.STATUS = 'Y'
 			 AND 
@@ -124,7 +147,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			     TB_BOARD
 			INNER
 			 JOIN
-			     MEMBER ON(TB_BOARD.MEM_NO = MEMBER.MEM_NO)
+			     TB_MEMBER ON(TB_BOARD.MEM_NO = TB_MEMBER.MEM_NO)
 			WHERE
 			     STATUS='Y'
 			  AND
@@ -245,7 +268,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			     TB_BOARD_COMMENT
 		    INNER
 			 JOIN
-			     MEMBER ON(TB_BOARD_COMMENT.MEM_NO = MEMBER.MEM_NO)
+			     TB_MEMBER ON(TB_BOARD_COMMENT.MEM_NO = TB_MEMBER.MEM_NO)
 			WHERE
 			     BOARD_NO = #{boardNo}
 			  AND
@@ -272,7 +295,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			     ,SYSDATE
 			     ,#{refBoardNo}
 			     , (SELECT MEM_NO
-			        FROM MEMBER
+			        FROM TB_MEMBER
 			        WHERE MEM_NICK = #{refMemberNo})
 			     ,#{memNo}
 			     )
@@ -298,7 +321,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			     ,SYSDATE
 			     ,#{refCommentNo}
 			     , (SELECT MEM_NO
-			        FROM MEMBER
+			        FROM TB_MEMBER
 			        WHERE MEM_NICK = #{refMemberNo})
 			     ,#{memNo}
 			     ,#{refBoardNo}
