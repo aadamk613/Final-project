@@ -31,7 +31,7 @@
 		<section id="section">
 			
 			<div id="contentTitle">
-				<h2>공지게시판</h2>
+				<h2>일반게시판</h2>
 			</div>
 			
 			
