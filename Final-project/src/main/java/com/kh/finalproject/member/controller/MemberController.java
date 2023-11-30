@@ -1,5 +1,6 @@
 package com.kh.finalproject.member.controller;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +10,6 @@ import javax.servlet.http.HttpSession;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -121,8 +121,6 @@ public class MemberController {
           return "common/errorPage";
       }
   }
-
-
   
   @RequestMapping("businessPage")
   public String goToBusinessPage() {
@@ -130,14 +128,10 @@ public class MemberController {
   }
 
 
-  @RequestMapping("businessPage1.me") //수정예정 공공API로 활용할 예정
-  public ResponseEntity<String> businessPage1(String memStatus) {
-	  if ("B".equals(memStatus)) { // 기업인 경우에만 진위 확인 페이지를 연다고 가정
-		  memberService.businessPage(memStatus);
-          return ResponseEntity.ok("진위 확인 페이지가 열렸습니다.");
-      } else {
-          return ResponseEntity.badRequest().body("기업이 아닙니다.");
-      }
+  @RequestMapping(value="checkBusinessNum", produces="application/json; charset=UTF-8") //수정예정 공공API로 활용할 예정
+  public String businessPageCheck(int pageNo) throws IOException{
+	  
+	  return responseText;
   }
   
 
