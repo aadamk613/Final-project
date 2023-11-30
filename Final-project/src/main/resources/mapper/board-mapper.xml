@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="boardMapper">
-	
+
 	<resultMap id="boardResultSet" type="board">
 		<result column="BOARD_NO" property="boardNo" />
 		<result column="BOARD_TITLE" property="boardTitle" />
@@ -14,8 +14,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="LIKE_COUNT" property="likeCount" />
 		<result column="COMMENT_COUNT" property="commentCount" />
 		<result column="MEM_NICK" property="memNo" />
-	</resultMap>	
-	
+	</resultMap>
+
 	<resultMap id="commentResultSet" type="boardComment">
 		<result column="BOARD_COMMENT_NO" property="commentNo"></result>
 		<result column="BOARD_COMMENT_CONTENT" property="commentContent"></result>
@@ -26,7 +26,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="BOARD_NO" property="boardNo"></result>
 		<result column="MEM_NICK" property="memNo"></result>
 	</resultMap>
-		<select id="selectBoardCount" resultType="_int">
+
+	<resultMap id="boardReportResultSet" type="boardReport">
+		<result column="REPORT_NO" property="reportNo"/>
+		<result column="REPORT_CONTENT" property="reportContent"/>
+		<result column="REPORT_DATE" property="reportDate"/>
+		<result column="REF_BOARD_NO" property="refBoardNo"/>
+		<result column="REF_MEMBER_NO" property="refMemberNo"/>
+		<result column="MEM_NO" property="memNo"/>
+	</resultMap>
+
+	<select id="selectBoardCount" resultType="_int">
 		SELECT
 		      COUNT(*)
 		  FROM
@@ -36,7 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   AND
 		      IS_BLIND = 'N'
 	</select>
-	
+
 	<select id="selectBoardList" resultMap="boardResultSet">
 			SELECT
 			      BOARD_NO
@@ -51,17 +61,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			     TB_BOARD
 			INNER
 			 JOIN
-			     MEMBER ON(TB_BOARD.MEM_NO = MEMBER.MEM_NO)
+			     TB_MEMBER ON(TB_BOARD.MEM_NO = TB_MEMBER.MEM_NO)
 			WHERE
 			     STATUS='Y'
+
 			  AND
 			     IS_BLIND = 'N'
+			  AND
+			     BOARD_NO NOT IN
+			     (
+			       SELECT 
+					      BOARD_NO
+					FROM
+					  (SELECT
+					      BOARD_NO
+					FROM
+					    TB_BOARD TB
+			  INNER JOIN
+					    TB_MEMBER ON (TB.MEM_NO = TB_MEMBER.MEM_NO)
+				   WHERE
+					    TB.STATUS = 'Y'
+					 AND 
+					    IS_BLIND = 'N'
+					 AND
+					    TB.LIKE_COUNT &gt; 50
+				ORDER BY
+					    TB.LIKE_COUNT DESC, BOARD_NO DESC)
+			       WHERE 
+			            ROWNUM BETWEEN 1 AND 5
+			     )
 			ORDER
 			   BY
 			     BOARD_NO DESC
 	</select>
- 
-		<select id="selectBestBoard" resultMap="boardResultSet">
+
+	<select id="selectBestBoard" resultMap="boardResultSet">
           SELECT 
 			    BOARD_NO
 			     ,BOARD_TITLE
@@ -84,7 +118,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			FROM
 			    TB_BOARD TB
 	  INNER JOIN
-			    MEMBER ON (TB.MEM_NO = MEMBER.MEM_NO)
+			    TB_MEMBER ON (TB.MEM_NO = TB_MEMBER.MEM_NO)
 		   WHERE
 			    TB.STATUS = 'Y'
 			 AND 
@@ -95,9 +129,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			    TB.LIKE_COUNT DESC, BOARD_NO DESC)
 	       WHERE 
 	            ROWNUM BETWEEN 1 AND 5
-		</select>
+	</select>
 
-	 	<update id="increaseCount" parameterType="_int">
+	<update id="increaseCount" parameterType="_int">
 	 		UPDATE
 	 		      TB_BOARD
 	 		   SET
@@ -108,9 +142,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 		      STATUS = 'Y'
 	 		   AND
 	 		      IS_BLIND = 'N'
-	 	</update>
-	 	
-	 	<select id="selectBoard" resultMap="boardResultSet">
+	</update>
+
+	<select id="selectBoard" resultMap="boardResultSet">
 	 		SELECT
 			      BOARD_NO
 			     ,BOARD_TITLE
@@ -124,16 +158,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			     TB_BOARD
 			INNER
 			 JOIN
-			     MEMBER ON(TB_BOARD.MEM_NO = MEMBER.MEM_NO)
+			     TB_MEMBER ON(TB_BOARD.MEM_NO = TB_MEMBER.MEM_NO)
 			WHERE
 			     STATUS='Y'
 			  AND
 			     IS_BLIND = 'N'
 			  AND
 			     BOARD_NO = #{boardNo}
-	 	</select>
-	 	
-	 		<select id="selectFile" resultType="files">
+  </select>
+	
+	 
+	 		<select id="selectFile" resultType="attachment">
 		SELECT
 		      FILE_NO fileNo
 		     ,ORIGINAL_NAME originalName
@@ -144,26 +179,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		     ,FILE_ANNOTATION fileAnnotation
 		     ,UPLOAD_DATE uploadDate
 		 FROM
-		     TB_FILES
+		     TB_ATTACHMENT
 	    WHERE
 	         REF_NO = #{boardNo}
 	      AND
 	         REF_TYPE = 'board'
 		      
 	</select>
-	 	
-	 	
-	 	<select id="selectLastBoardNo" resultType="_int">
+
+
+	<select id="selectLastBoardNo" resultType="_int">
 		SELECT 
 			  MAX(BOARD_NO)
 		  FROM
 		      TB_BOARD
-		</select>
+	</select>
 	
-		<insert id="insertFile" parameterType="files">
+		<insert id="insertFile" parameterType="attachment">
 		INSERT
 		  INTO
-		      TB_FILES
+		      TB_ATTACHMENT
 		      (
 		      FILE_NO
 		     ,REF_NO
@@ -183,9 +218,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		     ,#{refType}
 		     ,#{fileAnnotation}
 		      )
-		</insert>
-		
-		<insert id="insertBoard" parameterType="board">
+	</insert>
+
+	<insert id="insertBoard" parameterType="board">
 		INSERT
 		  INTO
 		      TB_BOARD
@@ -202,28 +237,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	   	    ,#{boardContent}
 	   	    ,#{memNo}
 	   	     )
-		</insert>
-		
-		<delete id="deleteFile" parameterType="_int">
+	</insert>
+
+	<delete id="deleteFile" parameterType="_int">
 		DELETE
 		  FROM
-		      TB_FILES
+		      TB_ATTACHMENT
 		 WHERE
 		      REF_NO = #{boardNo}	
 		   AND
 		      REF_TYPE = 'board'
-		</delete>
-		
-		 <update id="deleteBoard" parameterType="_int">
+	</delete>
+
+	<update id="deleteBoard" parameterType="_int">
  		UPDATE
  		      TB_BOARD
  		   SET
  		      STATUS = 'N'
  		 WHERE
  		      BOARD_NO = #{boardNo}
- 		</update>
-		
-		<update id="updateBoard" parameterType="board">
+	</update>
+
+	<update id="updateBoard" parameterType="board">
 		UPDATE
 		      TB_BOARD
 		   SET
@@ -231,9 +266,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		     ,BOARD_CONTENT = #{boardContent}
 		 WHERE
 		      BOARD_NO = #{boardNo}
-		</update>
-		
-		<select id="selectComment" resultMap="commentResultSet">
+	</update>
+
+	<select id="selectComment" resultMap="commentResultSet">
 			SELECT
 			      BOARD_COMMENT_NO 
 			     ,BOARD_COMMENT_CONTENT 
@@ -245,16 +280,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			     TB_BOARD_COMMENT
 		    INNER
 			 JOIN
-			     MEMBER ON(TB_BOARD_COMMENT.MEM_NO = MEMBER.MEM_NO)
+			     TB_MEMBER ON(TB_BOARD_COMMENT.MEM_NO = TB_MEMBER.MEM_NO)
 			WHERE
 			     BOARD_NO = #{boardNo}
 			  AND
 			     BOARD_COMMENT_STATUS = 'Y'
 		ORDER BY 
 		        BOARD_COMMENT_NO DESC
-		</select>
-		
-		<insert id="insertReport" parameterType="boardReport">
+	</select>
+
+	<insert id="insertReport" parameterType="boardReport">
 			INSERT
 			  INTO
 			      TB_BOARD_REPORT
@@ -272,22 +307,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			     ,SYSDATE
 			     ,#{refBoardNo}
 			     , (SELECT MEM_NO
-			        FROM MEMBER
+			        FROM TB_MEMBER
 			        WHERE MEM_NICK = #{refMemberNo})
 			     ,#{memNo}
 			     )
-		</insert>
-	
-		<select id="selectBoardReport" resultType="boardReport">
+	</insert>
+
+	<select id="selectBoardReport" resultType="boardReport">
 		   SELECT
 			      MEM_NO memNo
 			 FROM
 			     TB_BOARD_REPORT
 			WHERE
 			     REF_BOARD_NO = ${boardNo}
-		</select>
-		
-		<insert id="insertCommentReport" parameterType="commentReport">
+	</select>
+
+	<insert id="insertCommentReport" parameterType="commentReport">
 			INSERT
 			  INTO
 			      TB_COMMENT_REPORT
@@ -298,18 +333,52 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			     ,SYSDATE
 			     ,#{refCommentNo}
 			     , (SELECT MEM_NO
-			        FROM MEMBER
+			        FROM TB_MEMBER
 			        WHERE MEM_NICK = #{refMemberNo})
 			     ,#{memNo}
+			     ,#{refBoardNo}
 			      )
-		</insert>
-		
-		<select id="selectCommentReport" resultType="commentReport">
+	</insert>
+
+	<select id="selectCommentReport" resultType="commentReport">
 			SELECT
-			      MEM_NO memNo
+			      REF_COMMENT_NO refCommentNo
 			  FROM
 			      TB_COMMENT_REPORT
 			 WHERE
-			      REF_COMMENT_NO = #{refCommentNo}
-		</select>
+			      MEM_NO = #{memNo}
+			   AND
+			      REF_BOARD_NO = #{refBoardNo}
+	</select>
+
+	<select id="selectReportedArticles" resultMap="boardReportResultSet">
+		SELECT
+			REPORT_NO,
+			REPORT_CONTENT,
+			TO_CHAR(REPORT_DATE, 'YYYY/MM/DD HH24:MI:SS') REPORT_DATE,
+			REF_BOARD_NO,
+			SUB.MEM_NO,
+			SUB.MEM_ID,
+			REF_MEMBER_NO,
+			MEMBER.MEM_ID
+		FROM
+			(
+				SELECT
+					REPORT_NO,
+					REPORT_CONTENT,
+					REPORT_DATE,
+					REF_BOARD_NO,
+					MEM_NO,
+					MEM_ID,
+					REF_MEMBER_NO
+				FROM
+						TB_BOARD_REPORT
+				LEFT JOIN
+						MEMBER USING(MEM_NO)
+			) SUB
+			LEFT JOIN
+				MEMBER ON (REF_MEMBER_NO = MEMBER.MEM_NO)
+			ORDER BY
+				REPORT_NO;
+	</select>
 </mapper>

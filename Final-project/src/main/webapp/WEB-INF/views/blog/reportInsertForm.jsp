@@ -127,16 +127,26 @@ textarea{
 					<input type="hidden" name="blogNo" value="${ blogNo }"/>
                     <div id="plantInfoWrap">
                         <div id="plantImg"><input type="file" name="upfile" id="plantInput"/>
-                        	<img src="resources/images/defaultPlant.png" id="plantImgInput">
+                        	<img src="resources/images/defaultPlant.png" id="plantImgInput" name="plantThumbnail">
                         </div>
                         <div id="plantImfo">
                             <ul>
                                 <li id="plantNickName">
-	                                <div>${ plantNickName }의 기록입니다
+	                                <div>${ plant.plantNickName }의 기록입니다
 	                                </div>기록 일자: <div id="plantLogDate"><input type="date" name="plantLogDate"></div>
                                 </li>
+                                <li>
+                                	<select name="plantReportCategoryName">
+                                		<option value="10">식물일지</option>
+                                		<option value="20">물주기</option>
+                                		<option value="30">물갈이하기</option>
+                                		<option value="40">가지치기</option>
+                                		<option value="50">영양관리</option>
+                                		<option value="60">분갈이하기</option>
+                                	</select>
+                                </li>
                                 <li id="plantComment" >
-                                	<textarea placeholder="식물에 대한 기록을 작성해주세요. 최대  1000자 까지 작성할 수 있습니다. " name="plantComment"></textarea>
+                                	<textarea placeholder="식물에 대한 기록을 작성해주세요. 최대  1000자 까지 작성할 수 있습니다. " name="plantComment" required></textarea>
                                 </li>
                             </ul>
                         </div>
@@ -152,11 +162,27 @@ textarea{
 			</div>
 			
 			<script>
-			    
+				// 식물 관리 날짜: 식물 등록일 ~ 오늘 날짜
+				var nowDate = Date.now();
+				var timeOff = new Date().getTimezoneOffset()*60000;
+				var today = new Date(nowDate-timeOff).toISOString().split("T")[0];
+				var logDate = '${ plant.plantLogDate}';
+				
+				$('input[name=plantLogDate]').attr("min", logDate).attr("max", today).val(today);
+
+				
 			      plantImgInput.addEventListener('click', function(){
 			    	  plantInput.click();
 			      });
 			      
+	              // 이미지를 첨부했을 시 미리보기 가능하게
+	              $('input[name=upfile]').on('change', function(inputFile){
+				  	let reader = new FileReader();
+					reader.readAsDataURL(inputFile.target.files[0]);
+					reader.onload = e => {
+					$('img[name=plantThumbnail]').attr('src', e.target.result);
+						}
+				  });
 			</script>
 			
 			

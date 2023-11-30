@@ -116,9 +116,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			FROM
 				TB_BLOG B
 		    JOIN
-                MEMBER USING(BLOG_NO)
+                TB_MEMBER USING(BLOG_NO)
 			LEFT OUTER JOIN
-                TB_FILES ON (REF_NO = BLOG_NO)
+                TB_ATTACHMENT ON (REF_NO = BLOG_NO)
 			WHERE
 				BLOG_NO = #{ blogNo }
 	
@@ -276,7 +276,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    FROM 
 	        TB_PLANT
         LEFT OUTER JOIN 
-        	TB_FILES ON(PLANT_NO = REF_NO)
+        	TB_ATTACHMENT ON(PLANT_NO = REF_NO)
 	    WHERE
 	        STATUS = 'Y'
 	    AND 
@@ -293,22 +293,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		        BLOG_NO,
 		        PLANT_NAME, 
 		        PLANT_NICKNAME,
+		        PLANT_COMMENT,
 		        CREATE_DATE,  
 		        PLANT_CATEGORY, 
-		        PLANT_LOG_DATE,
+		        TO_CHAR(PLANT_LOG_DATE, 'YYYY-MM-DD') PLANT_LOG_DATE,
 		        
 		        FILE_PATH,
             	UPDATE_NAME
 	    FROM 
 	        	TB_PLANT
 	    LEFT OUTER JOIN 
-        		TB_FILES ON(PLANT_NO = REF_NO)
+        		TB_ATTACHMENT ON(PLANT_NO = REF_NO)
 	    WHERE
 	        	PLANT_NO = #{ plantNo }
 	    AND 
 	        	STATUS = 'Y'
         
-        </select>
+    </select>
+    
+    <update id="updateBlogPlant" parameterType="plant">
+    
+    	UPDATE 
+    			TB_PLANT
+    	   SET
+		        PLANT_NICKNAME = #{ plantNickName },
+		        PLANT_COMMENT = #{ plantComment },
+		        PLANT_LOG_DATE = #{ plantLogDate }
+		  WHERE 
+		  		PLANT_NO = #{ plantNo }			 
+		  		 
+    </update>    
+        
+        
 	
 	<!-- 식물 삭제하기 -->
 	<delete id="deleteBlogPlant" parameterType="_int">
@@ -373,7 +389,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 	</insert>
 	
+	<select id="selectBlogBoard" parameterType="_int" resultMap="BlogBoardResultSet">
 	
+		
+		SELECT  
+	        BLOG_BOARD_NO, 
+	        BLOG_NO, 
+	        CATEGORY_SETTING_NO, 
+	        BLOG_BOARD_TITLE, 
+	        BLOG_BOARD_CONTENT, 
+	        CREATE_DATE,
+	        WRITER
+	    FROM
+	        TB_BLOG_BOARD
+	    WHERE
+	        BLOG_BOARD_NO = #{ blogBoardNo }
+	    AND
+	        STATUS = 'Y'
+	        
+	</select>
 	
 	
 	

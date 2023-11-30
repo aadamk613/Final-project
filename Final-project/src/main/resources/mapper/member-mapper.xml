@@ -189,7 +189,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="addKakaoProfile" parameterType="member">
 		INSERT
 			INTO
-				MEMBER
+				TB_MEMBER
 				(
 				MEM_NO,
 				MEM_STATUS,
@@ -250,6 +250,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{profile_image}
 				)
 	</insert>
-	
-	
+
+
 </mapper>

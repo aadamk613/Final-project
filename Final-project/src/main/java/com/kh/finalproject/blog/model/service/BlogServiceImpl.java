@@ -14,7 +14,7 @@ import com.kh.finalproject.blog.model.vo.BlogBoard;
 import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
 import com.kh.finalproject.blog.model.vo.Plant;
 import com.kh.finalproject.common.model.dao.CommonDao;
-import com.kh.finalproject.common.model.vo.Files;
+import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 
 @Service
@@ -55,7 +55,7 @@ public class BlogServiceImpl implements BlogService{
 
 	@Transactional
 	@Override
-	public int updateBlog(Blog blog, Files file) {
+	public int updateBlog(Blog blog, Attachment file) {
 		int result = 0;
 		result = blogDao.updateBlog(sqlSession, blog);
 		if(file.getOriginalName() != null) {
@@ -89,10 +89,27 @@ public class BlogServiceImpl implements BlogService{
 	// 식물 -----------------------------------------
 	@Transactional
 	@Override
-	public int insertBlogPlant(Plant plant, Files file) {
+
+	/*
+	public int insertBlogPlant(Plant plant, Attachment file) {
+		blogDao.insertBlogPlant(sqlSession, plant);
+		return commonDao.insertFiles(sqlSession, file);
+	}
+	 */	
+	public int insertBlogPlant(Plant plant, Attachment file) {
 		int result = blogDao.insertBlogPlant(sqlSession, plant);
 		if(file.getOriginalName() != null) {
 			return commonDao.insertFiles(sqlSession, file);
+		}
+		return result;
+	}
+
+	@Override
+	public int updateBlogPlant(Plant plant, Attachment file) {
+		int result = 0;
+		result = blogDao.updateBlogPlant(sqlSession, plant);
+		if(file.getOriginalName() != null) {
+			result *= commonDao.insertFiles(sqlSession, file);
 		}
 		return result;
 	}
@@ -125,6 +142,7 @@ public class BlogServiceImpl implements BlogService{
 	public int insertBlogBoard(BlogBoard blogBoard) {
 		return blogDao.insertBlogBoard(sqlSession, blogBoard);
 	}
+
 
 
 

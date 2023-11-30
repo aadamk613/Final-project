@@ -4,7 +4,6 @@ import com.kh.finalproject.member.model.vo.Member;
 import com.kh.finalproject.member.model.vo.NaverLogin;
 import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.ArrayList;
-import org.apache.ibatis.annotations.Param;
 
 public interface MemberService {
 

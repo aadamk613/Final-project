@@ -67,6 +67,10 @@ public class BlogDao {
 		return sqlSession.selectOne("blogMapper.selectBlogPlant", plantNo);
 	}
 	
+	public int updateBlogPlant(SqlSessionTemplate sqlSession, Plant plant) {
+		return sqlSession.update("blogMapper.updateBlogPlant", plant);
+	}
+	
 	public int deleteBlogPlant(SqlSessionTemplate sqlSession, int plantNo) {
 		return sqlSession.delete("blogMapper.deleteBlogPlant", plantNo);
 	}
@@ -74,6 +78,7 @@ public class BlogDao {
 	public int insertBlogBoard(SqlSessionTemplate sqlSession, BlogBoard blogBoard) {
 		return sqlSession.insert("blogMapper.insertBlogBoard", blogBoard);
 	}
+
 
 
 

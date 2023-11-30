@@ -81,6 +81,13 @@ img{
 					<input type="file" name="upfiles" id="thumbFile" />
 					<img src="${ files[0].filePath }/${ files[0].updateName }" id="thumb" class="thumbFile" required />
 					<input type="hidden" name="anno" value="thumb" placeholder="사진첨부 후 작성해 주세요"  />
+					<input type="hidden" name="" class="old" value="${ files[0].filePath }${ files[0].updateName }" />
+					<!-- 기존의 파일을 지우거나 삭제하지 않기 위해 파일번호를 가져감 -->
+					<script>
+						console.log('${ files }');
+						console.log('${ files[0] }');
+						console.log('${ files[0].fileNo }');
+					</script>
 				</div>
 				
 				<script>
@@ -97,9 +104,7 @@ img{
 					$(() => {
 						$('input[type=file]').hide();
 						//$('img').on('click', function abc(e){
-						$(document).on('click', 'img', function abc(e){
-							// console.log("하이드");
-							// console.log(e.target.id);
+						$(document).on('click', 'img', function clickImg(e) {
 							const imgId = e.target.id;
 							// console.log("이건 뭔데");
 							// console.log($('img[id=' + imgId +']').siblings().eq(0));
@@ -110,6 +115,29 @@ img{
 							// console.log("이얍");
 							//console.log($('img').last());
 							// $('img').last().siblings().eq(0).click();
+							
+							// 클릭된 파일은 무조건 사라짐
+							
+							
+							if('${ exp.expNo }' != ''){
+								$(this).siblings('input.old').attr('name', 'oldFiles');
+							}
+							
+							$(this).attr('src', '');
+							$(this).siblings().eq(1).val('');
+							$(this).siblings().eq(1).attr('readonly', true);
+							
+							
+							
+							console.log("이거 클릭하면 이름속성 바꿔줄거임");
+							console.log($(this).nextAll('input.old'));
+							
+							
+							
+							
+							
+							
+							
 						});
 						
 						//console.log($('input[type=file]'));
@@ -121,8 +149,31 @@ img{
 						//$('input[type=file]').on('change', function asd(inputFile){
 						$(document).on('change', 'input[type=file]', function changeFiles(inputFile){
 							const changeFile = $(this);
+							console.log("그치");
+							console.log(changeFile);
+							
+							// 기존파일이 있다면 기존파일의 oldFileNo를 아예 지워버림(왜 여기서 하냐면, 파일을 누르는 순간 기존 파일은 변경되거나 취소를 누르면 삭제됨)
+							console.log("지울 파일 요소...");
+							console.log(changeFile.siblings().eq(2).attr('name'));
+							//changeFile.siblings().eq(2).attr('name', '');
+							console.log(changeFile.siblings().eq(2).attr('name'));
+							
+							//changeFile.siblings().eq(2)
+							
+							
 							// 파일이 있다면
 							if(inputFile.target.files.length == 1){
+								
+								// 수정된 파일을 oldFiles로 넘겨줄 것임
+								changeFile.siblings().eq(2).attr('name', 'oldFiles');
+								
+								
+								//changeFile.siblings().eq(1).attr('name', 'newAnno');
+								//console.log(changeFile.siblings().eq(1).attr('name'));
+								console.log("왜 안넘어가");
+								console.log(changeFile.siblings().eq(1).attr('name'));
+								console.log(changeFile.siblings().eq(1).val());
+								
 								let reader = new FileReader();
 								reader.readAsDataURL(inputFile.target.files[0]);
 								reader.onload = function(e){
@@ -130,29 +181,65 @@ img{
 									console.log(reader);
 									// console.log($('input[id=' + inputFileId + ']').siblings());
 									//console.log($('input[type=file]').last());
-									// input요소 바로 다음 img의 이미지가 바뀜
 									//$('input[id=' + inputFileId + ']').siblings().eq(0).attr('src', e.target.result);
+									
+									
+									// input요소 바로 다음 img의 이미지가 바뀜
 									changeFile.siblings().eq(0).attr('src', e.target.result);
+									
+									console.log("아니 자식요소였어??????");
+									console.log(changeFile.siblings().eq(0));
+									console.log(changeFile.children().find('img[class=file-img]'));
 									//console.log("사람살려");
 									//console.log(changeFile.siblings().eq(0).find($('img[class=file-img]')));
 									//console.log(changeFile.siblings().eq(1).find($('input[name=anno]')).attr('disabled', false));
-									changeFile.siblings().eq(1).attr('disabled', false);
+									
+									
+									// 파일이 바뀌어야 주석을 쓸 수 있음
+									//changeFile.siblings().eq(1).attr('disabled', false);
+									changeFile.siblings().eq(1).attr('readonly', false);
+									
+									
 									// $('input[type=file]').last().siblings().eq(0).attr('src', e.target.result);
 									// console.log($('img[class=inputFileId]'));
 									// $('img[class='+ inputFileId + ']').attr('src', e.target.result);
 									// console.log($('#thumb'));
 									// inputFile.target.siblings().eq(0).attr('src', e.target.result);
 									
-									// 그 이미지가 첨부되어야 주석 input요소가 열림 => 안해도됨
+									// 그 이미지가 첨부되어야 주석 input요소가 열림 => 안해도됨 => 해야됨 했음
 									// input.attr('display', 'inline-block');
+									
+									
+									
 								}
 							}
+							// 파일 첨부하기 취소를 누르면
 							else{
+								
+								console.log("취소를 누르면");
+								console.log(changeFile);
+								console.log(changeFile.siblings().eq(0));
+								console.log(changeFile.siblings().eq(1));
+							
 								changeFile.siblings().eq(0).attr('src', '');
 								changeFile.siblings().eq(1).val('');
-								changeFile.siblings().eq(1).attr('disabled', true);
+								changeFile.siblings().eq(1).attr('readonly', true);
+								
 							}
+							
+							
+							
+							
+							
+							
+							
 						});
+						
+						
+						
+						
+						
+						
 					});
 					
 					
@@ -236,10 +323,12 @@ img{
 				});
 				
 				const value = '<div>'
-					 +'<input type="file" name="upfiles" />'
-					 +'<img src="" class="file-img" />'
-					 +'<input type="text" name="anno" placeholder="사진첨부 후 작성해 주세요" disabled />'
-					 +'</div>';	
+							 +'<input type="file" name="upfiles" />'
+							 +'<img src="" class="file-img" />'
+							 +'<input type="text" name="anno" placeholder="사진첨부 후 작성해 주세요" readonly />'
+							 +'<input type="hidden" name="" value="" />'
+							 +'<button onclick="deleteFile($(this));">삭제하기</button>'
+							 +'</div>';	
 				
 				// 버튼 클릭하면 div 생성
 				$(() => {
@@ -260,7 +349,7 @@ img{
 				});
 				
 				
-				if('${ exp }' != ''){
+				if('${ exp.expNo }' != ''){
 					$('form').attr('action', 'yrupdateExp.exp');
 				}
 				else{
@@ -280,11 +369,30 @@ img{
 						<div>
 							<input type="file" name="upfiles" />
 							<img src="${ f.filePath }${ f.updateName }" class="file-img" />
-							<input type="text" name="anno" value="${ f.fileAnnotation }" placeholder="사진첨부 후 작성해 주세요" />
+							<input type="text" name="anno" value="${ f.fileAnnotation }" placeholder="사진첨부 후 작성해 주세요" readonly />
+							<input type="hidden" name="" class="old" value="${ f.filePath }${ f.updateName }" />
+							<button onclick="deleteFile();">삭제하기</button>
 						</div>
 					</c:forEach>
 				</c:if>
 			</div>
+			
+			<script>
+				// 업로드되어 있는 파일 삭제하기
+				function deleteFile(e){
+					
+					console.log("삭제삭제삭제");
+					console.log(e);
+				
+					/* changeFile.siblings().eq(0).attr('src', '');
+					changeFile.siblings().eq(1).val('');
+					changeFile.siblings().eq(1).attr('disabled', true); */
+				}
+			
+			</script>
+			
+			
+			
 			
 			<button type="button" id="addContent">추가하기</button>
 			

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.finalproject.common.model.dao.CommonDao;
-import com.kh.finalproject.common.model.vo.Files;
+import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.experience.model.dao.ExperienceDao;
 import com.kh.finalproject.experience.model.vo.Experience;
@@ -56,20 +56,34 @@ public class ExperienceServiceImpl implements ExperienceService {
 
 	@Override
 	@Transactional
-	public int insertExperience(Experience exp, ArrayList<Files> fileList) {
+	public int insertExperience(Experience exp, ArrayList<Attachment> fileList) {
 		int result = experienceDao.insertExperience(sqlSession, exp);
-		for(Files file : fileList) {
+		for(Attachment file : fileList) {
 			result *= commonDao.insertFiles(sqlSession, file);
 		}
 		return result;
 	}
 	
 	@Override
-	public int updateExperience(Experience exp, ArrayList<Files> fileList) {
+	@Transactional
+	public int updateExperience(Experience exp, ArrayList<Attachment> fileList, String[] oldFiles) {
 		int result = experienceDao.updateExperience(sqlSession, exp);
-		result *= commonDao.deleteFiles(sqlSession, fileList.get(0));
-		for(Files file : fileList) {
+		System.out.println(result);
+		System.out.println("게시글 업데이트 하나");
+		if(oldFiles != null) {
+			for(String oldFile : oldFiles) {
+				System.out.println("비어있니?");
+				System.out.println(oldFile.isEmpty());
+				System.out.println(oldFile.equals(""));
+				if(!oldFile.isEmpty()) result *= experienceDao.deleteFiles(sqlSession, oldFile);
+				System.out.println(result);
+				System.out.println("문제찾기 파일 딜리트");
+			}
+		}
+		for(Attachment file : fileList) {
 			result *= commonDao.insertFiles(sqlSession, file);
+			System.out.println(result);
+			System.out.println("문제찾기 파일 인서트");
 		}
 		return result;
 	}

@@ -1,7 +1,9 @@
 package com.kh.finalproject.admin.model.service;
 
+import com.google.gson.JsonElement;
 import com.kh.finalproject.admin.model.dao.AdminDao;
 import com.kh.finalproject.admin.model.vo.Hashtag;
+import com.kh.finalproject.board.model.vo.BoardReport;
 import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -11,9 +13,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class AdminServiceImpl implements AdminService {
 
-  @Autowired private AdminDao adminDao;
+  private final AdminDao adminDao;
+  private final SqlSessionTemplate sqlSession;
 
-  @Autowired private SqlSessionTemplate sqlSession;
+  @Autowired
+  public AdminServiceImpl(AdminDao adminDao, SqlSessionTemplate sqlSession) {
+    this.adminDao = adminDao;
+    this.sqlSession = sqlSession;
+  }
 
   @Override
   public ArrayList<Ticket> getTicketListView() {
@@ -63,5 +70,10 @@ public class AdminServiceImpl implements AdminService {
   @Override
   public int addHashtag(Hashtag h) {
     return adminDao.addHashtag(sqlSession, h);
+  }
+
+  @Override
+  public ArrayList<BoardReport> selectReportedArticles() {
+    return adminDao.selectReportedArticles(sqlSession);
   }
 }

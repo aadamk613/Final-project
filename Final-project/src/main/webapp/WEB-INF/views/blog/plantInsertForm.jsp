@@ -109,13 +109,13 @@ textarea{
                         </div>
                         <div id="plantImfo">
                             <ul>
-                                <li id="plantName">식물명 : <input type="text" name="plantName"/></li>
+                                <li id="plantName">식물명 : <input type="text" name="plantName" required/></li>
                                 <li id="plantNickName">
 	                                <div>애칭 : <input type="text" name="plantNickName" />
 	                                </div>키우기 시작한 일자: <div id="plantLogDate"><input type="date" name="plantLogDate"></div>
                                 </li>
                                 <li id="plantComment" >
-                                	<textarea placeholder="식물에 대한 코멘트를 작성해주세요" name="plantComment"></textarea>
+                                	<textarea placeholder="식물에 대한 코멘트를 작성해주세요" name="plantComment" required></textarea>
                                 </li>
                             </ul>
                         </div>
@@ -132,14 +132,30 @@ textarea{
 
 			<script>
 			
+				$(function(){
+					
+				// 식물 애칭 입력하지 않았을 시 식물 이름으로 설정	
+				var nickName = $('input[name=plantNickName]');
+				var plantName = $('input[name=plantName]');
+				
+				plantName.on('change', function(){
+					console.log(nickName.val());
+					
+				if(nickName.val() == ''){
+					consolo.log('닉네임없어');
+					nickName.val() = plantName.val();
+				}
+					
+				})
+				
+				});
+				
+				
 				// 현재 날짜를 알아낸 후 식물 등록 일자에서 현재 날짜 이후는 입력 불가
 				var nowDate = Date.now();
 				var timeOff = new Date().getTimezoneOffset()*60000;
 				var today = new Date(nowDate-timeOff).toISOString().split("T")[0];
-				console.log(today);
-				
-				console.log($('input[name=plantLogDate]'));
-				$('input[name=plantLogDate]').attr("max", today);
+				$('input[name=plantLogDate]').attr("max", today).val(today);
 				
 				
 				// input type="file"을 숨긴 후 기본이미지 클릭 시 이벤트 수행되게
@@ -147,6 +163,7 @@ textarea{
 			    	  plantInput.click();
 			      });
 			      
+				
 	              // 이미지를 첨부했을 시 미리보기 가능하게
 	              $('input[name=upfile]').on('change', function(inputFile){
 				  	let reader = new FileReader();
