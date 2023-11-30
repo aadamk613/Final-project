@@ -90,12 +90,6 @@ public class BlogServiceImpl implements BlogService{
 	@Transactional
 	@Override
 
-	/*
-	public int insertBlogPlant(Plant plant, Attachment file) {
-		blogDao.insertBlogPlant(sqlSession, plant);
-		return commonDao.insertFiles(sqlSession, file);
-	}
-	 */	
 	public int insertBlogPlant(Plant plant, Attachment file) {
 		int result = blogDao.insertBlogPlant(sqlSession, plant);
 		if(file.getOriginalName() != null) {
@@ -139,11 +133,26 @@ public class BlogServiceImpl implements BlogService{
 	
 	// 게시판 -----------------------------------------
 	@Override
+	public int selectListCountBlogBoard(int blogNo) {
+		return blogDao.selectListCountBlogBoard(sqlSession, blogNo);
+	}
+	
+	@Override
 	public int insertBlogBoard(BlogBoard blogBoard) {
 		return blogDao.insertBlogBoard(sqlSession, blogBoard);
 	}
+	
+	@Override
+	public ArrayList<BlogBoard> selectBlogBoardList(PageInfo pi, int blogNo){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());  
+		return blogDao.selectBlogBoardList(sqlSession, blogNo, rowBounds);
+	}
 
-
+	@Override
+	public BlogBoard selectBlogBoard(int blogBoardNo){
+		return blogDao.selectBlogBoard(sqlSession, blogBoardNo);
+	}
 
 
 
