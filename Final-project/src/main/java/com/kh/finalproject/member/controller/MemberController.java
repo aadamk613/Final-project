@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -91,8 +92,18 @@ public class MemberController {
   }
 
   @RequestMapping("join.me")
-  public String joinMember(Member m, Model model) {
-	  
+  public String joinMember(@RequestParam(name = "local-part", required = false) String localPart,
+                           @RequestParam(name = "domain-txt", required = false) String domain,
+                           Member m, Model model) {
+      if (localPart != null && domain != null) {
+          String email = localPart + "@" + domain; // 아이디와 도메인을 조합하여 이메일 주소 생성
+          m.setEmail(email); // Member 객체에 이메일 설정
+      } else {
+          // 파라미터가 제대로 전달되지 않은 경우 처리
+          model.addAttribute("errorMsg", "이메일 파라미터가 올바르게 전송되지 않았습니다.");
+          return "common/errorPage";
+      }
+
       System.out.println(m);
       System.out.println("평문 : " + m.getMemPwd());
 
@@ -103,13 +114,15 @@ public class MemberController {
           if ("B".equals(m.getMemStatus())) { // memStatus가 "B"인지 확인
               return "redirect:businessPage"; // businessPage.jsp로 리다이렉트
           } else {
-              return "redirect:/"; // 그 외의 경우는 main.jsp로 리다이렉트
+              return "redirect:/"; // 그 외의 경우는 메인페이지로 리다이렉트
           }
       } else {
           model.addAttribute("errorMsg", "회원가입 실패.");
-          return "../common/errorPage.jsp";
+          return "common/errorPage";
       }
   }
+
+
   
   @RequestMapping("businessPage")
   public String goToBusinessPage() {

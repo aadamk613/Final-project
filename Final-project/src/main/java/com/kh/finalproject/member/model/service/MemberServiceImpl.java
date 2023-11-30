@@ -117,7 +117,7 @@ public class MemberServiceImpl implements MemberService {
   }
   
   @Override
-  public int businessPage(Member memStatus) {
+  public int businessPage1(Member memStatus) {
 	  return memberDao.businessPage(sqlSession, memStatus);
 		  
 	  }

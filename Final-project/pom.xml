@@ -240,7 +240,21 @@
 					<downloadJavadocs>true</downloadJavadocs>
 				</configuration>
 			</plugin>
-			<plugin>
+			
+	        <plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-compiler-plugin</artifactId>
+	            <version>버전</version>
+	            <configuration>
+	                <source>버전</source>
+	                <target>버전</target>
+	                <compilerArgs>
+	                    <arg>-parameters</arg>
+	                </compilerArgs>
+	            </configuration>
+	        </plugin>
+	       
+	       <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.5.1</version>

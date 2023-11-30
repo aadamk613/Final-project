@@ -10,7 +10,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <Style>
 	.content{
-		width:30%;
+		width:50%;
 		margin:auto;
 	}
 	.innerOuter{
@@ -29,7 +29,7 @@
 }
 
 .joinFormWrap{
-	width:150px;
+	width:200px;
 	font-size:30px;
 	font-weight:bold;
 	line-height:200%;
