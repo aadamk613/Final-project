@@ -33,6 +33,7 @@ public class CommonController {
 		HashMap<Object, Object> map = new HashMap();
 		map.put("refNo", refNo);
 		map.put("refType", string);
+		System.out.println(map);
 		
 		return commonService.selectFiles(map);
 	}

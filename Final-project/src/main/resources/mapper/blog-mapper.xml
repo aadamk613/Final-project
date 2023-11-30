@@ -116,7 +116,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			FROM
 				TB_BLOG B
 		    JOIN
-                MEMBER USING(BLOG_NO)
+                TB_MEMBER USING(BLOG_NO)
 			LEFT OUTER JOIN
                 TB_ATTACHMENT ON (REF_NO = BLOG_NO)
 			WHERE
@@ -389,7 +389,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 	</insert>
 	
+	<select id="selectBlogBoard">
 	
+		
+	
+	</select>
 	
 	
 	

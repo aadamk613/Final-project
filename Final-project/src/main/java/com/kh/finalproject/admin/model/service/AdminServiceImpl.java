@@ -1,7 +1,9 @@
 package com.kh.finalproject.admin.model.service;
 
+import com.google.gson.JsonElement;
 import com.kh.finalproject.admin.model.dao.AdminDao;
 import com.kh.finalproject.admin.model.vo.Hashtag;
+import com.kh.finalproject.board.model.vo.BoardReport;
 import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -68,5 +70,10 @@ public class AdminServiceImpl implements AdminService {
   @Override
   public int addHashtag(Hashtag h) {
     return adminDao.addHashtag(sqlSession, h);
+  }
+
+  @Override
+  public ArrayList<BoardReport> selectReportedArticles() {
+    return adminDao.selectReportedArticles(sqlSession);
   }
 }
