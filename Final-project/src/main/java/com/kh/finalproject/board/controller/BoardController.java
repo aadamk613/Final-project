@@ -111,18 +111,8 @@ public class BoardController {
 	// 일반게시글 상세조회
 		@ResponseBody
 		@GetMapping("detail.bo")
-/*
-		public ModelAndView selectBoard(int bno, ModelAndView mv, Attachment f, MultipartFile upfile, HttpSession session)  {
-*/
-		public ModelAndView selectBoard(CommentReport cr, BoardReport br, int bno, ModelAndView mv, Attachment f, MultipartFile upfile, HttpSession session)   {
+		public ModelAndView selectBoard(BoardReport br, int bno, ModelAndView mv, Attachment f, MultipartFile upfile, HttpSession session)   {
 			
-			
-			Member loginUser = (Member) session.getAttribute("loginUser"); 
-			if(loginUser != null) {
-			int memNo = loginUser.getMemNo();
-			cr.setMemNo(memNo);
-			cr.setRefBoardNo(bno);
-			};
 			
 
 			
@@ -136,13 +126,10 @@ public class BoardController {
 					}
 						mv.addObject("f", boardService.selectFile(bno)).setViewName("board/boardDetailView");
 				}
-				ArrayList<CommentReport> cList = boardService.selectCommentReport(cr);
-				System.out.println(cList);
 				
 				
 				
-				mv.addObject("cr", cList)
-				  .addObject("br", boardService.selectBoardReport(bno))
+				mv.addObject("br", boardService.selectBoardReport(bno))
 				  .addObject("cList", boardService.selectComment(bno))
 				  .addObject("b", boardService.selectBoard(bno))
 				  .setViewName("board/boardDetailView");
@@ -153,8 +140,9 @@ public class BoardController {
 		}
 		
 		@ResponseBody
-		@GetMapping(value = "sdfds", produces="application/json; charset=UTF-8")
-		public String absdfsd(CommentReport cr) {
+		@GetMapping(value = "disabled.btn", produces="application/json; charset=UTF-8")
+		public String disabledBtn(CommentReport cr) {
+			System.out.println(cr);
 			return new Gson().toJson(boardService.selectCommentReport(cr));
 		}
 		

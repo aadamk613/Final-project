@@ -45,13 +45,11 @@ public class NoticeController {
 											 10,
 											 5);
 
-		model.addAttribute("best", noticeService.selectBestNoticeList());
-		model.addAttribute("list", noticeService.selectNoticeList(pi));
-		model.addAttribute("pi", pi);
+		model.addAttribute("best", noticeService.selectBestNoticeList())
+		     .addAttribute("list", noticeService.selectNoticeList(pi))
+		     .addAttribute("pi", pi);
 		
-
 		return "notice/noticeListView";
-		
 	}
 	
 	// 공지사항 작성폼 이동
@@ -66,10 +64,14 @@ public class NoticeController {
 	public String insertNotice(Notice n, Attachment f, Model model, MultipartFile upfile, HttpSession session) {
 		if(!upfile.getOriginalFilename().equals("")) {
 			saveFile(upfile, session);
+
+			
+			if(noticeService.selectNoticeListCount() > 0) {
 			int lastNo = noticeService.selectLastNoticeNo();
+			f.setRefNo(lastNo);
+			}
 			f.setOriginalName(upfile.getOriginalFilename());
 			f.setUpdateName(saveFile(upfile, session));
-			f.setRefNo(lastNo);
 			noticeService.insertFile(f);
 		} 
 		if(noticeService.insertNotice(n) > 0) { 
