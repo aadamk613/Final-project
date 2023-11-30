@@ -135,24 +135,26 @@ textarea{
 				$(function(){
 					
 				// 식물 애칭 입력하지 않았을 시 식물 이름으로 설정	
-				var nickName = $('input[name=plantNickName]').val();
-				var plantName = $('input[name=plantName]').val();
+				var nickName = $('input[name=plantNickName]');
+				var plantName = $('input[name=plantName]');
 				
-				if(nickName == ''){
-					nickName('plantName');
+				plantName.on('change', function(){
+					console.log(nickName.val());
+					
+				if(nickName.val() == ''){
+					consolo.log('닉네임없어');
+					nickName.val() = plantName.val();
 				}
-				console.log(plantName);
+					
 				})
 				
+				});
 				
 				
 				// 현재 날짜를 알아낸 후 식물 등록 일자에서 현재 날짜 이후는 입력 불가
 				var nowDate = Date.now();
 				var timeOff = new Date().getTimezoneOffset()*60000;
 				var today = new Date(nowDate-timeOff).toISOString().split("T")[0];
-				console.log(today);
-				
-				console.log($('input[name=plantLogDate]'));
 				$('input[name=plantLogDate]').attr("max", today).val(today);
 				
 				
@@ -161,6 +163,7 @@ textarea{
 			    	  plantInput.click();
 			      });
 			      
+				
 	              // 이미지를 첨부했을 시 미리보기 가능하게
 	              $('input[name=upfile]').on('change', function(inputFile){
 				  	let reader = new FileReader();
