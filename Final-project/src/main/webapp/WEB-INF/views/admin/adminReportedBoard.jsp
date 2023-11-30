@@ -47,9 +47,8 @@
 								<th width="40">번호</th>
 								<th width="40">신고내용</th>
 								<th width="60">신고일시</th>
-								<th width="60">신고대상글</th>
-								<th width="100">신고대상유저</th>					
-								<th width="30">신고자</th>
+								<th width="50">신고대상글</th>
+								<th width="50">신고대상유저</th>					
 							</tr>
 						</thead>
 						<tbody>
@@ -143,8 +142,7 @@
 									+ '<td>' + data[i].reportContent + '</td>'
 									+ '<td>' + data[i].reportDate + '</td>'
 									+ '<td>' + data[i].refBoardNo + '</td>'
-									+ '<td>' + data[i].member.memNo + '</td>'
-									+ '<td>' + data[i].refMemberNo + '</td>'
+									+ '<td>' + data[i].member.memId + '</td>'
 									+ '<tr>';			
 				}
 				$('#tb > tbody').html(result);
