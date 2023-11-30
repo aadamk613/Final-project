@@ -3,17 +3,17 @@ package com.kh.finalproject.common.model.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.kh.finalproject.common.model.vo.Files;
+import com.kh.finalproject.common.model.vo.Attachment;
 
 public interface CommonService {
 	
 	// 첨부파일 조회
-	ArrayList<Files> selectFiles(HashMap map);
+	ArrayList<Attachment> selectFiles(HashMap map);
 	
 	// 첨부파일 업데이트
-	int updateFiles(Files file);
+	int updateFiles(Attachment file);
 
 	// 첨부파일 삭제
-	int deleteFiles(Files file);
+	int deleteFiles(Attachment file);
 	
 }

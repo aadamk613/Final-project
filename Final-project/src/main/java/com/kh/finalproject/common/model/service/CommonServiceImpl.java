@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.finalproject.common.model.dao.CommonDao;
-import com.kh.finalproject.common.model.vo.Files;
+import com.kh.finalproject.common.model.vo.Attachment;
 
 @Service
 public class CommonServiceImpl implements CommonService{
@@ -20,20 +20,20 @@ public class CommonServiceImpl implements CommonService{
 	
 	// 첨부파일 조회
 	@Override
-	public ArrayList<Files> selectFiles(HashMap map) {
+	public ArrayList<Attachment> selectFiles(HashMap map) {
 		System.out.println("첨부파일 조회 service " + map);
 		return commonDao.selectFiles(sqlSession, map);
 	}
 	
 	// 첨부파일 업데이트
 	@Override
-	public int updateFiles(Files file) {
+	public int updateFiles(Attachment file) {
 		return commonDao.updateFiles(sqlSession, file);
 	}
 
 	// 첨부파일 삭제
 	@Override
-	public int deleteFiles(Files file) {
+	public int deleteFiles(Attachment file) {
 		return commonDao.deleteFiles(sqlSession, file);
 	}
 

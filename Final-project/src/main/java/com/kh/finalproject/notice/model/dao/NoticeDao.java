@@ -6,7 +6,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.kh.finalproject.common.model.vo.Files;
+import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.notice.model.vo.Notice;
 
 @Repository
@@ -27,7 +27,7 @@ public class NoticeDao {
 	public int insertNotice(SqlSessionTemplate sqlSession, Notice n) {
 		return sqlSession.insert("noticeMapper.insertNotice", n);
 	}
-	public int insertFile(SqlSessionTemplate sqlSession, Files f) {
+	public int insertFile(SqlSessionTemplate sqlSession, Attachment f) {
 		return sqlSession.insert("noticeMapper.insertFile", f);
 	}
 
@@ -56,11 +56,11 @@ public class NoticeDao {
 		return sqlSession.selectOne("noticeMapper.selectLastNoticeNo");
 	}
 
-	public ArrayList<Files> selectFile(SqlSessionTemplate sqlSession, int noticeNo) {
+	public ArrayList<Attachment> selectFile(SqlSessionTemplate sqlSession, int noticeNo) {
 		return (ArrayList)sqlSession.selectList("noticeMapper.selectFile", noticeNo);
 	}
 
-	public int updateFiles(SqlSessionTemplate sqlSession, Files f) {
+	public int updateFiles(SqlSessionTemplate sqlSession, Attachment f) {
 		return sqlSession.update("noticeMapper.updateFiles", f);
 	}
 

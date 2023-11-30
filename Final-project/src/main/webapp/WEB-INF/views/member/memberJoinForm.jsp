@@ -84,10 +84,19 @@
 				<input type="text" name="memNick" placeholder="한글/영문/숫자가능" required>
 			</div>
 			<div class="emailWrap">
-				이메일
-				<input type="email"placeholder="@기입필수!" name="email" pattern="/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
-" required>
-			</div>
+		    이메일
+		    <input class="box" id="local-part" type="text" name="email" placeholder="아이디 입력" required>
+		    @
+		    <input class="box" id="domain-txt" type="text" placeholder="도메인 입력">
+		    <select class="box" id="domain-list">
+		        <option value="type">직접 입력</option>
+		        <option value="naver.com">naver.com</option>
+		        <option value="gmail.com">gmail.com</option>
+		        <option value="hanmail.net">hanmail.net</option>
+		        <option value="nate.com">nate.com</option>
+		        <option value="kakao.com">kakao.com</option>
+		    </select>
+		</div>
 			<div class="Qualification">
 		    개인/기업
 		    <br>
@@ -98,7 +107,7 @@
 		</div>
 		<br>
 		<div class="btns" align="center">
-		    <button type="submit" class="disabled btn-forest" onclick="register()">회원가입</button>
+		    <button type="submit" class="disabled btn-forest">회원가입</button>
 			<button type="reset" class="btn btn-danger">다시</button>			
 			</div>
 		</form>
@@ -149,39 +158,32 @@
 	// 그리고 필터링된 값이 5글자 이상일 경우, AJAX를 사용하여 서버에 중복 체크를 요청
 	// 서버에서 반환된 결과에 따라 중복 여부를 사용자에게 알려주고
 	// 폼 제출 버튼을 활성화 하거나 비활성화 해줌
+	
+	const localPart = document.getElementById('local-part');
+    const domainTxt = document.getElementById('domain-txt');
+    const domainList = document.getElementById('domain-list');
 
-    
-   $(function() {
-        $('#join-form').submit(function(e) {
-            e.preventDefault(); // 기존의 폼 제출 이벤트 막기
-
-            const formData = $(this).serialize(); // 폼 데이터 직렬화, 직렬화는 입력받은 여러 데이터를 하나의 쿼리 문자열로 만들어주는것
-
-            $.ajax({	// 페이지를 새로고침하지 않고 데이터를 서버로 보낼 수 있는 방법으로 ajax를 사용했다 
-                type: 'POST',
-                url: 'join.me',
-                data: formData,
-                success: function(response) {
-
-                    const memStatus = $("#memStatus option:selected").val();	 // 물론 다른페이지로 이동하는 방법은 자바스크립트 영역이라 
-																				 // 
-                    if (memStatus === 'B') {
-                        location.href = 'http://localhost:8001/final/businessPage.me'; 
-                        // 기업인 경우, businessPage.jsp로 이동
-                    } else {
-                        location.href = 'http://localhost:8001/final/';
-                        // 개인 회원가입 로직 처리
-                    }
-                    // 이렇게 한 이유 ? 회원가입 폼에서 회원 상태를 선택하고 회원가입 버튼을 클릭하면 
-                    // 해당 회원 상태에 따라 페이지를 이동할 수 있음. 선택된 값이 "B"면 businessPage.jsp로 이동하고
-                    // 그렇지 않은 경우에는 일반 유저로 분류되어 메인페이지로 이동한다. 
-                },
-                error: function() {
-                    console.log('서버 요청 실패');
-                }
-            });
-        });
+    domainList.addEventListener('change', function() {
+        const selectedDomain = this.value;
+        if (selectedDomain !== 'type') {
+            domainTxt.value = selectedDomain;
+            domainTxt.setAttribute('disabled', true);
+        } else {
+            domainTxt.value = '';
+            domainTxt.removeAttribute('disabled');
+            domainTxt.focus();
+        }
     });
+
+    localPart.addEventListener('input', function() {
+        this.value = this.value.replace(/[^a-zA-Z0-9._-]/g, ''); // 특수 문자 제거
+    });
+
+    domainTxt.addEventListener('input', function() {
+        const selectedDomain = this.value;
+        domainList.value = selectedDomain;
+    });
+   
 </script>
 
 	</section>
