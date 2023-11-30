@@ -1,6 +1,7 @@
 package com.kh.finalproject.admin.model.dao;
 
 import com.kh.finalproject.admin.model.vo.Hashtag;
+import com.kh.finalproject.board.model.vo.BoardReport;
 import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.ArrayList;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -47,5 +48,9 @@ public class AdminDao {
 
   public int addHashtag(SqlSessionTemplate sqlSession, Hashtag h) {
     return sqlSession.insert("hashtagMapper.addHashtag", h);
+  }
+
+  public ArrayList<BoardReport> selectReportedArticles(SqlSessionTemplate sqlSession) {
+    return sqlSession.selectList("boardMapper")
   }
 }
