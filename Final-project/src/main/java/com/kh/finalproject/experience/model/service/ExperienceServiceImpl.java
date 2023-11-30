@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,16 +15,17 @@ import com.kh.finalproject.experience.model.dao.ExperienceDao;
 import com.kh.finalproject.experience.model.vo.Experience;
 import com.kh.finalproject.experience.model.vo.ExperienceReply;
 
-@Service 
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
 public class ExperienceServiceImpl implements ExperienceService {
 	
-	@Autowired
-	private ExperienceDao experienceDao;
-	@Autowired
-	private SqlSessionTemplate sqlSession;
-	@Autowired
-	private CommonDao commonDao;
+	private final ExperienceDao experienceDao;
+	private final SqlSessionTemplate sqlSession;
+	private final CommonDao commonDao;
 
+	// 게시글
 	@Override
 	public int selectListCount() {
 		return experienceDao.selectListCount(sqlSession);
@@ -33,7 +33,6 @@ public class ExperienceServiceImpl implements ExperienceService {
 	
 	@Override
 	public ArrayList<Experience> selectExperienceList(PageInfo pi) {
-		
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		return experienceDao.selectExperienceList(sqlSession, rowBounds);
@@ -50,18 +49,15 @@ public class ExperienceServiceImpl implements ExperienceService {
 	}
 
 	@Override
-	public ArrayList<ExperienceReply> selectExpReplyList(int expNo) {
-		return experienceDao.selectExpReplyList(sqlSession, expNo);
-	}
-
-	@Override
 	@Transactional
 	public int insertExperience(Experience exp, ArrayList<Attachment> fileList) {
 		int result = experienceDao.insertExperience(sqlSession, exp);
+		/*
 		for(Attachment file : fileList) {
 			result *= commonDao.insertFiles(sqlSession, file);
 		}
-		return result;
+		*/
+		return experienceDao.insertFiles(sqlSession, fileList);
 	}
 	
 	@Override
@@ -92,12 +88,24 @@ public class ExperienceServiceImpl implements ExperienceService {
 	public int deleteExperience(int expNo) {
 		return experienceDao.deleteExperience(sqlSession, expNo);
 	}
+	
+	// 댓글
+	@Override
+	public ArrayList<ExperienceReply> selectExpReplyList(int expNo) {
+		return experienceDao.selectExpReplyList(sqlSession, expNo);
+	}
+	
+	@Override
+	public int deleteExpReply(int expReplyNo) {
+		return experienceDao.deleteExpReply(sqlSession, expReplyNo);
+	}
 
 	@Override
 	public int insertExpReply(ExperienceReply expReply) {
 		return experienceDao.insertExpReply(sqlSession, expReply);
 	}
 
+	// 좋아요
 	@Override
 	public int selectExpLike(HashMap map) {
 		return experienceDao.selectExpLike(sqlSession, map);
@@ -112,21 +120,6 @@ public class ExperienceServiceImpl implements ExperienceService {
 	public int deleteExpLike(HashMap map) {
 		return experienceDao.deleteExpLike(sqlSession, map);
 	}
-
-	@Override
-	public int deleteExpReply(int expReplyNo) {
-		return experienceDao.deleteExpReply(sqlSession, expReplyNo);
-	}
-
-	
-
-	
-	
-
-	
-
-
-	
 	
 
 }
