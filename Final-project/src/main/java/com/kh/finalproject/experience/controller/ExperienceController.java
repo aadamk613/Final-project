@@ -42,7 +42,7 @@ public class ExperienceController {
 	 * @param model : 데이터를 담아 보내줄 Model
 	 * @return : 체험학습 게시글 목록으로 이동
 	 */
-	@RequestMapping("yrlist.exp")
+	@GetMapping("yrlist.exp")
 	public String seleceExperienceList(@RequestParam(value="page", defaultValue="1") int currentPage, Model model){
 		// 페이지는 기본값 1로 설정
 		// System.out.println(success);
@@ -59,7 +59,7 @@ public class ExperienceController {
 	 * @param session : 데이터 담아 보내줄 Session객체
 	 * @return : 성공 시 상세조회 페이지로 이동 / 실패 시 게시글 목록으로 이동
 	 */
-	@RequestMapping("yrdetail.exp")
+	@GetMapping("yrdetail.exp")
 	public String selectExperience(int expNo, Model model, HttpSession session) {
 		System.out.println(expNo);
 		
@@ -142,13 +142,16 @@ public class ExperienceController {
 		for(int i = 0; i < upfiles.length; i++) {
 			Attachment file = new Attachment();
 			if(!upfiles[i].getOriginalFilename().equals("")) {
+				System.out.println("그래도 찍어봐야지");
+				System.out.println(upfiles[i]);
+				System.out.println(anno[i]);
 				file = commonController.setFile(upfiles[i], session, "experience");
 				file.setRefNo(exp.getExpNo());
-			} else {
-				continue;
-			}
-			file.setFileAnnotation(anno[i]);
-			fileList.add(file);
+				file.setFileAnnotation(anno[i]);
+				fileList.add(file);
+			} 
+			// anno가 disabled였다면 값이 안넘어왔겠지만 readonly라서 비어있으면 빈문자열이 넘어옴
+			// else {continue;}
 		} 
 		
 		if(experienceService.updateExperience(exp, fileList, oldFiles) > 0) {
