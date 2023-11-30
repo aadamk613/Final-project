@@ -193,6 +193,9 @@ public class ExperienceController {
 		// 1. 원래 있던 파일 지우고 oldFileNo delete
 		if(oldFiles != null) {
 			for(String oldFile : oldFiles) {
+				System.out.println("올드파일");
+				System.out.println(oldFile);
+				System.out.println(oldFile.toString());
 				new File(session.getServletContext().getRealPath(oldFile)).delete();
 			}
 		}

@@ -47,6 +47,10 @@ public class ExperienceDao {
 		return sqlSession.update("experienceMapper.updateExperience", exp);
 	}
 	
+	public int updateFiles(SqlSessionTemplate sqlSession, ArrayList<Attachment> fileList) {
+		return sqlSession.insert("experienceMapper.updateFiles", fileList);
+	}
+	
 	public int deleteExperience(SqlSessionTemplate sqlSession, int expNo) {
 		return sqlSession.update("experienceMapper.deleteExperience", expNo);
 	}

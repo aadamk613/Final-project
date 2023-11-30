@@ -63,6 +63,7 @@ public class ExperienceServiceImpl implements ExperienceService {
 	@Override
 	@Transactional
 	public int updateExperience(Experience exp, ArrayList<Attachment> fileList, String[] oldFiles) {
+		/*
 		int result = experienceDao.updateExperience(sqlSession, exp);
 		System.out.println(result);
 		System.out.println("게시글 업데이트 하나");
@@ -76,12 +77,28 @@ public class ExperienceServiceImpl implements ExperienceService {
 				System.out.println("문제찾기 파일 딜리트");
 			}
 		}
+		
 		for(Attachment file : fileList) {
 			result *= commonDao.insertFiles(sqlSession, file);
 			System.out.println(result);
 			System.out.println("문제찾기 파일 인서트");
 		}
 		return result;
+		*/
+		int result = experienceDao.updateExperience(sqlSession, exp);
+		System.out.println(result);
+		System.out.println("게시글 업데이트 하나");
+		if(oldFiles != null) {
+			for(String oldFile : oldFiles) {
+				System.out.println("비어있니?");
+				System.out.println(oldFile.isEmpty());
+				System.out.println(oldFile.equals(""));
+				if(!oldFile.isEmpty()) result *= experienceDao.deleteFiles(sqlSession, oldFile);
+				System.out.println(result);
+				System.out.println("문제찾기 파일 딜리트");
+			}
+		}
+		return experienceDao.updateFiles(sqlSession, fileList);
 	}
 	
 	@Override
