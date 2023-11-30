@@ -334,24 +334,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			SUB.MEM_NO,
 			SUB.MEM_ID,
 			REF_MEMBER_NO,
-			MEMBER.MEM_ID
+			TB_MEMBER.MEM_ID
 		FROM
 			(
-				SELECT
-					REPORT_NO,
-					REPORT_CONTENT,
-					REPORT_DATE,
-					REF_BOARD_NO,
-					MEM_NO,
-					MEM_ID,
-					REF_MEMBER_NO
-				FROM
+					SELECT
+						REPORT_NO,
+						REPORT_CONTENT,
+						REPORT_DATE,
+						REF_BOARD_NO,
+						MEM_NO,
+						MEM_ID,
+						REF_MEMBER_NO
+					FROM
 						TB_BOARD_REPORT
-				LEFT JOIN
-						MEMBER USING(MEM_NO)
+					LEFT JOIN
+						TB_MEMBER USING(MEM_NO)
 			) SUB
 			LEFT JOIN
-				MEMBER ON (REF_MEMBER_NO = MEMBER.MEM_NO)
+				TB_MEMBER ON (REF_MEMBER_NO = TB_MEMBER.MEM_NO)
 			ORDER BY
 				REPORT_NO
 	</select>
