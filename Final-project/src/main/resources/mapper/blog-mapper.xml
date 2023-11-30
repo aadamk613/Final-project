@@ -389,10 +389,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 	</insert>
 	
-	<select id="selectBlogBoard">
+	<select id="selectBlogBoard" parameterType="_int" resultMap="BlogBoardResultSet">
 	
 		
-	
+		SELECT  
+	        BLOG_BOARD_NO, 
+	        BLOG_NO, 
+	        CATEGORY_SETTING_NO, 
+	        BLOG_BOARD_TITLE, 
+	        BLOG_BOARD_CONTENT, 
+	        CREATE_DATE,
+	        WRITER
+	    FROM
+	        TB_BLOG_BOARD
+	    WHERE
+	        BLOG_BOARD_NO = #{ blogBoardNo }
+	    AND
+	        STATUS = 'Y'
+	        
 	</select>
 	
 	
