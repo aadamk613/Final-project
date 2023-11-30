@@ -30,7 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       		BLOG_NO,
 			TO_CHAR(LAST_LOGIN, 'YYYY/MM/DD HH24:MI:SS') LAST_LOGIN
 		FROM
-			MEMBER
+			TB_MEMBER
 		WHERE
 			MEM_ID = #{memId}
 		  AND
@@ -52,7 +52,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			BLOG_NO,
 			TO_CHAR(LAST_LOGIN, 'YYYY/MM/DD HH24:MI:SS') LAST_LOGIN
 		FROM
-			MEMBER
+			TB_MEMBER
 		WHERE
 			MEM_NO = #{memNo}
 	</select>
@@ -69,13 +69,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			BLOG_NO,
 			TO_CHAR(LAST_LOGIN, 'YYYY/MM/DD HH24:MI:SS') LAST_LOGIN
 		FROM
-			MEMBER
+			TB_MEMBER
 	</select>
 
 	<insert id="joinMember" parameterType="member">
 		INSERT
 			INTO
-				MEMBER
+				TB_MEMBER
 				(
 				MEM_NO,
 				MEM_STATUS,
@@ -100,7 +100,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT 
 				COUNT(*)
 		  FROM
-		  		MEMBER
+				TB_MEMBER
 		 WHERE
 		 		MEM_ID = #{checkId}
 	
@@ -109,7 +109,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updateMember" parameterType="member">
 		UPDATE
 				TB_FILE,
-				MEMBER
+				TB_MEMBER
 		   SET
 				MEM_NICK = #{memNick},
 				EMAIL = #{email}
@@ -120,7 +120,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<update id="deleteMember" parameterType="string">
 		UPDATE
-				MEMBER
+			TB_MEMBER
 		   SET
 		   		MEM_STATUS = 'D'
 		 WHERE
@@ -129,7 +129,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<update id="setLastLogin" parameterType="member">
 		UPDATE
-			MEMBER
+			TB_MEMBER
 		SET 
 			LAST_LOGIN = SYSDATE
 		WHERE 
@@ -159,7 +159,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<update id="editMember" parameterType="member">
 		UPDATE
-			MEMBER
+			TB_MEMBER
 		SET 
 			MEM_STATUS = #{memStatus},
 			MEM_ID = #{memId},
@@ -182,14 +182,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			BLOG_NO,
 			TO_CHAR(LAST_LOGIN, 'YYYY/MM/DD HH24:MI:SS') LAST_LOGIN
 		FROM 
-			MEMBER
+			TB_MEMBER
 		WHERE 
 			MEM_ID = #{memId}
 	</select>
 	<insert id="addKakaoProfile" parameterType="member">
 		INSERT
 			INTO
-				MEMBER
+				TB_MEMBER
 				(
 				MEM_NO,
 				MEM_STATUS,
@@ -209,7 +209,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="addGoogleProfile" parameterType="member">
 		INSERT
 			INTO
-				MEMBER
+				TB_MEMBER
 				(
 				MEM_NO,
 				MEM_STATUS,
@@ -231,7 +231,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="addNaverProfile" parameterType="naver">
 		INSERT
 			INTO
-				MEMBER
+				TB_MEMBER
 				(
 				MEM_NO,
 				MEM_STATUS,
@@ -250,6 +250,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{profile_image}
 				)
 	</insert>
-	
-	
+
+
 </mapper>

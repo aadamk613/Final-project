@@ -7,6 +7,8 @@ import com.kh.finalproject.member.model.service.MemberService;
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -38,5 +40,10 @@ public class AjaxAdminController {
   @RequestMapping(value = "ajaxSelectMember.admin", produces = "application/json; charset=UTF-8")
   public String ajaxSelectMember(int memNo) {
     return new Gson().toJson(memberService.selectMember(memNo));
+  }
+
+  @RequestMapping(value = "ajaxReportArticles.admin", produces = "application/json; charset=UTF-8")
+  public String selectReportedArticles() {
+    return new Gson().toJson(adminService.selectReportedArticles());
   }
 }
