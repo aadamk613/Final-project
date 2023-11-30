@@ -1,6 +1,7 @@
 package com.kh.finalproject.blog.model.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -75,8 +76,21 @@ public class BlogDao {
 		return sqlSession.delete("blogMapper.deleteBlogPlant", plantNo);
 	}
 	
+	// 블로그 일반 게시글 관련 -----------------------------------------
 	public int insertBlogBoard(SqlSessionTemplate sqlSession, BlogBoard blogBoard) {
 		return sqlSession.insert("blogMapper.insertBlogBoard", blogBoard);
+	}
+	
+	public int selectListCountBlogBoard(SqlSessionTemplate sqlSession, int blogNo) {
+		return sqlSession.selectOne("blogMapper.selectListCountBlogBoard", blogNo);
+	}
+
+	public ArrayList<BlogBoard> selectBlogBoardList(SqlSessionTemplate sqlSession, int blogNo, RowBounds rowBounds) {
+		return (ArrayList)sqlSession.selectList("blogMapper.selectBlogBoardList", blogNo, rowBounds);
+	}
+
+	public BlogBoard selectBlogBoard(SqlSessionTemplate sqlSession, int blogBoardNo) {
+		return sqlSession.selectOne("blogMapper.selectBlogBoard", blogBoardNo);
 	}
 
 

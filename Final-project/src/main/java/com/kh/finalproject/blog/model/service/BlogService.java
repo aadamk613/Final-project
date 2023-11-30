@@ -2,13 +2,14 @@ package com.kh.finalproject.blog.model.service;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.session.RowBounds;
+
 import com.kh.finalproject.blog.model.vo.Blog;
 import com.kh.finalproject.blog.model.vo.BlogBoard;
 import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
 import com.kh.finalproject.blog.model.vo.Plant;
 import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
-import com.kh.finalproject.experience.model.vo.Experience;
 
 public interface BlogService {
 
@@ -43,7 +44,7 @@ public interface BlogService {
 	// 블로그 식물 수 조회
 	int selectListCountPlant(int blogNo);
 	
-	// 식물 전체 리스트로 이동
+	// 식물 전체 리스트 조회
 	ArrayList<Plant> selectListPlant(PageInfo pi, int blogNo);
 	
 	// 식물 조회
@@ -59,10 +60,17 @@ public interface BlogService {
 	int deleteBlogPlant(int plantNo);
 	
 	// --------------------------------------------------------
-	
 	// 블로그 일반 글 쓰기
 	int insertBlogBoard(BlogBoard blogBoard);
 
+	// 블로그 일반 글 리스트 카운트
+	int selectListCountBlogBoard(int blogNo);
+	
+	// 블로그 일반 글 리스트 조회
+	ArrayList<BlogBoard> selectBlogBoardList(PageInfo pi, int blogNo);
+
+	// 블로그 일반 글 조회
+	BlogBoard selectBlogBoard(int blogBoardNo);
 	
 	// 블로그 일반 글 삭제
 	

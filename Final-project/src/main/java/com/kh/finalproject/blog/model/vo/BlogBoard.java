@@ -22,6 +22,6 @@ public class BlogBoard {
 	private String writer;
 	
 	private String blogInterest;
-	private int categorySettingNo;
+	private String categoryMemName;
 
 }

@@ -57,7 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="WRITER" property="writer"/>
 		
 		<result column="BLOG_INTEREST" property="blogInterest"/>
-		<result column="CATEGORY_SETTING_NO" property="categorySettingNo"/>
+		<result column="CATEGORY_MEM_NAME" property="categoryMemName"/>
 	</resultMap>
 	
 	
@@ -359,7 +359,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	</insert>
 	
-	
+	<!-- 블로그 일반 게시글 작성 -->
 	<insert id="insertBlogBoard" parameterType="blogBoard">
 	
 		INSERT 
@@ -389,6 +389,44 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 	</insert>
 	
+	<!-- 블로그 일반 게시글 전체 리스트 수 조회 -->
+	<select id="selectListCountBlogBoard" resultType="_int">
+		SELECT 
+			   COUNT(*)
+		  FROM 
+			   TB_BLOG_BOARD
+		 WHERE 
+		 	   BLOG_NO = #{ blogNo }
+		 AND 
+		 	   STATUS = 'Y'
+	</select>
+	
+	<!-- 블로그 일반 게시글 리스트 조회 -->
+	<select id="selectBlogBoardList" parameterType="_int" resultMap="BlogBoardResultSet">
+	
+		SELECT  
+			        BLOG_BOARD_NO, 
+			        B.BLOG_NO, 
+			        B.CATEGORY_SETTING_NO, 
+		            
+			        c.CATEGORY_MEM_NAME,
+		            
+		            BLOG_BOARD_TITLE, 
+			        BLOG_BOARD_CONTENT, 
+			        CREATE_DATE,
+			        WRITER
+			    FROM
+			        TB_BLOG_BOARD B
+		        JOIN 
+		            TB_BLOG_CATEGORY_SETTING C on(B.CATEGORY_SETTING_NO = C.CATEGORY_SETTING_NO) 
+			    WHERE
+			        B.BLOG_NO = #{ blogNo }
+			    AND
+			        STATUS = 'Y'
+	        
+	</select>
+	
+	<!-- 블로그 일반 게시글 조회 -->
 	<select id="selectBlogBoard" parameterType="_int" resultMap="BlogBoardResultSet">
 	
 		
@@ -408,9 +446,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        STATUS = 'Y'
 	        
 	</select>
-	
-	
-	
 	
 	
 	
