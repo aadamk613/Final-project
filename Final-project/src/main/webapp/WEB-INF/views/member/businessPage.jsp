@@ -45,7 +45,6 @@ button:hover {
 </head>
 <body>
 
-
 	<header id="pageHeader">
         &lt;header&gt;
         id=pageHeader
@@ -63,42 +62,43 @@ button:hover {
     <h1>사업자등록정보 진위확인</h1>
     <label for="businessNumber">사업자 등록 번호:</label>
     <input type="text" id="businessNumber" placeholder="사업자 등록 번호 입력">
-    <button id="checkButton">확인</button>
+    <button id="checkButton" onclick="checkBusinessNum();">확인</button>
     <div id="result"></div>
   </div>
   </form>
 
-  <!-- 
-  <script src="script.js"></script>
 
 
 <script>
-	document.addEventListener('DOMContentLoaded', function() {
-	  const checkButton = document.getElementById('checkButton');
-	  const businessNumberInput = document.getElementById('businessNumber');
-	  const resultDiv = document.getElementById('result');
+  function checkBusinessNum() {
+    // 입력된 사업자 등록 번호 가져오기
+    var businessNum = document.getElementById("businessNumber").value;
 
-	  checkButton.addEventListener('click', function() {
-	    const businessNumber = businessNumberInput.value;
-	    
-	    // API 호출 함수 (실제 API 호출 코드를 여기에 작성)
-	    // 예시: checkBusinessRegistration 함수는 API 호출 및 결과를 화면에 표시하는 역할을 가정
-	    checkBusinessRegistration(businessNumber);
-	  });
+    // AJAX를 이용해 서버로 사업자 등록 번호 전송
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          // 서버로부터 온 응답을 받아 결과를 화면에 출력
+          document.getElementById("result").innerHTML = xhr.responseText;
+        } else {
+          // 오류 처리
+          document.getElementById("result").innerHTML = "오류 발생: " + xhr.status;
+        }
+      }
+    };
 
-	  function checkBusinessRegistration(businessNumber) {
-	    // 여기에서 실제 API 호출을 수행하고, 결과를 처리하는 로직을 작성
-	    // 예시: 가짜 결과를 받아와 화면에 표시하는 코드
-	    const fakeResult = Math.random() < 0.5 ? '진위 확인됨' : '진위 미확인';
-	    displayResult(fakeResult);
-	  }
+    // 서버로 전송할 URL 설정 (실제 서버 URL에 맞게 수정 필요)
+    var url = "business_verification.php"; // 예시 URL
 
-	  function displayResult(result) {
-	    resultDiv.innerText = `사업자등록정보: ${result}`;
-	  }
-	});
+    // POST 방식으로 데이터 전송
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send("businessNumber=" + businessNum);
+  }
 </script>
--->
+
+
 </section>
 	<aside id="pageAsideRight" class="aside">
        

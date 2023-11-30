@@ -1,5 +1,6 @@
 package com.kh.finalproject.member.controller;
 
+import java.io.IOException;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -22,13 +23,14 @@ import javax.servlet.http.HttpSession;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
@@ -107,8 +109,18 @@ public class MemberController {
   }
 
   @RequestMapping("join.me")
-  public String joinMember(Member m, Model model) {
-	  
+  public String joinMember(@RequestParam(name = "local-part", required = false) String localPart,
+                           @RequestParam(name = "domain-txt", required = false) String domain,
+                           Member m, Model model) {
+      if (localPart != null && domain != null) {
+          String email = localPart + "@" + domain; // 아이디와 도메인을 조합하여 이메일 주소 생성
+          m.setEmail(email); // Member 객체에 이메일 설정
+      } else {
+          // 파라미터가 제대로 전달되지 않은 경우 처리
+          model.addAttribute("errorMsg", "이메일양식 값들이 제대로 전송되지 않았습니다.");
+          return "common/errorPage";
+      }
+
       System.out.println(m);
       System.out.println("평문 : " + m.getMemPwd());
 
@@ -119,11 +131,11 @@ public class MemberController {
           if ("B".equals(m.getMemStatus())) { // memStatus가 "B"인지 확인
               return "redirect:businessPage"; // businessPage.jsp로 리다이렉트
           } else {
-              return "redirect:/"; // 그 외의 경우는 main.jsp로 리다이렉트
+              return "redirect:/"; // 그 외의 경우는 메인페이지로 리다이렉트
           }
       } else {
           model.addAttribute("errorMsg", "회원가입 실패.");
-          return "../common/errorPage.jsp";
+          return "common/errorPage";
       }
   }
   
@@ -133,14 +145,10 @@ public class MemberController {
   }
 
 
-  @RequestMapping("businessPage1.me") //수정예정 공공API로 활용할 예정
-  public ResponseEntity<String> businessPage1(String memStatus) {
-	  if ("B".equals(memStatus)) { // 기업인 경우에만 진위 확인 페이지를 연다고 가정
-		  memberService.businessPage(memStatus);
-          return ResponseEntity.ok("진위 확인 페이지가 열렸습니다.");
-      } else {
-          return ResponseEntity.badRequest().body("기업이 아닙니다.");
-      }
+  @RequestMapping(value="checkBusinessNum", produces="application/json; charset=UTF-8") //수정예정 공공API로 활용할 예정
+  public String businessPageCheck(int pageNo) throws IOException{
+	  
+	  return responseText;
   }
   
 
