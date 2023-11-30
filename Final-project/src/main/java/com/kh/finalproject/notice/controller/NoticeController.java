@@ -45,9 +45,9 @@ public class NoticeController {
 											 10,
 											 5);
 
-		model.addAttribute("best", noticeService.selectBestNoticeList())
-		     .addAttribute("list", noticeService.selectNoticeList(pi))
+		model.addAttribute("list", noticeService.selectNoticeList(pi))
 		     .addAttribute("pi", pi);
+			 //.addAttribute("best", noticeService.selectBestNoticeList())
 		
 		return "notice/noticeListView";
 	}

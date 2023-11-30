@@ -166,7 +166,7 @@
 							</c:forEach>
 							
 							
-						    	<!-- 
+						    	<%--
 								<c:forEach var="c" items="${ cList }">
 								<div class="commentNo" style="display:none">${ c.commentNo }</div>
 								<div class="memNo" style="display:none">${ c.memNo }</div>
@@ -189,7 +189,7 @@
 								</div>
 								<hr>
 								</c:forEach>
-								-->
+								 --%>
 								
 								
 						<div id="commentInsertBox">

@@ -128,4 +128,15 @@ public class MemberServiceImpl implements MemberService {
 	  return memberDao.businessPage(sqlSession, memStatus);
 		  
 	  }
+@Override
+public int businessPage(String memStatus) {
+	// TODO Auto-generated method stub
+	return 0;
+}
+
+@Override
+public int businessPage(Member m, String memStatus) {
+	// TODO Auto-generated method stub
+	return 0;
+}
 }

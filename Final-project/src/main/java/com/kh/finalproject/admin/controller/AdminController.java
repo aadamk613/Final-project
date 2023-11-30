@@ -156,4 +156,9 @@ public class AdminController {
     }
     return mv;
   }
+
+  @GetMapping("reportedArticleView.admin")
+  public String reportedArticleView() {
+    return "admin/adminReportedBoard";
+  }
 }
