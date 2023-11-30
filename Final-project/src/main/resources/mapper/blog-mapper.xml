@@ -101,26 +101,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 블로그 조회 -->
 	<select id="selectBlog" parameterType="_int" resultMap="BlogResultSet" >
 		
-		SELECT 
-				BLOG_NO,
-				B.MEM_NO,
-				BLOG_TITLE,
-				BLOG_INTRODUCE,
-				BLOG_INTEREST,
-				MEM_ID,
-                MEM_NICK,
-                MEM_IMG,
+		SELECT   * 
+            FROM 
+                (SELECT
+                        BLOG_NO,
+                        B.MEM_NO,
+                        BLOG_TITLE,
+                        BLOG_INTRODUCE,
+                        BLOG_INTEREST,
+                        MEM_ID,
+                        MEM_NICK,
+                        MEM_IMG,
+                        FILE_PATH,
+                        UPDATE_NAME 
+                    FROM
+                        TB_BLOG B
+                    JOIN
+                        TB_MEMBER USING(BLOG_NO)
+                    LEFT OUTER JOIN
+                        TB_ATTACHMENT ON (REF_NO = BLOG_NO)
+                    AND
+                        REF_TYPE = 'blog')
+
+            WHERE
+                BLOG_NO = #{ blogNo }
+			                
                 
-                FILE_PATH, 
-                UPDATE_NAME
-			FROM
-				TB_BLOG B
-		    JOIN
-                TB_MEMBER USING(BLOG_NO)
-			LEFT OUTER JOIN
-                TB_ATTACHMENT ON (REF_NO = BLOG_NO)
-			WHERE
-				BLOG_NO = #{ blogNo }
+                
+
 	
 	</select>
 	
