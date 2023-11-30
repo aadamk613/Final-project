@@ -42,7 +42,9 @@ public class AjaxAdminController {
     return new Gson().toJson(memberService.selectMember(memNo));
   }
 
-  @RequestMapping(value = "ajaxReportArticles.admin", produces = "application/json; charset=UTF-8")
+  @RequestMapping(
+      value = "ajaxReportedArticles.admin",
+      produces = "application/json; charset=UTF-8")
   public String selectReportedArticles() {
     return new Gson().toJson(adminService.selectReportedArticles());
   }

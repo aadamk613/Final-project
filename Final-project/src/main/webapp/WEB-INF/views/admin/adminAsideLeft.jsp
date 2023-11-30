@@ -37,7 +37,7 @@
 			<ul class="list-group">
 				<a href="memberView.admin" class="list-group-item list-group-item-action">회원상태변경</a>
 				<a href="#" class="list-group-item list-group-item-action">댓글 신고조회</a>
-				<a href="#" class="list-group-item list-group-item-action">게시글 신고조회</a>
+				<a href="reportedArticleView.admin" class="list-group-item list-group-item-action">게시글 신고조회</a>
 				<a href="hashtag.admin" class="list-group-item list-group-item-action">해시태그 관리</a>
 				<a href="ticket.admin" class="list-group-item list-group-item-action">Ticket
 				<span class="badge badge-primary badge-pill">${numTicket}</span></a>

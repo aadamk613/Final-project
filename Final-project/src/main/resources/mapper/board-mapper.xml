@@ -34,6 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="REF_BOARD_NO" property="refBoardNo"/>
 		<result column="REF_MEMBER_NO" property="refMemberNo"/>
 		<result column="MEM_NO" property="memNo"/>
+		<collection property="member" resultMap="member"></collection>
 	</resultMap>
 
 	<select id="selectBoardCount" resultType="_int">
@@ -139,10 +140,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			     IS_BLIND = 'N'
 			  AND
 			     BOARD_NO = #{boardNo}
-  </select>
-	
-	 
-	 		<select id="selectFile" resultType="attachment">
+	</select>
+
+	<select id="selectFile" resultType="files">
 		SELECT
 		      FILE_NO fileNo
 		     ,ORIGINAL_NAME originalName
@@ -153,7 +153,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		     ,FILE_ANNOTATION fileAnnotation
 		     ,UPLOAD_DATE uploadDate
 		 FROM
-		     TB_ATTACHMENT
+		     TB_FILES
 	    WHERE
 	         REF_NO = #{boardNo}
 	      AND
@@ -168,11 +168,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  FROM
 		      TB_BOARD
 	</select>
-	
-		<insert id="insertFile" parameterType="attachment">
+
+	<insert id="insertFile" parameterType="files">
 		INSERT
 		  INTO
-		      TB_ATTACHMENT
+		      TB_FILES
 		      (
 		      FILE_NO
 		     ,REF_NO
@@ -216,7 +216,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deleteFile" parameterType="_int">
 		DELETE
 		  FROM
-		      TB_ATTACHMENT
+		      TB_FILES
 		 WHERE
 		      REF_NO = #{boardNo}	
 		   AND
@@ -353,6 +353,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			LEFT JOIN
 				MEMBER ON (REF_MEMBER_NO = MEMBER.MEM_NO)
 			ORDER BY
-				REPORT_NO;
+				REPORT_NO
 	</select>
 </mapper>
