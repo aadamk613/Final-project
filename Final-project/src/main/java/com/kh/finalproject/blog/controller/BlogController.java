@@ -74,6 +74,8 @@ public class BlogController {
 		PageInfo pi = Pagination.getPageInfo(blogService.selectListCountPlant(blogNo), 1, 5, 10);
 		ArrayList<Plant> plantList = blogService.selectListPlant(pi, blogNo);
 		
+		System.out.println("블로그 사진 왜 이상함" + blog );
+		
 		mv.addObject("blog", blog) // blog정보
 		  .addObject("list", list) // 해당 블로그의 BlogCategorySetting정보
 		  .addObject("plantList", plantList) // 해당 블로그의 Plant정보
