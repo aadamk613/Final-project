@@ -23,6 +23,7 @@
 * {
     border: 1px solid skyblue;
 	box-sizing: border-box;
+	cursor: url(https://cur.cursors-4u.net/holidays/hol-5/hol441.ani), url(https://cur.cursors-4u.net/holidays/hol-5/hol441.gif), auto !important;
 }
 #pageHeader{height: 200px;}
 #id_pw_wrap{width: 400px; height: 300px; margin: 40px auto;}
