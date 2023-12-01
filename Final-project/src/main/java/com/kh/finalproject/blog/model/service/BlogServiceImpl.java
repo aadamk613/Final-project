@@ -12,6 +12,7 @@ import com.kh.finalproject.blog.model.dao.BlogDao;
 import com.kh.finalproject.blog.model.vo.Blog;
 import com.kh.finalproject.blog.model.vo.BlogBoard;
 import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
+import com.kh.finalproject.blog.model.vo.BlogReply;
 import com.kh.finalproject.blog.model.vo.Plant;
 import com.kh.finalproject.common.model.dao.CommonDao;
 import com.kh.finalproject.common.model.vo.Attachment;
@@ -155,6 +156,24 @@ public class BlogServiceImpl implements BlogService{
 	}
 
 
+	// 댓글 -----------------------------------------
+	@Override
+	public int insertBlogReply(BlogReply blogReply) {
+		return blogDao.insertBlogReply(sqlSession, blogReply);
+	}
+
+	@Override
+	public int selectListCountBlogReply(int blogBoardNo) {
+		return blogDao.selectListCountBlogReply(sqlSession, blogBoardNo);
+	}
+
+	@Override
+	public ArrayList<BlogReply> seletListBlogReply(PageInfo pi, int blogBoardNo) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());  
+		return blogDao.selectListBlogReply(sqlSession, blogBoardNo, rowBounds);
+	}
+	
 
 
 }

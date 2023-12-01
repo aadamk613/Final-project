@@ -302,14 +302,7 @@ img[name=imageThumbnail]{
 						<div id="commentInsertBox" name="toggleDiv">
 							<div id="commentWriter">유저ID</div>
 							<textarea id="commentContentInsert" placeholder="댓글을 남겨보세요"></textarea>
-							<c:choose>
-							<c:when test="${ loginUser ne null }">
-								<div id="submitWrap"><a href='#javascript:void(0);' onclick="insertComment()">등록</a></div>
-							</c:when>
-							<c:otherwise>
-								<div id="submitWrap"><a href='#' onclick="alert('로그인 후 이용 가능한 기능입니다.');">등록</a></div>
-							</c:otherwise>							
-							</c:choose>
+								<div id="submitWrap"><a id="insertCommentButton" href='#' onclick="insertComment(this);" name="${ b.blogBoardNo }">등록</a></div>
 						</div>
 					</div>
 					
@@ -327,10 +320,44 @@ img[name=imageThumbnail]{
 		
 	</main>
 	
+	
+		<script>
+		// 댓글 작성
+		function insertComment(){
+			var writer
+			var blogBoardNo = $(arguments[0]).attr('name');
+			var content = $(arguments[0]).parent().parent().children().next().val();
+			
+			if('${ sessionScope.loginUser.memNo}' != ''){
+				
+			$.ajax({
+				type: "POST",
+				url: 'insert.bl_re', 
+				data: {blogBoardNo : blogBoardNo, 
+					   writer: '${ sessionScope.loginUser.memNo}', 
+					   blogReplycontent: content}, 
+				success: data => {
+					console.log(data);
+					console.log('댓글 입력 통신 성공');
+				}, 
+				error: () => {
+					console.log('댓글 입력 통신 실패');
+				}
+			})
+			
+			}
+			else{
+				alert('로그인 후 이용 가능한 기능입니다.');
+			}
+		};
+		</script>
+	
+	
+	
 	<script>
 	
 	// 식물 사진 클릭 했을 시 식물 상세보기로 이동
-	 $('img[name=plantImg]').on('click', function(e){
+	 $('img[name=plantImg]').on('click', e => {
 		var plantNo = $(e.target).attr('value');
 		location.href = "select.bl_pl?plantNo=" + plantNo ; 
 		 
@@ -338,11 +365,41 @@ img[name=imageThumbnail]{
 	
 	// 댓글 영역 클릭 했을 시 토글 이벤트
 	function buttonClicked() {
-			console.log($(arguments[0]).parent().siblings());
+			//console.log($(arguments[0]).parent().siblings());
 			$(arguments[0]).parent().siblings().toggleClass('visible');
-	}
+	};
 	
-	 
+	// 댓글 작성
+	/*
+	$('#insertCommentButton').on('click', e => {
+		console.log(this);
+		var blogBoardNo = $(this).attr('value');
+		var content = $(this).parent().parent().children().next().attr('id');
+		console.log(content);
+		console.log(blogBoardNo);
+		
+		$.ajax({
+			type: "POST",
+			url: 'insert.bl_re', 
+			data: {blogBoardNo : blogBoardNo, 
+				   writer: ${ sessionScope.loginUser.memNo}, 
+				   content: content}, 
+			success: data => {
+				console.log('댓글 입력 통신 성공');
+			}, 
+			error: () => {
+				console.log('댓글 입력 통신 실패');
+			}
+			
+		})	
+	});
+	*/
+	
+	
+
+		
+	
+	
 	</script>
 	
 	
