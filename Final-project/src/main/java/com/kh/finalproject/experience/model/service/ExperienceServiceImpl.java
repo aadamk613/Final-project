@@ -37,7 +37,7 @@ public class ExperienceServiceImpl implements ExperienceService {
 	private final ExperienceDao experienceDao;
 	private final SqlSessionTemplate sqlSession;
 	private final CommonDao commonDao;
-
+	
 	// 게시글
 	@Override
 	public int selectListCount() {
@@ -163,7 +163,7 @@ public class ExperienceServiceImpl implements ExperienceService {
 		
 		String url = "https://kapi.kakao.com/v1/payment/ready";
 		// admin키
-		String serviceKey = "KakaoAK 1f372afd224bea9fbde198f021999cfb";
+		String authorization = "KakaoAK 1f372afd224bea9fbde198f021999cfb";
 		String contentType = "application/x-www-form-urlencoded;charset=utf-8";
 		
 		//StringBuilder sb = new StringBuilder();
@@ -192,7 +192,7 @@ public class ExperienceServiceImpl implements ExperienceService {
 		}
 		*/
 		
-		urlConnection.setRequestProperty("Authorization", serviceKey);
+		urlConnection.setRequestProperty("Authorization", authorization);
 		urlConnection.setRequestProperty("Content-type", contentType);
 		
 		//urlConnection.setRequestProperty(key, value);
@@ -219,7 +219,7 @@ public class ExperienceServiceImpl implements ExperienceService {
 		Integer quantity = 1;
 		Integer totalAmount = 10000;
 		Integer taxFreeAmount = 10000;
-		String approvalUrl = "http://localhost:8001/final/yrpay.exp";
+		String approvalUrl = "http://localhost:8001/final/yrsendPayment.exp";
 		String cancelUrl = "http://localhost:8001/final";
 		String failUrl = "http://localhost:8001/final";
 		
@@ -255,20 +255,53 @@ public class ExperienceServiceImpl implements ExperienceService {
 		JSONParser parser = new JSONParser();
 		JSONObject element = (JSONObject)parser.parse(responseData.toString());
 		
-		String accessToken = element.get("tid").toString();
+		String payUniqueNo = element.get("tid").toString();
+		String nextRedirectPcUrl = element.get("next_redirect_pc_url").toString();
+
+		System.out.println("여기로 결제");
+		System.out.println(nextRedirectPcUrl);
 		
 		br.close();
 		bw.close();
 		
-		return accessToken;
+		return nextRedirectPcUrl;
+		// 이렇게 주지 말고 url을 보내서 호호
 	}
 	
-	public String payExp(String tid) {
+	
+	
+	
+	
+	
+	
+	// 결제 승인
+	public String payExp(String payUniqueNo) {
 		System.out.println("준비완료");
-		System.out.println(tid);
+		System.out.println(payUniqueNo);
 		//T5699c3a122f0603ef95
 		
+		//next_redirect_pc_url":"https://online-pay.kakao.com/mockup/v1/e39df5dae0c17bee0b5ed834d30261ada5038849748e8ea7b41f51971c569b9d/info"
+		// 여기에서 결제를 성공해야 pg_token이 쿼리스트링으로 나옴
+		// 갸를 뽑아서 여기를 와야 함
 		
+		
+		String url = "https://kapi.kakao.com/v1/payment/approve";
+		
+		String authorization = "KakaoAK 1f372afd224bea9fbde198f021999cfb";
+		String contentType = "application/x-www-form-urlencoded;charset=utf-8";
+		
+		String cid = "TC0ONETIME";
+		String tid = payUniqueNo;
+		String partnerOrderId = "111111"; // ready와 동일
+		String partnerUserId = "user01"; // ready와 동일
+		String pg_token = "";
+		 
+		// 돌려주는거 next_pc_url,  pg_token, tid => 받아서 돌려줌
+		
+		// 보냈던 값은 알아서 골라서 보내주면됨
+		// session에 담아도 되고 DB에 담아도 됨
+		
+		// 어차피 데이터는 JSON타입으로 넘어오니까 map이나 vo나 session등에 담아서 가져오면 됨
 		
 		
 		

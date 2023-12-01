@@ -253,19 +253,20 @@ public class ExperienceController {
 	
 	
 	// -------------------------------------------------------------------------------
-	
+	//결제
+	// AJAX도 있음
 	@GetMapping("yrpayForm.exp")
 	public String payExperienceForm() {
 		return "experience/experiencePayView";
 	}
 	
-	@ResponseBody
-	@PostMapping(value="yrreadyForPay.exp", produces="application/json; charset=UTF-8")
-	public void readyForPay() throws IOException, ParseException  {
-		String tid = experienceService.readyForPay();
-		String result = experienceService.payExp(tid);
-		
-	}
+	
+	
+	
+	
+	
+	
+	
 
 	
 	

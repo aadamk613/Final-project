@@ -1,6 +1,9 @@
 package com.kh.finalproject.experience.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
+
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -124,5 +127,52 @@ public class AjaxExperienceController {
 			return experienceService.deleteExpLike(map);
 		}
 	}
+	
+	
+	
+	// 결제
+	
+	@GetMapping(value="yrreadyForPay.exp", produces="html/text; charset=UTF-8")
+	public String readyForPay(HttpSession session) throws IOException, ParseException  {
+		String nextRedirectPcUrl = experienceService.readyForPay();
+		System.out.println(nextRedirectPcUrl);
+		//String result = experienceService.payExp(tid);
+		
+		//session.setAttribute("nextRedirectPcUrl", nextRedirectPcUrl);
+		return nextRedirectPcUrl;
+	}
+	
+	
+	@PostMapping(value="yrsendPayment.exp", produces="application/json; charset=UTF-8")
+	public String sendPayment(String pg_token, HttpSession session) {
+		
+		System.out.println("결제창");
+		System.out.println(session.getAttribute("nextRedirectPcUrl"));
+		
+		System.out.println("대애박");
+		System.out.println(pg_token);
+		return "";
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
