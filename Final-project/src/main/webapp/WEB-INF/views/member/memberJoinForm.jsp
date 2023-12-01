@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <Style>
+
+
 	.content{
 		width:50%;
 		margin:auto;
@@ -26,6 +28,7 @@
 * {
     border: 1px solid skyblue;
 	box-sizing: border-box;
+	cursor: url(https://cur.cursors-4u.net/holidays/hol-5/hol441.ani), url(https://cur.cursors-4u.net/holidays/hol-5/hol441.gif), auto !important;
 }
 
 .joinFormWrap{

@@ -8,9 +8,12 @@
   <!-- CSS 파일 링크 -->
   <link rel="stylesheet" href="styles.css">
   <style>
-  	body {
-  font-family: Arial, sans-serif;
-}
+  
+	  * {
+	    border: 1px solid skyblue;
+		box-sizing: border-box;
+		cursor: url(https://cur.cursors-4u.net/holidays/hol-5/hol441.ani), url(https://cur.cursors-4u.net/holidays/hol-5/hol441.gif), auto !important;
+	}
 
 .container {
   width: 80%;
@@ -52,50 +55,71 @@ button:hover {
 	</header> 
 	
 	<main>
+		<aside id="pageAsideLeft" class="aside">
+            &lt;aside1&gt; <br>
+            id=pageAsideLeft <br>
+	            여기는 pageAsideLeft 공백공간 <br>
+	            사이드바 넣을 수도 있음 <br>
+	            필요하면 쓰세요 <br>
+	            중앙정렬되어있어요 <br>
+		</aside>
+		
+		<section id="pageSection">
+			
+			<div id="contentTitle">
+                &lt;div&gt;
+                id=contentTitle 
+				제목(삭제해도 됨)
+			</div>
+		</section>
 	<aside id="pageAsideLeft" class="aside">
 	</aside>
 		
 	<section id="section">
-
+	
     <form action="businessPage.me" method="post" id="business-regist">
   <div class="container">
     <h1>사업자등록정보 진위확인</h1>
+    
     <label for="businessNumber">사업자 등록 번호:</label>
+    
     <input type="text" id="businessNumber" placeholder="사업자 등록 번호 입력">
     <button id="checkButton" onclick="checkBusinessNum();">확인</button>
     <div id="result"></div>
   </div>
   </form>
 
-
+<br><br><br><br><br><br><br><br>
 
 <script>
-  function checkBusinessNum() {
-    // 입력된 사업자 등록 번호 가져오기
-    var businessNum = document.getElementById("businessNumber").value;
+     function checkBusinessNum() {
+         // 입력된 사업자 등록 번호 가져오기
+         const businessNum = document.getElementById("businessNumber").value;
 
-    // AJAX를 이용해 서버로 사업자 등록 번호 전송
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        if (xhr.status === 200) {
-          // 서버로부터 온 응답을 받아 결과를 화면에 출력
-          document.getElementById("result").innerHTML = xhr.responseText;
-        } else {
-          // 오류 처리
-          document.getElementById("result").innerHTML = "오류 발생: " + xhr.status;
-        }
-      }
-    };
+         // AJAX를 이용해 서버로 사업자 등록 번호 전송
+         var xhr = new XMLHttpRequest();
+         xhr.onreadystatechange = function() {
+             if (xhr.readyState === XMLHttpRequest.DONE) {
+                 if (xhr.status === 200) {
+                     // 서버로부터 온 응답을 받아 결과를 화면에 출력
+                     document.getElementById("result").innerHTML = xhr.responseText;
+                 } else {
+                     // 오류 처리
+                     document.getElementById("result").innerHTML = "오류 발생: " + xhr.status;
+                 }
+             }
+         };
 
-    // 서버로 전송할 URL 설정 (실제 서버 URL에 맞게 수정 필요)
-    var url = "business_verification.php"; // 예시 URL
+         // 서버로 전송할 URL 설정 (실제 서버 URL에 맞게 수정 필요)
+         var url = "http://api.odcloud.kr/api/nts-businessman/v1/validate";
+         url += "?servicekey=YOUR_SERVICE_KEY"; // 서비스 키 입력
+         url += "&resultType=json";
+         url += "&b_no=" + businessNum;
 
-    // POST 방식으로 데이터 전송
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhr.send("businessNumber=" + businessNum);
-  }
+         // GET 방식으로 데이터 전송
+         xhr.open("GET", url, true);
+         xhr.send();
+     }
 </script>
 
 
@@ -105,7 +129,7 @@ button:hover {
 	</aside>
 	
 	</main>
-	
+	<br>
 	<br clear="both">
 	
 	<footer id="pageFooter">
