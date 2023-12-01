@@ -1,7 +1,10 @@
 package com.kh.finalproject.experience.model.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.json.simple.parser.ParseException;
 
 import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
@@ -50,6 +53,14 @@ public interface ExperienceService {
 	
 	// 체험학습 게시글 좋아요 취소
 	int deleteExpLike(HashMap map);
+	
+	
+	
+	
+	// 카카오페이
+	String readyForPay() throws IOException, ParseException;
+
+	String payExp(String tid);
 	
 	
 

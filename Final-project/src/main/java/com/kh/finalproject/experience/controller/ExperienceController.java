@@ -1,30 +1,36 @@
 package com.kh.finalproject.experience.controller;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.gson.Gson;
 import com.kh.finalproject.common.controller.CommonController;
 import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
 import com.kh.finalproject.experience.model.service.ExperienceService;
 import com.kh.finalproject.experience.model.vo.Experience;
-import com.kh.finalproject.experience.model.vo.ExperienceReply;
 
 import lombok.RequiredArgsConstructor;
 
@@ -244,6 +250,25 @@ public class ExperienceController {
 		// 받을 때 데이터를 @RequestBody String str 이렇게 받음
 		return "redirect:yrlist.exp";
 	}
+	
+	
+	// -------------------------------------------------------------------------------
+	
+	@GetMapping("yrpayForm.exp")
+	public String payExperienceForm() {
+		return "experience/experiencePayView";
+	}
+	
+	@ResponseBody
+	@PostMapping(value="yrreadyForPay.exp", produces="application/json; charset=UTF-8")
+	public void readyForPay() throws IOException, ParseException  {
+		String tid = experienceService.readyForPay();
+		String result = experienceService.payExp(tid);
+		
+	}
+
+	
+	
 	
 	
 	
