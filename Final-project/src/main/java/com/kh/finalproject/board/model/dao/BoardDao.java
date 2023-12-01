@@ -90,5 +90,9 @@ public class BoardDao {
 		return (ArrayList)sqlSession.selectList("boardMapper.selectCommentReport", cr);
 	}
 
+	public int insertComment(SqlSessionTemplate sqlSession, BoardComment bc) {
+		return sqlSession.insert("boardMapper.insertComment", bc);
+	}
+
 
 }

@@ -68,4 +68,8 @@ public interface BoardService {
 	
 	// 댓글신고 조회
 	ArrayList<CommentReport> selectCommentReport(CommentReport cr);
+
+	// 댓글작성
+	int insertComment (BoardComment bc);
+	
 }

@@ -381,4 +381,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			ORDER BY
 				REPORT_NO;
 	</select>
+	
+	<insert id="insertComment" parameterType="boardComment">
+		INSERT
+		  INTO
+		      TB_BOARD_COMMENT
+		      (
+		      BOARD_COMMENT_NO
+		     ,BOARD_COMMENT_CONTENT
+		     ,BOARD_NO
+			 ,MEM_NO
+		      )
+		VALUES
+			  (
+			  SEQ_BOARD_COMMENT_NO.NEXTVAL
+			 ,#{commentContent}
+			 ,#{boardNo}
+			 ,#{memNo}
+			  )
+	</insert>
 </mapper>

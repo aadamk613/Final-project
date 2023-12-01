@@ -22,15 +22,12 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.kh.finalproject.board.model.service.BoardService;
 import com.kh.finalproject.board.model.vo.Board;
-
-import com.kh.finalproject.common.model.vo.Attachment;
-
+import com.kh.finalproject.board.model.vo.BoardComment;
 import com.kh.finalproject.board.model.vo.BoardReport;
 import com.kh.finalproject.board.model.vo.CommentReport;
-
+import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
-import com.kh.finalproject.member.model.vo.Member;
 
 @Controller
 public class BoardController {
@@ -139,12 +136,6 @@ public class BoardController {
 			return mv;
 		}
 		
-		@ResponseBody
-		@GetMapping(value = "disabled.btn", produces="application/json; charset=UTF-8")
-		public String disabledBtn(CommentReport cr) {
-			System.out.println(cr);
-			return new Gson().toJson(boardService.selectCommentReport(cr));
-		}
 		
 		// 공지사항 삭제
 		@PostMapping("delete.bo")
@@ -191,18 +182,13 @@ public class BoardController {
 				return "common/errorPage";
 			}
 		}
-		@ResponseBody
-		@GetMapping(value="cList.do", produces="application/json; charset=UTF-8")
-		public String ajaxSelectComment(int boardNo) {
-			
-			
-			return new Gson().toJson(boardService.selectComment(boardNo));
-		}
+
 		
 		@RequestMapping("report.bo")
-		public String insertReport(BoardReport br) {
+		public String insertReport(BoardReport br , HttpSession session) {
 			
 			if(boardService.insertReport(br) > 0) {
+				session.setAttribute("alertMsg", "성공");
 				return "redirect:detail.bo?bno=" + br.getRefBoardNo();
 			} else {
 				return "common/errorPage";
@@ -210,9 +196,27 @@ public class BoardController {
 		}
 		
 		@ResponseBody
+		@GetMapping(value = "disabled.btn", produces="application/json; charset=UTF-8")
+		public String disabledBtn(CommentReport cr) {
+			System.out.println(boardService.selectCommentReport(cr));
+			return new Gson().toJson(boardService.selectCommentReport(cr));
+		}
+		
+		@ResponseBody
 		@RequestMapping(value="report.co")
 		public String insertCommentReport(CommentReport cr) {
 			return boardService.insertCommentReport(cr) > 0 ? "success" : "fail";
+		}
+		
+		@PostMapping(value = "rinsert.do")
+		public String ajaxInsertComment(BoardComment bc, HttpSession session) {
+			 if(boardService.insertComment(bc) > 0) {
+					session.setAttribute("alertMsg", "성공");
+				 return "redirect:detail.bo?bno=" + bc.getBoardNo();
+			 } else {
+				 return "common/errorPage";
+			 }
+			 
 		}
 		
 
