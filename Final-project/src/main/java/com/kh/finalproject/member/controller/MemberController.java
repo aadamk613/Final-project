@@ -37,6 +37,8 @@ import com.kh.finalproject.ticket.model.vo.Ticket;
 
 @Controller
 public class MemberController {
+	
+	public static final String SERVICEKEY = "XSyDrKZA66etAyknXmiWPgDRU%2BSa7u6IkO2Oc%2B3%2Bcwmnwfwdsujh1OvosKadicupI74e88WjfDF4Q0DSh%2B3%2Fxw%3D%3D";
 
   @Autowired private BCryptPasswordEncoder bcryptPasswordEncoder;
   @Autowired private MemberService memberService;
@@ -127,15 +129,16 @@ public class MemberController {
       return "member/businessPage"; // businessPage.jsp로 리다이렉트
   }
 
-  /*
+  
   @RequestMapping(value="checkBusinessNum", produces="application/json; charset=UTF-8") //수정예정 공공API로 활용할 예정
   public String businessPageCheck(int pageNo) throws IOException {
 	  
-	  String url = "http://api.odcloud.kr/api/nts-businessman/v1"
+	  String url = "http://api.odcloud.kr/api/nts-businessman/v1/validate?serviceKey=XSyDrKZA66etAyknXmiWPgDRU%2BSa7u6IkO2Oc%2B3%2Bcwmnwfwdsujh1OvosKadicupI74e88WjfDF4Q0DSh%2B3%2Fxw%3D%3D&returnType=XML";
+	  
 	  
 	  return responseText;
   }
-  */
+  
 
   @ResponseBody // 포워딩 해줄게 아니라서
   @RequestMapping("idCheck.me")
