@@ -15,35 +15,35 @@
 		cursor: url(https://cur.cursors-4u.net/holidays/hol-5/hol441.ani), url(https://cur.cursors-4u.net/holidays/hol-5/hol441.gif), auto !important;
 	}
 
-.container {
-  width: 80%;
-  margin: 0 auto;
-  text-align: center;
-  padding: 50px 0;
-}
-
-input[type="text"] {
-  padding: 8px;
-  margin: 10px;
-}
-
-button {
-  padding: 10px 20px;
-  background-color: #3498db;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #2980b9;
-}
-
-#result {
-  margin-top: 20px;
-  font-weight: bold;
-}
-  	
+		.container {
+		  width: 80%;
+		  margin: 0 auto;
+		  text-align: center;
+		  padding: 50px 0;
+		}
+		
+		input[type="text"] {
+		  padding: 8px;
+		  margin: 10px;
+		}
+		
+		button {
+		  padding: 10px 20px;
+		  background-color: #3498db;
+		  color: #fff;
+		  border: none;
+		  cursor: pointer;
+		}
+		
+		button:hover {
+		  background-color: #2980b9;
+		}
+		
+		#result {
+		  margin-top: 20px;
+		  font-weight: bold;
+		}
+		  	
   </style>
 </head>
 <body>
@@ -93,26 +93,28 @@ button:hover {
 
 <script>
      function checkBusinessNum() {
-         // 입력된 사업자 등록 번호 가져오기
-         const businessNum = document.getElementById("businessNumber").value;
-
-         // AJAX를 이용해 서버로 사업자 등록 번호 전송
-         var xhr = new XMLHttpRequest();
-         xhr.onreadystatechange = function() {
-             if (xhr.readyState === XMLHttpRequest.DONE) {
-                 if (xhr.status === 200) {
-                     // 서버로부터 온 응답을 받아 결과를 화면에 출력
-                     document.getElementById("result").innerHTML = xhr.responseText;
-                 } else {
-                     // 오류 처리
-                     document.getElementById("result").innerHTML = "오류 발생: " + xhr.status;
-                 }
-             }
-         };
+    	 var data = {
+    			    "b_no": ["xxxxxxx"] // 사업자번호 "xxxxxxx" 로 조회 시,
+    			   }; 
+    			   
+    			$.ajax({
+    			  url: "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=XSyDrKZA66etAyknXmiWPgDRU%2BSa7u6IkO2Oc%2B3%2Bcwmnwfwdsujh1OvosKadicupI74e88WjfDF4Q0DSh%2B3%2Fxw%3D%3D",  // serviceKey 값을 xxxxxx에 입력
+    			  type: "POST",
+    			  data: JSON.stringify(data), // json 을 string으로 변환하여 전송
+    			  dataType: "JSON",
+    			  contentType: "application/json",
+    			  accept: "application/json",
+    			  success: function(result) {
+    			      console.log(result);
+    			  },
+    			  error: function(result) {
+    			      console.log(result.responseText); //responseText의 에러메세지 확인
+    			  }
+    			});
 
          // 서버로 전송할 URL 설정 (실제 서버 URL에 맞게 수정 필요)
          var url = "http://api.odcloud.kr/api/nts-businessman/v1/validate";
-         url += "?servicekey=YOUR_SERVICE_KEY"; // 서비스 키 입력
+         url += "?servicekey=XSyDrKZA66etAyknXmiWPgDRU%2BSa7u6IkO2Oc%2B3%2Bcwmnwfwdsujh1OvosKadicupI74e88WjfDF4Q0DSh%2B3%2Fxw%3D%3D"; // 서비스 키 입력
          url += "&resultType=json";
          url += "&b_no=" + businessNum;
 
