@@ -121,5 +121,10 @@ public class BoardServiceImpl implements BoardService {
 	public ArrayList<CommentReport> selectCommentReport(CommentReport cr) {
 		return boardDao.selectCommentReport(sqlSession, cr);
 	}
+
+	@Override
+	public int insertComment(BoardComment bc) {
+		return boardDao.insertComment(sqlSession, bc);
+	}
 	
 }
