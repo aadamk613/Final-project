@@ -82,8 +82,6 @@ public class BlogController {
 		System.out.println(blogBoardList);
 		System.out.println(boardPi);
 		
-		System.out.println("블로그 사진 왜 이상함" + blog );
-		
 		mv.addObject("blog", blog) // blog정보
 		  .addObject("list", list) // 해당 블로그의 BlogCategorySetting정보
 		  .addObject("plantList", plantList) // 해당 블로그의 Plant정보
@@ -244,6 +242,8 @@ public class BlogController {
 		mv.addObject("BlogBoard", blogBoard);
 		return mv;
 	}
+	
+	
 	
 	
 	

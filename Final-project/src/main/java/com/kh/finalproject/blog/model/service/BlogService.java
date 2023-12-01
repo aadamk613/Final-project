@@ -7,6 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 import com.kh.finalproject.blog.model.vo.Blog;
 import com.kh.finalproject.blog.model.vo.BlogBoard;
 import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
+import com.kh.finalproject.blog.model.vo.BlogReply;
 import com.kh.finalproject.blog.model.vo.Plant;
 import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
@@ -71,6 +72,7 @@ public interface BlogService {
 
 	// 블로그 일반 글 조회
 	BlogBoard selectBlogBoard(int blogBoardNo);
+
 	
 	// 블로그 일반 글 삭제
 	
@@ -79,6 +81,18 @@ public interface BlogService {
 	
 	
 	// 블로그 게시글 좋아요 / 취소
+	
+	// --------------------------------------------------------
+	// 블로그 댓글 작성
+	int insertBlogReply(BlogReply blogReply);
+	
+	// 블로그 댓글 수 조회
+	int selectListCountBlogReply(int blogBoardNo);
+	
+	// 블로그 댓글 조회
+	ArrayList<BlogReply> seletListBlogReply(PageInfo pi, int blogBoardNo);
+	
+	
 	
 	
 }

@@ -22,12 +22,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="UPDATE_NAME" property="updateName"/>
 	</resultMap>
 	
+	
 	<resultMap type="blogCategorySetting" id="BlogCategorySettingResultSet">
 		<result column="CATEGORY_NO" property="categoryNo"/>
 		<result column="CATEGORY_SETTING_NO" property="categorySettingNo"/>
 		<result column="BLOG_NO" property="blogNo"/>
 		<result column="CATEGORY_MEM_NAME" property="categoryMemName"/>
 	</resultMap>
+	
 	
 	<resultMap type="plant" id="PlantResultSet">
 		<result column="PLANT_NO" property="plantNo"/>
@@ -45,6 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="UPDATE_NAME" property="updateName"/>
 	</resultMap>
 	
+	
 	<resultMap type="blogBoard" id="BlogBoardResultSet">
 		<result column="BLOG_BOARD_NO" property="blogBoardNo"/>
 		<result column="BLOG_NO" property="blogNo"/>
@@ -60,6 +63,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="CATEGORY_MEM_NAME" property="categoryMemName"/>
 	</resultMap>
 	
+	<resultMap type="blogReply" id="BlogReplyResultset">
+		<result column="BLOG_REPLY_NO" property="blogReplyNo"/>
+		<result column="TOP_REPLY_NO" property="topReplyNo"/>
+		<result column="BLOG_BOARD_NO" property="blogBoardNo"/>
+		<result column="WRITER" property="writer"/>
+		<result column="BLOG_REPLY_CONTENT" property="blogReplycontent"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="REPLY_SECRET" property="replySecret "/>
+		<result column="STATUS" property="status"/>
+	</resultMap>
 	
 	
 	<!-- 블로그 생성 -->
@@ -126,10 +139,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             WHERE
                 BLOG_NO = #{ blogNo }
 			                
-                
-                
-
-	
 	</select>
 	
 	<!-- 블로그 기본 정보 수정 -->
@@ -455,7 +464,74 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	        
 	</select>
 	
+	<!-- 댓글 작성 -->
+	<insert id="insertBlogReply" parameterType="blogReply">
 	
+		INSERT 
+		  INTO
+		  		TB_BLOG_REPLY
+		  		(
+		  		BLOG_REPLY_NO, 
+		  		TOP_REPLY_NO,
+		  		BLOG_BOARD_NO, 
+		  		WRITER, 
+		  		BLOG_REPLY_CONTENT, 
+		  		CREATE_DATE, 
+		  		REPLY_SECRET, 
+		  		STATUS
+		  		)
+		VALUES 
+				(
+				SEQ_BLOG_REPLY.NEXTVAL, 
+				0,
+				#{ blogBoardNo }, 
+				#{ writer }, 
+				#{ blogReplycontent }, 
+				SYSDATE, 
+				DEFAULT, 
+				DEFAULT
+				)
+				
+	</insert>
+	
+	<!-- 댓글 리스트 수 조회 -->
+	<select id="selectListCountBlogReply" parameterType="_int" >
+		
+		SELECT 
+		    	COUNT(*)
+		  FROM 
+				TB_BLOG_REPLY
+		 WHERE 
+		 	   BLOG_BOARD_NO = #{ blogBoardNo }
+		 AND 
+		 	   STATUS = 'Y'
+	
+	</select>
+
+	<!-- 댓글 리스트 조회 -->
+	<select id="selectListBlogReply" parameterType="_int" resultMap="BlogReplyResultset">
+
+		SELECT
+			BLOG_REPLY_NO,
+			TOP_REPLY_NO,
+			BLOG_BOARD_NO,
+			WRITER,
+			BLOG_REPLY_CONTENT,
+			CREATE_DATE,
+			REPLY_SECRET,
+			STATUS
+		FROM
+			TB_BLOG_REPLY
+		WHERE
+			STATUS = 'Y'
+		AND
+			BLOG_BOARD_NO = #{ blogBoardNo }
+
+	</select>
+
+	<!-- 댓글 수정 -->
+	
+	<!-- 댓글 삭제 -->
 	
 	
 	

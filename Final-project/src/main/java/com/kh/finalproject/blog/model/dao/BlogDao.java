@@ -10,7 +10,9 @@ import org.springframework.stereotype.Repository;
 import com.kh.finalproject.blog.model.vo.Blog;
 import com.kh.finalproject.blog.model.vo.BlogBoard;
 import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
+import com.kh.finalproject.blog.model.vo.BlogReply;
 import com.kh.finalproject.blog.model.vo.Plant;
+import com.kh.finalproject.common.model.vo.PageInfo;
 
 @Repository
 public class BlogDao {
@@ -92,7 +94,23 @@ public class BlogDao {
 	public BlogBoard selectBlogBoard(SqlSessionTemplate sqlSession, int blogBoardNo) {
 		return sqlSession.selectOne("blogMapper.selectBlogBoard", blogBoardNo);
 	}
+	
+	// 블로그 댓글 관련 -----------------------------------------
+	// 댓글 작성
+	public int insertBlogReply(SqlSessionTemplate sqlSession, BlogReply blogReply) {
+		return sqlSession.insert("blogMapper.insertBlogReply", blogReply);
+	}
 
+	// 댓글 수 조회
+	public int selectListCountBlogReply(SqlSessionTemplate sqlSession, int blogBoardNo) {
+		return sqlSession.insert("blogMapper.selectListCountBlogReply", blogBoardNo);
+	}
+
+	public ArrayList<BlogReply> selectListBlogReply(SqlSessionTemplate sqlSession, int blogBoardNo, RowBounds rowBounds) {
+		return (ArrayList)sqlSession.selectList("blogMapper.selectListBlogReply", blogBoardNo, rowBounds);
+	}
+	
+	
 
 
 
