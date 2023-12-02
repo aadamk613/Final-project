@@ -61,6 +61,12 @@ article{width: 95%; height: auto; margin: 20px auto; border: 1px solid rgb(230, 
 				게시글 작성
 			</div>
 			<div id="content">
+					<script>
+						consolo.log("블로그 글 작성 시 categorySettingNo");
+						consolo.log(${ c.categorySettingNo });
+						consolo.log("블로그 글 작성 시 categoryMemName");
+						consolo.log(${ c.categoryMemName });
+					</script>
 				<article>
 					<form id="insertForm" action="" method="post">
 					<input type="hidden" name="writer" value="${ sessionScope.loginUser.memNo }">
@@ -69,9 +75,10 @@ article{width: 95%; height: auto; margin: 20px auto; border: 1px solid rgb(230, 
 						<div id="boardCategoryWrap">
 							게시판&nbsp;&nbsp;
 							
-							<select name="categorySettingNo" id="boardCategory">
+					
+							<select name="cattegorySettingNo" id="boardCategory">
 								<c:forEach var="c" items="${ list }">
-									<option value="${ c.categoryNo }">${ c.categoryMemName }</option>
+									<option value="${ c.categorySettingNo }">${ c.categoryMemName }</option>
 								</c:forEach>
 							</select> 
 							

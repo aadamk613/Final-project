@@ -196,7 +196,7 @@ img{
 									
 									
 									// 파일이 바뀌어야 주석을 쓸 수 있음
-									changeFile.siblings().eq(1).attr('disabled', false);
+									//changeFile.siblings().eq(1).attr('disabled', false);
 									changeFile.siblings().eq(1).attr('readonly', false);
 									
 									

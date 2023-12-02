@@ -26,25 +26,108 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="selectNoticeList" resultMap="noticeResultSet">
-			SELECT
-			      NOTICE_NO
-			     ,NOTICE_TITLE
-			     ,NOTICE_CONTENT
-			     ,VIEWS
-			     ,TO_CHAR(NOTICE_CREATE_DATE, 'YYYY-MM-DD') AS "NOTICE_CREATE_DATE"
-			     ,CATEGORY
-			     ,LIKE_COUNT
-			     ,MEM_NICK
-			 FROM
-			     TB_NOTICE
-			INNER
-			 JOIN
-			     MEMBER ON(TB_NOTICE.MEM_NO = MEMBER.MEM_NO)
-			WHERE
-			     STATUS='Y'
-			ORDER
-			   BY
-			     CATEGORY DESC, NOTICE_NO DESC
+	  SELECT
+		    *
+		FROM (
+		    SELECT
+                NOTICE_NO,
+		        NOTICE_TITLE,
+		        NOTICE_CONTENT,
+		        VIEWS,
+		        TO_CHAR(NOTICE_CREATE_DATE, 'YYYY-MM-DD HH:MI:SS') AS "NOTICE_CREATE_DATE",
+                'Best ' ||CATEGORY AS "CATEGORY",
+		        LIKE_COUNT,
+		        MEM_NICK
+		    FROM
+		        TB_NOTICE
+		    INNER JOIN
+		        TB_MEMBER ON (TB_NOTICE.MEM_NO = TB_MEMBER.MEM_NO)
+		    WHERE
+		        STATUS = 'Y'
+		        AND LIKE_COUNT &gt; 50
+		        AND CATEGORY = 2
+		    ORDER BY
+		        LIKE_COUNT DESC, NOTICE_NO DESC
+		)
+		WHERE
+		    ROWNUM BETWEEN 1 AND 5
+		
+		UNION 
+		
+		SELECT 
+		    *
+		FROM (
+		    SELECT
+		        NOTICE_NO,
+		        NOTICE_TITLE,
+		        NOTICE_CONTENT,
+		        VIEWS,
+		        TO_CHAR(NOTICE_CREATE_DATE, 'YYYY-MM-DD HH:MI:SS') AS "NOTICE_CREATE_DATE",
+                'Best ' ||CATEGORY AS "CATEGORY",
+		        LIKE_COUNT,
+		        MEM_NICK
+		    FROM
+		        TB_NOTICE
+		    INNER JOIN
+		        TB_MEMBER ON (TB_NOTICE.MEM_NO = TB_MEMBER.MEM_NO)
+		    WHERE
+		        STATUS = 'Y'
+		        AND CATEGORY = 1
+		        AND LIKE_COUNT &gt; 50
+		    ORDER BY
+		        LIKE_COUNT DESC, NOTICE_NO DESC
+		) b
+		WHERE 
+		    ROWNUM BETWEEN 1 AND 5
+		
+		UNION ALL
+		
+		SELECT
+		    NOTICE_NO,
+		    NOTICE_TITLE,
+		    NOTICE_CONTENT,
+		    VIEWS,
+		    TO_CHAR(NOTICE_CREATE_DATE, 'YYYY-MM-DD HH:MI:SS') AS "NOTICE_CREATE_DATE",
+		    CATEGORY AS "CATEGORY",
+		    LIKE_COUNT,
+		    MEM_NICK
+		FROM
+		    TB_NOTICE
+		INNER JOIN
+		    TB_MEMBER ON (TB_NOTICE.MEM_NO = TB_MEMBER.MEM_NO)
+		WHERE
+		    STATUS = 'Y'
+		    AND NOTICE_NO NOT IN (
+		        SELECT NOTICE_NO
+		        FROM (
+		            SELECT
+		                NOTICE_NO
+		            FROM
+		                TB_NOTICE
+		            WHERE
+		                STATUS = 'Y'
+		                AND CATEGORY = 2
+		                AND LIKE_COUNT &gt; 50
+		        ) b
+		        WHERE ROWNUM BETWEEN 1 AND 5
+                
+		        UNION 
+                
+		        SELECT
+		            NOTICE_NO
+		        FROM (
+		            SELECT
+		                NOTICE_NO
+		            FROM
+		                TB_NOTICE
+		            WHERE
+		                STATUS = 'Y'
+                        AND CATEGORY = 1
+		                AND LIKE_COUNT &gt; 50
+		        )
+		        WHERE ROWNUM BETWEEN 1 AND 5
+		    )
+            ORDER BY 6 DESC, 1 DESC
 	</select>
 	<select id="selectBestNotice" resultMap="noticeResultSet">
           SELECT 
@@ -62,7 +145,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			FROM
 			    TB_NOTICE
 	  INNER JOIN
-			    MEMBER ON (TB_NOTICE.MEM_NO = MEMBER.MEM_NO)
+			    TB_MEMBER ON (TB_NOTICE.MEM_NO = TB_MEMBER.MEM_NO)
 		   WHERE
 			    STATUS = 'Y'
 			 AND 
@@ -90,7 +173,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				   FROM
 			            TB_NOTICE
 		     INNER JOIN
-			            MEMBER ON (TB_NOTICE.MEM_NO = MEMBER.MEM_NO)
+			            TB_MEMBER ON (TB_NOTICE.MEM_NO = TB_MEMBER.MEM_NO)
 			      WHERE
 			            STATUS = 'Y'
 			        AND 
@@ -175,7 +258,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			     TB_NOTICE
 			INNER
 			 JOIN
-			     MEMBER ON(TB_NOTICE.MEM_NO = MEMBER.MEM_NO)
+			     TB_MEMBER ON(TB_NOTICE.MEM_NO = TB_MEMBER.MEM_NO)
 			WHERE
 			     STATUS='Y'
 			  AND

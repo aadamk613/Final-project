@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>    
 <!DOCTYPE html>
 <html>
 
@@ -52,47 +53,102 @@
 					  <tbody>
 						  <c:if test="${ empty list  }">
 							  <tr>
-							  <td colspan="5" style="text-align: center">작성한 게시글이 없습니다</td>
+							  <td colspan="6" style="text-align: center">작성한 게시글이 없습니다</td>
 							  </tr>
 						  </c:if>
-
-						  
-						  
-						  	<c:if test="${ pi.currentPage eq 1 }">
-						  	<c:forEach var="bn" items="${ requestScope.best }">
-							  <tr>
-						      <td scope="col" width="10%" style="text-align: center">
-						      <span class="best">BEST</span>
-						      ${ bn.category == 1 ? "공지" : '필독'}
-						      <span class="bno">${ bn.noticeNo }</span>
-						      </td>
-					          <td scope="row" width="20%" style="text-align: center">${ bn.noticeTitle }</td>	       
-						      <td scope="row" width="20%" style="text-align: center">${ bn.memNo }</td>
-						      <td scope="row" width="20%" style="text-align: center">${ bn.noticeCreateDate }</td>
-						      <td scope="row" width="15%" style="text-align: center">${ bn.views }</td>
-						      <td scope="row" width="15%" style="text-align: center">${ bn.likeCount }</td>
+						  	  <c:forEach var="n" items="${ requestScope.list }">
+						  	    <tr>
+						          <td scope="col" width="10%" style="text-align: center">
+						         <c:choose>
+						         	<c:when test="${ n.category eq 'Best 1'}"><span class="best">Best</span> 공지</c:when>
+						         	<c:when test="${ n.category eq 'Best 2'}"><span class="best">Best</span> 필독</c:when>
+						         	<c:when test="${ n.category eq '1'}">공지</c:when>
+						         	<c:otherwise>필독</c:otherwise>
+						         </c:choose>
+						          <span class="bno">${ n.noticeNo }</span></td>
+					              <td scope="row" width="20%" style="text-align: center">${ n.noticeTitle }</td>	       
+						          <td scope="row" width="20%" style="text-align: center">${ n.memNo }</td>
+						          <td scope="row" width="20%" style="text-align: center">${ n.noticeCreateDate }</td>
+						          <td scope="row" width="15%" style="text-align: center">${ n.views }</td>
+						          <td scope="row" width="15%" style="text-align: center">${ n.likeCount }</td>
 						    	</tr>
 						    </c:forEach>
+						    
+						    <%-- 
+						  <!-- 
+						  	<c:if test="${ pi.currentPage eq 1 }">
+						  	  <c:forEach var="bn" items="${ requestScope.best }">
+							    <tr>
+						            <td scope="col" width="10%" style="text-align: center">
+						            <span class="best">BEST</span>
+						            ${ bn.category == 1 ? "공지" : '필독'}
+						            <span class="bno">${ bn.noticeNo }</span></td>
+						            <td scope="row" width="20%" style="text-align: center">${ bn.noticeTitle }</td>	       
+							        <td scope="row" width="20%" style="text-align: center">${ bn.memNo }</td>
+   							        <td scope="row" width="20%" style="text-align: center">${ bn.noticeCreateDate }</td>
+							        <td scope="row" width="15%" style="text-align: center">${ bn.views }</td>
+							        <td scope="row" width="15%" style="text-align: center">${ bn.likeCount }</td>
+						        </tr>
+						      </c:forEach>
 						    </c:if>
 						    
-						  	<c:forEach var="n" items="${ requestScope.list }">
-						  	  <tr>
-						      <td scope="col" width="10%" style="text-align: center">
-						      ${ n.category == 1 ? "공지" : '필독'}
-						      <span class="bno">${ n.noticeNo }</span></td>
-					        <td scope="row" width="20%" style="text-align: center">${ n.noticeTitle }</td>	       
-						      <td scope="row" width="20%" style="text-align: center">${ n.memNo }</td>
-						      <td scope="row" width="20%" style="text-align: center">${ n.noticeCreateDate }</td>
-						      <td scope="row" width="15%" style="text-align: center">${ n.views }</td>
-						      <td scope="row" width="15%" style="text-align: center">${ n.likeCount }</td>
+ 						-->
+
+ 						<!-- 
+						    <c:set var="bestNoticeSize" value="${ fn:length(requestScope.best) }" />
+						    <c:set var="remainingSize" value="${ fn:length(requestScope.list) - bestNoticeSize }" />
+
+						<c:if test="${ pi.currentPage eq 1 }">
+						    <c:forEach var="bn" items="${ requestScope.best }">
+							    <tr>
+						            <td scope="col" width="10%" style="text-align: center">
+						            <span class="best">BEST</span>
+						            ${ bn.category == 1 ? "공지" : '필독'}
+						            <span class="bno">${ bn.noticeNo }</span></td>
+						            <td scope="row" width="20%" style="text-align: center">${ bn.noticeTitle }</td>	       
+							        <td scope="row" width="20%" style="text-align: center">${ bn.memNo }</td>
+   							        <td scope="row" width="20%" style="text-align: center">${ bn.noticeCreateDate }</td>
+							        <td scope="row" width="15%" style="text-align: center">${ bn.views }</td>
+							        <td scope="row" width="15%" style="text-align: center">${ bn.likeCount }</td>
+						        </tr>
+						    </c:forEach>
+						    
+						    <c:forEach var="n" items="${ requestScope.list }" begin="1" end="${ remainingSize }">
+						  	    <tr>
+						          <td scope="col" width="10%" style="text-align: center">
+						          ${ n.category == 1 ? "공지" : '필독'}
+						          <span class="bno">${ n.noticeNo }</span></td>
+					              <td scope="row" width="20%" style="text-align: center">${ n.noticeTitle }</td>	       
+						          <td scope="row" width="20%" style="text-align: center">${ n.memNo }</td>
+						          <td scope="row" width="20%" style="text-align: center">${ n.noticeCreateDate }</td>
+						          <td scope="row" width="15%" style="text-align: center">${ n.views }</td>
+						          <td scope="row" width="15%" style="text-align: center">${ n.likeCount }</td>
 						    	</tr>
 						    </c:forEach>
-
+						</c:if>
+					
+						    <c:forEach var="n" items="${ requestScope.list }" begin="${ remainingSize }">
+						  	    <tr>
+						          <td scope="col" width="10%" style="text-align: center">
+						          ${ n.category == 1 ? "공지" : '필독'}
+						          <span class="bno">${ n.noticeNo }</span></td>
+					              <td scope="row" width="20%" style="text-align: center">${ n.noticeTitle }</td>	       
+						          <td scope="row" width="20%" style="text-align: center">${ n.memNo }</td>
+						          <td scope="row" width="20%" style="text-align: center">${ n.noticeCreateDate }</td>
+						          <td scope="row" width="15%" style="text-align: center">${ n.views }</td>
+						          <td scope="row" width="15%" style="text-align: center">${ n.likeCount }</td>
+						    	</tr>
+						    </c:forEach>						
+						 -->
+						--%>
 					  </tbody>
 					</table>
 				</article>
 			</div>
-			
+<script>
+    console.log("Best Notice Size: ${bestNoticeSize}");
+    console.log("Remaining Size: ${remainingSize}");
+</script>
 			<script>
 				$(function(){
 					$('#boardTable > tbody > tr').click(function(){

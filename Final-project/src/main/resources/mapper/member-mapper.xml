@@ -100,7 +100,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT 
 				COUNT(*)
 		  FROM
-				TB_MEMBER
+		  		TB_MEMBER
 		 WHERE
 		 		MEM_ID = #{checkId}
 	
@@ -120,7 +120,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<update id="deleteMember" parameterType="string">
 		UPDATE
-			TB_MEMBER
+				TB_MEMBER
 		   SET
 		   		MEM_STATUS = 'D'
 		 WHERE

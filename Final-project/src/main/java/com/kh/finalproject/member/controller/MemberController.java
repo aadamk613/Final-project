@@ -1,18 +1,10 @@
 package com.kh.finalproject.member.controller;
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.gson.GsonFactory;
-import com.kh.finalproject.member.model.service.KakaoLoginService;
-import com.kh.finalproject.member.model.service.MemberService;
-import com.kh.finalproject.member.model.service.NaverLoginService;
-import com.kh.finalproject.member.model.vo.Member;
-import com.kh.finalproject.member.model.vo.NaverLogin;
-import com.kh.finalproject.ticket.model.vo.Ticket;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,13 +14,14 @@ import javax.servlet.http.HttpSession;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
@@ -48,23 +41,13 @@ import com.kh.finalproject.ticket.model.vo.Ticket;
 
 @Controller
 public class MemberController {
+	
+	public static final String SERVICEKEY = "XSyDrKZA66etAyknXmiWPgDRU%2BSa7u6IkO2Oc%2B3%2Bcwmnwfwdsujh1OvosKadicupI74e88WjfDF4Q0DSh%2B3%2Fxw%3D%3D";
 
-  private final BCryptPasswordEncoder bcryptPasswordEncoder;
-  private final MemberService memberService;
-  private final NaverLoginService naverLoginService;
-  private final KakaoLoginService kakaoLoginService;
-
-  @Autowired
-  public MemberController(
-      BCryptPasswordEncoder bcryptPasswordEncoder,
-      MemberService memberService,
-      NaverLoginService naverLoginService,
-      KakaoLoginService kakaoLoginService) {
-    this.bcryptPasswordEncoder = bcryptPasswordEncoder;
-    this.memberService = memberService;
-    this.naverLoginService = naverLoginService;
-    this.kakaoLoginService = kakaoLoginService;
-  }
+  @Autowired private BCryptPasswordEncoder bcryptPasswordEncoder;
+  @Autowired private MemberService memberService;
+  @Autowired private NaverLoginService naverLoginService;
+  @Autowired private KakaoLoginService kakaoLoginService;
 
 
 	@RequestMapping("loginForm.me")
@@ -78,6 +61,14 @@ public class MemberController {
    * @return String 리디렉션할 로그인 페이지 주소
    */
   
+
+  @ResponseBody
+  @GetMapping(value = "getMemberList.me", produces = "application/json; charset=UTF-8")
+  public String ajaxGetMemberList() {
+    return new Gson().toJson(memberService.ajaxGetMemberList());
+  }
+
+
   @RequestMapping("login.me")
   public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv) {
     // login 시 DB에 저장된 암호화된 암호의 솔트값을 알아내면
@@ -107,8 +98,18 @@ public class MemberController {
   }
 
   @RequestMapping("join.me")
-  public String joinMember(Member m, Model model) {
-	  
+  public String joinMember(@RequestParam(name = "local-part", required = false) String localPart,
+                           @RequestParam(name = "domain-txt", required = false) String domain,
+                           Member m, Model model) {
+      if (localPart != null && domain != null) {
+          String email = localPart + "@" + domain; // 아이디와 도메인을 조합하여 이메일 주소 생성
+          m.setEmail(email); // Member 객체에 이메일 설정
+      } else {
+          // 파라미터가 제대로 전달되지 않은 경우 처리
+          model.addAttribute("errorMsg", "이메일양식 값들이 제대로 전송되지 않았습니다.");
+          return "common/errorPage";
+      }
+
       System.out.println(m);
       System.out.println("평문 : " + m.getMemPwd());
 
@@ -119,11 +120,11 @@ public class MemberController {
           if ("B".equals(m.getMemStatus())) { // memStatus가 "B"인지 확인
               return "redirect:businessPage"; // businessPage.jsp로 리다이렉트
           } else {
-              return "redirect:/"; // 그 외의 경우는 main.jsp로 리다이렉트
+              return "redirect:/"; // 그 외의 경우는 메인페이지로 리다이렉트
           }
       } else {
           model.addAttribute("errorMsg", "회원가입 실패.");
-          return "../common/errorPage.jsp";
+          return "common/errorPage";
       }
   }
   
@@ -132,17 +133,37 @@ public class MemberController {
       return "member/businessPage"; // businessPage.jsp로 리다이렉트
   }
 
-
-  @RequestMapping("businessPage1.me") //수정예정 공공API로 활용할 예정
-  public ResponseEntity<String> businessPage1(String memStatus) {
-	  if ("B".equals(memStatus)) { // 기업인 경우에만 진위 확인 페이지를 연다고 가정
-		  memberService.businessPage(memStatus);
-          return ResponseEntity.ok("진위 확인 페이지가 열렸습니다.");
-      } else {
-          return ResponseEntity.badRequest().body("기업이 아닙니다.");
-      }
-  }
   
+  @RequestMapping(value="checkBusinessNum", produces="application/json; charset=UTF-8") //수정예정 공공API로 활용할 예정
+  public String businessPageCheck(int pageNo) throws IOException {
+	  
+	  String url = "http://api.odcloud.kr/api/nts-businessman/v1/validate";
+	  		 url += "?servicekey=" + SERVICEKEY;
+	  		 url += "&numOfRows=10";
+	  		 url += "&resultType=json";
+	  		 url += "&pageNo=" + pageNo;
+	  		 
+  		URL requestUrl = new URL(url);
+		HttpURLConnection urlConnection = (HttpURLConnection)requestUrl.openConnection();
+		urlConnection.setRequestMethod("GET");
+		BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+		
+		String responseText = br.readLine();
+		br.close();
+		urlConnection.disconnect();
+		
+		return responseText;
+		}
+	  
+  @ResponseBody // 포워딩 해줄게 아니라서
+  @RequestMapping("idCheck.me")
+  public String idCheck(String checkId) {
+
+    // System.out.println(checkId);
+    int count = memberService.idCheck(checkId);
+    System.out.println(count);
+    return count > 0 ? "NNNNN" : "NNNNY";
+  }
 
   @RequestMapping("myPage.me")
   public ModelAndView myPage(ModelAndView mv, HttpSession session) {
@@ -180,24 +201,30 @@ public class MemberController {
 
   @RequestMapping("delete.me")
   public String deleteMember(String memPwd, HttpSession session) {
-    Member loginUser = ((Member) session.getAttribute("loginUser"));
-    String encPwd = ((Member) session.getAttribute("loginUser")).getMemPwd();
-    // 비밃먼호가 사용자가 입력한 평문으로 만든 암호문일 경우
-    if (bcryptPasswordEncoder.matches(memPwd, encPwd)) {
-      String memId = loginUser.getMemId();
-      if (memberService.deleteMember(memId) > 0) {
-        // 탈퇴처리 성공 => session에서 loginUser지움, alert문구 담기 => 메인페이지로 잘가라고~~~~
-        session.removeAttribute("loginUser");
-        session.setAttribute("alertMsg", "잘가고~~~ 다신 보지말자~~~~");
-        return "redirect:/";
-      } else {
-        session.setAttribute("errorMsg", "탈퇴처리 실패");
-        return "common/errorPage";
-      }
-    } else {
-      session.setAttribute("alertMsg", "비밀번호가 틀렸어요!!틀렸다구요!!!! 정말 제대로 입력한게 맞아요? 다시 확인해보세요~~~");
-      return "redirect:myPage.me";
-    }
+
+	  
+	  Member loginUser = ((Member)session.getAttribute("loginUser"));
+		
+		String encPwd = ((Member)session.getAttribute("loginUser")).getMemPwd();
+		// 비밃먼호가 사용자가 입력한 평문으로 만든 암호문일 경우
+		if(bcryptPasswordEncoder.matches(memPwd, encPwd)) {
+			
+			String memId = loginUser.getMemId();
+			
+			if(memberService.deleteMember(memId) > 0) {
+				// 탈퇴처리 성공 => session에서 loginUser지움, alert문구 담기 => 메인페이지로 잘가라고~~~~
+				session.removeAttribute("loginUser");
+				session.setAttribute("alertMsg", "안녕히 가세요");
+				return "redirect:/";
+			 } else {
+				 session.setAttribute("errorMsg", "탈퇴처리 실패");
+				 return "common/errorPage";
+			 }
+			
+		} else {
+			session.setAttribute("alertMsg", "비밀번호가 틀렸어요. 다시 확인해보세요~~~");
+			return "redirect:myPage.me";
+		}
   }
     
   @GetMapping("naverLogin.me")

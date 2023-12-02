@@ -8,43 +8,45 @@
   <!-- CSS 파일 링크 -->
   <link rel="stylesheet" href="styles.css">
   <style>
-  	body {
-  font-family: Arial, sans-serif;
-}
+  
+	  * {
+	    border: 1px solid skyblue;
+		box-sizing: border-box;
+		cursor: url(https://cur.cursors-4u.net/holidays/hol-5/hol441.ani), url(https://cur.cursors-4u.net/holidays/hol-5/hol441.gif), auto !important;
+	}
 
-.container {
-  width: 80%;
-  margin: 0 auto;
-  text-align: center;
-  padding: 50px 0;
-}
-
-input[type="text"] {
-  padding: 8px;
-  margin: 10px;
-}
-
-button {
-  padding: 10px 20px;
-  background-color: #3498db;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #2980b9;
-}
-
-#result {
-  margin-top: 20px;
-  font-weight: bold;
-}
-  	
+		.container {
+		  width: 80%;
+		  margin: 0 auto;
+		  text-align: center;
+		  padding: 50px 0;
+		}
+		
+		input[type="text"] {
+		  padding: 8px;
+		  margin: 10px;
+		}
+		
+		button {
+		  padding: 10px 20px;
+		  background-color: #3498db;
+		  color: #fff;
+		  border: none;
+		  cursor: pointer;
+		}
+		
+		button:hover {
+		  background-color: #2980b9;
+		}
+		
+		#result {
+		  margin-top: 20px;
+		  font-weight: bold;
+		}
+		  	
   </style>
 </head>
 <body>
-
 
 	<header id="pageHeader">
         &lt;header&gt;
@@ -53,59 +55,83 @@ button:hover {
 	</header> 
 	
 	<main>
+		<aside id="pageAsideLeft" class="aside">
+            &lt;aside1&gt; <br>
+            id=pageAsideLeft <br>
+	            여기는 pageAsideLeft 공백공간 <br>
+	            사이드바 넣을 수도 있음 <br>
+	            필요하면 쓰세요 <br>
+	            중앙정렬되어있어요 <br>
+		</aside>
+		
+		<section id="pageSection">
+			
+			<div id="contentTitle">
+                &lt;div&gt;
+                id=contentTitle 
+				제목(삭제해도 됨)
+			</div>
+		</section>
 	<aside id="pageAsideLeft" class="aside">
 	</aside>
 		
 	<section id="section">
-
+	
     <form action="businessPage.me" method="post" id="business-regist">
   <div class="container">
     <h1>사업자등록정보 진위확인</h1>
+    
     <label for="businessNumber">사업자 등록 번호:</label>
+    
     <input type="text" id="businessNumber" placeholder="사업자 등록 번호 입력">
-    <button id="checkButton">확인</button>
+    <button id="checkButton" onclick="checkBusinessNum();">확인</button>
     <div id="result"></div>
   </div>
   </form>
 
-  <!-- 
-  <script src="script.js"></script>
-
+<br><br><br><br><br><br><br><br>
 
 <script>
-	document.addEventListener('DOMContentLoaded', function() {
-	  const checkButton = document.getElementById('checkButton');
-	  const businessNumberInput = document.getElementById('businessNumber');
-	  const resultDiv = document.getElementById('result');
+     function checkBusinessNum() {
+    	 var data = {
+    			    "b_no": ["xxxxxxx"] // 사업자번호 "xxxxxxx" 로 조회 시,
+    			   }; 
+    			   
+    			$.ajax({
+    			  url: "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=XSyDrKZA66etAyknXmiWPgDRU%2BSa7u6IkO2Oc%2B3%2Bcwmnwfwdsujh1OvosKadicupI74e88WjfDF4Q0DSh%2B3%2Fxw%3D%3D",  // serviceKey 값을 xxxxxx에 입력
+    			  type: "POST",
+    			  data: JSON.stringify(data), // json 을 string으로 변환하여 전송
+    			  dataType: "JSON",
+    			  contentType: "application/json",
+    			  accept: "application/json",
+    			  success: function(result) {
+    			      console.log(result);
+    			  },
+    			  error: function(result) {
+    			      console.log(result.responseText); //responseText의 에러메세지 확인
+    			  }
+    			});
 
-	  checkButton.addEventListener('click', function() {
-	    const businessNumber = businessNumberInput.value;
-	    
-	    // API 호출 함수 (실제 API 호출 코드를 여기에 작성)
-	    // 예시: checkBusinessRegistration 함수는 API 호출 및 결과를 화면에 표시하는 역할을 가정
-	    checkBusinessRegistration(businessNumber);
-	  });
+         // 서버로 전송할 URL 설정 (실제 서버 URL에 맞게 수정 필요)
+         var url = "http://api.odcloud.kr/api/nts-businessman/v1/validate";
+         url += "?servicekey=XSyDrKZA66etAyknXmiWPgDRU%2BSa7u6IkO2Oc%2B3%2Bcwmnwfwdsujh1OvosKadicupI74e88WjfDF4Q0DSh%2B3%2Fxw%3D%3D"; // 서비스 키 입력
+         url += "&resultType=json";
+         url += "&b_no=" + businessNum;
 
-	  function checkBusinessRegistration(businessNumber) {
-	    // 여기에서 실제 API 호출을 수행하고, 결과를 처리하는 로직을 작성
-	    // 예시: 가짜 결과를 받아와 화면에 표시하는 코드
-	    const fakeResult = Math.random() < 0.5 ? '진위 확인됨' : '진위 미확인';
-	    displayResult(fakeResult);
-	  }
-
-	  function displayResult(result) {
-	    resultDiv.innerText = `사업자등록정보: ${result}`;
-	  }
-	});
+         // GET 방식으로 데이터 전송
+         xhr.open("GET", url, true);
+         xhr.send();
+     }
 </script>
--->
+
+
 </section>
 	<aside id="pageAsideRight" class="aside">
        
 	</aside>
 	
 	</main>
-	
+	<br>
 	<br clear="both">
 	
 	<footer id="pageFooter">

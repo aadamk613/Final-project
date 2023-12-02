@@ -28,7 +28,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="BLOG_NO" property="blogNo"/>
 		<result column="CATEGORY_MEM_NAME" property="categoryMemName"/>
 	</resultMap>
-
 	<resultMap type="plant" id="PlantResultSet">
 		<result column="PLANT_NO" property="plantNo"/>
 		<result column="BLOG_NO" property="blogNo"/>
@@ -57,11 +56,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="WRITER" property="writer"/>
 
 		<result column="BLOG_INTEREST" property="blogInterest"/>
-		<result column="CATEGORY_SETTING_NO" property="categorySettingNo"/>
+		<result column="CATEGORY_MEM_NAME" property="categoryMemName"/>
 	</resultMap>
 
-
-
+	
+	<resultMap type="blogReply" id="BlogReplyResultset">
+		<result column="BLOG_REPLY_NO" property="blogReplyNo"/>
+		<result column="TOP_REPLY_NO" property="topReplyNo"/>
+		<result column="BLOG_BOARD_NO" property="blogBoardNo"/>
+		<result column="WRITER" property="writer"/>
+		<result column="BLOG_REPLY_CONTENT" property="blogReplycontent"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="REPLY_SECRET" property="replySecret "/>
+		<result column="STATUS" property="status"/>
+	</resultMap>
+	
+	
 	<!-- 블로그 생성 -->
 	<insert id="insertBlog" parameterType="blog">
 		INSERT 
@@ -101,27 +111,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 블로그 조회 -->
 	<select id="selectBlog" parameterType="_int" resultMap="BlogResultSet">
 		
-		SELECT 
-				BLOG_NO,
-				B.MEM_NO,
-				BLOG_TITLE,
-				BLOG_INTRODUCE,
-				BLOG_INTEREST,
-				MEM_ID,
-                MEM_NICK,
-                MEM_IMG,
-                
-                FILE_PATH, 
-                UPDATE_NAME
-			FROM
-				TB_BLOG B
-		    JOIN
-                TB_MEMBER USING(BLOG_NO)
-			LEFT OUTER JOIN
-                TB_ATTACHMENT ON (REF_NO = BLOG_NO)
-			WHERE
-				BLOG_NO = #{ blogNo }
-	
+		SELECT   * 
+            FROM 
+                (SELECT
+                        BLOG_NO,
+                        B.MEM_NO,
+                        BLOG_TITLE,
+                        BLOG_INTRODUCE,
+                        BLOG_INTEREST,
+                        MEM_ID,
+                        MEM_NICK,
+                        MEM_IMG,
+                        FILE_PATH,
+                        UPDATE_NAME 
+                    FROM
+                        TB_BLOG B
+                    JOIN
+                        TB_MEMBER USING(BLOG_NO)
+                    LEFT OUTER JOIN
+                        TB_ATTACHMENT ON (REF_NO = BLOG_NO)
+                    AND
+                        REF_TYPE = 'blog')
+
+            WHERE
+                BLOG_NO = #{ blogNo }
+			                
 	</select>
 
 	<!-- 블로그 기본 정보 수정 -->
@@ -359,6 +373,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	</insert>
 
+	
+	<!-- 블로그 일반 게시글 작성 -->
 
 	<insert id="insertBlogBoard" parameterType="blogBoard">
 	
@@ -388,21 +404,133 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			        )
 		
 	</insert>
+	
+	<!-- 블로그 일반 게시글 전체 리스트 수 조회 -->
+	<select id="selectListCountBlogBoard" resultType="_int">
+		SELECT 
+			   COUNT(*)
+		  FROM 
+			   TB_BLOG_BOARD
+		 WHERE 
+		 	   BLOG_NO = #{ blogNo }
+		 AND 
+		 	   STATUS = 'Y'
+	</select>
+	
+	<!-- 블로그 일반 게시글 리스트 조회 -->
+	<select id="selectBlogBoardList" parameterType="_int" resultMap="BlogBoardResultSet">
+	
+		SELECT  
+			        BLOG_BOARD_NO, 
+			        B.BLOG_NO, 
+			        B.CATEGORY_SETTING_NO, 
+		            
+			        c.CATEGORY_MEM_NAME,
+		            
+		            BLOG_BOARD_TITLE, 
+			        BLOG_BOARD_CONTENT, 
+			        CREATE_DATE,
+			        WRITER
+			    FROM
+			        TB_BLOG_BOARD B
+		        JOIN 
+		            TB_BLOG_CATEGORY_SETTING C on(B.CATEGORY_SETTING_NO = C.CATEGORY_SETTING_NO) 
+			    WHERE
+			        B.BLOG_NO = #{ blogNo }
+			    AND
+			        STATUS = 'Y'
+	        
+	</select>
+	
+	<!-- 블로그 일반 게시글 조회 -->
+	<select id="selectBlogBoard" parameterType="_int" resultMap="BlogBoardResultSet">
+	
+		
+		SELECT  
+	        BLOG_BOARD_NO, 
+	        BLOG_NO, 
+	        CATEGORY_SETTING_NO, 
+	        BLOG_BOARD_TITLE, 
+	        BLOG_BOARD_CONTENT, 
+	        CREATE_DATE,
+	        WRITER
+	    FROM
+	        TB_BLOG_BOARD
+	    WHERE
+	        BLOG_BOARD_NO = #{ blogBoardNo }
+	    AND
+	        STATUS = 'Y'
+	        
+	</select>
+	
+	<!-- 댓글 작성 -->
+	<insert id="insertBlogReply" parameterType="blogReply">
+	
+		INSERT 
+		  INTO
+		  		TB_BLOG_REPLY
+		  		(
+		  		BLOG_REPLY_NO, 
+		  		TOP_REPLY_NO,
+		  		BLOG_BOARD_NO, 
+		  		WRITER, 
+		  		BLOG_REPLY_CONTENT, 
+		  		CREATE_DATE, 
+		  		REPLY_SECRET, 
+		  		STATUS
+		  		)
+		VALUES 
+				(
+				SEQ_BLOG_REPLY.NEXTVAL, 
+				0,
+				#{ blogBoardNo }, 
+				#{ writer }, 
+				#{ blogReplycontent }, 
+				SYSDATE, 
+				DEFAULT, 
+				DEFAULT
+				)
+				
+	</insert>
+	
+	<!-- 댓글 리스트 수 조회 -->
+	<select id="selectListCountBlogReply" parameterType="_int" >
+		
+		SELECT 
+		    	COUNT(*)
+		  FROM 
+				TB_BLOG_REPLY
+		 WHERE 
+		 	   BLOG_BOARD_NO = #{ blogBoardNo }
+		 AND 
+		 	   STATUS = 'Y'
+	
+	</select>
 
-	<select id="selectBlogBoard">
+	<!-- 댓글 리스트 조회 -->
+	<select id="selectListBlogReply" parameterType="_int" resultMap="BlogReplyResultset">
 
-
+		SELECT
+			BLOG_REPLY_NO,
+			TOP_REPLY_NO,
+			BLOG_BOARD_NO,
+			WRITER,
+			BLOG_REPLY_CONTENT,
+			CREATE_DATE,
+			REPLY_SECRET,
+			STATUS
+		FROM
+			TB_BLOG_REPLY
+		WHERE
+			STATUS = 'Y'
+		AND
+			BLOG_BOARD_NO = #{ blogBoardNo }
 
 	</select>
 
-
-
-
-
-
-
-
-
-
-
+	<!-- 댓글 수정 -->
+	
+	<!-- 댓글 삭제 -->
+	
+	
 </mapper>

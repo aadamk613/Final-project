@@ -12,6 +12,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js">
 </script>
 
+<style>
+	.heart {width : 30px; height : 30px;}
+
+</style>
 
 </head>
 <body>
@@ -87,16 +91,16 @@
 							<c:choose>
 								<c:when test="${ b.likeMem eq 1 }">
 									<img src="resources/images/fullHeart.png" alt="하트" >
-									<a href="#" id="like" class="like">좋아요</a>&nbsp;${ n.likeCount } 
+									<a href="#" id="like" class="heart">좋아요</a>&nbsp;${ n.likeCount } 
 								</c:when>
 								<c:otherwise>
 									<img src="resources/images/emptyHeart.png" alt="빈하트">
-									<a href="#" id="like" class="like">좋아요</a>&nbsp;${ n.likeCount } 
+									<a href="#" id="like" class="heart">좋아요</a>&nbsp;${ n.likeCount } 
 								</c:otherwise>
 							</c:choose>
 						</c:when>
 						<c:otherwise>
-							<img src="resources/images/fullHeart.png" alt="빈하트">
+							<img class="heart" src="resources/images/fullHeart.png" alt="빈하트">
 					 		<a href='#' onclick="alert('로그인 후 이용 가능한 기능입니다.');" id="like" class="like">좋아요</a>&nbsp;${ n.likeCount } 
 						</c:otherwise>
 						</c:choose>
