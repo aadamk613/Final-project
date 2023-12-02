@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>신고글 관리</title>
+<title>신고글 조회</title>
 <link rel="stylesheet" href="resources/css/common/template.css">
 
 </head>
@@ -36,7 +36,7 @@
 		<section id="pageSection">
 			
 			<div id="contentTitle">
-                신고글관리
+                신고글 조회
 			</div>
 			
 			<div id="content">
@@ -54,68 +54,8 @@
 						<tbody>
 						</tbody>
 					</table>
-					<!-- Button to Open the Modal -->
-					<input id="open-modal" type="hidden" class="btn btn-primary" data-toggle="modal" data-target="#myModal"/>
-					<!-- The Modal -->
-					<div class="modal fade" id="myModal">
-						<div class="modal-dialog modal-lg modal-dialog-centered">
-							<div class="modal-content">
-
-								<!-- Modal Header -->
-								<div class="modal-header">
-									<h4 class="modal-title">회원상태변경</h4>
-									<button type="button" class="close" data-dismiss="modal">&times;</button>
-								</div>
-
-								<!-- Modal body -->
-								<div class="modal-body">
-									<table id="modal-tb" class="table table-sm table-hover" align="center" style="width: 100%" style="cursor:default">
-										<thead class="thead-light">
-											<tr>
-												<th width="40">번호</th>
-												<th width="40">상태</th>
-												<th width="60">아이디</th>
-												<th width="60">닉네임</th>
-												<th width="140">이메일</th>					
-												<th width="50">온도</th>
-											</tr>
-										</thead>
-										<form id="edit-form" action="editMember.admin" method="post">
-											<tbody>
-												<tr>
-													<td>
-														<input type="text" name="memNo" style="width:40px" value="" readonly />
-													</td>
-													<td>
-														<input type="text" name="memStatus" style="width:40px" value=""/>
-													</td>
-													<td>
-														<input type="text" name="memId" style="width:60px" value=""/>
-													</td>
-													<td>
-														<input type="text" name="memNick" style="width:60px" value=""/>
-													</td>
-													<td><input type="text" name="email" style="width:140px" value=""/>
-													</td>
-													<td><input type="text" name="memTemp" style="width:50px" value=""/>
-													</td>
-												<tr>
-											</tbody>
-										</form>
-										</table>
-									</div>
-									<!-- Modal footer -->
-									<div class="modal-footer">
-										<button type="button" onclick="submitForm();" class="btn btn-warning" data-dismiss="modal">수정</button>
-										<button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
-								</div>
-							</div>
-						</div>
-					</div>
 				</article>
 			</div>
-			
-			
 		</section>
 		
 		<aside id="pageAsideRight" class="aside">
