@@ -17,20 +17,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="MEM_ID" property="memId"/>
 		<result column="MEM_NICK" property="memNick"/>
 		<result column="MEM_IMG" property="memImg"/>
-		
+
 		<result column="FILE_PATH" property="filePath"/>
 		<result column="UPDATE_NAME" property="updateName"/>
 	</resultMap>
-	
-	
+
 	<resultMap type="blogCategorySetting" id="BlogCategorySettingResultSet">
 		<result column="CATEGORY_NO" property="categoryNo"/>
 		<result column="CATEGORY_SETTING_NO" property="categorySettingNo"/>
 		<result column="BLOG_NO" property="blogNo"/>
 		<result column="CATEGORY_MEM_NAME" property="categoryMemName"/>
 	</resultMap>
-	
-	
 	<resultMap type="plant" id="PlantResultSet">
 		<result column="PLANT_NO" property="plantNo"/>
 		<result column="BLOG_NO" property="blogNo"/>
@@ -42,12 +39,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="VIEW" property="view "/>
 		<result column="PLANT_CATEGORY" property="plantCategory"/>
 		<result column="PLANT_LOG_DATE" property="plantLogDate"/>
-		
+
 		<result column="FILE_PATH" property="filePath"/>
 		<result column="UPDATE_NAME" property="updateName"/>
 	</resultMap>
-	
-	
+
 	<resultMap type="blogBoard" id="BlogBoardResultSet">
 		<result column="BLOG_BOARD_NO" property="blogBoardNo"/>
 		<result column="BLOG_NO" property="blogNo"/>
@@ -58,10 +54,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="VIEW" property="view "/>
 		<result column="STATUS" property="status"/>
 		<result column="WRITER" property="writer"/>
-		
+
 		<result column="BLOG_INTEREST" property="blogInterest"/>
 		<result column="CATEGORY_MEM_NAME" property="categoryMemName"/>
 	</resultMap>
+
 	
 	<resultMap type="blogReply" id="BlogReplyResultset">
 		<result column="BLOG_REPLY_NO" property="blogReplyNo"/>
@@ -100,7 +97,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     				#{ plantPrefer }
     				)
 	</insert>
-	
+
 	<!-- 블로그 사이드바에서 member조회 -->
 	<update id="updateMemberBlogNo" parameterType="blog">
 		UPDATE MEMBER 
@@ -110,9 +107,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			MEM_NO = #{ memNo }
 	
 	</update>
-	
+
 	<!-- 블로그 조회 -->
-	<select id="selectBlog" parameterType="_int" resultMap="BlogResultSet" >
+	<select id="selectBlog" parameterType="_int" resultMap="BlogResultSet">
 		
 		SELECT   * 
             FROM 
@@ -140,9 +137,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 BLOG_NO = #{ blogNo }
 			                
 	</select>
-	
+
 	<!-- 블로그 기본 정보 수정 -->
-	<update id="updateBlog" parameterType="blog" >
+	<update id="updateBlog" parameterType="blog">
 	
 		UPDATE
 			  TB_BLOG
@@ -155,9 +152,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			  	BLOG_NO = #{ blogNo }
 
 	</update>
-	
+
 	<!-- 블로그 카테고리 생성 -->
-	<insert id="insertCategory" parameterType="blogCategorySetting" >
+	<insert id="insertCategory" parameterType="blogCategorySetting">
 		INSERT 
 		  INTO
 		  		TB_BLOG_CATEGORY_SETTING
@@ -170,32 +167,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			  VALUES 	
 			  	(
 			  	SEQ_CATEGORY_SETTING_NO.NEXTVAL,
-			  	<choose>
-			  		<when test="blogNo eq '0'">
+		<choose>
+			<when test="blogNo eq '0'">
 			  			SEQ_BLOG.CURRVAL,
-			  		</when>
-			  		<otherwise>
+			</when>
+			<otherwise>
 					  	#{ blogNo },
-			  		</otherwise>
-			  	</choose>
+			</otherwise>
+		</choose>
 			  	#{ categoryNo },
-			  	<choose>
-			  		<when test="categoryNo eq '10'">
+		<choose>
+			<when test="categoryNo eq '10'">
 			  			'게시판'
-			  		</when>
-			  		<when test="categoryNo eq '20'">
+			</when>
+			<when test="categoryNo eq '20'">
 			  			'식물일지'
-			  		</when>
-			  		<when test="categoryNo eq '30'">
+			</when>
+			<when test="categoryNo eq '30'">
 			  			'ToDoList'
-			  		</when>
-			  		<otherwise>
+			</when>
+			<otherwise>
 			  			'---------------'
-			  		</otherwise>
-			  	</choose>
+			</otherwise>
+		</choose>
 			  	)
 	</insert>
-	
+
 	<!-- 블로그 카테고리  조회 -->
 	<select id="selectCatogory" parameterType="_int" resultMap="BlogCategorySettingResultSet">
 		SELECT 
@@ -208,7 +205,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    	BLOG_NO = #{ blogNo }
 		
 	</select>
-	
+
 	<!-- 블로그 카테고리 업데이트하기 -->
 	<update id="updateCatogory" parameterType="blogCategorySetting">
 	
@@ -220,7 +217,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				CATEGORY_SETTING_NO = #{ categorySettingNo }
 	
 	</update>
-	
+
 	<!-- 블로그 카테고리 삭제하기 -->
 	<delete id="deleteCatogory" parameterType="_int">
 	
@@ -231,7 +228,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  		CATEGORY_SETTING_NO = #{ categorySettingNo } 
 	
 	</delete>
-	
+
 	<!-- 식물 등록하기 -->
 	<insert id="insertBlogPlant" parameterType="plant">
 		
@@ -261,8 +258,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				)
 	
 	</insert>
-	
-	
+
+
 	<!-- 식물 전체 리스트 수 조회 -->
 	<select id="selectListCountPlant" resultType="_int">
 		SELECT 
@@ -274,7 +271,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 AND 
 		 	   STATUS = 'Y'
 	</select>
-	
+
 	<!-- 식물 전체 조회 리스트  -->
 	<select id="selectListPlant" parameterType="_int" resultMap="PlantResultSet">
 	
@@ -302,7 +299,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    	PLANT_LOG_DATE DESC
 	
 	</select>
-	
+
 	<!-- 식물 조회 -->
 	<select id="selectBlogPlant" parameterType="_int" resultMap="PlantResultSet">
 		SELECT 
@@ -326,9 +323,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    AND 
 	        	STATUS = 'Y'
         
-    </select>
-    
-    <update id="updateBlogPlant" parameterType="plant">
+	</select>
+
+	<update id="updateBlogPlant" parameterType="plant">
     
     	UPDATE 
     			TB_PLANT
@@ -339,10 +336,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  WHERE 
 		  		PLANT_NO = #{ plantNo }			 
 		  		 
-    </update>    
-        
-        
-	
+	</update>
+
+
+
 	<!-- 식물 삭제하기 -->
 	<delete id="deleteBlogPlant" parameterType="_int">
 		DELETE 
@@ -351,7 +348,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    		PLANT_NO = #{ plantNo }
 	
 	</delete>
-	
+
 	<!-- 식물 일지 등록하기 -->
 	<insert id="insertPlantReport">
 	
@@ -375,8 +372,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  		)
 	
 	</insert>
+
 	
 	<!-- 블로그 일반 게시글 작성 -->
+
 	<insert id="insertBlogBoard" parameterType="blogBoard">
 	
 		INSERT 
@@ -532,10 +531,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 댓글 수정 -->
 	
 	<!-- 댓글 삭제 -->
-	
-	
-	
-	
 	
 	
 </mapper>
