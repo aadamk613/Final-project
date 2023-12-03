@@ -69,6 +69,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="CREATE_DATE" property="createDate"/>
 		<result column="REPLY_SECRET" property="replySecret "/>
 		<result column="STATUS" property="status"/>
+		
+		<result column="MEM_NICK" property="memNick"/>
 	</resultMap>
 	
 	
@@ -96,6 +98,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     				#{ blogInterest },
     				#{ plantPrefer }
     				)
+    				
 	</insert>
 
 	<!-- 블로그 사이드바에서 member조회 -->
@@ -191,6 +194,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</otherwise>
 		</choose>
 			  	)
+			  	
 	</insert>
 
 	<!-- 블로그 카테고리  조회 -->
@@ -262,6 +266,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- 식물 전체 리스트 수 조회 -->
 	<select id="selectListCountPlant" resultType="_int">
+	
 		SELECT 
 			   COUNT(*)
 		  FROM 
@@ -270,6 +275,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 	   BLOG_NO = #{ blogNo }
 		 AND 
 		 	   STATUS = 'Y'
+		 	   
 	</select>
 
 	<!-- 식물 전체 조회 리스트  -->
@@ -494,7 +500,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<!-- 댓글 리스트 수 조회 -->
-	<select id="selectListCountBlogReply" parameterType="_int" >
+	<select id="selectListCountBlogReply" parameterType="_int" resultType="_int">
 		
 		SELECT 
 		    	COUNT(*)
@@ -514,13 +520,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			BLOG_REPLY_NO,
 			TOP_REPLY_NO,
 			BLOG_BOARD_NO,
-			WRITER,
-			BLOG_REPLY_CONTENT,
-			CREATE_DATE,
-			REPLY_SECRET,
-			STATUS
+            MEM_NICK,
+			R.CREATE_DATE,
+			R.STATUS
 		FROM
-			TB_BLOG_REPLY
+			TB_BLOG_REPLY R
+        JOIN 
+            TB_MEMBER ON (MEM_NO = WRITER)
 		WHERE
 			STATUS = 'Y'
 		AND

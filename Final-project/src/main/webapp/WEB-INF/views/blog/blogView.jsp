@@ -170,7 +170,7 @@ img[name=imageThumbnail]{
 
 #commentOption > a{color : gray; font-size : 12px; padding:10px;}
 
-#commentContentBox{width: 100%; height: auto; display: none; padding:10px;}
+.commentContentBox{width: 100%; height: auto; display: none; padding:10px;}
 
 #commentContentBox > div{float: left; padding:5px;}
 
@@ -190,6 +190,7 @@ img[name=imageThumbnail]{
 
 .visible{display: block !important;}
 
+#clear{clear:both;}
 
 </style>
 <body>
@@ -286,6 +287,7 @@ img[name=imageThumbnail]{
 						<div id="commentOption">
 							<button id="toggleButton" onclick="buttonClicked(this)">&or;댓글 18개</button> 좋아요 30
 						</div>
+						<!-- 
 						<div id="commentContentBox" name="toggleDiv" display="block"> 
 							<div id="commentWriteMemId">
 								댓글 단 유저 id
@@ -298,11 +300,11 @@ img[name=imageThumbnail]{
 								<a href="#">답글 쓰기</a>
 							</div>
 						</div>	
-											
+						-->				
 						<div id="commentInsertBox" name="toggleDiv">
 							<div id="commentWriter">유저ID</div>
 							<textarea id="commentContentInsert" placeholder="댓글을 남겨보세요"></textarea>
-								<div id="submitWrap"><a id="insertCommentButton" href='#' onclick="insertComment(this);" name="${ b.blogBoardNo }">등록</a></div>
+							<div id="submitWrap"><a id="insertCommentButton" href='#' onclick="insertComment(this);" name="${ b.blogBoardNo }">등록</a></div>
 						</div>
 					</div>
 					
@@ -365,39 +367,45 @@ img[name=imageThumbnail]{
 	
 	// 댓글 영역 클릭 했을 시 토글 이벤트
 	function buttonClicked() {
-			//console.log($(arguments[0]).parent().siblings());
-			$(arguments[0]).parent().siblings().toggleClass('visible');
-	};
-	
-	// 댓글 작성
-	/*
-	$('#insertCommentButton').on('click', e => {
-		console.log(this);
-		var blogBoardNo = $(this).attr('value');
-		var content = $(this).parent().parent().children().next().attr('id');
-		console.log(content);
-		console.log(blogBoardNo);
-		
-		$.ajax({
-			type: "POST",
-			url: 'insert.bl_re', 
-			data: {blogBoardNo : blogBoardNo, 
-				   writer: ${ sessionScope.loginUser.memNo}, 
-				   content: content}, 
-			success: data => {
-				console.log('댓글 입력 통신 성공');
-			}, 
-			error: () => {
-				console.log('댓글 입력 통신 실패');
-			}
+			//console.log($(arguments[0]).parent().parent().attr('name'));
+			$(arguments[0]).parent().siblings().toggle('visible');
 			
-		})	
-	});
-	*/
-	
-	
-
-		
+			$.ajax({
+				url: 'selectList.bl_re',
+				data: {currentPage: 1,
+					   blogBoardNo: $(arguments[0]).parent().parent().attr('name')}, 
+				success: data => {
+					console.log(data);
+					
+					for(let i in data){
+					
+						const commentOption = $('#commentOption');
+						
+						commentOption.append(i);
+						commentOption.append("<div>").css('#commentContentBox');
+						commentOption.append("<div>").css('#commentWriteMemId');
+						commentOption.append(data[i].memNick);
+						commentOption.append("</div>");
+						commentOption.append("<div>").css('#commentContent');
+						commentOption.append(data[i].blogReplycontent);
+						commentOption.append("</div>");
+						commentOption.append("<div>").css('#commentCreateDate');
+						commentOption.append(data[i].createDate);
+						commentOption.append("</div>");
+						commentOption.append("<a >답글 쓰기</a>");
+						commentOption.append("</div>");
+						commentOption.append("</div>").css('#clear');
+					}
+					
+					
+				},
+				error: () => {
+					console.log('댓글 불러오기 통신 실패');
+				}
+			});
+			
+			
+	};
 	
 	
 	</script>
