@@ -20,11 +20,11 @@
 	<script>
 
 		function kakaopay(){
-			
 			$.ajax({
 				url : 'yrreadyForPay.exp',
 				success : result => {
 					console.log(result);
+					
 					location.href=result;
 				},
 				error : () => {

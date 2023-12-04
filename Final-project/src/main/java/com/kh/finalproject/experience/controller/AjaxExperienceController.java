@@ -9,7 +9,6 @@ import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
@@ -131,26 +130,36 @@ public class AjaxExperienceController {
 	
 	
 	// 결제
-	
+	// 결제 준비 창으로 이동
 	@GetMapping(value="yrreadyForPay.exp", produces="html/text; charset=UTF-8")
 	public String readyForPay(HttpSession session) throws IOException, ParseException  {
-		String nextRedirectPcUrl = experienceService.readyForPay();
-		System.out.println(nextRedirectPcUrl);
+		HashMap map = experienceService.readyForPay();
+		System.out.println(map.get("nextRedirectPcUrl"));
 		//String result = experienceService.payExp(tid);
+		System.out.println("먼차이냐"); // 차이없음
+		System.out.println(map.get("nextRedirectPcUrl").toString());
+		System.out.println((String)map.get("nextRedirectPcUrl"));
 		
 		//session.setAttribute("nextRedirectPcUrl", nextRedirectPcUrl);
-		return nextRedirectPcUrl;
+		return map.get("nextRedirectPcUrl").toString();
 	}
 	
-	
-	@PostMapping(value="yrsendPayment.exp", produces="application/json; charset=UTF-8")
+	// 결제 성공 시 오는 곳
+	// http://localhost:8001/final/yrsendPayment.exp?pg_token=b63076e46d6b58fbbea6
+	@GetMapping("yrsendPayment.exp")
 	public String sendPayment(String pg_token, HttpSession session) {
 		
 		System.out.println("결제창");
-		System.out.println(session.getAttribute("nextRedirectPcUrl"));
+		//System.out.println(session.getAttribute("nextRedirectPcUrl"));
 		
 		System.out.println("대애박");
 		System.out.println(pg_token);
+		
+		experienceService.payExp(pg_token);
+		
+		
+		
+		
 		return "";
 	}
 

@@ -6,12 +6,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
 import org.json.simple.JSONObject;
@@ -159,7 +156,7 @@ public class ExperienceServiceImpl implements ExperienceService {
 	
 	// 카카오페이
 	@Override
-	public String readyForPay() throws IOException, ParseException  {
+	public HashMap<String, String> readyForPay() throws IOException, ParseException  {
 		
 		String url = "https://kapi.kakao.com/v1/payment/ready";
 		// admin키
@@ -238,12 +235,14 @@ public class ExperienceServiceImpl implements ExperienceService {
 		
 		System.out.println(sb.toString());
 		
+		// 요청
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream()));
 		bw.write(sb.toString());
 		bw.flush();
 		
 		System.out.println(urlConnection.getResponseCode());
 		
+		// 응답
 		BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
 		String line = "";
 		StringBuilder responseData = new StringBuilder();
@@ -261,17 +260,19 @@ public class ExperienceServiceImpl implements ExperienceService {
 		System.out.println("여기로 결제");
 		System.out.println(nextRedirectPcUrl);
 		
+		// 임시 값 보내주기
+		// session으로 보내주던가 Map으로 보내주던가 객체로 보내주던가
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("payUniqueNo", payUniqueNo);
+		map.put("nextRedirectPcUrl", nextRedirectPcUrl);
+		
+		
 		br.close();
 		bw.close();
 		
-		return nextRedirectPcUrl;
+		return map;
 		// 이렇게 주지 말고 url을 보내서 호호
 	}
-	
-	
-	
-	
-	
 	
 	
 	// 결제 승인
@@ -294,8 +295,8 @@ public class ExperienceServiceImpl implements ExperienceService {
 		String tid = payUniqueNo;
 		String partnerOrderId = "111111"; // ready와 동일
 		String partnerUserId = "user01"; // ready와 동일
-		String pg_token = "";
-		 
+		String pg_token = "dd";
+		
 		// 돌려주는거 next_pc_url,  pg_token, tid => 받아서 돌려줌
 		
 		// 보냈던 값은 알아서 골라서 보내주면됨

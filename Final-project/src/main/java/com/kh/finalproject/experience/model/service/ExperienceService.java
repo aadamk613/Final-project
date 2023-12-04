@@ -58,9 +58,9 @@ public interface ExperienceService {
 	
 	
 	// 카카오페이
-	String readyForPay() throws IOException, ParseException;
+	HashMap readyForPay() throws IOException, ParseException;
 
-	String payExp(String tid);
+	String payExp(String payUniqueNo);
 	
 	
 
