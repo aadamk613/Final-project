@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -130,19 +131,35 @@ public class AjaxExperienceController {
 	
 	
 	// 결제
-	// 결제 준비 창으로 이동
-	@GetMapping(value="yrreadyForPay.exp", produces="html/text; charset=UTF-8")
-	public String readyForPay(HttpSession session) throws IOException, ParseException  {
-		HashMap map = experienceService.readyForPay();
+	// 2. 결제 준비 창으로 이동
+	@GetMapping("yrreadyForPay.exp" /*, produces="html/text; charset=UTF-8"*/)
+	public HashMap<String, Object> readyForPay(HttpSession session) throws IOException, ParseException  {
+		// 결제 준비 창으로 가기전 값들 보내줌
+		HashMap<String, Object> map = experienceService.readyForPay();
 		System.out.println(map.get("nextRedirectPcUrl"));
 		//String result = experienceService.payExp(tid);
 		System.out.println("먼차이냐"); // 차이없음
 		System.out.println(map.get("nextRedirectPcUrl").toString());
 		System.out.println((String)map.get("nextRedirectPcUrl"));
 		
-		//session.setAttribute("nextRedirectPcUrl", nextRedirectPcUrl);
-		return map.get("nextRedirectPcUrl").toString();
+		session.setAttribute("map", map);
+		System.out.println(session.getAttribute("map"));
+		System.out.println("잉");
+		
+		// 결제 창으로 보내줄 url
+		session.setAttribute("nextRedirectPcUrl", (String)map.get("nextRedirectPcUrl"));
+		return map;
 	}
+	
+	
+	@GetMapping("yrtest.exp/{result}")
+	public String test(@PathVariable("result") HashMap map) {
+		System.out.println("일단 들어옴?");
+		System.out.println(map);
+		//return map.get("nextRedirectPcUrl").toString();
+		return "";
+	}
+	
 	
 	// 결제 성공 시 오는 곳
 	// http://localhost:8001/final/yrsendPayment.exp?pg_token=b63076e46d6b58fbbea6
@@ -155,7 +172,12 @@ public class AjaxExperienceController {
 		System.out.println("대애박");
 		System.out.println(pg_token);
 		
+		System.out.println(session.getAttribute("map"));
+		System.out.println(session.getAttribute("nextRedirectPcUrl"));
+		
 		experienceService.payExp(pg_token);
+		
+		
 		
 		
 		

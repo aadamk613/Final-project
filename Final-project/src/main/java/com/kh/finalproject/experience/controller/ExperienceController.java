@@ -255,6 +255,7 @@ public class ExperienceController {
 	// -------------------------------------------------------------------------------
 	//결제
 	// AJAX도 있음
+	// 1. 결제하기 버튼 누르러가기
 	@GetMapping("yrpayForm.exp")
 	public String payExperienceForm() {
 		return "experience/experiencePayView";

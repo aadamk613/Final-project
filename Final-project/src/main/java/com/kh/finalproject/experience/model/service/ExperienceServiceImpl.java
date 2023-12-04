@@ -156,7 +156,7 @@ public class ExperienceServiceImpl implements ExperienceService {
 	
 	// 카카오페이
 	@Override
-	public HashMap<String, String> readyForPay() throws IOException, ParseException  {
+	public HashMap<String, Object> readyForPay() throws IOException, ParseException  {
 		
 		String url = "https://kapi.kakao.com/v1/payment/ready";
 		// admin키
@@ -262,9 +262,9 @@ public class ExperienceServiceImpl implements ExperienceService {
 		
 		// 임시 값 보내주기
 		// session으로 보내주던가 Map으로 보내주던가 객체로 보내주던가
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("payUniqueNo", payUniqueNo);
-		map.put("nextRedirectPcUrl", nextRedirectPcUrl);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("payUniqueNo", payUniqueNo); // cid
+		map.put("nextRedirectPcUrl", nextRedirectPcUrl); // 결제 url 이쪽으로 url요청 보내야 함
 		
 		
 		br.close();
