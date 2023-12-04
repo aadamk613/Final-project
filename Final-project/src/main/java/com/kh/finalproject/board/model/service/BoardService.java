@@ -4,14 +4,11 @@ import java.util.ArrayList;
 
 import com.kh.finalproject.board.model.vo.Board;
 import com.kh.finalproject.board.model.vo.BoardComment;
-
-import com.kh.finalproject.common.model.vo.Attachment;
-
 import com.kh.finalproject.board.model.vo.BoardReport;
 import com.kh.finalproject.board.model.vo.CommentReport;
-
-
+import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
+import com.kh.finalproject.common.model.vo.Search;
 
 public interface BoardService {
 	// 게시글 총 개수 조회
@@ -71,5 +68,11 @@ public interface BoardService {
 
 	// 댓글작성
 	int insertComment (BoardComment bc);
+	
+	// 게시글 검색 총 개수
+	int selectSearchCount(Search s);
+	
+	// 게시글 검색 리스트
+	ArrayList<Board> selectSearchBoardList(PageInfo pi);
 	
 }

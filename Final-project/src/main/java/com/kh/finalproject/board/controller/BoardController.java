@@ -27,6 +27,7 @@ import com.kh.finalproject.board.model.vo.BoardReport;
 import com.kh.finalproject.board.model.vo.CommentReport;
 import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
+import com.kh.finalproject.common.model.vo.Search;
 import com.kh.finalproject.common.teplate.Pagination;
 
 @Controller
@@ -44,7 +45,6 @@ public class BoardController {
 											 10,
 											 5);
 		
-		model.addAttribute("best", boardService.selectBestBoardList());
 		model.addAttribute("list", boardService.selectBoardList(pi));
 		model.addAttribute("pi", pi);
 		
@@ -137,7 +137,7 @@ public class BoardController {
 		}
 		
 		
-		// 공지사항 삭제
+		// 일반게시글 삭제
 		@PostMapping("delete.bo")
 		public String deleteNotice(int bno, HttpSession session) {
 
@@ -198,7 +198,6 @@ public class BoardController {
 		@ResponseBody
 		@GetMapping(value = "disabled.btn", produces="application/json; charset=UTF-8")
 		public String disabledBtn(CommentReport cr) {
-			System.out.println(boardService.selectCommentReport(cr));
 			return new Gson().toJson(boardService.selectCommentReport(cr));
 		}
 		
@@ -219,5 +218,17 @@ public class BoardController {
 			 
 		}
 		
+		// 일반게시글 검색 리스트조회
+		@RequestMapping("search.bo")
+		public String selectSearchList(@RequestParam(value="cPage", defaultValue="1") int currentPage, Model model, Search s) {
+			PageInfo pi = Pagination.getPageInfo(boardService.selectSearchCount(s),
+												 currentPage,
+												 10,
+												 5);
+			model.addAttribute("list", boardService.selectSearchBoardList(pi)).addAttribute("pi", pi);
+			System.out.println(s);
+System.out.println(boardService.selectSearchBoardList(pi));
+			return "board/boardListView";
+		}
 
 }
