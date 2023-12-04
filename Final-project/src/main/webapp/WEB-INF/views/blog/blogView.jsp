@@ -162,17 +162,17 @@ img[name=imageThumbnail]{
 }
 
 
-#commentWrap {width: 100%; height: auto;}
+#commentWrap {width: 100%; height: auto; display: none;}
 
 #commentWrap > div{float: left;}
 
-#commentOption{width:100%; height:50px; font-size: 18px; font-weight: 600; padding:0 10px;}
+#commentOption{width:100%; height:auto; font-size: 18px; font-weight: 600; padding:0 10px;}
 
 #commentOption > a{color : gray; font-size : 12px; padding:10px;}
 
 .commentContentBox{width: 100%; height: auto; display: none; padding:10px;}
 
-#commentContentBox > div{float: left; padding:5px;}
+#commentContentBox > div{float: left; padding:5px; }
 
 #commentWriteMemId{width: 100%; height: 30px; font-weight: bold; font-size: 14px; padding: 0 10px;}
 
@@ -282,8 +282,7 @@ img[name=imageThumbnail]{
 					
 					<br clear="both">
 					
-					<div id="commentWrap" name="${ b.blogBoardNo }">
-					<br clear="both">
+					<div id="commentWrap" name="${ b.blogBoardNo }" name="commentWrap_${b.blogBoardNo}">
 						<div id="commentOption">
 							<button id="toggleButton" onclick="buttonClicked(this)">&or;댓글 18개</button> 좋아요 30
 						</div>
@@ -332,21 +331,19 @@ img[name=imageThumbnail]{
 			
 			if('${ sessionScope.loginUser.memNo}' != ''){
 				
-			$.ajax({
-				type: "POST",
-				url: 'insert.bl_re', 
-				data: {blogBoardNo : blogBoardNo, 
-					   writer: '${ sessionScope.loginUser.memNo}', 
-					   blogReplycontent: content}, 
-				success: data => {
-					console.log(data);
-					console.log('댓글 입력 통신 성공');
-				}, 
-				error: () => {
-					console.log('댓글 입력 통신 실패');
-				}
-			})
-			
+				$.ajax({
+					type: "POST",
+					url: 'insert.bl_re', 
+					data: {blogBoardNo : blogBoardNo, 
+						   writer: '${ sessionScope.loginUser.memNo}', 
+						   blogReplycontent: content}, 
+					success: data => {
+						console.log('댓글 입력 통신 성공');
+					}, 
+					error: () => {
+						console.log('댓글 입력 통신 실패');
+					}
+				});
 			}
 			else{
 				alert('로그인 후 이용 가능한 기능입니다.');
@@ -355,57 +352,92 @@ img[name=imageThumbnail]{
 		</script>
 	
 	
-	
 	<script>
-	
-	// 식물 사진 클릭 했을 시 식물 상세보기로 이동
+	// 식물 사진 클릭 시 식물 상세보기로 이동
 	 $('img[name=plantImg]').on('click', e => {
 		var plantNo = $(e.target).attr('value');
 		location.href = "select.bl_pl?plantNo=" + plantNo ; 
-		 
 	 });
 	
+	// 토글 이벤트 실행 상태 
+	 let flag = true;
+	
+	
 	// 댓글 영역 클릭 했을 시 토글 이벤트
-	function buttonClicked() {
+	function buttonClicked(button) {
 			//console.log($(arguments[0]).parent().parent().attr('name'));
-			$(arguments[0]).parent().siblings().toggle('visible');
 			
-			$.ajax({
-				url: 'selectList.bl_re',
-				data: {currentPage: 1,
-					   blogBoardNo: $(arguments[0]).parent().parent().attr('name')}, 
-				success: data => {
-					console.log(data);
-					
-					for(let i in data){
-					
-						const commentOption = $('#commentOption');
+			var commentWrapId = button.parentNode.parentNode.getAttribute('name');
+  			var commentWrap = document.getElementsByName(commentWrapId)[0];
+			
+  		  if (commentWrap.style.display === 'none') {
+  		    commentWrap.style.display = 'block';
+  		  } else {
+  		    commentWrap.style.display = 'none';
+  		  }
+  			
+			const toggleButton = commentWrap.find('#toggleButton');
+			const commentInsertBox = commentWrap.find('#commentInsertBox');
+			const divElements = toggleButton.siblings().add(commentInsertBox);
+			//$(arguments[0]).parent().siblings().toggle('visible');
+			
+			divElements.toggle('visible');
+
+			  if (flag) {
+			  	flag = false; // AJAX 요청을 보내기 전에 플래그 변수를 false로 설정하여 다음에 요청이 발생하지 않도록 합니다.
+			  } 
+			  else {
+			  	return; // 이미 AJAX 요청을 보냈으면 함수를 종료합니다.
+			  }
+			
+			
+				$.ajax({
+					url: 'selectList.bl_re',
+					data: {currentPage: 1,
+						   blogBoardNo: commentWrap.attr('name')}, 
+					success: data => {
+						console.log('댓글 불러오기 통신 성공');
+						jQuery(document).ready(function(){
+							const commentOption = commentWrap.find('#commentOption'); // commentWrap 내부에서 commentOption을 찾음
+						for(let i in data){
 						
-						commentOption.append(i);
-						commentOption.append("<div>").css('#commentContentBox');
-						commentOption.append("<div>").css('#commentWriteMemId');
-						commentOption.append(data[i].memNick);
-						commentOption.append("</div>");
-						commentOption.append("<div>").css('#commentContent');
-						commentOption.append(data[i].blogReplycontent);
-						commentOption.append("</div>");
-						commentOption.append("<div>").css('#commentCreateDate');
-						commentOption.append(data[i].createDate);
-						commentOption.append("</div>");
-						commentOption.append("<a >답글 쓰기</a>");
-						commentOption.append("</div>");
-						commentOption.append("</div>").css('#clear');
+							const commentOption = $('#commentOption'); // 여기 밑에서부터 추가되어야 함
+							
+							var memNick = data[i].memNick;
+							var blogReplycontent = data[i].blogReplycontent;
+							var createDate = data[i].createDate;
+							
+							const commentWriteMemId = document.createElement("div");
+							$(commentWriteMemId).html('memNick')
+												.addClass('#commentWriteMemId');
+							var strMemId = "<div id='commentWriteMemId'>" + memNick + "</div>";
+							
+							const commentContent = document.createElement("div");
+							$(commentContent).html('commentContent')
+											 .addClass('#commentContent');
+							var strContent = "<div id='commentContent'>" + blogReplycontent + "</div>";
+							
+							
+							const commentCreateDate = document.createElement("div");
+							$(commentCreateDate).html('createDate')
+												.addClass('#commentContent');
+							var strDate = "<div id='commentCreateDate'>" + createDate + "</div>";
+							
+							$(commentOption).append(strMemId).append(strContent).append(strDate);
+							
+						}
+
+						});
+					},
+					error: () => {
+						console.log('댓글 불러오기 통신 실패');
 					}
-					
-					
-				},
-				error: () => {
-					console.log('댓글 불러오기 통신 실패');
-				}
-			});
-			
-			
+				});
+			console.log(flag);
 	};
+	
+
+	
 	
 	
 	</script>

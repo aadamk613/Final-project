@@ -16,7 +16,7 @@ public class BlogBoard {
 	private int cattegorySettingNo;
 	private String blogBoardTitle;
 	private String blogBoardContent;
-	private Date createDate;
+	private String createDate;
 	private int view;
 	private String status;
 	private String writer;

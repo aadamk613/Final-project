@@ -281,53 +281,77 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 식물 전체 조회 리스트  -->
 	<select id="selectListPlant" parameterType="_int" resultMap="PlantResultSet">
 	
-		SELECT 
-	        PLANT_NO, 
-	        BLOG_NO, 
-	        PLANT_NAME, 
-	        PLANT_NICKNAME, 
-	        PLANT_COMMENT, 
-	        CREATE_DATE, 
-	        PLANT_CATEGORY, 
-	        TRUNC(SYSDATE - PLANT_LOG_DATE) PLANT_LOG_DATE,
-	        
-	        FILE_PATH,
-            UPDATE_NAME
-	    FROM 
-	        TB_PLANT
-        LEFT OUTER JOIN 
-        	TB_ATTACHMENT ON(PLANT_NO = REF_NO)
-	    WHERE
-	        STATUS = 'Y'
-	    AND 
-	        BLOG_NO = #{ blogNo }
-	    ORDER BY
-	    	PLANT_LOG_DATE DESC
+	    SELECT
+		        PLANT_NO, 
+		        BLOG_NO, 
+		        PLANT_NAME, 
+		        PLANT_NICKNAME, 
+		        PLANT_COMMENT, 
+		        CREATE_DATE, 
+		        PLANT_CATEGORY, 
+		        TRUNC(SYSDATE - PLANT_LOG_DATE) PLANT_LOG_DATE,
+		        
+		        FILE_PATH,
+	            UPDATE_NAME
+		    FROM 
+		        TB_PLANT
+	        LEFT 
+	        JOIN(
+	              SELECT 
+	                    FILE_PATH,
+	                    UPDATE_NAME,
+	                    REF_TYPE,
+	                    REF_NO
+	               FROM
+	                    TB_ATTACHMENT
+	               WHERE 
+	                    REF_TYPE = 'plant'
+	               ) 
+	          ON (REF_NO = PLANT_NO)
+		    WHERE
+		        STATUS = 'Y'
+	        ORDER BY
+		    	PLANT_LOG_DATE DESC
 	
 	</select>
 
 	<!-- 식물 조회 -->
 	<select id="selectBlogPlant" parameterType="_int" resultMap="PlantResultSet">
-		SELECT 
-		        PLANT_NO, 
-		        BLOG_NO,
-		        PLANT_NAME, 
-		        PLANT_NICKNAME,
-		        PLANT_COMMENT,
-		        CREATE_DATE,  
-		        PLANT_CATEGORY, 
-		        TO_CHAR(PLANT_LOG_DATE, 'YYYY-MM-DD') PLANT_LOG_DATE,
-		        
-		        FILE_PATH,
-            	UPDATE_NAME
-	    FROM 
-	        	TB_PLANT
-	    LEFT OUTER JOIN 
-        		TB_ATTACHMENT ON(PLANT_NO = REF_NO)
-	    WHERE
-	        	PLANT_NO = #{ plantNo }
-	    AND 
-	        	STATUS = 'Y'
+		SELECT
+				PLANT_NO,
+				BLOG_NO,
+				PLANT_NAME,
+				PLANT_NICKNAME,
+				PLANT_COMMENT,
+				CREATE_DATE,
+				PLANT_CATEGORY,
+				PLANT_LOG_DATE,
+			
+				FILE_PATH,
+				UPDATE_NAME
+		  FROM 
+		   		(
+		   		SELECT
+					PLANT_NO,
+					BLOG_NO,
+					PLANT_NAME,
+					PLANT_NICKNAME,
+					PLANT_COMMENT,
+					CREATE_DATE,
+					PLANT_CATEGORY,
+					TO_CHAR(PLANT_LOG_DATE, 'YYYY-MM-DD') PLANT_LOG_DATE,
+				
+					FILE_PATH,
+					UPDATE_NAME
+				FROM
+					TB_PLANT P
+				LEFT OUTER JOIN
+					TB_ATTACHMENT ON(REF_NO = PLANT_NO)
+				AND
+					REF_TYPE = 'plant'
+				)
+		WHERE
+			PLANT_NO = #{ plantNo }  
         
 	</select>
 
@@ -435,7 +459,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		            
 		            BLOG_BOARD_TITLE, 
 			        BLOG_BOARD_CONTENT, 
-			        CREATE_DATE,
+			        TO_CHAR(CREATE_DATE, 'YYYY-MM-DD [HH24:MI]') AS CREATE_DATE,
 			        WRITER
 			    FROM
 			        TB_BLOG_BOARD B
@@ -520,6 +544,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			BLOG_REPLY_NO,
 			TOP_REPLY_NO,
 			BLOG_BOARD_NO,
+			BLOG_REPLY_CONTENT,
             MEM_NICK,
 			R.CREATE_DATE,
 			R.STATUS
