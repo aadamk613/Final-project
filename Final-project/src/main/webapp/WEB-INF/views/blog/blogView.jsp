@@ -162,7 +162,7 @@ img[name=imageThumbnail]{
 }
 
 
-#commentWrap {width: 100%; height: auto; display: none;}
+#commentWrap {width: 100%; height: auto; }
 
 #commentWrap > div{float: left;}
 
@@ -282,7 +282,7 @@ img[name=imageThumbnail]{
 					
 					<br clear="both">
 					
-					<div id="commentWrap" name="${ b.blogBoardNo }" name="commentWrap_${b.blogBoardNo}">
+					<div id="commentWrap" name="${ b.blogBoardNo }">
 						<div id="commentOption">
 							<button id="toggleButton" onclick="buttonClicked(this)">&or;댓글 18개</button> 좋아요 30
 						</div>
@@ -322,12 +322,16 @@ img[name=imageThumbnail]{
 	</main>
 	
 	
-		<script>
+	<script>
+		
+		let commentWrap;
+		
 		// 댓글 작성
 		function insertComment(){
-			var writer
 			var blogBoardNo = $(arguments[0]).attr('name');
-			var content = $(arguments[0]).parent().parent().children().next().val();
+			var content = $(arguments[0]).parent().parent().children().next();
+			var aa = $(arguments[0]).parent().parent().parent().attr('name');
+			console.log(aa);
 			
 			if('${ sessionScope.loginUser.memNo}' != ''){
 				
@@ -336,9 +340,12 @@ img[name=imageThumbnail]{
 					url: 'insert.bl_re', 
 					data: {blogBoardNo : blogBoardNo, 
 						   writer: '${ sessionScope.loginUser.memNo}', 
-						   blogReplycontent: content}, 
+						   blogReplycontent: content.val()}, 
 					success: data => {
 						console.log('댓글 입력 통신 성공');
+						alert('댓글 작성 성공');
+						content.val('');
+						
 					}, 
 					error: () => {
 						console.log('댓글 입력 통신 실패');
@@ -349,33 +356,22 @@ img[name=imageThumbnail]{
 				alert('로그인 후 이용 가능한 기능입니다.');
 			}
 		};
-		</script>
-	
-	
-	<script>
-	// 식물 사진 클릭 시 식물 상세보기로 이동
-	 $('img[name=plantImg]').on('click', e => {
-		var plantNo = $(e.target).attr('value');
-		location.href = "select.bl_pl?plantNo=" + plantNo ; 
-	 });
-	
+
 	// 토글 이벤트 실행 상태 
 	 let flag = true;
 	
-	
 	// 댓글 영역 클릭 했을 시 토글 이벤트
 	function buttonClicked(button) {
-			//console.log($(arguments[0]).parent().parent().attr('name'));
+	  //console.log($(arguments[0]).parent().parent().attr('name'));
 			
-			var commentWrapId = button.parentNode.parentNode.getAttribute('name');
-  			var commentWrap = document.getElementsByName(commentWrapId)[0];
-			
-  		  if (commentWrap.style.display === 'none') {
-  		    commentWrap.style.display = 'block';
-  		  } else {
-  		    commentWrap.style.display = 'none';
-  		  }
-  			
+	  commentWrap = $(button.parentNode.nextElementSibling);
+	  
+	  if (commentWrap.css('display') === 'none') {
+		    commentWrap.css('display', 'block');
+		  } else {
+		    commentWrap.css('display', 'none');
+		  }
+	  
 			const toggleButton = commentWrap.find('#toggleButton');
 			const commentInsertBox = commentWrap.find('#commentInsertBox');
 			const divElements = toggleButton.siblings().add(commentInsertBox);
@@ -390,59 +386,71 @@ img[name=imageThumbnail]{
 			  	return; // 이미 AJAX 요청을 보냈으면 함수를 종료합니다.
 			  }
 			
-			
-				$.ajax({
-					url: 'selectList.bl_re',
-					data: {currentPage: 1,
-						   blogBoardNo: commentWrap.attr('name')}, 
-					success: data => {
-						console.log('댓글 불러오기 통신 성공');
-						jQuery(document).ready(function(){
-							const commentOption = commentWrap.find('#commentOption'); // commentWrap 내부에서 commentOption을 찾음
-						for(let i in data){
-						
-							const commentOption = $('#commentOption'); // 여기 밑에서부터 추가되어야 함
-							
-							var memNick = data[i].memNick;
-							var blogReplycontent = data[i].blogReplycontent;
-							var createDate = data[i].createDate;
-							
-							const commentWriteMemId = document.createElement("div");
-							$(commentWriteMemId).html('memNick')
-												.addClass('#commentWriteMemId');
-							var strMemId = "<div id='commentWriteMemId'>" + memNick + "</div>";
-							
-							const commentContent = document.createElement("div");
-							$(commentContent).html('commentContent')
-											 .addClass('#commentContent');
-							var strContent = "<div id='commentContent'>" + blogReplycontent + "</div>";
-							
-							
-							const commentCreateDate = document.createElement("div");
-							$(commentCreateDate).html('createDate')
-												.addClass('#commentContent');
-							var strDate = "<div id='commentCreateDate'>" + createDate + "</div>";
-							
-							$(commentOption).append(strMemId).append(strContent).append(strDate);
-							
-						}
-
-						});
-					},
-					error: () => {
-						console.log('댓글 불러오기 통신 실패');
-					}
-				});
 			console.log(flag);
 	};
 	
+	
+	jQuery(document).ready(function(){});
+		
+	// 댓글 조회 
+	// 인자값: 어디서 실행 되는지 
+	function selectReply(){
+		
+		$.ajax({
+			url: 'selectList.bl_re',
+			data: {currentPage: 1,
+				   blogBoardNo: commentWrap.attr('name')}, 
+			success: data => {
+				console.log('댓글 불러오기 통신 성공');
+				
+					const commentOption = commentWrap.find('#commentOption'); // commentWrap 내부에서 commentOption을 찾음
+					for(let i in data){
+				
+						const commentOption = $('#commentOption'); // 여기 밑에서부터 추가되어야 함
+						
+						var memNick = data[i].memNick;
+						var blogReplycontent = data[i].blogReplycontent;
+						var createDate = data[i].createDate;
+						
+						const commentWriteMemId = document.createElement("div");
+						$(commentWriteMemId).html('memNick')
+											.addClass('#commentWriteMemId');
+						var strMemId = "<div id='commentWriteMemId'>" + memNick + "</div>";
+						
+						const commentContent = document.createElement("div");
+						$(commentContent).html('commentContent')
+										 .addClass('#commentContent');
+						var strContent = "<div id='commentContent'>" + blogReplycontent + "</div>";
+						
+						
+						const commentCreateDate = document.createElement("div");
+						$(commentCreateDate).html('createDate')
+											.addClass('#commentContent');
+						var strDate = "<div id='commentCreateDate'>" + createDate + "</div>";
+						
+						$(commentOption).append(strMemId).append(strContent).append(strDate);
+						
+						console.log(strDate);
+				}
 
-	
-	
+			},
+			error: () => {
+				console.log('댓글 불러오기 통신 실패');
+			}
+		});
+		
+		
+		
+	}		
+		
+	// 식물 사진 클릭 시 식물 상세보기로 이동
+	 $('img[name=plantImg]').on('click', e => {
+		var plantNo = $(e.target).attr('value');
+		location.href = "select.bl_pl?plantNo=" + plantNo ; 
+	 });
 	
 	</script>
-	
-	
+
 	<br clear="both">
 	
 	<footer id="pageFooter">
