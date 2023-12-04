@@ -283,17 +283,18 @@
 						},
 						success : data => {
 							const btns = $('.commentReportBtn');
-							console.log(btns);
+							//console.log(btns);
 							const nums = data.map((a, b) => {
 								//console.log(a);
 								//console.log(b);
 								return a.refCommentNo;
 							});
-							//console.log(nums);
+								//console.log(nums);
 							btns.map((b, i) => {
+								//console.log(i);
 								nums.map((n, j) => {
+									console.log(j);
 									if(i.id == n){
-										//console.log(b);
 										
 										$(i).attr('disabled', true);
 									}

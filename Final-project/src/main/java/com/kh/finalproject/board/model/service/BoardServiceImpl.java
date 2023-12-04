@@ -18,6 +18,7 @@ import com.kh.finalproject.board.model.vo.CommentReport;
 
 
 import com.kh.finalproject.common.model.vo.PageInfo;
+import com.kh.finalproject.common.model.vo.Search;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -125,6 +126,18 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int insertComment(BoardComment bc) {
 		return boardDao.insertComment(sqlSession, bc);
+	}
+
+	@Override
+	public int selectSearchCount(Search s) {
+		return boardDao.selectSearchCount(sqlSession, s);
+	}
+
+	@Override
+	public ArrayList<Board> selectSearchBoardList(PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return boardDao.selectSearchBoardList(sqlSession, rowBounds);
 	}
 	
 }
