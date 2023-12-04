@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -145,7 +146,7 @@ public class AdminController {
     return "redirect:hashtag.admin";
   }
 
-  @PostMapping("editMember.admin")
+  @PutMapping("editMember.admin")
   public ModelAndView editMember(Member m, ModelAndView mv, HttpSession session) {
     System.out.println(m);
     mv.addObject("numTicket", adminService.getTicketNumber()).setViewName("admin/adminMemberView");
@@ -154,6 +155,13 @@ public class AdminController {
     } else {
       session.setAttribute("errorMsg", "회원 정보 수정 실패!");
     }
+    return mv;
+  }
+
+  @GetMapping("reportedArticleView.admin")
+  public ModelAndView reportedArticleView(ModelAndView mv) {
+    mv.addObject("numTicket", adminService.getTicketNumber())
+        .setViewName("admin/adminReportedBoard");
     return mv;
   }
 }

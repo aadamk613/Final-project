@@ -1,6 +1,7 @@
 package com.kh.finalproject.blog.model.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -9,7 +10,9 @@ import org.springframework.stereotype.Repository;
 import com.kh.finalproject.blog.model.vo.Blog;
 import com.kh.finalproject.blog.model.vo.BlogBoard;
 import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
+import com.kh.finalproject.blog.model.vo.BlogReply;
 import com.kh.finalproject.blog.model.vo.Plant;
+import com.kh.finalproject.common.model.vo.PageInfo;
 
 @Repository
 public class BlogDao {
@@ -75,10 +78,42 @@ public class BlogDao {
 		return sqlSession.delete("blogMapper.deleteBlogPlant", plantNo);
 	}
 	
+	// 블로그 일반 게시글 관련 -----------------------------------------
 	public int insertBlogBoard(SqlSessionTemplate sqlSession, BlogBoard blogBoard) {
 		return sqlSession.insert("blogMapper.insertBlogBoard", blogBoard);
 	}
+	
+	public int selectListCountBlogBoard(SqlSessionTemplate sqlSession, int blogNo) {
+		return sqlSession.selectOne("blogMapper.selectListCountBlogBoard", blogNo);
+	}
 
+	public ArrayList<BlogBoard> selectBlogBoardList(SqlSessionTemplate sqlSession, int blogNo, RowBounds rowBounds) {
+		return (ArrayList)sqlSession.selectList("blogMapper.selectBlogBoardList", blogNo, rowBounds);
+	}
+
+	public BlogBoard selectBlogBoard(SqlSessionTemplate sqlSession, int blogBoardNo) {
+		return sqlSession.selectOne("blogMapper.selectBlogBoard", blogBoardNo);
+	}
+	
+	// 블로그 댓글 관련 -----------------------------------------
+	// 댓글 작성
+	public int insertBlogReply(SqlSessionTemplate sqlSession, BlogReply blogReply) {
+		return sqlSession.insert("blogMapper.insertBlogReply", blogReply);
+	}
+
+	// 댓글 수 조회
+	public int selectListCountBlogReply(SqlSessionTemplate sqlSession, int blogBoardNo) {
+		System.out.println("댓글 수 조회 " + sqlSession.selectOne("blogMapper.selectListCountBlogReply", blogBoardNo));
+		return sqlSession.selectOne("blogMapper.selectListCountBlogReply", blogBoardNo);
+	}
+
+	// 댓글 리스트 조회
+	public ArrayList<BlogReply> selectListBlogReply(SqlSessionTemplate sqlSession, int blogBoardNo, RowBounds rowBounds) {
+		System.out.println("댓글 조회 리스트 : " + (ArrayList)sqlSession.selectList("blogMapper.selectListBlogReply", blogBoardNo, rowBounds));
+		return (ArrayList)sqlSession.selectList("blogMapper.selectListBlogReply", blogBoardNo, rowBounds);
+	}
+	
+	
 
 
 

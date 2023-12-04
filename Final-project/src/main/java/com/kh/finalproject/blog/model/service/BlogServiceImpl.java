@@ -12,6 +12,7 @@ import com.kh.finalproject.blog.model.dao.BlogDao;
 import com.kh.finalproject.blog.model.vo.Blog;
 import com.kh.finalproject.blog.model.vo.BlogBoard;
 import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
+import com.kh.finalproject.blog.model.vo.BlogReply;
 import com.kh.finalproject.blog.model.vo.Plant;
 import com.kh.finalproject.common.model.dao.CommonDao;
 import com.kh.finalproject.common.model.vo.Attachment;
@@ -90,12 +91,6 @@ public class BlogServiceImpl implements BlogService{
 	@Transactional
 	@Override
 
-	/*
-	public int insertBlogPlant(Plant plant, Attachment file) {
-		blogDao.insertBlogPlant(sqlSession, plant);
-		return commonDao.insertFiles(sqlSession, file);
-	}
-	 */	
 	public int insertBlogPlant(Plant plant, Attachment file) {
 		int result = blogDao.insertBlogPlant(sqlSession, plant);
 		if(file.getOriginalName() != null) {
@@ -139,13 +134,46 @@ public class BlogServiceImpl implements BlogService{
 	
 	// 게시판 -----------------------------------------
 	@Override
+	public int selectListCountBlogBoard(int blogNo) {
+		return blogDao.selectListCountBlogBoard(sqlSession, blogNo);
+	}
+	
+	@Override
 	public int insertBlogBoard(BlogBoard blogBoard) {
 		return blogDao.insertBlogBoard(sqlSession, blogBoard);
 	}
+	
+	@Override
+	public ArrayList<BlogBoard> selectBlogBoardList(PageInfo pi, int blogNo){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());  
+		return blogDao.selectBlogBoardList(sqlSession, blogNo, rowBounds);
+	}
+
+	@Override
+	public BlogBoard selectBlogBoard(int blogBoardNo){
+		return blogDao.selectBlogBoard(sqlSession, blogBoardNo);
+	}
 
 
+	// 댓글 -----------------------------------------
+	@Override
+	public int insertBlogReply(BlogReply blogReply) {
+		return blogDao.insertBlogReply(sqlSession, blogReply);
+	}
 
+	@Override
+	public int selectListCountBlogReply(int blogBoardNo) {
+		return blogDao.selectListCountBlogReply(sqlSession, blogBoardNo);
+	}
 
+	@Override
+	public ArrayList<BlogReply> seletListBlogReply(PageInfo pi, int blogBoardNo) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());  
+		return blogDao.selectListBlogReply(sqlSession, blogBoardNo, rowBounds);
+	}
+	
 
 
 }

@@ -163,27 +163,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		       EXP_NO = #{ expNo }
 	</select>
 	
-	<select id="selectReplyList" parameterType="_int" resultType="experienceReply">
-		SELECT
-		       EXP_REPLY_NO expReplyNo,
-		       REPLY_WRITER replyWriter,
-		       REPLY_CREATE_DATE replyCreateDate,
-		       REPLY_CONTENT replyContent,
-		       REPLY_STATUS replyStatus,
-		       REPLY_MODIFY_DATE replyModifyDate,
-		       REPLY_SECRET replySecret
-		  FROM
-		       TB_EXPERIENCE_REPLY
-		 WHERE 
-		       EXP_NO = #{ expNo }
-		   AND
-		   	   REPLY_STATUS = 'Y'
-		 ORDER
-		 	BY
-		 	   REPLY_CREATE_DATE DESC
-	</select>
-	
-	<!-- 체험학습 게시글 작성  -->
+	<!-- 체험학습 게시글 작성, 수정  -->
 	<insert id="insertExperience" parameterType="experience">
 		INSERT
 		  INTO
@@ -225,7 +205,76 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   )
 	</insert>
 	
+	<!-- 첨부파일 등록 -->
+	<!-- insert면 expNo를 가져오지 못하기 때문에 refNo가 CURRVAL이고, 
+		 update면 CURRVAL이 안돼서 expNo를 꼭 가져와야만 하기 때문에 번호가 있음 -->	
+	<insert id="insertFiles" parameterType="arraylist" >
+		INSERT 
+		  INTO
+		  		TB_ATTACHMENT
+				(
+			     FILE_NO,
+			     REF_NO,
+		         ORIGINAL_NAME,
+		         UPDATE_NAME,
+		         FILE_PATH,
+		         REF_TYPE,
+		         FILE_ANNOTATION,
+		         UPLOAD_DATE
+				)
+		SELECT 
+			   SEQ_ATTACHMENT_NO.NEXTVAL, 
+			   SEQ_EXPERIENCE.CURRVAL,
+			   AT.* 
+		  FROM (
+		<foreach item="item" collection="list" separator="UNION ALL ">
+		  	SELECT 
+				 	#{item.originalName},
+				 	#{item.updateName},
+				 	#{item.filePath},
+				 	#{item.refType},
+				 	#{item.fileAnnotation},
+				 	SYSDATE
+			   FROM DUAL
+		</foreach>
+		) AT
+	</insert>
 	
+	<insert id="updateFiles" parameterType="arraylist" >
+		INSERT 
+		  INTO
+		  		TB_ATTACHMENT
+				(
+			     FILE_NO,
+			     
+		         ORIGINAL_NAME,
+		         UPDATE_NAME,
+		         FILE_PATH,
+		         REF_TYPE,
+		         REF_NO,
+		         FILE_ANNOTATION,
+		         UPLOAD_DATE
+				)
+		SELECT 
+			   SEQ_ATTACHMENT_NO.NEXTVAL, 
+			   
+			   AT.* 
+		  FROM (
+		<foreach item="item" collection="list" separator="UNION ALL ">
+		  	SELECT 
+				 	#{item.originalName},
+				 	#{item.updateName},
+				 	#{item.filePath},
+				 	#{item.refType},
+				 	#{item.refNo},
+				 	#{item.fileAnnotation},
+				 	SYSDATE
+			   FROM DUAL
+		</foreach>
+		) AT
+	</insert>
+	
+	<!-- 체험학습 게시글 삭제 -->
 	<update id="deleteExperience" parameterType="_int">
 		UPDATE
 			   TB_EXPERIENCE
@@ -236,6 +285,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   AND
 		   	   EXP_NO = #{ expNo }
 	</update>
+	
+	<!-- 체험학습 게시글 첨부파일 수정(삭제) -->
+	<delete id="deleteExpFiles" parameterType="string">
+		DELETE 
+		  FROM
+		  	   TB_ATTACHMENT
+		 WHERE
+		 	   UPDATE_NAME = SUBSTR(#{ oldFile }, INSTR(#{ oldFile }, '/', - 1) + 1)
+		   AND
+		   	   REF_TYPE = 'experience'
+	</delete>
+	
+	<!-- 체험학습 댓글조회 -->
+	<select id="selectReplyList" parameterType="_int" resultType="experienceReply">
+		SELECT
+		       EXP_REPLY_NO expReplyNo,
+		       REPLY_WRITER replyWriter,
+		       REPLY_CREATE_DATE replyCreateDate,
+		       REPLY_CONTENT replyContent,
+		       REPLY_STATUS replyStatus,
+		       REPLY_MODIFY_DATE replyModifyDate,
+		       REPLY_SECRET replySecret
+		  FROM
+		       TB_EXPERIENCE_REPLY
+		 WHERE 
+		       EXP_NO = #{ expNo }
+		   AND
+		   	   REPLY_STATUS = 'Y'
+		 ORDER
+		 	BY
+		 	   REPLY_CREATE_DATE DESC
+	</select>
 	
 	<!-- 체험학습 게시글 댓글 작성 -->
 	<insert id="insertExpReply" parameterType="experienceReply">
@@ -258,7 +339,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   #{ expNo }
 			   )
 	</insert>
-
+	
+	<!-- 체험학습 댓글 삭제 -->
+	<delete id="deleteExpReply" parameterType="_int">
+		UPDATE
+			   TB_EXPERIENCE_REPLY
+		   SET
+		   	   REPLY_STATUS = 'N'
+		 WHERE
+		 	   EXP_REPLY_NO = #{ expReplyNo }
+	</delete>
+	
+	<!-- 체험학습 게시글 수정 -->
+	<update id="updateExperience" parameterType="experience">
+		UPDATE
+			   TB_EXPERIENCE
+		   SET
+			   EXP_TITLE = #{ expTitle },
+			   EXP_PEOPLE = #{ expPeople },
+			   EXP_CONTENT = #{ expContent } ,
+			   EXP_WORK_DATE = #{ expWorkDate },
+			   EXP_WORK_TIME = #{ expWorkTime },
+			   EXP_END_DATE = #{ expEndDate },
+			   EXP_UPDATE_DATE = SYSDATE,
+			   EXP_AREA = #{ expArea },
+			   EXP_ADDRESS = #{ expAddress },
+			   EXP_CATEGORY_NO = #{ expCategoryNo }
+		WHERE 
+			   EXP_NO = #{ expNo }
+	</update>
+	
 	<!-- 체험학습 게시글 사용자 좋아요 조회 -->
 	<select id="selectExpLike" parameterType="hashmap" resultType="_int">
 		SELECT 
@@ -297,59 +407,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   AND
 		   	   MEM_NO = #{ memNo }
 	</delete>
-	
-	<!-- 체험학습 댓글 삭제 -->
-	<delete id="deleteExpReply" parameterType="_int">
-		UPDATE
-			   TB_EXPERIENCE_REPLY
-		   SET
-		   	   REPLY_STATUS = 'N'
-		 WHERE
-		 	   EXP_REPLY_NO = #{ expReplyNo }
-	</delete>
-	
-	<!-- 체험학습 게시글 수정 -->
-	<update id="updateExperience" parameterType="experience">
-		UPDATE
-			   TB_EXPERIENCE
-		   SET
-			   EXP_TITLE = #{ expTitle },
-			   EXP_PEOPLE = #{ expPeople },
-			   EXP_CONTENT = #{ expContent } ,
-			   EXP_WORK_DATE = #{ expWorkDate },
-			   EXP_WORK_TIME = #{ expWorkTime },
-			   EXP_END_DATE = #{ expEndDate },
-			   EXP_UPDATE_DATE = SYSDATE,
-			   EXP_AREA = #{ expArea },
-			   EXP_ADDRESS = #{ expAddress },
-			   EXP_CATEGORY_NO = #{ expCategoryNo }
-		WHERE 
-			   EXP_NO = #{ expNo }
-	</update>
-	
-	<!-- 체험학습 게시글 첨부파일 수정 삭제 -->
-	<delete id="deleteExpFiles" parameterType="string">
-		DELETE 
-		  FROM
-		  	   TB_ATTACHMENT
-		 WHERE
-		 	   UPDATE_NAME = SUBSTR(#{ oldFile }, INSTR(#{ oldFile }, '/', - 1) + 1)
-		   AND
-		   	   REF_TYPE = 'experience'
-	</delete>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 </mapper>

@@ -1,40 +1,45 @@
 package com.kh.finalproject.experience.controller;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.gson.Gson;
 import com.kh.finalproject.common.controller.CommonController;
 import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
 import com.kh.finalproject.experience.model.service.ExperienceService;
 import com.kh.finalproject.experience.model.vo.Experience;
-import com.kh.finalproject.experience.model.vo.ExperienceReply;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
+@RequiredArgsConstructor
 public class ExperienceController {
 	
-	@Autowired
-	private ExperienceService experienceService;
-	@Autowired
-	private CommonController commonController;
+	private final ExperienceService experienceService;
+	private final CommonController commonController;
 	
 	// 체험학습 목록조회
 	/**
@@ -88,7 +93,68 @@ public class ExperienceController {
 		}
 	}
 	
-	// 수정하기 페이지로 이동
+	// 게시글 작성 페이지로 이동
+	/**
+	 * @return : 작성화면으로 이동
+	 */
+	@GetMapping("yrinsertExpForm.exp")
+	public String insertExperienceoForm() {
+		return "experience/experienceWrite";
+	}
+	
+	// 게시글 작성
+	/**
+	 * @param exp : 작성된 게시글의 정보
+	 * @param upfiles : 게시글에 첨부된 파일 배열
+	 * @param anno : 게시글에 첨부된 파일의 주석 배열
+	 * @param session : Session객체
+	 * @return : 게시글 목록으로 이동
+	 */
+	@PostMapping("yrinsertExp.exp")
+	public String insertExperience(Experience exp, 
+								   MultipartFile[] upfiles, 
+								   String[] anno, 
+								   HttpSession session) {
+		// for(MultipartFile upfile : upfiles) {
+//			System.out.println("인서트");
+//			System.out.println(upfiles);
+//			System.out.println(upfiles[0]);
+//			System.out.println(exp);
+		
+		System.out.println("갑자기 널?");
+		System.out.println(upfiles[0]);
+		System.out.println(anno[0]);
+		
+		ArrayList<Attachment> fileList = new ArrayList();
+		for(int i = 0; i < upfiles.length; i++) {
+			
+			System.out.println(i);
+			
+			if(!upfiles[i].getOriginalFilename().equals("")) {
+				
+				System.out.println("나오자 좀");
+				System.out.println(upfiles[i]);
+				
+				Attachment file = commonController.setFile(upfiles[i], session, "experience");
+				System.out.println("엥  여기 번호가 있음?????");
+				System.out.println(exp.getExpNo()); // 0
+				//file.setRefNo(exp.getExpNo());
+				System.out.println(anno[i]);
+				file.setFileAnnotation(anno[i]);
+				fileList.add(file);
+			} 
+		}
+		
+		if(experienceService.insertExperience(exp, fileList) > 0) {
+			session.setAttribute("alertMsg", "게시글이 등록되었습니다.");
+		} else {
+			session.setAttribute("alertMsg", "게시글 등록에 실패하셨습니다.");
+		}
+		return "redirect:yrlist.exp";
+	}
+	
+	
+	// 게시글 수정 페이지로 이동
 	// insert메소드 같이 써도 될거같은데 단일책임의원칙 걸려서 따로 씀
 	/**
 	 * @param exp : 수정할 때 기본으로 입력되어있을 게시글 정보
@@ -133,6 +199,9 @@ public class ExperienceController {
 		// 1. 원래 있던 파일 지우고 oldFileNo delete
 		if(oldFiles != null) {
 			for(String oldFile : oldFiles) {
+				System.out.println("올드파일");
+				System.out.println(oldFile);
+				System.out.println(oldFile.toString());
 				new File(session.getServletContext().getRealPath(oldFile)).delete();
 			}
 		}
@@ -162,66 +231,6 @@ public class ExperienceController {
 		return "redirect:yrlist.exp";
 	}
 	
-	// 게시글 작성 페이지로 이동
-	/**
-	 * @return : 작성화면으로 이동
-	 */
-	@GetMapping("yrinsertExpForm.exp")
-	public String insertExperienceoForm() {
-		return "experience/experienceWrite";
-	}
-	
-	// 게시글 작성
-	/**
-	 * @param exp : 작성된 게시글의 정보
-	 * @param upfiles : 게시글에 첨부된 파일 배열
-	 * @param anno : 게시글에 첨부된 파일의 주석 배열
-	 * @param session : Session객체
-	 * @return : 게시글 목록으로 이동
-	 */
-	@PostMapping("yrinsertExp.exp")
-	public String insertExperience(Experience exp, 
-								   MultipartFile[] upfiles, 
-								   String[] anno, 
-								   HttpSession session) {
-		// for(MultipartFile upfile : upfiles) {
-//		System.out.println("인서트");
-//		System.out.println(upfiles);
-//		System.out.println(upfiles[0]);
-//		System.out.println(exp);
-		
-		System.out.println("갑자기 널?");
-		System.out.println(upfiles[0]);
-		System.out.println(anno[0]);
-		
-		ArrayList<Attachment> fileList = new ArrayList();
-		for(int i = 0; i < upfiles.length; i++) {
-			
-			System.out.println(i);
-			
-			if(!upfiles[i].getOriginalFilename().equals("")) {
-				
-				System.out.println("나오자 좀");
-				System.out.println(upfiles[i]);
-				
-				Attachment file = commonController.setFile(upfiles[i], session, "experience");
-				System.out.println("엥  여기 번호가 있음?????");
-				System.out.println(exp.getExpNo()); // 0
-				//file.setRefNo(exp.getExpNo());
-				System.out.println(anno[i]);
-				file.setFileAnnotation(anno[i]);
-				fileList.add(file);
-			} 
-		}
-		
-		if(experienceService.insertExperience(exp, fileList) > 0) {
-			session.setAttribute("alertMsg", "게시글이 등록되었습니다.");
-		} else {
-			session.setAttribute("alertMsg", "게시글 등록에 실패하셨습니다.");
-		}
-		return "redirect:yrlist.exp";
-	}
-	
 	// 게시글 삭제
 	/**
 	 * @param expNo : 삭제할 게시글 번호
@@ -242,112 +251,29 @@ public class ExperienceController {
 		return "redirect:yrlist.exp";
 	}
 	
-	// 댓글 조회
-	/**
-	 * @param expNo : 조회할 댓글의 게시글 번호
-	 * @return : 댓글의 리스트 반환
-	 */
-	@ResponseBody
-	@RequestMapping(value="yrselectExpReplyList.exp", produces="application/json; charset=UTF-8")
-	public String selectExpReplyList(int expNo) {
-		System.out.println("하하");
-		System.out.println(experienceService.selectExpReplyList(expNo).toString());
-		return new Gson().toJson(experienceService.selectExpReplyList(expNo));
+	
+	// -------------------------------------------------------------------------------
+	//결제
+	// AJAX도 있음
+	@GetMapping("yrpayForm.exp")
+	public String payExperienceForm() {
+		return "experience/experiencePayView";
 	}
 	
-	// 댓글 작성
-	/**
-	 * @param newReply : 작성한 댓글의 정보
-	 * @return : 댓글작성 성공여부
-	 * @throws ParseException
-	 */
-	@ResponseBody
-	@PostMapping("yrinsertExpReply.exp")
-	public String insertExpReply(@RequestBody ExperienceReply newReply) throws ParseException {
-		
-		System.out.println("왜 이건 안들어가지");
-		newReply.setReplySecret((Integer.parseInt(newReply.getReplySecret()) > 0) ? "Y" : "N");
-		System.out.println(newReply.toString());
-		// {"expNo":"61","replyWriter":"user01","replyContent":"ㅁㄴㅇㄹ","replySecret":0}
-		
-		// 버전 2.8.6
-		//JsonObject jobj = JsonParser.parseString(expReply).getAsJsonObject();
-		// 버전 2.8.5
-		//JsonObject jobj = new JsonParser().parse(newReply).getAsJsonObject();
-		// System.out.println(jobj);
-		// {"expNo":"61","replyWriter":"user01","replyContent":"ㅁㄴㅇㄹ","replySecret":0}
-		
-		// System.out.println(jobj.get("expNo").getAsInt()); // 61
-		// System.out.println(jobj.get("replyContent")); // "ㅁㄴㅇㄹ"
-		
-		// set해서 넣어줄 수 밖에 없음 (null일수도 있으니까 이렇게 해주는게 맞음)
-//		ExperienceReply expReply = new ExperienceReply();
-//		expReply.setExpNo(jobj.get("expNo").getAsInt());
-//		expReply.setReplyContent(jobj.get("replyContent").getAsString());
-//		expReply.setReplyWriter(jobj.get("replyWriter").getAsString());
-//		expReply.setReplySecret((jobj.get("replySecret").getAsInt() > 0) ? "Y" : "N");
-		
-		return (experienceService.insertExpReply(newReply) > 0) ? "success" : "fail";
-	}
 	
-	// 좋아요 눌려있는지 체크
-	/**
-	 * @param expNo : 좋아요 확인할 게시글 번호
-	 * @param memNo : 좋아요 확인할 회원 번호
-	 * @return : 눌렀으면 1, 안눌렀으면 0반환
-	 */
-	@ResponseBody
-	@GetMapping("yrexpLikeCheck")
-	public int expLikeCheck(int expNo, int memNo) {
-		
-		HashMap map = new HashMap();
-		map.put("expNo", expNo);
-		map.put("memNo", memNo);
-		
-		return experienceService.selectExpLike(map);
-	}
+	
+	
+	
+	
+	
+	
 
-	// 좋아요 등록/취소
-	/**
-	 * @param expNo : 좋아요 누른 게시글 번호
-	 * @param likeVal : 좋아요 눌렀으면 1, 취소하면 0
-	 * @param memNo : 좋아요 누른 회원 번호
-	 * @return : 
-	 */
-	@ResponseBody
-	@GetMapping(value="yrexpLike")
-	public int expLike(int expNo, int likeVal, int memNo) {
-		
-		HashMap map = new HashMap();
-		map.put("expNo", expNo);
-		map.put("memNo", memNo);
-		
-		// 좋아요라면 
-		if(likeVal > 0) {
-			// 좋아요 등록
-			return experienceService.insertExpLike(map);
-			
-		} else {
-			// 좋아요 취소
-			return experienceService.deleteExpLike(map);
-		}
-	}
 	
-	// 체험학습 댓글 삭제
-	/**
-	 * @param expReplyNo : 삭제할 댓글 번호
-	 * @return : 성공 / 실패시 결과값 반환
-	 */
-	@ResponseBody
-	@PostMapping("yrdeleteExpReply")
-	public String deleteExpReply(int expReplyNo) {
-		
-		if(experienceService.deleteExpReply(expReplyNo) > 0) {
-			return "success";
-		} else {
-			return "fail";
-		}
-	}
+	
+	
+	
+	
+	
 	
 	
 	

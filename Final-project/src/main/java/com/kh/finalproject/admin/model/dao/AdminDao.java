@@ -51,6 +51,6 @@ public class AdminDao {
   }
 
   public ArrayList<BoardReport> selectReportedArticles(SqlSessionTemplate sqlSession) {
-    return sqlSession.selectList("boardMapper")
+    return (ArrayList) sqlSession.selectList("boardMapper.selectReportedArticles");
   }
 }

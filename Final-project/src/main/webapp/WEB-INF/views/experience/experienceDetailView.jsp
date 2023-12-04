@@ -327,8 +327,10 @@ th, td{
 			$('#likeCount').text('좋아요수 ' + likeCount);
 			
 			
-		
+			
 			$(() => {
+				
+				let userNo = 
 				
 				$.ajax({
 					url : 'yrexpLikeCheck',
@@ -347,6 +349,7 @@ th, td{
 					}
 				});
 			});
+		
 			
 			// 좋아요 클릭
 			function likeClick(){

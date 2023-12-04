@@ -24,6 +24,12 @@
    height: auto;
 }
 
+article{padding: 20px; border:1px solid #888; border-radius: 10px; margin-top: 10px;}
+
+main{height: auto; display: flex !important;}
+
+main > div{float: none;}
+
 #content{padding: 10px;}
 
 #blogInfo{
@@ -42,16 +48,21 @@
 
 #plantList{
 	padding-left: 10px;
-
 }
+
+#plantBox{width: 100%; height: auto;}
+
+#plantArticle{ height: auto;}
 
 #plantWrap > div > div{
     float: left;
-    height: 220px;
+    height: 225px;
     text-align: center;
     color: #448300;
     padding: 10px;
 }
+
+#plantNickName{padding: 10px;}
 
 #plantButtonWrap{width: 140px; item-align: center;}
 
@@ -103,13 +114,15 @@ ul{padding: 10px;}
 	height: 40px; 
 	font-size: 15px; 
 	color: gray;
+	padding-left: 7px;
 }
 
 #blogBoardTitle{
 	width: 100%;
 	height: 40px; 
-	font-size: 20px;
+	font-size: 30px;
 	font-weight: bold;
+	color: #448300;
 }
 
 #createDateWrap{
@@ -117,6 +130,7 @@ ul{padding: 10px;}
 	height: 40px; 
 	font-size: 15px; 
 	color: gray;
+	padding-left: 7px;
 }
 
 #blogBoardContent{
@@ -124,6 +138,7 @@ ul{padding: 10px;}
 	height: auto; 
 	font-size: 15px; 
 	padding: 10px;
+	border-top: 1px solid #888;
 }
 
 #blogImg img{object-fit: cover; width:200px;}
@@ -145,6 +160,37 @@ img[name=imageThumbnail]{
     height: 100%;
     object-fit: cover;
 }
+
+
+#commentWrap {width: 100%; height: auto; display: none;}
+
+#commentWrap > div{float: left;}
+
+#commentOption{width:100%; height:auto; font-size: 18px; font-weight: 600; padding:0 10px;}
+
+#commentOption > a{color : gray; font-size : 12px; padding:10px;}
+
+.commentContentBox{width: 100%; height: auto; display: none; padding:10px;}
+
+#commentContentBox > div{float: left; padding:5px; }
+
+#commentWriteMemId{width: 100%; height: 30px; font-weight: bold; font-size: 14px; padding: 0 10px;}
+
+#commentContent{width: 100%; height: 30px; font-size: 13px; padding: 0 10px;}
+
+#commentCreateDate{width: 100%; height: 30px; font-size: 12px; color: gray; padding: 0 10px;}
+
+#commentCreateDate > a{color: gray;}
+
+#commentInsertBox{width: 98%; height: 100px; border: 0.5px solid darkgray; border-radius: 10px; background-color: white; padding: 5px; height: 95%; margin: 10px; display: none;}
+
+#commentWriter{width: 100%; height: 30px; font-size : 15px; font-weight: 600; padding:0 10px;}
+
+#commentContentInsert{width: 100%; height: 30px; background-color: transparent; resize: none; outline: 0; border: 0; padding:0 10px;}
+
+.visible{display: block !important;}
+
+#clear{clear:both;}
 
 </style>
 <body>
@@ -185,59 +231,85 @@ img[name=imageThumbnail]{
 			    ${ blog.blogTitle }
 			</div>
 			
+			<br clear="both">
+			
 			<div id="content">
                <div id="plantWrap">
-               <div id="plantList">
-               <a href="selectList.bl_pl?blogNo=${ blog.blogNo }">식물 일지</a>
+               <div id="plantList" >
+                    <a href="selectList.bl_pl?blogNo=${ blog.blogNo }">식물 일지</a>
                </div>
-               <div>
-                        <c:forEach var="p" items="${ plantList }">
-	                        <div ><c:choose>
-		                        <c:when test="${ empty p.filePath }">
-		                        <div>
-		                        <img name="plantImg" src="resources/images/defaultPlant.png" value="${ p.plantNo }"/>
-		                        </div>
-		                        <div>
-		                        ${ p.plantNickName }
-		                        </div>
-		                        </c:when>
-		                        <c:otherwise>
-		                        <div><img name="plantImg" src="${ p.filePath }${ p.updateName }" value="${ p.plantNo }"/></div>
-		                        <div>${ p.plantNickName }</div>
-		                        </c:otherwise>
-	                        </c:choose></div>
-                        </c:forEach>
-                        <div id="plantButtonWrap">
-                        	<a href="insertForm.bl_pl?blogNo=${ blog.blogNo }"><button class="button forest">+</button></a>
-                        </div>
-                 </div>
-               </div>
-				<article>
-					<div id="blogBoardWrap">
-						<div id="boardCategory">
-						 게시글 카테고리
+				<div id="plantBox">
+					<c:forEach var="p" items="${ plantList }">
+						<div id="plantArticle">
+						<c:choose>
+							<c:when test="${ empty p.filePath }">
+							<div><img name="plantImg" src="resources/images/defaultPlant.png"
+									value="${ p.plantNo }" /></div>
+							</c:when>
+							<c:otherwise>
+							<div><img name="plantImg" src="${ p.filePath }${ p.updateName }"
+										value="${ p.plantNo }" /></div>
+							</c:otherwise>
+						</c:choose>
+							<div id="plantNickName">${ p.plantNickName }</div>
 						</div>
-						<div id="blogBoardTitle">
-						 	블로그 일반 게시글 제목 부분
-						</div>
-						<div id="createDateWrap" >
-							2023/10/31 [15:32]
-						</div>
-						<div id="blogBoardContent">
-							블로그 글 내용입니다.~~~~ <br>
-							우하아하<br>
-							블로그 글 내용입니다.~~~~ <br>
-							우하아하<br>
-							블로그 글 내용입니다.~~~~ <br>
-							우하아하<br>
-							블로그 글 내용입니다.~~~~ <br>
-							우하아하<br>
-						</div>
+					</c:forEach>
+						
+					<div id="plantButtonWrap">
+						<a href="insertForm.bl_pl?blogNo=${ blog.blogNo }">
+						<button class="button forest">+</button></a>
 					</div>
 					<br clear="both">
-
-
+				</div>
+				</div>
+				
+				<c:forEach var="b" items="${ blogBoardList }" >
+				<article>
+					<div id="blogBoardWrap" >
+						<div id="boardCategory">
+						 	${ b.categoryMemName }
+						</div>
+						<div id="blogBoardTitle">
+						 	${ b.blogBoardTitle }
+						</div>
+						<div id="createDateWrap" >
+							${ b.createDate }
+						</div>
+						<div id="blogBoardContent">
+							${ b.blogBoardContent }
+						</div>
+					</div>
+					
+					<br clear="both">
+					
+					<div id="commentWrap" name="${ b.blogBoardNo }" name="commentWrap_${b.blogBoardNo}">
+						<div id="commentOption">
+							<button id="toggleButton" onclick="buttonClicked(this)">&or;댓글 18개</button> 좋아요 30
+						</div>
+						<!-- 
+						<div id="commentContentBox" name="toggleDiv" display="block"> 
+							<div id="commentWriteMemId">
+								댓글 단 유저 id
+							</div>
+							<div id="commentContent">
+								댓글 내용입니다
+							</div>
+							<div id="commentCreateDate">
+								2023.10.17 13:14&nbsp;&nbsp;
+								<a href="#">답글 쓰기</a>
+							</div>
+						</div>	
+						-->				
+						<div id="commentInsertBox" name="toggleDiv">
+							<div id="commentWriter">유저ID</div>
+							<textarea id="commentContentInsert" placeholder="댓글을 남겨보세요"></textarea>
+							<div id="submitWrap"><a id="insertCommentButton" href='#' onclick="insertComment(this);" name="${ b.blogBoardNo }">등록</a></div>
+						</div>
+					</div>
+					
+					<br clear="both">
 				</article>
+				</c:forEach>
 			</div>
 			
 		
@@ -249,14 +321,125 @@ img[name=imageThumbnail]{
 		
 	</main>
 	
-	<script>
 	
-	 $('img[name=plantImg]').on('click', function(e){
+		<script>
+		// 댓글 작성
+		function insertComment(){
+			var writer
+			var blogBoardNo = $(arguments[0]).attr('name');
+			var content = $(arguments[0]).parent().parent().children().next().val();
+			
+			if('${ sessionScope.loginUser.memNo}' != ''){
+				
+				$.ajax({
+					type: "POST",
+					url: 'insert.bl_re', 
+					data: {blogBoardNo : blogBoardNo, 
+						   writer: '${ sessionScope.loginUser.memNo}', 
+						   blogReplycontent: content}, 
+					success: data => {
+						console.log('댓글 입력 통신 성공');
+					}, 
+					error: () => {
+						console.log('댓글 입력 통신 실패');
+					}
+				});
+			}
+			else{
+				alert('로그인 후 이용 가능한 기능입니다.');
+			}
+		};
+		</script>
+	
+	
+	<script>
+	// 식물 사진 클릭 시 식물 상세보기로 이동
+	 $('img[name=plantImg]').on('click', e => {
 		var plantNo = $(e.target).attr('value');
 		location.href = "select.bl_pl?plantNo=" + plantNo ; 
-		 
 	 });
-	 
+	
+	// 토글 이벤트 실행 상태 
+	 let flag = true;
+	
+	
+	// 댓글 영역 클릭 했을 시 토글 이벤트
+	function buttonClicked(button) {
+			//console.log($(arguments[0]).parent().parent().attr('name'));
+			
+			var commentWrapId = button.parentNode.parentNode.getAttribute('name');
+  			var commentWrap = document.getElementsByName(commentWrapId)[0];
+			
+  		  if (commentWrap.style.display === 'none') {
+  		    commentWrap.style.display = 'block';
+  		  } else {
+  		    commentWrap.style.display = 'none';
+  		  }
+  			
+			const toggleButton = commentWrap.find('#toggleButton');
+			const commentInsertBox = commentWrap.find('#commentInsertBox');
+			const divElements = toggleButton.siblings().add(commentInsertBox);
+			//$(arguments[0]).parent().siblings().toggle('visible');
+			
+			divElements.toggle('visible');
+
+			  if (flag) {
+			  	flag = false; // AJAX 요청을 보내기 전에 플래그 변수를 false로 설정하여 다음에 요청이 발생하지 않도록 합니다.
+			  } 
+			  else {
+			  	return; // 이미 AJAX 요청을 보냈으면 함수를 종료합니다.
+			  }
+			
+			
+				$.ajax({
+					url: 'selectList.bl_re',
+					data: {currentPage: 1,
+						   blogBoardNo: commentWrap.attr('name')}, 
+					success: data => {
+						console.log('댓글 불러오기 통신 성공');
+						jQuery(document).ready(function(){
+							const commentOption = commentWrap.find('#commentOption'); // commentWrap 내부에서 commentOption을 찾음
+						for(let i in data){
+						
+							const commentOption = $('#commentOption'); // 여기 밑에서부터 추가되어야 함
+							
+							var memNick = data[i].memNick;
+							var blogReplycontent = data[i].blogReplycontent;
+							var createDate = data[i].createDate;
+							
+							const commentWriteMemId = document.createElement("div");
+							$(commentWriteMemId).html('memNick')
+												.addClass('#commentWriteMemId');
+							var strMemId = "<div id='commentWriteMemId'>" + memNick + "</div>";
+							
+							const commentContent = document.createElement("div");
+							$(commentContent).html('commentContent')
+											 .addClass('#commentContent');
+							var strContent = "<div id='commentContent'>" + blogReplycontent + "</div>";
+							
+							
+							const commentCreateDate = document.createElement("div");
+							$(commentCreateDate).html('createDate')
+												.addClass('#commentContent');
+							var strDate = "<div id='commentCreateDate'>" + createDate + "</div>";
+							
+							$(commentOption).append(strMemId).append(strContent).append(strDate);
+							
+						}
+
+						});
+					},
+					error: () => {
+						console.log('댓글 불러오기 통신 실패');
+					}
+				});
+			console.log(flag);
+	};
+	
+
+	
+	
+	
 	</script>
 	
 	

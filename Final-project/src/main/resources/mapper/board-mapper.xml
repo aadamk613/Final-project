@@ -27,7 +27,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="BOARD_NO" property="boardNo"></result>
 		<result column="MEM_NICK" property="memNo"></result>
 	</resultMap>
-
+	<resultMap id="memberResultSet" type="member">
+		<result column="MEM_ID" property="memId"/>
+	</resultMap>
 	<resultMap id="boardReportResultSet" type="boardReport">
 		<result column="REPORT_NO" property="reportNo"/>
 		<result column="REPORT_CONTENT" property="reportContent"/>
@@ -35,6 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="REF_BOARD_NO" property="refBoardNo"/>
 		<result column="REF_MEMBER_NO" property="refMemberNo"/>
 		<result column="MEM_NO" property="memNo"/>
+		<collection property="member" resultMap="memberResultSet"/>
 	</resultMap>
 
 	<select id="selectBoardCount" resultType="_int">
@@ -191,10 +194,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			     IS_BLIND = 'N'
 			  AND
 			     BOARD_NO = #{boardNo}
-  </select>
-	
-	 
-	 		<select id="selectFile" resultType="attachment">
+	</select>
+
+	<select id="selectFile" resultType="attachment">
 		SELECT
 		      FILE_NO fileNo
 		     ,ORIGINAL_NAME originalName
@@ -220,8 +222,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  FROM
 		      TB_BOARD
 	</select>
-	
-		<insert id="insertFile" parameterType="attachment">
+
+	<insert id="insertFile" parameterType="attachment">
 		INSERT
 		  INTO
 		      TB_ATTACHMENT
@@ -236,7 +238,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		      )
 		VALUES
 		      (
-		      SEQ_FILE_NO.NEXTVAL
+		      SEQ_ATTACHMENT_NO.NEXTVAL
 		     ,#{refNo} + 1
 		     ,#{originalName}
 		     ,#{updateName}
@@ -376,36 +378,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   AND
 			      REF_BOARD_NO = #{refBoardNo}
 	</select>
-
 	<select id="selectReportedArticles" resultMap="boardReportResultSet">
 		SELECT
 			REPORT_NO,
 			REPORT_CONTENT,
 			TO_CHAR(REPORT_DATE, 'YYYY/MM/DD HH24:MI:SS') REPORT_DATE,
 			REF_BOARD_NO,
-			SUB.MEM_NO,
-			SUB.MEM_ID,
 			REF_MEMBER_NO,
-			MEMBER.MEM_ID
+			MEM_ID
 		FROM
-			(
-				SELECT
-					REPORT_NO,
-					REPORT_CONTENT,
-					REPORT_DATE,
-					REF_BOARD_NO,
-					MEM_NO,
-					MEM_ID,
-					REF_MEMBER_NO
-				FROM
-						TB_BOARD_REPORT
-				LEFT JOIN
-						MEMBER USING(MEM_NO)
-			) SUB
-			LEFT JOIN
-				MEMBER ON (REF_MEMBER_NO = MEMBER.MEM_NO)
-			ORDER BY
-				REPORT_NO;
+			TB_BOARD_REPORT
+		LEFT JOIN
+			TB_MEMBER ON(REF_MEMBER_NO = TB_MEMBER.MEM_NO)	
+		ORDER BY
+			REPORT_NO
 	</select>
 	
 	<insert id="insertComment" parameterType="boardComment">

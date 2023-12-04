@@ -123,9 +123,21 @@ public class MemberServiceImpl implements MemberService {
     return memberDao.getAnswerNumber(sqlSession, loginUser);
   }
   
+  /*
   @Override
-  public int businessPage(Member memStatus) {
+  public int businessPage1(Member memStatus) {
 	  return memberDao.businessPage(sqlSession, memStatus);
-		  
 	  }
+	  */
+@Override
+public int businessPage(String memStatus) {
+	// TODO Auto-generated method stub
+	return 0;
+}
+
+@Override
+public int businessPage(Member m, String memStatus) {
+	// TODO Auto-generated method stub
+	return 0;
+}
 }
