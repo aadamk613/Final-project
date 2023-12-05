@@ -2,7 +2,6 @@ package com.kh.finalproject.blog.controller;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -10,8 +9,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.finalproject.blog.model.service.BlogService;
 import com.kh.finalproject.blog.model.vo.Plant;
+import com.kh.finalproject.blog.model.vo.PlantReport;
 import com.kh.finalproject.common.controller.CommonController;
 import com.kh.finalproject.common.model.service.CommonService;
 import com.kh.finalproject.common.model.vo.Attachment;
@@ -185,7 +183,32 @@ public class BlogPlantController {
 	
 	// 식물 일지 등록하기
 	@RequestMapping("insert.bl_pr")
-	public String insertFormBlogPlantReport() {
-		return "blog/reportInsertForm";
+	public String insertBlogPlantReport(PlantReport plantReport,
+			 							HttpServletRequest request, 
+			 							HttpSession session,
+			 							MultipartFile upfile,
+			 							ModelAndView mv) {
+		System.out.println("식물 일지 작성 plantReport : " + plantReport);
+		Attachment file = new Attachment();
+		System.out.println("식물 일지 작성 file : " + file);
+		System.out.println("식물 일지 작성 upfile " + upfile);
+		
+		if(upfile != null && !upfile.getOriginalFilename().equals("")) { // 첨부파일이 있을 경우
+			System.out.println("식물 등록 첨부파일 없을 경우");
+			file = commonController.setFile(upfile, session, "plantReport");
+			System.out.println(file);
+		}
+		
+		
+		System.out.println("식물 일지 등록 첨부파일 없을 경우");
+		if(blogService.insertBlogPlantReport(plantReport, file) > 0) { // 성공
+			session.setAttribute("alertMsg", "일지 작성 성공");
+			return "redirect:selectList.bl_pl?blogNo=" + plantReport.getTopPlantNo();
+		} else {
+			session.setAttribute("errorMsg", "일지 작성 실패");
+			return "common/errorPage";
+		}
+		
+		
 	}
 }

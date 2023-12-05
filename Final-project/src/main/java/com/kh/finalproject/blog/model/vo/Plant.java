@@ -1,6 +1,7 @@
 package com.kh.finalproject.blog.model.vo;
 
 
+import java.util.List;
 import java.util.Date;
 
 import lombok.Getter;
@@ -24,5 +25,7 @@ public class Plant {
 	
 	private String filePath;
 	private String updateName;
+	
+	private List<PlantReport> plant;
 	
 }

@@ -120,10 +120,11 @@ textarea{
 	padding: 20px;
 	text-align: center;
 }
-
-.displayNone{display: none; }
-#plantCareModal{background-color: white; z-index: 2; position:absolute; width:300px; height: 300px;}
-
+.visible{display: block !important;}
+#plantCareModal{background-color: white; z-index: 2; position:absolute; width:500px; height: 500px; display:none;}
+#plantCareWrap{ margin: 50px auto; padding: 20px; border-radius: 10px; border: 1px solid #888;}
+#plantCareWrap div{width: 400px; height: 50px;}
+#plantCareWrap div button{margin: 10px auto;}
 </style>
 <body>
 
@@ -140,101 +141,117 @@ textarea{
 			<div id="blogTitle">
 			   	${ plant.plantName }
 			</div>
-			
+
 			<div id="content">
-                
+				
+				<!-- 관리 모달 창 -->
+				<div id="plantCareModal">
+				<div id="plantCareWrap">
+					<form action="insert.bl_pr" method="post" enctype="multipart/form-data">
+					<input type="hidden" name="topPlantNo" value="${ plant.plantNo }"/>
+						<div>${ plant.plantNickName }관리하기</div>
+						<div>
+							<input type="date" name="reportDate" required>
+						</div>
+						<div>
+							<select name="plantReportcategoryNo">
+								<option value="20">물주기</option>
+								<option value="30">물갈이하기</option>
+								<option value="40">가지치기</option>
+								<option value="50">영양관리</option>
+								<option value="60">분갈이하기</option>
+							</select>
+						</div>
+						<div>
+							<button type="submit">기록하기</button>
+						</div>
+						</form>
+						<div>
+							<button id="backButton">돌아가기</button>
+						</div>
+				</div>
+				</div>
+
 				<article>
-                    <div id="plantInfoWrap">
-                        <div id="plantImg">
-                        	<c:choose>
-	                        	<c:when test="${ empty plant.filePath }" >
-	                        	<img width="100%" height="100%" src="resources/images/defaultPlant.png" class="files" />
+					<div id="plantInfoWrap">
+						<div id="plantImg">
+							<c:choose>
+								<c:when test="${ empty plant.filePath }">
+									<img width="100%" height="100%"
+										src="resources/images/defaultPlant.png" class="files" />
 								</c:when>
 								<c:otherwise>
-								<img width="100%" height="100%" src="${ plant.filePath }${ plant.updateName }" class="files" />
+									<img width="100%" height="100%"
+										src="${ plant.filePath }${ plant.updateName }" class="files" />
 								</c:otherwise>
 							</c:choose>
 						</div>
-                        <div id="plantInfo">
-                            <ul>
-                                <li id="plantName">
-                                	<div>식물 이름 : ${ plant.plantName }</div>
-                                	<div id="deleteWrap">
-									<button class="button beige" onclick="plantManage('update');">수정하기</button>		                                	
-                                	<button class="button forest delete" onclick="plantManage('del');">-</button>
-                                	</div>
-                                	<clear="both">
-                                </li>
-                                <li id="plantNick">
-	                                <div>별명 : ${ plant.plantNickName }</div>
-	                                <div id="plantCreateDate">D+${ plant.plantLogDate }</div>
-                                </li>
-                                <li id="plantButtonWrap">
-                                <form action="insertForm.bl_pr" method="post" id="postForm">
-                                	<input type="hidden" id="plantNo" name="plantNo" value="${ plant.plantNo }">
-                                	<input type="hidden" name="plantNickName" value="${ plant.plantNickName }">
-									
-                                	<button type="submit" class="button forest" id="plantReportButton">일지 추가</button>
-                                    <a id="plantCareButton" class="button forest" onclick="plantCareModal();">관리하기</a>
-                                </form>
-                                </li>
-                               <div id="plantCareModal" class="displayNone" >
-                                    	<form action="insert.bl_pr" method="post" >
-                                    	<div>${ plant.plantNickName } 관리하기</div>
-                                    	<div>
-                                    	<input type="date" name="plantLogDate">
-                                    	
-                                    	</div>
-                                    	<div>
-                                    		<select name="plantReportCategoryName">
-	                                		<option value="20">물주기</option>
-	                                		<option value="30">물갈이하기</option>
-	                                		<option value="40">가지치기</option>
-	                                		<option value="50">영양관리</option>
-	                                		<option value="60">분갈이하기</option>
-                                			</select>
-                                    	</div>
-                                    	<div>
-                                    		<button type="submit">기록하기</button>
-                                    	</div>
-                                    </form>	
-                                    </div>
-                                    
-                            </ul>
-                        </div>
-                        
-                        <div id="plantReport">
-                        	<table>
-                        		<tr>
-                        			2023-11-20 11일전
-                        		</tr>
-                        		<tr>
-                        			식물 일지 or 식물 관리
-                        		</tr>
-                        		<tr>
-                        			내용
-                        		</tr>
-                        		
-                        		
-                        	</table>
-                        
-                        </div>
-                        
-                    </div>
-                    <br clear="both">
+						<div id="plantInfo">
+							<ul>
+								<li id="plantName">
+									<div>식물 이름 : ${ plant.plantName }</div>
+									<div id="deleteWrap">
+										<button class="button beige" onclick="plantManage('update');">수정하기</button>
+										<button class="button forest delete"
+											onclick="plantManage('del');">-</button>
+									</div> <clear="both">
+								</li>
+								<li id="plantNick">
+									<div>별명 : ${ plant.plantNickName }</div>
+									<div id="plantCreateDate">키우기 시작한 날짜: ${ plant.plantLogDate }</div>
+								</li>
+								<li id="plantButtonWrap">
+									<form action="insertForm.bl_pr" method="post" id="postForm">
+										<input type="hidden" id="plantNo" name="plantNo"
+											value="${ plant.plantNo }"> <input type="hidden"
+											name="plantNickName" value="${ plant.plantNickName }">
+
+										<button type="submit" class="button forest"
+											id="plantReportButton">일지 추가</button>
+										<a id="plantCareButton" class="button forest">관리하기</a>
+									</form>
+								</li>
+
+							</ul>
+						</div>
+
+						<div id="plantReport">
+							<table>
+								<tr>2023-11-20 11일전
+								</tr>
+								<tr>식물 일지 or 식물 관리
+								</tr>
+								<tr>내용
+								</tr>
+							</table>
+						</div>
+
+					</div>
+					<br clear="both">
 				</article>
 			</div>
 			<div><a href="javascript:window.history.back();"><button type="button" class="button beige" id="goBlogHome">돌아가기</button></a></div>
 
 			<script>
 			
-				function plantCareModal(){
-					$('#plantCareModal').removeClass('displayNone');
-				} 
+			// 식물 관리 모달 창 토글
+			$('#plantCareButton').on('click', (function(){
+				$('#plantCareModal').toggle('visible');
+				consloe.log($('#plantCareModal'));
+				
+			}));
+			
+			// 식물관리 모달 창 닫기
+			$('#backButton').on('click', function hideModal(){
+				$('#plantCareModal').hide();
+			});
+			
+			
+			
 			
 			
 				// 식물 관리하기
-	         	function plantCare(category){
+	         	function plantCareModal(category){
 	            		
 	            		if(category == 10){ // 일지 추가 클릭 시
 	            			console.log($(arguments[0]).parent().children().find('input[plantNo]').val());
@@ -299,7 +316,6 @@ textarea{
 		</section>
 
 		<aside id="pageAsideRight" class="aside">
-		 달력 부분
 		</aside>
 		
 	</main>
