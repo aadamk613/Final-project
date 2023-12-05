@@ -11,8 +11,8 @@ import lombok.ToString;
 public class Payment {
 	
 	// 요청 값
-	private String orderId;
 	private String userId;
+	private String orderId;
 	private String contact;
 	private String payStatus;
 	
@@ -20,6 +20,10 @@ public class Payment {
 	private String tid; // 결제 승인 시 필요 (결제 고유 번호)
 	
 	private String approvedAt;
+	private int quantity;
+	private String itemName;
+	
+	private int totalAmount;
 	
 	
 }

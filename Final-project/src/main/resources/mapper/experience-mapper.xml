@@ -25,6 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="EXP_LIKE_COUNT" property="expLikeCount" />
 		<result column="EXP_REPLY_COUNT" property="expReplyCount" />
 		<result column="EXP_SUPPORT_COUNT" property="expSupportCount" />
+		<result column="EXP_PRICE" property="expPrice" />
 	</resultMap>
 	
 	<resultMap id="expReplyResultSet" type="experienceReply">
@@ -65,7 +66,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		       EXP_AREA,
 		       EXP_ADDRESS,
 		       EXP_CATEGORY_NO,
-		       EXP_CATEGORY_NAME
+		       EXP_CATEGORY_NAME,
+		       EXP_PRICE
 		  FROM
 		       TB_EXPERIENCE 
 		  JOIN 
@@ -112,7 +114,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		       EXP_CATEGORY_NAME, 
 		       NVL(EXP_LIKE_COUNT, 0) EXP_LIKE_COUNT,
 		       NVL(EXP_REPLY_COUNT, 0) EXP_REPLY_COUNT,
-		       NVL(EXP_SUPPORT_COUNT, 0) EXP_SUPPORT_COUNT
+		       NVL(EXP_SUPPORT_COUNT, 0) EXP_SUPPORT_COUNT,
+		       NVL(EXP_PRICE, 0) EXP_PRICE
 		  FROM
 		       TB_EXPERIENCE 
 		  JOIN 
@@ -183,7 +186,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   EXP_AREA,
 			   EXP_ADDRESS,
 			   EXP_CATEGORY_NO,
-			   EXP_WORK_TIME
+			   EXP_WORK_TIME,
+			   EXP_PRICE
 		  	   )
 		VALUES
 			   (
@@ -201,7 +205,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   #{ expArea },
 			   #{ expAddress },
 			   #{ expCategoryNo },
-			   #{ expWorkTime }
+			   #{ expWorkTime },
+			   #{ expPrice }
 			   )
 	</insert>
 	
@@ -364,7 +369,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   EXP_UPDATE_DATE = SYSDATE,
 			   EXP_AREA = #{ expArea },
 			   EXP_ADDRESS = #{ expAddress },
-			   EXP_CATEGORY_NO = #{ expCategoryNo }
+			   EXP_CATEGORY_NO = #{ expCategoryNo },
+			   EXP_PRICE = #{ expPrice }
 		WHERE 
 			   EXP_NO = #{ expNo }
 	</update>
@@ -432,7 +438,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   )
 	</insert>
 	
-	<select id="selectPayment" parameterType="payment" resultType="payment">
+	<select id="selectPayment" parameterType="string" resultType="payment">
 		SELECT
 			   ORDER_ID orderId,
 		  	   USER_ID userId,
@@ -442,9 +448,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  FROM
 		  	   TB_PAYMENT
 		 WHERE
-		 	   ORDER_ID = #{ orderId }
-		   AND
 		   	   USER_ID = #{ userId }
+		   AND
+		   	   PAY_STATUS = 'N'
 	</select>
 	
 	

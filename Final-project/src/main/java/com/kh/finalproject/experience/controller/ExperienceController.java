@@ -10,6 +10,8 @@ import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -62,7 +64,9 @@ public class ExperienceController {
 		// 조회수 증가 성공 시 
 		if(experienceService.increaseCount(expNo) > 0 ) { 
 			// 게시글 상세조회
-			model.addAttribute("exp", experienceService.selectExperience(expNo));
+			//model.addAttribute("exp", experienceService.selectExperience(expNo));
+			// 결제때 필요해서 session에 담음
+			session.setAttribute("exp", experienceService.selectExperience(expNo));
 			
 			System.out.println("파일넘버 나와라");
 			System.out.println(model.getAttribute("exp"));
@@ -74,6 +78,7 @@ public class ExperienceController {
 			model.addAttribute("files", commonController.selectFiles(expNo, "experience"));
 			System.out.println("왜 아무것도 안나와");
 			System.out.println(model.getAttribute("files"));
+			
 			return "experience/experienceDetailView";
 		// 조회수 증가 실패 시	
 		} else {
@@ -249,21 +254,29 @@ public class ExperienceController {
 	// 1. 결제하기 버튼 누르러가기
 	@GetMapping("yrpayForm.exp")
 	public String payExperienceForm() {
+		
+		//System.out.println("이래도 들어오나");
+		//System.out.println(exp);
+		
+		//model.addAttribute("expNo", exp);
+		
 		return "experience/experiencePayView";
 	}
 	
 	// 결제 준비 성공 시 오는 곳
 	// http://localhost:8001/final/yrsendPayment.exp?pg_token=b63076e46d6b58fbbea6
 	@GetMapping("yrsendPayment.exp")
-	public String sendPayment(String pg_token, Model model) throws IOException, ParseException {
+	public String sendPayment(String pg_token, String userId, Model model) throws IOException, ParseException {
 		
 		System.out.println("결제창");
 		//System.out.println(session.getAttribute("nextRedirectPcUrl"));
 		System.out.println(pg_token);
-		
+		System.out.println("이것도 나와줄거니");
+		//System.out.println(orderId);
+		System.out.println(userId);
 		
 		// 결제 승인 보내기
-		Payment payment = experienceService.payExp(pg_token);
+		Payment payment = experienceService.payExp(pg_token, userId);
 		System.out.println("결제 승인 시각");
 		//System.out.println(approvedAt);
 		

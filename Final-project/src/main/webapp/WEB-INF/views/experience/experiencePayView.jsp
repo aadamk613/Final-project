@@ -12,67 +12,76 @@
 
 
 </head>
-<body>
+<style>
 
+h3{
+	text-align : center;
+}
+
+.container{
+	width : 500px;
+	padding-top: 50px;
+    margin: 50px 500px;
+}
+
+input {
+   width: 100%;
+   padding: 12px 20px;
+   margin: 8px 0px 0px 0px;
+   display: inline-block;
+   border: 1px solid #ccc;
+   box-sizing: border-box;
+}
+
+/* Set a style for all buttons */
+button {
+    background-color: rgb(88, 87, 87);
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+</style>
+<body>
+	<h3>${ loginUser.memId }님의 즐거운 체험학습 신청란입니다.</h3>
+	<h3>결제까지 완료되어야 신청접수되오니 참고하시기 바랍니다.</h3>
+	
+	<div class="container">
+		<input type="text" name="contact" placeholder="공지에 대한 연락을 받으실 연락처를 적으세요." /> <br />
+		<input type="number" name="quantity" />
+		
+		<button type="button" onclick="kakaopay();">결제하기</button>
+	</div>
 	
 	
-	<button type="button" onclick="kakaopay();">결제하기</button>
 	
 	<script>
 		
 		// 1-1. 결제하기 버튼 누르면 이동
+		
+		
+		
+		
 		function kakaopay(){
 			$.ajax({
 				url : 'yrreadyForPay.exp',
+				data : {
+					userId : '${loginUser.memId}',
+					contact : $('input[name=contact]').val(),
+					quantity : $('input[name=quantity]').val()
+				},
 				success : result => {
-					console.log(result);
-					//console.log(result.nextRedirectPcUrl);
-					
-					//  url을 보내면 성공url뒤에 쿼리스트링으로 pg_token을 넘겨줌
+					// url을 보내면 성공url뒤에 쿼리스트링으로 pg_token을 넘겨줌
 					location.href=result;
-					
-					//location.href='yrtest.exp/' + result;
-					
-					//kakao(result);
 				},
 				error : () => {
 					console.log("결제 통신 오류");
 				}
-			
-				
-				
 			})
-			
 		}
-		
-
-		function kakao(value){
-			
-			console.log("여기 들어와야 해");
-			console.log(value);
-			console.log(value.nextRedirectPcUrl);
-			const nextUrl = value.nextRedirectPcUrl;
-			//location.href=nextUrl;
-			
-			$.ajax({
-				url : nextUrl,
-				
-				success : result => {
-					console.log(result);
-					
-					//location.href='yrtest.exp/' + result;
-				},
-				error : () => {
-					console.log("결제 통신 오류");
-				}
-			
-				
-				
-			})
-			
-			
-		}
-	
 	</script>
 
 
