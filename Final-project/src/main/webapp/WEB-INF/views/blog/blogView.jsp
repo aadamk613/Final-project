@@ -71,6 +71,7 @@ main > div{float: none;}
 	height: 45px;
 	cursor: pointer;
 }
+
 .forest{
     font-size: 20px;
     font-weight: bolder;
@@ -97,6 +98,7 @@ main > div{float: none;}
 }
 
 li{list-style-type: none;}
+
 ul{padding: 10px;}
 
 #blogTitle{font-size: 25px; font-weight: bold; padding: 10px;}
@@ -187,8 +189,6 @@ img[name=imageThumbnail]{
 #commentWriter{width: 100%; height: 30px; font-size : 15px; font-weight: 600; padding:0 10px;}
 
 #commentContentInsert{width: 100%; height: 30px; background-color: transparent; resize: none; outline: 0; border: 0; padding:0 10px;}
-
-.visible{display: block !important;}
 
 #clear{clear:both;}
 
@@ -316,13 +316,13 @@ img[name=imageThumbnail]{
 		</section>
 		
 		<aside id="pageAsideRight" class="aside">
-		 달력 부분
 		</aside>
 		
 	</main>
 	
 	
 	<script>
+
 		// 댓글 작성
 		function insertComment(){
 			var blogBoardNo = $(arguments[0]).attr('name');
@@ -331,10 +331,9 @@ img[name=imageThumbnail]{
 			console.log(aa);
 			
 			if('${ sessionScope.loginUser.memNo}' != ''){
-				
 				$.ajax({
 					type: "POST",
-					url: 'insert.bl_re', 
+					url: 'blog/insert.re', 
 					data: {blogBoardNo : blogBoardNo, 
 						   writer: '${ sessionScope.loginUser.memNo}', 
 						   blogReplycontent: content.val()}, 
@@ -342,7 +341,6 @@ img[name=imageThumbnail]{
 						console.log('댓글 입력 통신 성공');
 						alert('댓글 작성 성공');
 						content.val('');
-						
 					}, 
 					error: () => {
 						console.log('댓글 입력 통신 실패');
@@ -368,6 +366,16 @@ img[name=imageThumbnail]{
 	    commentWrap.style.display = 'none';
 	  }
   			
+	
+	  selectReply(button);
+	  commentWrap = $(button);
+	  
+	  if (commentWrap.css('display') === 'none') {
+		    commentWrap.css('display', 'block');
+		  } else {
+		    commentWrap.css('display', 'none');
+		  }
+	  
 			const toggleButton = commentWrap.find('#toggleButton');
 			const commentInsertBox = commentWrap.find('#commentInsertBox');
 			const divElements = toggleButton.siblings().add(commentInsertBox);
@@ -376,10 +384,10 @@ img[name=imageThumbnail]{
 			divElements.toggle('visible');
 
 			  if (flag) {
-			  	flag = false; // AJAX 요청을 보내기 전에 플래그 변수를 false로 설정하여 다음에 요청이 발생하지 않도록 합니다.
+			  	flag = false; 
 			  } 
 			  else {
-			  	return; // 이미 AJAX 요청을 보냈으면 함수를 종료합니다.
+			  	return; 
 			  }
 			
 			console.log(flag);
@@ -390,10 +398,13 @@ img[name=imageThumbnail]{
 		
 	// 댓글 조회 
 	// 인자값: 어디서 실행 되는지 
-	function selectReply(){
+	function selectReply(button){
+		commentWrap = $(button.parentNode.nextElementSibling);
+		console.log(button);
+		console.log(commentWrap);
 		
 		$.ajax({
-			url: 'selectList.bl_re',
+			url: 'blog/selectList.re',
 			data: {currentPage: 1,
 				   blogBoardNo: commentWrap.attr('name')}, 
 			success: data => {

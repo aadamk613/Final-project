@@ -9,13 +9,13 @@ import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 import com.kh.finalproject.common.controller.CommonController;
 import com.kh.finalproject.experience.model.service.ExperienceService;
 import com.kh.finalproject.experience.model.vo.ExperienceReply;
+import com.kh.finalproject.experience.model.vo.Payment;
 
 import lombok.RequiredArgsConstructor;
 
@@ -128,32 +128,41 @@ public class AjaxExperienceController {
 		}
 	}
 	
-	
-	
 	// 결제
-	
-	@GetMapping(value="yrreadyForPay.exp", produces="html/text; charset=UTF-8")
-	public String readyForPay(HttpSession session) throws IOException, ParseException  {
-		String nextRedirectPcUrl = experienceService.readyForPay();
-		System.out.println(nextRedirectPcUrl);
-		//String result = experienceService.payExp(tid);
+	// 2. 결제 준비 창으로 이동
+	@GetMapping("yrreadyForPay.exp")
+	public String readyForPay(Payment payment, HttpSession session) throws IOException, ParseException  {
+		// 결제 준비 창으로 가기전 값들 보내줌
 		
-		//session.setAttribute("nextRedirectPcUrl", nextRedirectPcUrl);
+		System.out.println("결제 가기전 값 가져오기");
+		System.out.println(payment.getContact());
+		System.out.println(payment.getQuantity());
+		System.out.println(payment.getUserId());
+		//System.out.println(payment.getOrderId());
+		System.out.println(session.getAttribute("exp"));
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("payment", payment);
+		map.put("exp", session.getAttribute("exp"));
+		
+		//Payment payment = Payment.builder().contact(contact).quantity(quantity).build();
+		
+		String nextRedirectPcUrl = experienceService.readyForPay(map);
 		return nextRedirectPcUrl;
 	}
 	
-	
-	@PostMapping(value="yrsendPayment.exp", produces="application/json; charset=UTF-8")
-	public String sendPayment(String pg_token, HttpSession session) {
-		
-		System.out.println("결제창");
-		System.out.println(session.getAttribute("nextRedirectPcUrl"));
-		
-		System.out.println("대애박");
-		System.out.println(pg_token);
+	/*
+	@GetMapping("yrtest.exp/{result}") // PathVariable을 쓸거면 매핑을 더 직관적으로 쓸 수 있음
+	public String test(@PathVariable("result") HashMap map) {
+		System.out.println("일단 들어옴?");
+		System.out.println(map);
+		//return map.get("nextRedirectPcUrl").toString();
 		return "";
 	}
-
+	*/
+	
+	
+	
 	
 	
 	

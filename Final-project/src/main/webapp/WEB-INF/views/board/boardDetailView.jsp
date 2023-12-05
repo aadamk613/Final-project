@@ -110,19 +110,17 @@
 						<c:choose>
 						<c:when test="${ loginUser ne null }" >
 							<c:choose>
-								<c:when test="${ n.likeMem eq 1 }">
-									<img class="heart" src="resources/images/fullHeart.png" alt="하트" >
-									<a href="#" id="like" class="like">좋아요</a>&nbsp;${ b.likeCount } 
+								<c:when test="${ like.boardLikeStatus eq 'Y' }">
+									<a href="#" id="like" class="like">	<img class="heart" src="resources/images/fullHeart.png" alt="하트" ></a>&nbsp;${ b.likeCount } 
 								</c:when>
 								<c:otherwise>
-									<img class="heart" src="resources/images/emptyHeart.png" alt="빈하트">
-									<a href="#" id="like" class="like">좋아요</a>&nbsp;${ b.likeCount } 
+									<a href="insertboardLike.do" id="like" class="like"><img class="heart" src="resources/images/emptyHeart.png" alt="빈하트"></a>&nbsp;${ b.likeCount } 
 								</c:otherwise>
 							</c:choose>
 						</c:when>
 						<c:otherwise>
-							<img class="heart" src="resources/images/fullHeart.png" alt="빈하트">
-					 		<a href='#' onclick="alert('로그인 후 이용 가능한 기능입니다.');" id="like" class="like">좋아요</a>&nbsp;${ b.likeCount } 
+							
+					 		<a href='#' onclick="alert('로그인 후 이용 가능한 기능입니다.');" id="like" class="like"><img class="heart" src="resources/images/emptyHeart.png" alt="빈하트"></a>&nbsp;${ b.likeCount } 
 						</c:otherwise>
 						</c:choose>
 						
@@ -270,6 +268,44 @@
 				$('.commentReportBtn').click(function(e){
 					$('#commentReport').modal("show");
 				});
+			</script>
+			
+			<%--
+			<!-- 좋아요 select -->
+			<script>
+			$(() => {
+			    $.ajax({
+			        url: 'selectLike.do',
+			        data: {
+			            boardNo: ${b.boardNo},
+			            memNo: '${loginUser.memNo}'
+			        },
+			        success: function(like) {
+			            if (like.boardLikeStatus === "Y") {
+			                $(".like").html(`<a href="#" id="like" class="like"><img class="heart" src="resources/images/fullHeart.png" alt="하트"></a>&nbsp;${b.likeCount}`);
+			            } else {
+			                $(".like").html(`<a href="insertboardLike.do" id="like" class="like"><img class="heart" src="resources/images/emptyHeart.png" alt="빈하트"></a>&nbsp;${b.likeCount}`);
+			            }
+			        }
+			    });
+			});
+			</script>
+			 --%>
+			
+			<!-- 좋아요 insert -->
+			<script>
+				$(() => {
+					$.ajax({
+						url : 'insertboardLike.do',
+						data : {
+							boardNo : ${b.boardNo},
+							memNo : '${loginUser.memNo}'
+						},
+						success : function(){
+						}
+					})
+				});
+			
 			</script>
 			
 			<!-- 댓글신고하기 ajax -->

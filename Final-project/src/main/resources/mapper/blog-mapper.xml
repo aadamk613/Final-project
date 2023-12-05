@@ -28,6 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="BLOG_NO" property="blogNo"/>
 		<result column="CATEGORY_MEM_NAME" property="categoryMemName"/>
 	</resultMap>
+	
 	<resultMap type="plant" id="PlantResultSet">
 		<result column="PLANT_NO" property="plantNo"/>
 		<result column="BLOG_NO" property="blogNo"/>
@@ -43,6 +44,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="FILE_PATH" property="filePath"/>
 		<result column="UPDATE_NAME" property="updateName"/>
 	</resultMap>
+	
+	<resultMap type="plantReport" id="PlantReportResultSet">
+		<result column="PLANT_REPORT_NO" property="plantReportNo"/>
+		<result column="TOP_PLANT_NO" property="topPlantNo"/>
+		<result column="PLANT_REPORT_CATEGORY_NO" property="plantReportcategoryNo"/>
+		<result column="REPORT_COMMENT" property="reportComment"/>
+		<result column="REPORT_DATE" property="reportDate"/>
+		<result column="STATUS" property="status"/>
+
+		<result column="FILE_PATH" property="filePath"/>
+		<result column="UPDATE_NAME" property="updateName"/>
+	</resultMap>
+	
 
 	<resultMap type="blogBoard" id="BlogBoardResultSet">
 		<result column="BLOG_BOARD_NO" property="blogBoardNo"/>
@@ -380,7 +394,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</delete>
 
 	<!-- 식물 일지 등록하기 -->
-	<insert id="insertPlantReport">
+	<insert id="insertBlogPlantReport" parameterType="plantReport">
 	
 		INSERT 
 		  INTO
@@ -390,18 +404,47 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  		TOP_PLANT_NO,
 		  		PLANT_REPORT_CATEGORY_NO, 
 		  		REPORT_COMMENT, 
-		  		REPORT_DATE,
+		  		REPORT_DATE  
 		  		)
 		  	VALUES
 		  		(
 		  		SEQ_REPORT_NO.NEXTVAL, 
-		  		#{ plantNo },
-		  		#{ plantReportCategoryNo },
-		  		#{ plantComment }, 
-		  		#{ plantLogDate },
+		  		#{ topPlantNo },
+		  		#{ plantReportcategoryNo },
+		  		#{ reportComment }, 
+		  		#{ reportDate }
 		  		)
 	
 	</insert>
+	
+	<select id="selectBlogPlantReport" parameterType="_int" resultMap="PlantReportResultSet">
+	
+		   		SELECT
+                    PLANT_REPORT_NO,
+                    TOP_PLANT_NO, 
+                    CATEGORY_NAME,
+                    REPORT_COMMENT,
+                    TO_CHAR(REPORT_DATE, 'YYYY-MM-DD') REPORT_DATE,
+				
+					FILE_PATH,
+					UPDATE_NAME
+				FROM
+					TB_PLANT_REPORT R
+                JOIN
+                    TB_PLANT_REPORT_CATEGORY USING (PLANT_REPORT_CATEGORY_NO)
+				LEFT JOIN
+                        (SELECT FILE_PATH, 
+                                UPDATE_NAME,
+                                REF_NO,
+                                REF_TYPE
+                         FROM TB_ATTACHMENT
+                         WHERE REF_TYPE = 'plantReport'
+                         )
+                ON (PLANT_REPORT_NO = REF_NO)
+                WHERE TOP_PLANT_NO = #{ plantNo }
+                ORDER BY REPORT_DATE DESC
+	
+	</select>
 
 	
 	<!-- 블로그 일반 게시글 작성 -->

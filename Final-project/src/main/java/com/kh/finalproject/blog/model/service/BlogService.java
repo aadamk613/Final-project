@@ -2,13 +2,12 @@ package com.kh.finalproject.blog.model.service;
 
 import java.util.ArrayList;
 
-import org.apache.ibatis.session.RowBounds;
-
 import com.kh.finalproject.blog.model.vo.Blog;
 import com.kh.finalproject.blog.model.vo.BlogBoard;
 import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
 import com.kh.finalproject.blog.model.vo.BlogReply;
 import com.kh.finalproject.blog.model.vo.Plant;
+import com.kh.finalproject.blog.model.vo.PlantReport;
 import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 
@@ -59,6 +58,12 @@ public interface BlogService {
 
 	// 식물 삭제
 	int deleteBlogPlant(int plantNo);
+	
+	// --------------------------------------------------------
+	// 식물 일지 등록
+	int insertBlogPlantReport(PlantReport plantReport, Attachment file);
+	
+	ArrayList<PlantReport> selectBlogPlantReport(int plantNo);
 	
 	// --------------------------------------------------------
 	// 블로그 일반 글 쓰기
