@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.kh.finalproject.board.model.vo.Board;
 import com.kh.finalproject.board.model.vo.BoardComment;
+import com.kh.finalproject.board.model.vo.BoardLike;
 import com.kh.finalproject.board.model.vo.BoardReport;
 import com.kh.finalproject.board.model.vo.CommentReport;
 import com.kh.finalproject.common.model.vo.Attachment;
@@ -73,6 +74,11 @@ public interface BoardService {
 	int selectSearchCount(Search s);
 	
 	// 게시글 검색 리스트
-	ArrayList<Board> selectSearchBoardList(PageInfo pi);
+	ArrayList<Board> selectSearchBoardList(PageInfo pi,Search s);
 	
+	// 해당 게시글 좋아요 조회
+	BoardLike selectList(BoardLike bl);
+	
+	// 좋아요 insert
+	int insertBoardLike(BoardLike bl);
 }

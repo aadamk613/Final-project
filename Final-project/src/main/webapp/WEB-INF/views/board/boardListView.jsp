@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>게시판</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <link rel="stylesheet" href="resources/css/board/boardListView.css">
 
@@ -92,11 +93,11 @@
 		       
 		        <c:forEach var="i" begin="${ pi.startPage }" end="${ pi.endPage }">
 		       		<c:choose>
-			       		<c:when test="${ pi.currentPage ne i }">
+			       		<c:when test="${ empty s.condition }">
 			          		<button class="btn btn-light" onclick="location.href='list.bo?cPage=${ i }'">${ i }</button>
 			         	</c:when>
 			         	<c:otherwise>
-			         		<button disabled class="btn btn-default">${ i }</button>
+			          		<button class="btn btn-light" onclick="location.href='search.bo?cPage=${ i }&condition=${ s.condition }&keyword=${ s.keyword }'">${ i }</button>
 			         	</c:otherwise>
 		         	</c:choose>
 		        </c:forEach>
@@ -108,7 +109,7 @@
 			
 
 			 <form id="searchForm" action="search.bo" method="get" align="center">
-                <div class="select">
+                <div class="select" id="search-area">
                     <select class="custom-select" name="condition">
                         <option value="mem_no">작성자</option>
                         <option value="board_title">제목</option>
@@ -116,14 +117,19 @@
                     </select>
                 </div>
                 <div class="text">
-                    <input type="text" class="form-control" name="keyword">
+                    <input type="text" class="form-control" name="keyword" value="${ s.keyword }">
                 </div>
                 <button type="submit" class="searchBtn btn btn-secondary">검색</button>
             </form>
-			
-			
 		</section>
-		
+
+		<c:if test="${ not empty s.condition }">
+		<script>
+			$(function(){
+				$('#search-area option[value=${s.condition}]').attr('selected', true);
+			})
+		</script>		
+		</c:if>
 		<aside id="pageAsideRight" class="aside">
 		</aside>
 		
