@@ -323,9 +323,6 @@ img[name=imageThumbnail]{
 	
 	
 	<script>
-		
-		let commentWrap;
-		
 		// 댓글 작성
 		function insertComment(){
 			var blogBoardNo = $(arguments[0]).attr('name');
@@ -364,14 +361,13 @@ img[name=imageThumbnail]{
 	function buttonClicked(button) {
 	  //console.log($(arguments[0]).parent().parent().attr('name'));
 			
-	  commentWrap = $(button.parentNode.nextElementSibling);
-	  
-	  if (commentWrap.css('display') === 'none') {
-		    commentWrap.css('display', 'block');
-		  } else {
-		    commentWrap.css('display', 'none');
-		  }
-	  
+	  var commentWrap = $(button.parentNode.nextElementSibling);
+	  if (commentWrap.style.display === 'none') {
+	    commentWrap.style.display = 'block';
+	  } else {
+	    commentWrap.style.display = 'none';
+	  }
+  			
 			const toggleButton = commentWrap.find('#toggleButton');
 			const commentInsertBox = commentWrap.find('#commentInsertBox');
 			const divElements = toggleButton.siblings().add(commentInsertBox);
@@ -429,8 +425,7 @@ img[name=imageThumbnail]{
 						var strDate = "<div id='commentCreateDate'>" + createDate + "</div>";
 						
 						$(commentOption).append(strMemId).append(strContent).append(strDate);
-						
-						console.log(strDate);
+					
 				}
 
 			},
