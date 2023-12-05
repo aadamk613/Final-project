@@ -5,8 +5,10 @@
 <head>
   <meta charset="UTF-8">
   <title>사업자등록정보 진위확인</title>
-  <!-- CSS 파일 링크 -->
-  <link rel="stylesheet" href="styles.css">
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <style>
   
 	  * {
@@ -77,53 +79,118 @@
 		
 	<section id="section">
 	
-    <form action="businessPage.me" method="post" id="business-regist">
-  <div class="container">
-    <h1>사업자등록정보 진위확인</h1>
+  	<div class="container">
+    <h1>사업자등록정보 상태조회</h1>
+    <br>
     
-    <label for="businessNumber">사업자 등록 번호:</label>
+    		<label for="businessNumber">사업자 등록 번호:</label>
+    		<input type="text" id="businessNumber" placeholder="사업자 등록 번호 입력" required>
+    		<br>
+    		
+    		<button onclick="checkNo();">확인</button>
+    		<button type="button" onclick="location.href='main' ">메인화면</button>
+
+
+    		
+    		
+    <table border="1" align="center">
+      <thead>
+        <tr>
+          <th>사업자등록번호(필수)</th> 
+          <th>납세자상태(명칭)</th> 
+          <th>납세자상태(코드)</th> 
+          <th>과세유형메세지(명칭)</th> 
+          <th>과세유형메세지(코드)</th> 
+          <th>법인등록번호</th> 
+          <th>폐업일</th> 
+          <th>단위과세전환폐업여부</th> 
+          <th>최근과세유형전환일자</th>
+          <th>세금계산서적용일자</th>
+          <th>직전과세유형메세지(명칭)</th>
+          <th>직전과세유형메세지(코드)</th>
+        </tr>
+      </thead>
+    <tbody id="businessInfo">
+      	<!-- 데이터 보일 문제 -->
+    </tbody>
+    </table>
+   </div>
+    <br><br><br>
     
-    <input type="text" id="businessNumber" placeholder="사업자 등록 번호 입력">
-    <button id="checkButton" onclick="checkBusinessNum();">확인</button>
     <div id="result"></div>
-  </div>
-  </form>
 
-<br><br><br><br><br><br><br><br>
+  <script>
+    function checkNo() {
+    	var businessNumber = document.getElementById("businessNumber").value;
+        
+       
+        console.log(businessNumber);
+        // 입력한 사업자번호로 조회
+        var data = {
+        		"b_no": [businessNumber],
+        };
 
-<script>
-     function checkBusinessNum() {
-    	 var data = {
-    			    "b_no": ["xxxxxxx"] // 사업자번호 "xxxxxxx" 로 조회 시,
-    			   }; 
-    			   
-    			$.ajax({
-    			  url: "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=XSyDrKZA66etAyknXmiWPgDRU%2BSa7u6IkO2Oc%2B3%2Bcwmnwfwdsujh1OvosKadicupI74e88WjfDF4Q0DSh%2B3%2Fxw%3D%3D",  // serviceKey 값을 xxxxxx에 입력
-    			  type: "POST",
-    			  data: JSON.stringify(data), // json 을 string으로 변환하여 전송
-    			  dataType: "JSON",
-    			  contentType: "application/json",
-    			  accept: "application/json",
-    			  success: function(result) {
-    			      console.log(result);
-    			  },
-    			  error: function(result) {
-    			      console.log(result.responseText); //responseText의 에러메세지 확인
-    			  }
-    			});
+        $.ajax({
+            url: "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=XSyDrKZA66etAyknXmiWPgDRU%2BSa7u6IkO2Oc%2B3%2Bcwmnwfwdsujh1OvosKadicupI74e88WjfDF4Q0DSh%2B3%2Fxw%3D%3D",
+            type: "POST",
+            data: JSON.stringify(data), // json 을 string으로 변환하여 전송
+            dataType: "JSON",
+            contentType: "application/json",
+            accept: "application/json",
+            success: function(result) {
+            	console.log(result);
+				/*
+            	console.log(result.data[0]['b_stt_cd']); //사업자 01 번 호출
+            	
+                let valid = result.data[0]['b_stt_cd'];
+            	
+                
+                if (valid=='01'){
+                    msg1();
+                }else {
+                    msg2();
+                }
 
-         // 서버로 전송할 URL 설정 (실제 서버 URL에 맞게 수정 필요)
-         var url = "http://api.odcloud.kr/api/nts-businessman/v1/validate";
-         url += "?servicekey=XSyDrKZA66etAyknXmiWPgDRU%2BSa7u6IkO2Oc%2B3%2Bcwmnwfwdsujh1OvosKadicupI74e88WjfDF4Q0DSh%2B3%2Fxw%3D%3D"; // 서비스 키 입력
-         url += "&resultType=json";
-         url += "&b_no=" + businessNum;
+				function msg1(){
+				    let msg = document.getElementById('regimessage');
+				    msg.innerHTML = "<br>계속사업자 입니다.";
+				}
+				
+				function msg2(){
+				    let msg = document.getElementById('regimessage');
+				    msg.innerHTML = "<br>현재 게속사업자 상태가 아닙니다.";
+				
+				}
+				*/
+                var businesses = result.data;
+                let tableContent = "";
+				
+                for (let i in businesses) {
+                    const busi = businesses[i];
+                    console.log(busi);
 
-         // GET 방식으로 데이터 전송
-         xhr.open("GET", url, true);
-         xhr.send();
-     }
+                    tableContent += '<tr>' +
+                        '<th>' + busi.b_no + '</th>' +
+                        '<th>' + busi.b_stt + '</th>' +
+                        '<th>' + busi.b_stt_cd + '</th>' +
+                        '<th>' + busi.tax_type + '</th>' +
+                        '<th>' + busi.tax_type_cd + '</th>' +
+                        '<th>' + busi.end_dt + '</th>' +
+                        '<th>' + busi.utcc_yn + '</th>' +
+                        '<th>' + busi.invoice_apply_dt	 + '</th>' +
+                        '<th>' + busi.rbf_tax_type + '</th>' +
+                        '<th>' + busi.rbf_tax_type_cd + '</th>' +
+                        '</tr>';
+                }
+                $('#businessInfo').html(tableContent);
+            },
+            error: function(result) {
+                console.log(result.responseText); //responseText의 에러메세지 확인
+            }
+            
+            });
+        };
 </script>
-
 
 </section>
 	<aside id="pageAsideRight" class="aside">
