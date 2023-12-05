@@ -26,10 +26,10 @@
 				url : 'yrreadyForPay.exp',
 				success : result => {
 					console.log(result);
-					console.log(result.nextRedirectPcUrl);
+					//console.log(result.nextRedirectPcUrl);
 					
 					//  url을 보내면 성공url뒤에 쿼리스트링으로 pg_token을 넘겨줌
-					location.href=result.nextRedirectPcUrl;
+					location.href=result;
 					
 					//location.href='yrtest.exp/' + result;
 					

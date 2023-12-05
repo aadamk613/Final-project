@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.kh.finalproject.common.controller.CommonController;
 import com.kh.finalproject.experience.model.service.ExperienceService;
 import com.kh.finalproject.experience.model.vo.ExperienceReply;
+import com.kh.finalproject.experience.model.vo.Payment;
 
 import lombok.RequiredArgsConstructor;
 
@@ -133,58 +134,30 @@ public class AjaxExperienceController {
 	// 결제
 	// 2. 결제 준비 창으로 이동
 	@GetMapping("yrreadyForPay.exp" /*, produces="html/text; charset=UTF-8"*/)
-	public HashMap<String, Object> readyForPay(HttpSession session) throws IOException, ParseException  {
+	public String readyForPay() throws IOException, ParseException  {
 		// 결제 준비 창으로 가기전 값들 보내줌
-		HashMap<String, Object> map = experienceService.readyForPay();
-		System.out.println(map.get("nextRedirectPcUrl"));
-		//String result = experienceService.payExp(tid);
-		System.out.println("먼차이냐"); // 차이없음
-		System.out.println(map.get("nextRedirectPcUrl").toString());
-		System.out.println((String)map.get("nextRedirectPcUrl"));
+		String nextRedirectPcUrl = experienceService.readyForPay();
 		
-		session.setAttribute("map", map);
-		System.out.println(session.getAttribute("map"));
-		System.out.println("잉");
+		//session.setAttribute("map", map);
 		
 		// 결제 창으로 보내줄 url
-		session.setAttribute("nextRedirectPcUrl", (String)map.get("nextRedirectPcUrl"));
-		return map;
+		//session.setAttribute("nextRedirectPcUrl", (String)map.get("nextRedirectPcUrl"));
+		
+		return nextRedirectPcUrl;
 	}
 	
-	
-	@GetMapping("yrtest.exp/{result}")
+	/*
+	@GetMapping("yrtest.exp/{result}") // PathVariable을 쓸거면 매핑을 더 직관적으로 쓸 수 있음
 	public String test(@PathVariable("result") HashMap map) {
 		System.out.println("일단 들어옴?");
 		System.out.println(map);
 		//return map.get("nextRedirectPcUrl").toString();
 		return "";
 	}
+	*/
 	
 	
-	// 결제 성공 시 오는 곳
-	// http://localhost:8001/final/yrsendPayment.exp?pg_token=b63076e46d6b58fbbea6
-	@GetMapping("yrsendPayment.exp")
-	public String sendPayment(String pg_token, HttpSession session) {
-		
-		System.out.println("결제창");
-		//System.out.println(session.getAttribute("nextRedirectPcUrl"));
-		
-		System.out.println("대애박");
-		System.out.println(pg_token);
-		
-		System.out.println(session.getAttribute("map"));
-		System.out.println(session.getAttribute("nextRedirectPcUrl"));
-		
-		experienceService.payExp(pg_token);
-		
-		
-		
-		
-		
-		
-		return "";
-	}
-
+	
 	
 	
 	
