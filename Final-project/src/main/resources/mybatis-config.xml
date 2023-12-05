@@ -9,10 +9,12 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	</settings>
 
 	<typeAliases>
+		<typeAlias type="com.kh.finalproject.common.model.vo.Attachment" alias="attachment"/>
 		<typeAlias type="com.kh.finalproject.auction.model.vo.Auction" alias="auction"/>
 		
 		<typeAlias type="com.kh.finalproject.blog.model.vo.Blog" alias="blog"/>
 		<typeAlias type="com.kh.finalproject.blog.model.vo.BlogCategorySetting" alias="blogCategorySetting"/>
+		<typeAlias type="com.kh.finalproject.blog.model.vo.BlogReply" alias="blogReply"/>
 		<typeAlias type="com.kh.finalproject.blog.model.vo.BlogBoard" alias="blogBoard"/>
 		<typeAlias type="com.kh.finalproject.blog.model.vo.Plant" alias="plant"/>
 		<typeAlias type="com.kh.finalproject.blog.model.vo.PlantReport" alias="plantReport"/>
@@ -24,11 +26,15 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<typeAlias type="com.kh.finalproject.chat.model.vo.Chat" alias="chat"/>
 		<typeAlias type="com.kh.finalproject.experience.model.vo.Experience" alias="experience"/>
 		<typeAlias type="com.kh.finalproject.experience.model.vo.ExperienceReply" alias="experienceReply" />
+		<typeAlias type="com.kh.finalproject.experience.model.vo.Payment" alias="payment" />
 		<typeAlias type="com.kh.finalproject.garden.model.vo.Garden" alias="garden"/>
 		<typeAlias type="com.kh.finalproject.member.model.vo.Member" alias="member"/>
 		<typeAlias type="com.kh.finalproject.member.model.vo.NaverLogin" alias="naver" />
 		<typeAlias type="com.kh.finalproject.notice.model.vo.Notice" alias="notice"/>
+
 		<typeAlias type="com.kh.finalproject.common.model.vo.Attachment" alias="attachment"/>
+		<typeAlias type="com.kh.finalproject.common.model.vo.Search" alias="search"/>
+
 		<typeAlias type="com.kh.finalproject.ticket.model.vo.Ticket" alias="ticket"/>
 		<typeAlias type="com.kh.finalproject.admin.model.vo.Hashtag" alias="hashtag"/>
 

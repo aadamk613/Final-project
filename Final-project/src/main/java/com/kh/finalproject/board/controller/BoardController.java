@@ -22,15 +22,13 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.kh.finalproject.board.model.service.BoardService;
 import com.kh.finalproject.board.model.vo.Board;
-
-import com.kh.finalproject.common.model.vo.Attachment;
-
+import com.kh.finalproject.board.model.vo.BoardComment;
 import com.kh.finalproject.board.model.vo.BoardReport;
 import com.kh.finalproject.board.model.vo.CommentReport;
-
+import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
+import com.kh.finalproject.common.model.vo.Search;
 import com.kh.finalproject.common.teplate.Pagination;
-import com.kh.finalproject.member.model.vo.Member;
 
 @Controller
 public class BoardController {
@@ -47,7 +45,6 @@ public class BoardController {
 											 10,
 											 5);
 		
-		model.addAttribute("best", boardService.selectBestBoardList());
 		model.addAttribute("list", boardService.selectBoardList(pi));
 		model.addAttribute("pi", pi);
 		
@@ -139,14 +136,8 @@ public class BoardController {
 			return mv;
 		}
 		
-		@ResponseBody
-		@GetMapping(value = "disabled.btn", produces="application/json; charset=UTF-8")
-		public String disabledBtn(CommentReport cr) {
-			System.out.println(cr);
-			return new Gson().toJson(boardService.selectCommentReport(cr));
-		}
 		
-		// 공지사항 삭제
+		// 일반게시글 삭제
 		@PostMapping("delete.bo")
 		public String deleteNotice(int bno, HttpSession session) {
 
@@ -191,22 +182,23 @@ public class BoardController {
 				return "common/errorPage";
 			}
 		}
-		@ResponseBody
-		@GetMapping(value="cList.do", produces="application/json; charset=UTF-8")
-		public String ajaxSelectComment(int boardNo) {
-			
-			
-			return new Gson().toJson(boardService.selectComment(boardNo));
-		}
+
 		
 		@RequestMapping("report.bo")
-		public String insertReport(BoardReport br) {
+		public String insertReport(BoardReport br , HttpSession session) {
 			
 			if(boardService.insertReport(br) > 0) {
+				session.setAttribute("alertMsg", "성공");
 				return "redirect:detail.bo?bno=" + br.getRefBoardNo();
 			} else {
 				return "common/errorPage";
 			}
+		}
+		
+		@ResponseBody
+		@GetMapping(value = "disabled.btn", produces="application/json; charset=UTF-8")
+		public String disabledBtn(CommentReport cr) {
+			return new Gson().toJson(boardService.selectCommentReport(cr));
 		}
 		
 		@ResponseBody
@@ -215,5 +207,28 @@ public class BoardController {
 			return boardService.insertCommentReport(cr) > 0 ? "success" : "fail";
 		}
 		
+		@PostMapping(value = "rinsert.do")
+		public String ajaxInsertComment(BoardComment bc, HttpSession session) {
+			 if(boardService.insertComment(bc) > 0) {
+					session.setAttribute("alertMsg", "성공");
+				 return "redirect:detail.bo?bno=" + bc.getBoardNo();
+			 } else {
+				 return "common/errorPage";
+			 }
+			 
+		}
+		
+		// 일반게시글 검색 리스트조회
+		@RequestMapping("search.bo")
+		public String selectSearchList(@RequestParam(value="cPage", defaultValue="1") int currentPage, Model model, Search s) {
+			PageInfo pi = Pagination.getPageInfo(boardService.selectSearchCount(s),
+												 currentPage,
+												 10,
+												 5);
+			model.addAttribute("list", boardService.selectSearchBoardList(pi)).addAttribute("pi", pi);
+			System.out.println(s);
+System.out.println(boardService.selectSearchBoardList(pi));
+			return "board/boardListView";
+		}
 
 }

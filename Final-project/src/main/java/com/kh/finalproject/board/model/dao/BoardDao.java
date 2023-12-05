@@ -10,7 +10,8 @@ import com.kh.finalproject.board.model.vo.Board;
 import com.kh.finalproject.board.model.vo.BoardComment;
 
 import com.kh.finalproject.common.model.vo.Attachment;
-
+import com.kh.finalproject.common.model.vo.PageInfo;
+import com.kh.finalproject.common.model.vo.Search;
 import com.kh.finalproject.board.model.vo.BoardReport;
 import com.kh.finalproject.board.model.vo.CommentReport;
 
@@ -88,6 +89,18 @@ public class BoardDao {
 
 	public ArrayList<CommentReport> selectCommentReport(SqlSessionTemplate sqlSession, CommentReport cr) {
 		return (ArrayList)sqlSession.selectList("boardMapper.selectCommentReport", cr);
+	}
+
+	public int insertComment(SqlSessionTemplate sqlSession, BoardComment bc) {
+		return sqlSession.insert("boardMapper.insertComment", bc);
+	}
+
+	public int selectSearchCount(SqlSessionTemplate sqlSession, Search s) {
+		return sqlSession.selectOne("boardMapper.selectSearchCount", s);
+	}
+
+	public ArrayList<Board> selectSearchBoardList(SqlSessionTemplate sqlSession, RowBounds rowBounds) {
+		return (ArrayList)sqlSession.selectList("boardMapper.selectSearchBoardList", null,  rowBounds);
 	}
 
 

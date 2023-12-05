@@ -28,7 +28,11 @@ public class CommonController {
 		return "common/main";
 	}
 	
-	
+	/**
+	 * @param refNo : 첨부게시글 번호
+	 * @param string : 첨부게시판 타입
+	 * @return : 해당 게시글의 첨부파일 리스트
+	 */
 	public ArrayList<Attachment> selectFiles(int refNo, String string) {
 		HashMap<Object, Object> map = new HashMap();
 		map.put("refNo", refNo);
@@ -72,14 +76,20 @@ public class CommonController {
 		return file;
 	}
 	
+	/**
+	 * @param file : 업데이트할 파일
+	 * @return : 결과값 1, 0
+	 */
 	public int updateFiles(Attachment file) {
-		
 		return commonService.updateFiles(file);
 		
 	}
 	
+	/**
+	 * @param file : 삭제할 파일
+	 * @return : 결과값 1, 0
+	 */
 	public int deleteFiles(Attachment file) {
-		
 		return commonService.deleteFiles(file);
 		
 	}

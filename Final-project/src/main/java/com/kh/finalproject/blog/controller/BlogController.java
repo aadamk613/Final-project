@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -71,12 +72,20 @@ public class BlogController {
 		
 		Blog blog = (Blog)blogService.selectBlog(blogNo);
 		ArrayList<BlogCategorySetting> list = blogService.selectCatogory(blogNo);
-		PageInfo pi = Pagination.getPageInfo(blogService.selectListCountPlant(blogNo), 1, 5, 10);
-		ArrayList<Plant> plantList = blogService.selectListPlant(pi, blogNo);
+		
+		PageInfo plantPi = Pagination.getPageInfo(blogService.selectListCountPlant(blogNo), 1, 5, 10);
+		ArrayList<Plant> plantList = blogService.selectListPlant(plantPi, blogNo);
+		
+		PageInfo boardPi = Pagination.getPageInfo(blogService.selectListCountBlogBoard(blogNo), 1, 5, 10);
+		ArrayList<BlogBoard> blogBoardList = blogService.selectBlogBoardList(boardPi, blogNo);
+		
+		System.out.println(blogBoardList);
+		System.out.println(boardPi);
 		
 		mv.addObject("blog", blog) // blog정보
 		  .addObject("list", list) // 해당 블로그의 BlogCategorySetting정보
 		  .addObject("plantList", plantList) // 해당 블로그의 Plant정보
+		  .addObject("blogBoardList", blogBoardList)
 		  .setViewName("blog/blogView");
 		
 		return mv;
@@ -187,10 +196,11 @@ public class BlogController {
 									  Model model) {
 		ArrayList<BlogCategorySetting> list = blogService.selectCatogory(blogNo);
 		model.addAttribute("list", list);
+		System.out.println(list);
 		return "blog/blogBoardInsertForm";
 	}
 	
-	/**@author Jyd
+	/**@author 
 	 * 
 	 * @param blogBoard: blogInsertForm 작성 화면에서 작성한 블로그 게시글 VO
 	 * @param blogNo: blogView로 redirect하기 위해 필요한 블로그 번호
@@ -201,6 +211,8 @@ public class BlogController {
 	public String insertBlogBoard(BlogBoard blogBoard, 
 								  int blogNo,
 								  HttpSession session) {
+		System.out.println("블로그 글 작성" + blogBoard);
+		
 		if(blogService.insertBlogBoard(blogBoard) > 0 ) {
 			session.setAttribute("alertMsg", "게시글 작성에 성공했습니다");
 		} else {
@@ -210,6 +222,26 @@ public class BlogController {
 		return "redirect:select.bl?blogNo=" + blogNo;
 	}
 	
+	// 블로그 일반 게시글 리스트 조회
+	@RequestMapping("selectList.bl_bo")
+	public ModelAndView selectBlogBoardList(@RequestParam(value="currentPage", defaultValue="1")int currentPage,
+											int blogNo, 
+										    ModelAndView mv) {
+		PageInfo pi = Pagination.getPageInfo(blogService.selectListCountBlogBoard(blogNo), currentPage, 5, 10);
+		
+		ArrayList<BlogBoard> blogBoardList = blogService.selectBlogBoardList(pi, blogNo);
+		mv.addObject("blogBoardList", blogBoardList);
+		return mv;
+	}
+	
+	// 블로그 일반 게시글 조회
+	@RequestMapping("select.bl_bo")
+	public ModelAndView selectBlogBoard(int blogBoardNo, 
+										ModelAndView mv) {
+		BlogBoard blogBoard = blogService.selectBlogBoard(blogBoardNo);
+		mv.addObject("BlogBoard", blogBoard);
+		return mv;
+	}
 	
 	
 	

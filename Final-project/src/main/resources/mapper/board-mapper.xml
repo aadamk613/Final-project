@@ -14,6 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="LIKE_COUNT" property="likeCount" />
 		<result column="COMMENT_COUNT" property="commentCount" />
 		<result column="MEM_NICK" property="memNo" />
+		<result column="CATEGORY" property="category" />
 	</resultMap>
 
 	<resultMap id="commentResultSet" type="boardComment">
@@ -51,53 +52,77 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="selectBoardList" resultMap="boardResultSet">
-			SELECT
-			      BOARD_NO
-			     ,BOARD_TITLE
-			     ,BOARD_CONTENT
-			     ,VIEWS
-			     ,TO_CHAR(BOARD_CREATE_DATE, 'YYYY-MM-DD') AS "BOARD_CREATE_DATE"
-			     ,LIKE_COUNT
-			     ,COMMENT_COUNT
-			     ,MEM_NICK
-			 FROM
-			     TB_BOARD
-			INNER
-			 JOIN
-			     TB_MEMBER ON(TB_BOARD.MEM_NO = TB_MEMBER.MEM_NO)
-			WHERE
-			     STATUS='Y'
+		SELECT
+		        *
+		FROM
+		    (
+		        SELECT
+		            'Best ' || CATEGORY AS "CATEGORY",
+		            BOARD_NO,
+		            BOARD_TITLE,
+		            BOARD_CONTENT,
+		            VIEWS,
+		            TO_CHAR(BOARD_CREATE_DATE, 'YYYY-MM-DD HH:MI:SS') AS "BOARD_CREATE_DATE",
+		            LIKE_COUNT,
+		            COMMENT_COUNT,
+		            MEM_NICK
+		        FROM
+		            TB_BOARD
+		        INNER JOIN
+		            TB_MEMBER ON (TB_BOARD.MEM_NO = TB_MEMBER.MEM_NO)
+		        WHERE
+		            STATUS = 'Y'
+		            AND LIKE_COUNT &gt; 50
+		        ORDER BY
+		            LIKE_COUNT DESC, BOARD_NO DESC
+		    )
+		WHERE
+		    ROWNUM BETWEEN 1 AND 5
+		
+		UNION ALL
+		
+		SELECT
+		    CATEGORY AS "CATEGORY",
+		    BOARD_NO,
+		    BOARD_TITLE,
+		    BOARD_CONTENT,
+		    VIEWS,
+		    TO_CHAR(BOARD_CREATE_DATE, 'YYYY-MM-DD HH:MI:SS') AS "BOARD_CREATE_DATE",
+		    LIKE_COUNT,
+		    COMMENT_COUNT,
+		    MEM_NICK
+		FROM
+		    (
+		        SELECT
+		        *
+		        FROM
+		            TB_BOARD
+		        INNER JOIN
+		            TB_MEMBER ON (TB_BOARD.MEM_NO = TB_MEMBER.MEM_NO)
+		        WHERE
+		            STATUS = 'Y'
+		            AND BOARD_NO NOT IN (
+		                SELECT BOARD_NO
+		                FROM (
+		                    SELECT
+		                        BOARD_NO
+		                    FROM
+		                        TB_BOARD
+		                    WHERE
+		                        STATUS = 'Y'
+		                        AND LIKE_COUNT &gt; 50
+		                ) 
+		                WHERE ROWNUM BETWEEN 1 AND 5
+		            )
+		            AND STATUS = 'Y'
+		            AND IS_BLIND = 'N'
+		        ORDER BY
+		            BOARD_NO DESC
+		    )
 
-			  AND
-			     IS_BLIND = 'N'
-			  AND
-			     BOARD_NO NOT IN
-			     (
-			       SELECT 
-					      BOARD_NO
-					FROM
-					  (SELECT
-					      BOARD_NO
-					FROM
-					    TB_BOARD TB
-			  INNER JOIN
-					    TB_MEMBER ON (TB.MEM_NO = TB_MEMBER.MEM_NO)
-				   WHERE
-					    TB.STATUS = 'Y'
-					 AND 
-					    IS_BLIND = 'N'
-					 AND
-					    TB.LIKE_COUNT &gt; 50
-				ORDER BY
-					    TB.LIKE_COUNT DESC, BOARD_NO DESC)
-			       WHERE 
-			            ROWNUM BETWEEN 1 AND 5
-			     )
-			ORDER
-			   BY
-			     BOARD_NO DESC
 	</select>
-
+	
+<!-- 
 	<select id="selectBestBoard" resultMap="boardResultSet">
           SELECT 
 			    BOARD_NO
@@ -133,7 +158,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	       WHERE 
 	            ROWNUM BETWEEN 1 AND 5
 	</select>
-
+  -->
+  
 	<update id="increaseCount" parameterType="_int">
 	 		UPDATE
 	 		      TB_BOARD
@@ -367,4 +393,125 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ORDER BY
 			REPORT_NO
 	</select>
+	
+	<insert id="insertComment" parameterType="boardComment">
+		INSERT
+		  INTO
+		      TB_BOARD_COMMENT
+		      (
+		      BOARD_COMMENT_NO
+		     ,BOARD_COMMENT_CONTENT
+		     ,BOARD_NO
+			 ,MEM_NO
+		      )
+		VALUES
+			  (
+			  SEQ_BOARD_COMMENT_NO.NEXTVAL
+			 ,#{commentContent}
+			 ,#{boardNo}
+			 ,#{memNo}
+			  )
+	</insert>
+	
+	<select id="selectSearchCount" resultType="_int">
+		SELECT
+			  COUNT(*)
+		  FROM
+		      TB_BOARD
+		 INNER
+		  JOIN
+			  TB_MEMBER ON(TB_BOARD.MEM_NO = TB_MEMBER.MEM_NO)
+		 WHERE
+		 <choose>
+		 	<when test="condition == 'mem_no'">
+			  MEM_NICK LIKE '%' || #{keyword} || '%'
+		 	</when>
+		 	<otherwise>
+		      #{condition} like '%' || #{keyword} || '%'
+		     </otherwise>
+		   </choose>
+		   AND
+		   	  STATUS = 'Y'
+		   AND
+		      IS_BLIND = 'N'
+	</select>
+	
+	<select id="selectSearchBoardList" resultMap="boardResultSet">
+		  SELECT
+		    *
+		FROM (
+		    SELECT
+               'Best ' || CATEGORY AS "CATEGORY",
+                BOARD_NO,
+		        BOARD_TITLE,
+		        BOARD_CONTENT,
+		        VIEWS,
+		        TO_CHAR(BOARD_CREATE_DATE, 'YYYY-MM-DD HH:MI:SS') AS "BOARD_CREATE_DATE",
+		        LIKE_COUNT,
+                COMMENT_COUNT,
+		        MEM_NICK
+		    FROM
+		        TB_BOARD
+		    INNER JOIN
+		        TB_MEMBER ON (TB_BOARD.MEM_NO = TB_MEMBER.MEM_NO)
+		    WHERE
+		        STATUS = 'Y'
+		        AND LIKE_COUNT &gt; 50
+		    ORDER BY
+		        LIKE_COUNT DESC, BOARD_NO DESC
+		)
+		WHERE
+		    ROWNUM BETWEEN 1 AND 5
+		UNION ALL
+    
+		SELECT
+                CATEGORY AS "CATEGORY",
+                BOARD_NO,
+		        BOARD_TITLE,
+		        BOARD_CONTENT,
+		        VIEWS,
+		        TO_CHAR(BOARD_CREATE_DATE, 'YYYY-MM-DD HH:MI:SS') AS "BOARD_CREATE_DATE",
+		        LIKE_COUNT,
+                COMMENT_COUNT,
+		        MEM_NICK
+		FROM
+		    TB_BOARD
+		INNER JOIN
+		    TB_MEMBER ON (TB_BOARD.MEM_NO = TB_MEMBER.MEM_NO)
+		WHERE
+		    STATUS = 'Y'
+		    AND BOARD_NO NOT IN (
+		        SELECT BOARD_NO
+		        FROM (
+		            SELECT
+		                BOARD_NO
+		            FROM
+		                TB_BOARD
+		            WHERE
+		                STATUS = 'Y'
+		                AND LIKE_COUNT &gt; 50
+		        ) 
+		        WHERE ROWNUM BETWEEN 1 AND 5
+		    )	
+		    AND
+		 <choose>
+		 	<when test="condition == 'mem_no'">
+			  MEM_NICK LIKE '%' || #{keyword} || '%'
+		 	</when>
+		 	<when test="condition == board_title">
+		      BOARD_TITLE like '%' || #{keyword} || '%'
+		    </when>
+		    <otherwise>
+		      BOARD_CONTENT like '%' || #{keyword} || '%'
+		    </otherwise> 
+		   </choose>
+		    AND
+		       STATUS = 'Y'
+		    AND
+		       IS_BLIND = 'N'
+	</select>
+	
+	
+	
+	
 </mapper>
