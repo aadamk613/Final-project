@@ -59,7 +59,7 @@ public interface ExperienceService {
 	
 	
 	// 카카오페이
-	String readyForPay() throws IOException, ParseException;
+	String readyForPay(HashMap map) throws IOException, ParseException;
 
 	Payment payExp(String pg_token) throws IOException, ParseException;
 	

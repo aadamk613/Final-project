@@ -157,7 +157,7 @@ public class ExperienceServiceImpl implements ExperienceService {
 	
 	// 카카오페이
 	@Override
-	public String readyForPay() throws IOException, ParseException  {
+	public String readyForPay(HashMap map) throws IOException, ParseException  {
 		
 		String url = "https://kapi.kakao.com/v1/payment/ready";
 		// admin키
@@ -211,27 +211,34 @@ public class ExperienceServiceImpl implements ExperienceService {
 		결제 실패 시 redirect url : fail_url=http://localhost:8001/final
 		*/
 		
+		// 다운캐스팅
+		Payment payment = (Payment)map.get("payment");
+		Experience exp = (Experience)map.get("exp");
+		
 		String cid = "TC0ONETIME"; // 고정
-		String partnerOrderId = "abcdef"; // 게시글 번호
-		String partnerUserId = "user01"; // 로그인유저 ID
-		String itemName = "expitem"; // 게시글 제목
-		Integer quantity = 1; // 고정
-		Integer totalAmount = 10000; // 게시글 가격
-		Integer taxFreeAmount = 10000; // 게시글 가격
+		String partnerOrderId = String.valueOf(exp.getExpNo()); // 게시글 번호
+		
+		//String partnerUserId = "user01"; // 로그인유저 ID
+		String itemName = exp.getExpTitle(); // 게시글 제목
+		//Integer quantity = 1; // 사용자가 선택한 수량
+		Integer totalAmount = exp.getExpPrice(); // 게시글 가격
+		//Integer taxFreeAmount = 10000; // 게시글 가격
+		
+		
 		String approvalUrl = "http://localhost:8001/final/yrsendPayment.exp";
 		String cancelUrl = "http://localhost:8001/final";
 		String failUrl = "http://localhost:8001/final";
 		
-		StringBuilder sb = new StringBuilder();
 		
+		StringBuilder sb = new StringBuilder();
 		
 		sb.append("cid=" + cid);
 		sb.append("&partner_order_id=" + partnerOrderId);
-		sb.append("&partner_user_id=" + partnerUserId);
+		sb.append("&partner_user_id=" + payment.getUserId());
 		sb.append("&item_name=" + itemName);
-		sb.append("&quantity=" + quantity);
+		sb.append("&quantity=" + payment.getQuantity());
 		sb.append("&total_amount=" + totalAmount);
-		sb.append("&tax_free_amount=" + taxFreeAmount);
+		sb.append("&tax_free_amount=" + totalAmount);
 		sb.append("&approval_url=" + approvalUrl);
 		sb.append("&cancel_url=" + cancelUrl);
 		sb.append("&fail_url=" + failUrl);
@@ -260,11 +267,18 @@ public class ExperienceServiceImpl implements ExperienceService {
 		// DB저장밖에 답이 없다. (session은 유실되고, 쿼리스트링으로는 넘겨줄 방법이 없음)
 		String tid = element.get("tid").toString();
 		String nextRedirectPcUrl = element.get("next_redirect_pc_url").toString();
-		
-		Payment payment = Payment.builder().orderId(partnerOrderId)
+		/*
+		payment = Payment.builder().orderId(partnerOrderId)
 										   .userId(partnerUserId)
 										   .contact("01011111111")
 										   .tid(tid).build();
+		*/
+		payment.setOrderId(partnerOrderId);
+		payment.setTid(tid);
+		payment.setTotalAmount(totalAmount);
+		
+		System.out.println("이게 바로 payment다");
+		System.out.println(payment);
 		
 		// DB에 저장
 		int result = experienceDao.insertPayment(sqlSession, payment);
@@ -302,17 +316,17 @@ public class ExperienceServiceImpl implements ExperienceService {
 		
 		String cid = "TC0ONETIME";
 		//String tid = "payUniqueNo";
-		String partnerOrderId = "abcdef"; // ready와 동일
-		String partnerUserId = "user01"; // ready와 동일
+		//String partnerOrderId = "abcdef"; // ready와 동일
+		//String partnerUserId = "user01"; // ready와 동일
 		//String pg_token = "dd";
 		
 		System.out.println("서비스");
-		HashMap map = new HashMap();
-		map.put("orderId", partnerOrderId);
-		map.put("userId", partnerUserId);
+		//HashMap map = new HashMap();
+		//map.put("orderId", partnerOrderId);
+		//map.put("userId", partnerUserId);
 		
-		System.out.println("맵");
-		System.out.println(map);
+		//System.out.println("맵");
+		//System.out.println(map);
 		
 		Payment payment = experienceDao.selectPayment(sqlSession, map);
 		System.out.println(payment);

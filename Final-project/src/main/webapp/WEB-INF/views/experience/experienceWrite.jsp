@@ -281,6 +281,7 @@ img{
 					체험시간 : <input type="number" name="expWorkTime" min=1 max=10 value="${ exp.expWorkTime }" required />
 					모집인원 : <input type="number" name="expPeople" min=1 max=100 value="${ exp.expPeople }" required />
 					모집마감일 : <input type="date" name="expEndDate" value="${ exp.expEndDate }" required />
+					가격 : <input type="number" name="expPrice" min=0 max=100000 step=500 value="${ exp.expPrice }" required />
 					주소 : 
 						<input type="text" name="expAddress" id="expAddress" placeholder="주소" value="${ exp.expAddress }" required readonly />
 						<input type="button" value="주소 검색" onclick="searchAddress();"  /><br>

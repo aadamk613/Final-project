@@ -239,8 +239,9 @@ th, td{
 							<li>모집인원 : ${ exp.expSupportCount } / ${ exp.expPeople }명</li>
 							<li>지역 : ${ exp.expAddress }</li>
 							<li>모집마감일 : ${ exp.expEndDate }</li>
+							<li>가격 : ${ exp.expPrice }</li>
 						</ul>
-						<button type="button" class="btn btn-primary">지원하기</button>
+						<button type="button" class="btn btn-primary" onclick="location.href='yrpayForm.exp'">지원하기</button>
 					</div>
 				</div>
 				<div>
