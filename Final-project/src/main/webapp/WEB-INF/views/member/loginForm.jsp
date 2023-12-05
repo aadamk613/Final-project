@@ -23,36 +23,37 @@
 * {
     border: 1px solid skyblue;
 	box-sizing: border-box;
-	cursor: url(https://cur.cursors-4u.net/holidays/hol-5/hol441.ani), url(https://cur.cursors-4u.net/holidays/hol-5/hol441.gif), auto !important;
 }
+
 #pageHeader{height: 200px;}
+
 #id_pw_wrap{width: 400px; height: 300px; margin: 40px auto;}
 
 #id_pw_wrap > div{float: left;}
 
-#idWrap, #pwWrap, #submitWrap{width: 300px; height: 80px; margin: 0px auto; }
+#idWrap, #pwWrap, #submitWrap{width: 300px; height: 80px; margin: 0px auto;}
 
 #logoWrap{width: 300px; height: 60px; margin: 0px auto; 	
 	font-size : 30px;
 	font-weight: bold;
 	line-height : 200%;
-    color: #88c080;}
+    }
+    
+#logoWrap a{
+	color: #88c080;
+	font-size : 30px;
+	font-weight: bold;
+}
 
 ul{
 	list-style: none;
 	margin: 5px 0px;
 }
+
 li{
 	position: relative;
     display: inline-block;
 	margin: 0 13px;
-}
-
-#page, #search{
-	width : 100%;
-	height : 100px;
-	padding: 20px;
-	text-align: center;
 }
 
 #pageFooter {
@@ -82,6 +83,7 @@ li{
 	height: 45px;
 	cursor: pointer;
 }
+
 .forest{
     font-size: 20px;
     font-weight: bolder;
@@ -92,14 +94,18 @@ li{
 	margin: 10px auto;
 }
 
-a{
-    cursor: pointer;
+li a{
 	display: inline-block;
     font-size: 14px;
     line-height: 17px;
-    text-decoration: none;
     color: #888;
 	}
+	
+a{
+    cursor: pointer;
+ 	text-decoration: none;
+}
+
 </style>
 <body>
 
@@ -117,8 +123,8 @@ a{
 				<article>
                 <div id="id_pw_wrap">
 					<form action="login.me" method="post">
-						<div id="logoWrap">
-							싹트다
+						<div id="logoWrap" >
+							<a href="main">싹트다</a>
 						</div>
 						<div id="idWrap">
 							<input type="text" name="memId" placeholder="아이디" class="loginFormInput">

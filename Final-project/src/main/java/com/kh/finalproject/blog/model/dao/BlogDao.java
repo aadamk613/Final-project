@@ -103,10 +103,13 @@ public class BlogDao {
 
 	// 댓글 수 조회
 	public int selectListCountBlogReply(SqlSessionTemplate sqlSession, int blogBoardNo) {
-		return sqlSession.insert("blogMapper.selectListCountBlogReply", blogBoardNo);
+		System.out.println("댓글 수 조회 " + sqlSession.selectOne("blogMapper.selectListCountBlogReply", blogBoardNo));
+		return sqlSession.selectOne("blogMapper.selectListCountBlogReply", blogBoardNo);
 	}
 
+	// 댓글 리스트 조회
 	public ArrayList<BlogReply> selectListBlogReply(SqlSessionTemplate sqlSession, int blogBoardNo, RowBounds rowBounds) {
+		System.out.println("댓글 조회 리스트 : " + (ArrayList)sqlSession.selectList("blogMapper.selectListBlogReply", blogBoardNo, rowBounds));
 		return (ArrayList)sqlSession.selectList("blogMapper.selectListBlogReply", blogBoardNo, rowBounds);
 	}
 	

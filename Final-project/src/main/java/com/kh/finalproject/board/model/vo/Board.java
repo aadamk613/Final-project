@@ -21,5 +21,5 @@ public class Board {
 	private String boardReportCount;
 	private String memNo;
 	private String isBlind;
-	
+	private String category;
 }

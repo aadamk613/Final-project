@@ -58,27 +58,12 @@
 
 						  
 						  
-						  	<c:if test="${ pi.currentPage eq 1 }">
-						  	<c:forEach var="bb" items="${ requestScope.best }">
-							  <tr>
-						      <td scope="col" width="10%" style="text-align: center">
-						      <span class="best">BEST</span>
-						      <span class="bno">${ bb.boardNo }</span>
-						      </td>
-					          <td scope="row" width="20%" style="text-align: center">${ bb.boardTitle }[${bb.commentCount }]</td>	       
-						      <td scope="row" width="20%" style="text-align: center">${ bb.memNo }</td>
-						      <td scope="row" width="20%" style="text-align: center">${ bb.boardCreateDate }</td>
-						      <td scope="row" width="15%" style="text-align: center">${ bb.views }</td>
-						      <td scope="row" width="15%" style="text-align: center">${ bb.likeCount }</td>
-						    	</tr>
-						    </c:forEach>
-						    </c:if>
-						    
 						  	<c:forEach var="b" items="${ requestScope.list }">
 						  	  <tr>
 						      <td scope="col" width="10%" style="text-align: center">
+						      <c:if test="${ b.category eq 'Best 일반'}"><span class="best">Best</span> 일반</c:if>
 						      <span class="bno">${ b.boardNo }</span></td>
-					        <td scope="row" width="20%" style="text-align: center">${ b.boardTitle }[${b.commentCount }]</td>	       
+					          <td scope="row" width="20%" style="text-align: center">${ b.boardTitle }[${b.commentCount }]</td>	       
 						      <td scope="row" width="20%" style="text-align: center">${ b.memNo }</td>
 						      <td scope="row" width="20%" style="text-align: center">${ b.boardCreateDate }</td>
 						      <td scope="row" width="15%" style="text-align: center">${ b.views }</td>
@@ -122,12 +107,12 @@
 			</div>
 			
 
-			 <form id="searchForm" action="" method="get" align="center">
+			 <form id="searchForm" action="search.bo" method="get" align="center">
                 <div class="select">
                     <select class="custom-select" name="condition">
-                        <option value="writer">작성자</option>
-                        <option value="title">제목</option>
-                        <option value="content">내용</option>
+                        <option value="mem_no">작성자</option>
+                        <option value="board_title">제목</option>
+                        <option value="board_content">내용</option>
                     </select>
                 </div>
                 <div class="text">
