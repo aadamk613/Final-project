@@ -23,12 +23,14 @@ import com.google.gson.Gson;
 import com.kh.finalproject.board.model.service.BoardService;
 import com.kh.finalproject.board.model.vo.Board;
 import com.kh.finalproject.board.model.vo.BoardComment;
+import com.kh.finalproject.board.model.vo.BoardLike;
 import com.kh.finalproject.board.model.vo.BoardReport;
 import com.kh.finalproject.board.model.vo.CommentReport;
 import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.model.vo.Search;
 import com.kh.finalproject.common.teplate.Pagination;
+import com.kh.finalproject.member.model.vo.Member;
 
 @Controller
 public class BoardController {
@@ -108,7 +110,7 @@ public class BoardController {
 	// 일반게시글 상세조회
 		@ResponseBody
 		@GetMapping("detail.bo")
-		public ModelAndView selectBoard(BoardReport br, int bno, ModelAndView mv, Attachment f, MultipartFile upfile, HttpSession session)   {
+		public ModelAndView selectBoard(BoardLike bl, BoardReport br, int bno, ModelAndView mv, Attachment f, MultipartFile upfile, HttpSession session)   {
 			
 			
 
@@ -123,9 +125,13 @@ public class BoardController {
 					}
 						mv.addObject("f", boardService.selectFile(bno)).setViewName("board/boardDetailView");
 				}
-				
-				
-				
+				if(session.getAttribute("loginUser") != null) {
+					Member loginUser = (Member) session.getAttribute("loginUser");
+					bl.setMemNo(loginUser.getMemNo());
+					bl.setBoardNo(bno);
+					mv.addObject("like", (boardService.selectList(bl)));
+				}
+				//session.getAttribute(loginUser.memNo)
 				mv.addObject("br", boardService.selectBoardReport(bno))
 				  .addObject("cList", boardService.selectComment(bno))
 				  .addObject("b", boardService.selectBoard(bno))
@@ -225,10 +231,23 @@ public class BoardController {
 												 currentPage,
 												 10,
 												 5);
-			model.addAttribute("list", boardService.selectSearchBoardList(pi)).addAttribute("pi", pi);
-			System.out.println(s);
-System.out.println(boardService.selectSearchBoardList(pi));
+			model.addAttribute("pi", pi).addAttribute("list", boardService.selectSearchBoardList(pi,s))
+			.addAttribute("s", s);
 			return "board/boardListView";
 		}
 
+		// 좋아요 insert
+		@ResponseBody
+		@RequestMapping(value="insertboardLike.do", produces="application/json; charset=UTF-8")
+		public String ajaxInsertLike(BoardLike bl) {
+			return new Gson().toJson(boardService.insertBoardLike(bl));
+		}
+		
+		/*
+		@ResponseBody
+		@RequestMapping(value="selectLike.do", produces="application/json; charset=UTF-8")
+		public String ajaxSelectLike(BoardLike bl) {
+			return new Gson().toJson((boardService.selectList(bl)));
+		}
+		*/
 }
