@@ -7,15 +7,16 @@ import javax.servlet.http.HttpSession;
 
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 import com.kh.finalproject.common.controller.CommonController;
 import com.kh.finalproject.experience.model.service.ExperienceService;
 import com.kh.finalproject.experience.model.vo.ExperienceReply;
+import com.kh.finalproject.experience.model.vo.Payment;
 
 import lombok.RequiredArgsConstructor;
 
@@ -131,29 +132,32 @@ public class AjaxExperienceController {
 	
 	
 	// 결제
-	
-	@GetMapping(value="yrreadyForPay.exp", produces="html/text; charset=UTF-8")
-	public String readyForPay(HttpSession session) throws IOException, ParseException  {
+	// 2. 결제 준비 창으로 이동
+	@GetMapping("yrreadyForPay.exp" /*, produces="html/text; charset=UTF-8"*/)
+	public String readyForPay() throws IOException, ParseException  {
+		// 결제 준비 창으로 가기전 값들 보내줌
 		String nextRedirectPcUrl = experienceService.readyForPay();
-		System.out.println(nextRedirectPcUrl);
-		//String result = experienceService.payExp(tid);
 		
-		//session.setAttribute("nextRedirectPcUrl", nextRedirectPcUrl);
+		//session.setAttribute("map", map);
+		
+		// 결제 창으로 보내줄 url
+		//session.setAttribute("nextRedirectPcUrl", (String)map.get("nextRedirectPcUrl"));
+		
 		return nextRedirectPcUrl;
 	}
 	
-	
-	@PostMapping(value="yrsendPayment.exp", produces="application/json; charset=UTF-8")
-	public String sendPayment(String pg_token, HttpSession session) {
-		
-		System.out.println("결제창");
-		System.out.println(session.getAttribute("nextRedirectPcUrl"));
-		
-		System.out.println("대애박");
-		System.out.println(pg_token);
+	/*
+	@GetMapping("yrtest.exp/{result}") // PathVariable을 쓸거면 매핑을 더 직관적으로 쓸 수 있음
+	public String test(@PathVariable("result") HashMap map) {
+		System.out.println("일단 들어옴?");
+		System.out.println(map);
+		//return map.get("nextRedirectPcUrl").toString();
 		return "";
 	}
-
+	*/
+	
+	
+	
 	
 	
 	

@@ -408,5 +408,67 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   	   MEM_NO = #{ memNo }
 	</delete>
 	
+	<!-- 결제 -->
+	<insert id="insertPayment" parameterType="payment">
+		INSERT 
+		  INTO 
+		  	   TB_PAYMENT
+		  	   (
+		  	   ORDER_ID,
+		  	   USER_ID,
+		  	   CONTACT,
+		  	   PAY_STATUS,
+		  	   TID,
+		  	   APPROVED_AT
+		  	   )
+		VALUES
+			   (
+			   #{ orderId },
+			   #{ userId },
+			   #{ contact },
+			   'N',
+			   #{ tid },
+			   SYSDATE
+			   )
+	</insert>
+	
+	<select id="selectPayment" parameterType="payment" resultType="payment">
+		SELECT
+			   ORDER_ID orderId,
+		  	   USER_ID userId,
+		  	   CONTACT contact,
+		  	   PAY_STATUS payStatus,
+		  	   TID tid
+		  FROM
+		  	   TB_PAYMENT
+		 WHERE
+		 	   ORDER_ID = #{ orderId }
+		   AND
+		   	   USER_ID = #{ userId }
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 </mapper>

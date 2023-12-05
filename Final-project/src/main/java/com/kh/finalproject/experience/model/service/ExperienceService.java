@@ -10,6 +10,7 @@ import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.experience.model.vo.Experience;
 import com.kh.finalproject.experience.model.vo.ExperienceReply;
+import com.kh.finalproject.experience.model.vo.Payment;
 
 public interface ExperienceService {
 	
@@ -60,7 +61,7 @@ public interface ExperienceService {
 	// 카카오페이
 	String readyForPay() throws IOException, ParseException;
 
-	String payExp(String tid);
+	Payment payExp(String pg_token) throws IOException, ParseException;
 	
 	
 

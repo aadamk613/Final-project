@@ -8,12 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.finalproject.board.model.vo.Board;
 import com.kh.finalproject.board.model.vo.BoardComment;
-
-import com.kh.finalproject.common.model.vo.Attachment;
-import com.kh.finalproject.common.model.vo.PageInfo;
-import com.kh.finalproject.common.model.vo.Search;
+import com.kh.finalproject.board.model.vo.BoardLike;
 import com.kh.finalproject.board.model.vo.BoardReport;
 import com.kh.finalproject.board.model.vo.CommentReport;
+import com.kh.finalproject.common.model.vo.Attachment;
+import com.kh.finalproject.common.model.vo.Search;
 
 @Repository
 public class BoardDao {
@@ -99,8 +98,16 @@ public class BoardDao {
 		return sqlSession.selectOne("boardMapper.selectSearchCount", s);
 	}
 
-	public ArrayList<Board> selectSearchBoardList(SqlSessionTemplate sqlSession, RowBounds rowBounds) {
-		return (ArrayList)sqlSession.selectList("boardMapper.selectSearchBoardList", null,  rowBounds);
+	public ArrayList<Board> selectSearchBoardList(SqlSessionTemplate sqlSession, RowBounds rowBounds,Search s) {
+		return (ArrayList)sqlSession.selectList("boardMapper.selectSearchBoardList", s,  rowBounds);
+	}
+
+	public BoardLike selectLike(SqlSessionTemplate sqlSession, BoardLike bl) {
+		return sqlSession.selectOne("boardMapper.selectLike", bl);
+	}
+
+	public int insertBoardLike(SqlSessionTemplate sqlSession, BoardLike bl) {
+		return sqlSession.insert("boardMapper.insertBoardLike", bl);
 	}
 
 

@@ -132,12 +132,44 @@ public class MemberController {
       return "common/errorPage";
     }
   }
-
+  
   @RequestMapping("businessPage")
   public String goToBusinessPage() {
     return "member/businessPage"; // businessPage.jsp로 리다이렉트
   }
 
+  @ResponseBody
+  @RequestMapping(value="businessPage.check", produces="application/json; charset=UTF-8") 
+  public String businessPageChecking(int b_no) throws IOException {
+	  //console.log(b_no);
+	  System.out.println(b_no);
+	  String url = "http://api.odcloud.kr/api/nts-businessman/v1/validate";
+	  		 url += "?servicekey=" + SERVICEKEY;
+	  		 url += "&numOfRows=10";
+	  		 url += "&resultType=json";
+	  		 url += "&b_no=" + b_no;
+	  		 
+	  		 
+  		URL requestUrl = new URL(url);
+		HttpURLConnection urlConnection = (HttpURLConnection)requestUrl.openConnection();
+		urlConnection.setRequestMethod("GET");
+		BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+		
+		String responseText = br.readLine();
+		br.close();
+		urlConnection.disconnect();
+		
+		return responseText;
+		}
+	  
+  @ResponseBody // 포워딩 해줄게 아니라서
+  @RequestMapping("idCheck.me")
+  public String idCheck(String checkId) {
+
+    // System.out.println(checkId);
+    int count = memberService.idCheck(checkId);
+    System.out.println(count);
+    return count > 0 ? "NNNNN" : "NNNNY";
   @RequestMapping(
       value = "checkBusinessNum",
       produces = "application/json; charset=UTF-8") // 수정예정 공공API로 활용할 예정

@@ -12,6 +12,7 @@ import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.experience.model.service.ExperienceService;
 import com.kh.finalproject.experience.model.vo.Experience;
 import com.kh.finalproject.experience.model.vo.ExperienceReply;
+import com.kh.finalproject.experience.model.vo.Payment;
 
 import lombok.RequiredArgsConstructor;
 
@@ -83,6 +84,16 @@ public class ExperienceDao {
 
 	public int deleteExpLike(SqlSessionTemplate sqlSession, HashMap map) {
 		return sqlSession.delete("experienceMapper.deleteExpLike", map);
+	}
+
+	
+	// 결제
+	public int insertPayment(SqlSessionTemplate sqlSession, Payment payment) {
+		return sqlSession.insert("experienceMapper.insertPayment", payment);
+	}
+
+	public Payment selectPayment(SqlSessionTemplate sqlSession, HashMap map) {
+		return sqlSession.selectOne("experienceMapper.selectPayment", map);
 	}
 	
 
