@@ -373,14 +373,11 @@ public class ExperienceServiceImpl implements ExperienceService {
 		JSONObject element = (JSONObject)parser.parse(responseData.toString());
 		
 		// 여기서 업데이트하고 가져갈 데이터 가져가기
-		if(element.get("approvedat") != null) {
+		//if(element.get("approved_at") != null) {
 			// experienceDao.updatePayment(map);
-			String approvedAt = element.get("approvedat").toString();
+			String approvedAt = element.get("approved_at").toString();
 			payment.setApprovedAt(approvedAt);
-		} 
-		
-		
-		
+		//} 
 		
 		return payment;
 	}

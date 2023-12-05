@@ -425,7 +425,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  	   CONTACT,
 		  	   PAY_STATUS,
 		  	   TID,
-		  	   APPROVED_AT
+		  	   APPROVED_AT,
+		  	   QUANTITY
 		  	   )
 		VALUES
 			   (
@@ -434,7 +435,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   #{ contact },
 			   'N',
 			   #{ tid },
-			   SYSDATE
+			   SYSDATE,
+			   #{ quantity }
 			   )
 	</insert>
 	
@@ -444,7 +446,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  	   USER_ID userId,
 		  	   CONTACT contact,
 		  	   PAY_STATUS payStatus,
-		  	   TID tid
+		  	   TID tid,
+		  	   QUANTITY quantity
 		  FROM
 		  	   TB_PAYMENT
 		 WHERE

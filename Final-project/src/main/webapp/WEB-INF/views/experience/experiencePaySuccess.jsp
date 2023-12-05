@@ -10,9 +10,13 @@
 <body>
 
 	<h1>결제성공</h1>
-	${ payment.orderId }
 	${ payment.userId }
-	
+	${ payment.orderId }
+	${ payment.contact }
+	${ payment.payStatus }
+	${ payment.tid }
+	${ payment.approvedAt }
+	${ payment.quantity }
 	
 
 </body>
