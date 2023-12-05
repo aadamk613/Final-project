@@ -144,7 +144,7 @@ public class MemberController {
 	  //console.log(b_no);
 	  System.out.println(b_no);
 	  String url = "http://api.odcloud.kr/api/nts-businessman/v1/validate";
-	  		 url += "?servicekey=" + SERVICEKEY;
+	  	//	 url += "?servicekey=" + SERVICEKEY;
 	  		 url += "&numOfRows=10";
 	  		 url += "&resultType=json";
 	  		 url += "&b_no=" + b_no;
@@ -161,7 +161,7 @@ public class MemberController {
 		
 		return responseText;
 		}
-	  
+/*	  
   @ResponseBody // 포워딩 해줄게 아니라서
   @RequestMapping("idCheck.me")
   public String idCheck(String checkId) {
@@ -170,6 +170,7 @@ public class MemberController {
     int count = memberService.idCheck(checkId);
     System.out.println(count);
     return count > 0 ? "NNNNN" : "NNNNY";
+    */
   @RequestMapping(
       value = "checkBusinessNum",
       produces = "application/json; charset=UTF-8") // 수정예정 공공API로 활용할 예정

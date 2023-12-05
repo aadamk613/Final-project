@@ -16,4 +16,11 @@ public class PlantReport {
 	private String reportComment;
 	private Date reportDate;
 	private String status;
+	
+	private String categoryName;
+	
+	private String filePath;
+	private String updateName;
+	
+	
 }

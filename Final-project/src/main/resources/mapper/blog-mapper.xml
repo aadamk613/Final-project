@@ -23,11 +23,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 	<resultMap type="blogCategorySetting" id="BlogCategorySettingResultSet">
-		<result column="CATEGORY_NO" property="categoryNo"/>
-		<result column="CATEGORY_SETTING_NO" property="categorySettingNo"/>
-		<result column="BLOG_NO" property="blogNo"/>
+		<result column="PLANT_REPORT_NO" property="plantReportNo"/>
 		<result column="CATEGORY_MEM_NAME" property="categoryMemName"/>
+		<result column="REPORT_COMMENT" property="reportComment"/>
+		<result column="REPORT_DATE" property="reportDate"/>
 	</resultMap>
+	
 	
 	<resultMap type="plant" id="PlantResultSet">
 		<result column="PLANT_NO" property="plantNo"/>
@@ -43,7 +44,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 		<result column="FILE_PATH" property="filePath"/>
 		<result column="UPDATE_NAME" property="updateName"/>
+		
+		<collection property="plantReport" ofType="PlantReport">
+			<id column="PLANT_REPORT_NO" property="plantReportNo"/>
+			<result column="TOP_PLANT_NO" property="topPlantNo"/>
+			<result column="PLANT_REPORT_CATEGORY_NO" property="plantReportcategoryNo"/>
+			<result column="REPORT_COMMENT" property="reportComment"/>
+			<result column="REPORT_DATE" property="reportDate"/>
+			
+			<result column="FILE_PATH" property="filePath"/>
+			<result column="UPDATE_NAME" property="updateName"/>
+		</collection>
 	</resultMap>
+	
 	
 	<resultMap type="plantReport" id="PlantReportResultSet">
 		<result column="PLANT_REPORT_NO" property="plantReportNo"/>
@@ -52,6 +65,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="REPORT_COMMENT" property="reportComment"/>
 		<result column="REPORT_DATE" property="reportDate"/>
 		<result column="STATUS" property="status"/>
+		<result column="CATEGORY_NAME" property="categoryName"/>
 
 		<result column="FILE_PATH" property="filePath"/>
 		<result column="UPDATE_NAME" property="updateName"/>

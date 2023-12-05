@@ -215,16 +215,23 @@ textarea{
 							</ul>
 						</div>
 
-						<div id="plantReport">
+
+
+												
+						<c:forEach var="r" items="${ plant.plantReport }" >
+						
+							<div id="plantReport">
 							<table>
-								<tr>2023-11-20 11일전
+								<tr>${ r.categoryName }
 								</tr>
-								<tr>식물 일지 or 식물 관리
+								<tr>${ r.reportDate }
 								</tr>
-								<tr>내용
+								<tr>${ r.reportComment }
 								</tr>
 							</table>
 						</div>
+						</c:forEach>
+
 
 					</div>
 					<br clear="both">
