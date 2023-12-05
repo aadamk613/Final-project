@@ -92,8 +92,8 @@ public class ExperienceDao {
 		return sqlSession.insert("experienceMapper.insertPayment", payment);
 	}
 
-	public Payment selectPayment(SqlSessionTemplate sqlSession, HashMap map) {
-		return sqlSession.selectOne("experienceMapper.selectPayment", map);
+	public Payment selectPayment(SqlSessionTemplate sqlSession, String userId) {
+		return sqlSession.selectOne("experienceMapper.selectPayment", userId);
 	}
 	
 

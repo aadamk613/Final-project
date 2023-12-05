@@ -266,15 +266,17 @@ public class ExperienceController {
 	// 결제 준비 성공 시 오는 곳
 	// http://localhost:8001/final/yrsendPayment.exp?pg_token=b63076e46d6b58fbbea6
 	@GetMapping("yrsendPayment.exp")
-	public String sendPayment(String pg_token, Model model) throws IOException, ParseException {
+	public String sendPayment(String pg_token, String userId, Model model) throws IOException, ParseException {
 		
 		System.out.println("결제창");
 		//System.out.println(session.getAttribute("nextRedirectPcUrl"));
 		System.out.println(pg_token);
-		
+		System.out.println("이것도 나와줄거니");
+		//System.out.println(orderId);
+		System.out.println(userId);
 		
 		// 결제 승인 보내기
-		Payment payment = experienceService.payExp(pg_token);
+		Payment payment = experienceService.payExp(pg_token, userId);
 		System.out.println("결제 승인 시각");
 		//System.out.println(approvedAt);
 		

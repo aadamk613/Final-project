@@ -218,14 +218,14 @@ public class ExperienceServiceImpl implements ExperienceService {
 		String cid = "TC0ONETIME"; // 고정
 		String partnerOrderId = String.valueOf(exp.getExpNo()); // 게시글 번호
 		
-		//String partnerUserId = "user01"; // 로그인유저 ID
+		String partnerUserId = payment.getUserId(); // 로그인유저 ID
 		String itemName = exp.getExpTitle(); // 게시글 제목
 		//Integer quantity = 1; // 사용자가 선택한 수량
 		Integer totalAmount = exp.getExpPrice(); // 게시글 가격
 		//Integer taxFreeAmount = 10000; // 게시글 가격
 		
 		
-		String approvalUrl = "http://localhost:8001/final/yrsendPayment.exp";
+		String approvalUrl = "http://localhost:8001/final/yrsendPayment.exp?userId=" + partnerUserId;
 		String cancelUrl = "http://localhost:8001/final";
 		String failUrl = "http://localhost:8001/final";
 		
@@ -234,7 +234,7 @@ public class ExperienceServiceImpl implements ExperienceService {
 		
 		sb.append("cid=" + cid);
 		sb.append("&partner_order_id=" + partnerOrderId);
-		sb.append("&partner_user_id=" + payment.getUserId());
+		sb.append("&partner_user_id=" + partnerUserId);
 		sb.append("&item_name=" + itemName);
 		sb.append("&quantity=" + payment.getQuantity());
 		sb.append("&total_amount=" + totalAmount);
@@ -300,7 +300,7 @@ public class ExperienceServiceImpl implements ExperienceService {
 	
 	
 	// 결제 승인
-	public Payment payExp(String pg_token) throws IOException, ParseException {
+	public Payment payExp(String pg_token, String userId) throws IOException, ParseException {
 		System.out.println("준비완료");
 		//System.out.println(tid);
 		//T5699c3a122f0603ef95
@@ -328,7 +328,7 @@ public class ExperienceServiceImpl implements ExperienceService {
 		//System.out.println("맵");
 		//System.out.println(map);
 		
-		Payment payment = experienceDao.selectPayment(sqlSession, map);
+		Payment payment = experienceDao.selectPayment(sqlSession, userId);
 		System.out.println(payment);
 		
 		System.out.println(payment.getTid());
@@ -350,8 +350,8 @@ public class ExperienceServiceImpl implements ExperienceService {
 		StringBuilder sb = new StringBuilder();
 		sb.append("cid=").append(cid)
 		  .append("&tid=").append(payment.getTid())
-		  .append("&partner_order_id=").append(partnerOrderId)
-		  .append("&partner_user_id=").append(partnerUserId)
+		  .append("&partner_order_id=").append(payment.getOrderId())
+		  .append("&partner_user_id=").append(payment.getUserId())
 		  .append("&pg_token=").append(pg_token);
 		
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream()));
