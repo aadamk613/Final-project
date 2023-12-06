@@ -377,6 +377,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			      MEM_NO = #{memNo}
 			   AND
 			      REF_BOARD_NO = #{refBoardNo}
+			   AND
 	</select>
 	<select id="selectReportedArticles" resultMap="boardReportResultSet">
 		SELECT
@@ -561,7 +562,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 ,#{boardNo}
 			 ,#{memNo}
 			  )
-		      
 	</insert>
+	
+	<update id="commentCount">
+		UPDATE
+		  	  TB_BOARD
+		   SET
+			  COMMENT_COUNT = COMMENT_COUNT + 1
+		 WHERE
+			  BOARD_NO = #{boardNo}
+	</update>
+	
+	<update id="updateComment">
+		UPDATE
+		      TB_BOARD_COMMENT
+		   SET
+		      BOARD_COMMENT_CONTENT = #{commentContent}
+		 WHERE
+		      BOARD_NO = #{boardNo}
+		   AND
+		      MEM_NO = #{memNo}
+		   AND
+		      BOARD_COMMENT_NO = #{commentNo}
+	</update>
+	
+
+	<update id="deleteComment">
+		UPDATE
+		      TB_BOARD_COMMENT
+		   SET
+		      BOARD_COMMENT_STATUS = 'N'
+		 WHERE
+		      BOARD_COMMENT_NO = #{commentNo}
+	</update>
+	
 	
 </mapper>

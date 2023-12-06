@@ -159,8 +159,10 @@
 								</div>
 								<div id="commentCreateDate">
 									${ c.commentCreateDate }
-									<a href="#">답글 쓰기</a>
-									<a href></a>
+									<c:if test="${ loginUser.memNick eq c.memNo }">
+									<a class="boardCommentUpdate btn" onclick="postFormSubmit(2, ${c.commentNo});">수정</a>
+									<a class="boardCommentdelete btn" onclick="postFormSubmit(3, ${c.commentNo});">삭제</a>
+									</c:if>
 								</div>
 								<hr>
 							</c:forEach>
@@ -173,7 +175,6 @@
 							<input type="hidden" name=memNo value="${loginUser.memNo }"></div>
 							<c:choose>
 							<c:when test="${ loginUser ne null }">
-							
 								<div id="submitWrap"><button type="submit">등록</button></div>
 							</c:when>
 							<c:otherwise>
@@ -203,16 +204,7 @@
 				<input type="hidden" name="bno" value="${ b.boardNo }">
 			</form>
 			
-			<script>
-				function postFormSubmit(num) {
-					if(num == 0) {
-						$('#postForm').attr('action', 'updateForm.bo').submit();				
-					}
-					else {
-						$('#postForm').attr('action', 'delete.bo').submit();				
-					}
-				}
-			</script>
+
 		  
 			<!-- 게시글 신고 모달창 -->
 			<div class="modal fade modal-dialog  modal-dialog-centered modal-dialog-scrollable" id="boardReport" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -259,7 +251,57 @@
 			    </div>
 			  </div>
 			</div>
+			
+			<!-- 댓글 수정 모달창 -->
+			<div class="modal fade modal-dialog  modal-dialog-centered modal-dialog-scrollable" id="boardCommentUpdateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="staticBackdropLabel">댓글 수정하기</h5>
+			        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+			      </div>
+			      
+			      <form action="update.co" method="post">
+			      <div class="modal-body">
+			      <textarea class="form-control" style="height: 200px;" placeholder="수정하실 내용을 입력해주세요" id="message-text" name="commentContent" required></textarea>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소하기</button>
+			        <button type="submit" class="btn btn-danger">수정하기</button>
+			        <input type="hidden" name="commentNo" id="commentNoInput" value="">
+			        <input type="hidden" name="boardNo" value="${ b.boardNo }">
+			        <input type="hidden" name="memNo" value="${ loginUser.memNo }">
+			      </div>
+			      </form>
+			    </div>
+			  </div>
+			</div>
 	
+				<script>
+				function postFormSubmit(num, commentNo) {
+					if(num == 0) {
+						$('#postForm').attr('action', 'updateForm.bo').submit();				
+					}
+					else if(num == 1) {
+						$('#postForm').attr('action', 'delete.bo').submit();				
+					}
+					else if(num == 2) {
+						$('.boardCommentUpdate').click(function(e){
+							$('#boardCommentUpdateModal').modal("show");
+						    $('#commentNoInput').val(commentNo);
+						})
+					} else {					
+						$('#commentInput').val(commentNo);
+						$('#CommentPostForm').attr('action', 'delete.co').submit();
+					}
+				}
+			</script>
+			
+			<form id="CommentPostForm" action="delete.co" method="post">
+			<input id="commentInput" type="hidden" name="commentNo" value="">
+			<input type="hidden" name="boardNo" value="${ b.boardNo }">
+			</form>
+			
 			<script>
 				$('#boardReportBtn').click(function(e){
 					$('#boardReport').modal("show");
@@ -268,6 +310,8 @@
 				$('.commentReportBtn').click(function(e){
 					$('#commentReport').modal("show");
 				});
+				
+				
 			</script>
 			
 			<%--
@@ -292,6 +336,7 @@
 			</script>
 			 --%>
 			
+			<%--
 			<!-- 좋아요 insert -->
 			<script>
 				$(() => {
@@ -305,8 +350,8 @@
 						}
 					})
 				});
-			
 			</script>
+			--%>
 			
 			<!-- 댓글신고하기 ajax -->
 			<script>
