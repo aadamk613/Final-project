@@ -38,7 +38,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class MemberController {
-
+  
+  public static final String SERVICEKEY = "XSyDrKZA66etAyknXmiWPgDRU%2BSa7u6IkO2Oc%2B3%2Bcwmnwfwdsujh1OvosKadicupI74e88WjfDF4Q0DSh%2B3%2Fxw%3D%3D";
   private final BCryptPasswordEncoder bcryptPasswordEncoder;
   private final MemberService memberService;
   private final NaverLoginService naverLoginService;
@@ -170,6 +171,7 @@ public class MemberController {
     int count = memberService.idCheck(checkId);
     System.out.println(count);
     return count > 0 ? "NNNNN" : "NNNNY";
+  }
   @RequestMapping(
       value = "checkBusinessNum",
       produces = "application/json; charset=UTF-8") // 수정예정 공공API로 활용할 예정
