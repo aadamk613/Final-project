@@ -122,5 +122,21 @@ public class BoardDao {
 		return sqlSession.update("boardMapper.deleteComment", commentNo);
 	}
 
+	public int updateBoardLike(SqlSessionTemplate sqlSession, BoardLike bl) {
+		return sqlSession.update("boardMapper.updateBoardLike", bl);
+	}
+
+	public int deleteBoardLike(SqlSessionTemplate sqlSession, BoardLike bl) {
+		return sqlSession.update("boardMapper.deleteBoardLike", bl);
+	}
+
+	public int plusLikeCount(SqlSessionTemplate sqlSession, int boardNo) {
+		return sqlSession.update("boardMapper.plusLikeCount", boardNo);
+	}
+
+	public int minusLikeCount(SqlSessionTemplate sqlSession, int boardNo) {
+		return sqlSession.update("boardMapper.minusLikeCount", boardNo);
+	}
+
 
 }

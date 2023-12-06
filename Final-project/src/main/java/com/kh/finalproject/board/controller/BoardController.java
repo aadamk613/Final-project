@@ -260,9 +260,26 @@ public class BoardController {
 
 		// 좋아요 insert
 		@ResponseBody
-		@RequestMapping(value="insertboardLike.do", produces="application/json; charset=UTF-8")
+		@RequestMapping(value="insertBoardLike.do", produces="application/json; charset=UTF-8")
 		public String ajaxInsertLike(BoardLike bl) {
+			boardService.plusLikeCount(bl.getBoardNo());
 			return new Gson().toJson(boardService.insertBoardLike(bl));
+		}
+		
+		// 좋아요 delete
+		@ResponseBody
+		@RequestMapping(value="deleteBoardLike.do", produces="application/json; charset=UTF-8")
+		public String ajaxDeleteLike(BoardLike bl) {
+			boardService.minusLikeCount(bl.getBoardNo());
+			return new Gson().toJson(boardService.deleteBoardLike(bl));
+		}
+		
+		// 좋아요 update
+		@ResponseBody
+		@RequestMapping(value="updateBoardLike.do", produces="application/json; charset=UTF-8")
+		public String ajaxUpdatetLike(BoardLike bl) {
+			boardService.plusLikeCount(bl.getBoardNo());
+			return new Gson().toJson(boardService.updateBoardLike(bl));
 		}
 		
 		/*
