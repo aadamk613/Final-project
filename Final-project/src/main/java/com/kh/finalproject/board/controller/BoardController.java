@@ -214,14 +214,36 @@ public class BoardController {
 		}
 		
 		@PostMapping(value = "rinsert.do")
-		public String ajaxInsertComment(BoardComment bc, HttpSession session) {
+		public String InsertComment(BoardComment bc, HttpSession session, int boardNo) {
 			 if(boardService.insertComment(bc) > 0) {
+				    boardService.commentCount(boardNo);
 					session.setAttribute("alertMsg", "성공");
 				 return "redirect:detail.bo?bno=" + bc.getBoardNo();
 			 } else {
 				 return "common/errorPage";
 			 }
 			 
+		}
+		
+		@PostMapping("update.co")
+		public String updateComment(BoardComment bc, HttpSession session) {
+			if(boardService.updateComment(bc) > 0) {
+			session.setAttribute("alertMsg", "성공");
+		 return "redirect:detail.bo?bno=" + bc.getBoardNo();
+	 } else {
+		 return "common/errorPage";
+	 }
+	 
+}
+		@PostMapping("delete.co")
+		public String deleteComment(BoardComment bc, HttpSession session) {
+			System.out.println(bc);
+			if(boardService.deleteComment(bc.getCommentNo()) > 0) {
+				session.setAttribute("alertMsg", "성공");
+				return "redirect:detail.bo?bno=" + bc.getBoardNo();
+			} else {
+				 return "common/errorPage";
+			}
 		}
 		
 		// 일반게시글 검색 리스트조회

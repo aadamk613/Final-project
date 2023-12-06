@@ -81,4 +81,13 @@ public interface BoardService {
 	
 	// 좋아요 insert
 	int insertBoardLike(BoardLike bl);
+	
+	// 댓글 수 증가
+	int commentCount(int boardNo);
+	
+	// 댓글 수정
+	int updateComment(BoardComment bc);
+	
+	// 댓글 삭제
+	int deleteComment(int commentNo);
 }
