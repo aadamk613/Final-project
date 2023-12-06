@@ -348,13 +348,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	          ON (REF_NO = PLANT_NO)
 		    WHERE
 		        STATUS = 'Y'
+		    AND
+                BLOG_NO = #{ blogNo }
 	        ORDER BY
 		    	PLANT_LOG_DATE DESC
 	
 	</select>
 
-	<!-- 식물 조회 -->
+	<!-- 식물 · 일지 조회 -->
 	<select id="selectBlogPlant" parameterType="_int" resultMap="PlantAndReportResultSet">
+		
 		SELECT
 				PLANT_NO,
 				PLANT_NAME,
@@ -391,7 +394,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 						REF_TYPE
 						FROM TB_ATTACHMENT
 			     WHERE REF_TYPE = 'plant'
-				 ) AS PLANT
+				 ) PLANT
 		  ON    
 		  		(PLANT_NO = REF_NO)
 		LEFT 
@@ -402,7 +405,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 						REF_TYPE
 						FROM TB_ATTACHMENT
 				WHERE   REF_TYPE = 'plantReport'
-				) AS REPORT
+				) REPORT
 		ON      
 				(PLANT_REPORT_NO = REPORT.REF_NO)
 		WHERE 	

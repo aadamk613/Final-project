@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,19 +23,17 @@ import com.kh.finalproject.common.model.service.CommonService;
 import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
+import com.kh.finalproject.experience.model.service.ExperienceService;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
+@RequiredArgsConstructor
 public class BlogPlantController {
 	
-	@Autowired
-	private BlogService blogService;
-	
-	@Autowired
-	private CommonService commonService;
-	
-	@Autowired
-	private CommonController commonController;
-	
+	private final BlogService blogService;
+	private final CommonService commonService;
+	private final CommonController commonController;
 	
 	// ---------- 블로그 식물 관련 메서드 ---------- 
 	// 식물 전체 리스트로 이동
@@ -75,6 +74,27 @@ public class BlogPlantController {
 	}
 	
 	// 식물 등록
+	@PostMapping("insert.bl_pl")
+	public String insertBlogPlant(Plant plant, 
+								  @RequestParam(value="blogNo") int blogNo,
+								  HttpServletRequest request,
+								  HttpSession session,
+								  MultipartFile upfile,
+								  Model model) {
+		Attachment file = new Attachment();
+		if(!upfile.getOriginalFilename().equals("")) { 
+			file = commonController.setFile(upfile, session, "plant");
+		}
+		if(blogService.insertBlogPlant(plant, file) > 0) { 
+			return "redirect:selectList.bl_pl?blogNo=" + blogNo;
+		} else {
+			model.addAttribute("alertMsg", "식물 등록에 실패했습니다.");
+			return "common/errorPage";
+		}
+	}
+	
+	/*
+	 * 	// 식물 등록
 	@RequestMapping("insert.bl_pl")
 	public String insertBlogPlant(Plant plant, 
 								  @RequestParam(value="blogNo") int blogNo,
@@ -103,6 +123,8 @@ public class BlogPlantController {
 			return "common/errorPage";
 		}
 	}
+	 */
+	
 	
 	// 식물 수정 페이지로 이동
 	@RequestMapping("updateForm.bl_pl")
