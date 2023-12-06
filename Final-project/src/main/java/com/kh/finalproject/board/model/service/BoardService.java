@@ -90,4 +90,16 @@ public interface BoardService {
 	
 	// 댓글 삭제
 	int deleteComment(int commentNo);
+	
+	// 좋아요 update
+	int updateBoardLike(BoardLike bl);
+	
+	// 좋아요 삭제 
+	int deleteBoardLike(BoardLike bl);
+	
+	// 좋아요 수 증가
+	int plusLikeCount(int boardNo);
+	
+	// 종아요 수 감소
+	int minusLikeCount(int boardNo);
 }

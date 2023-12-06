@@ -111,15 +111,17 @@
 						<c:when test="${ loginUser ne null }" >
 							<c:choose>
 								<c:when test="${ like.boardLikeStatus eq 'Y' }">
-									<a href="#" id="like" class="like">	<img class="heart" src="resources/images/fullHeart.png" alt="하트" ></a>&nbsp;${ b.likeCount } 
+									<a href="#" onclick="deleteLike();" class="like"><img class="heart" src="resources/images/fullHeart.png" alt="하트" ></a>&nbsp;${ b.likeCount } 
+								</c:when>
+								<c:when test="${ like.boardLikeStatus eq 'N' }">
+									<a href="#" onclick="updateLike();" class="like"><img class="heart" src="resources/images/emptyHeart.png" alt="빈하트"></a>&nbsp;${ b.likeCount } 
 								</c:when>
 								<c:otherwise>
-									<a href="insertboardLike.do" id="like" class="like"><img class="heart" src="resources/images/emptyHeart.png" alt="빈하트"></a>&nbsp;${ b.likeCount } 
+									<a href="#" onclick="insertLike();" class="like"><img class="heart" src="resources/images/emptyHeart.png" alt="빈하트"></a>&nbsp;${ b.likeCount } 
 								</c:otherwise>
 							</c:choose>
 						</c:when>
 						<c:otherwise>
-							
 					 		<a href='#' onclick="alert('로그인 후 이용 가능한 기능입니다.');" id="like" class="like"><img class="heart" src="resources/images/emptyHeart.png" alt="빈하트"></a>&nbsp;${ b.likeCount } 
 						</c:otherwise>
 						</c:choose>
@@ -335,23 +337,52 @@
 			});
 			</script>
 			 --%>
-			
-			<%--
+			<!-- 좋아요 update -->
+			<script>
+			function updateLike() {
+				  $.ajax({
+				    url: 'updateBoardLike.do',
+				    data: {
+				      boardNo: ${b.boardNo},
+				      memNo: '${loginUser.memNo}'
+				    },
+				    success: function(response) {
+			              alert('좋아요 등록!');
+			              location.href = 'detail.bo?bno=' + ${b.boardNo};}
+				  });
+				}
+			</script>
+			<!-- 좋아요 delete -->
+			<script>
+			function deleteLike() {
+				  $.ajax({
+				    url: 'deleteBoardLike.do',
+				    data: {
+				      boardNo: ${b.boardNo},
+				      memNo: '${loginUser.memNo}'
+				    },
+				    success: function(response) {
+			              alert('좋아요 삭제!');
+			              location.href = 'detail.bo?bno=' + ${b.boardNo};}
+				  });
+				}
+			</script>
+						
 			<!-- 좋아요 insert -->
 			<script>
-				$(() => {
-					$.ajax({
-						url : 'insertboardLike.do',
-						data : {
-							boardNo : ${b.boardNo},
-							memNo : '${loginUser.memNo}'
-						},
-						success : function(){
-						}
-					})
-				});
+			function insertLike() {
+				  $.ajax({
+				    url: 'insertBoardLike.do',
+				    data: {
+				      boardNo: ${b.boardNo},
+				      memNo: '${loginUser.memNo}'
+				    },
+				    success: function(response) {
+			              alert('좋아요 등록!');
+			              location.href = 'detail.bo?bno=' + ${b.boardNo};}
+				  });
+				}
 			</script>
-			--%>
 			
 			<!-- 댓글신고하기 ajax -->
 			<script>

@@ -161,5 +161,25 @@ public class BoardServiceImpl implements BoardService {
 	public int deleteComment(int commentNo) {
 		return boardDao.deleteComment(sqlSession, commentNo);
 	}
+
+	@Override
+	public int updateBoardLike(BoardLike bl) {
+		return boardDao.updateBoardLike(sqlSession, bl);
+	}
+
+	@Override
+	public int deleteBoardLike(BoardLike bl) {
+		return boardDao.deleteBoardLike(sqlSession, bl);
+	}
+
+	@Override
+	public int plusLikeCount(int boardNo) {
+		return boardDao.plusLikeCount(sqlSession, boardNo);
+	}
+
+	@Override
+	public int minusLikeCount(int boardNo) {
+		return boardDao.minusLikeCount(sqlSession, boardNo);
+	}
 	
 }
