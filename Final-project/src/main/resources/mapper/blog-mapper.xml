@@ -41,20 +41,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="VIEW" property="view "/>
 		<result column="PLANT_CATEGORY" property="plantCategory"/>
 		<result column="PLANT_LOG_DATE" property="plantLogDate"/>
-
+	
 		<result column="FILE_PATH" property="filePath"/>
 		<result column="UPDATE_NAME" property="updateName"/>
 		
-		<collection property="plantReport" ofType="PlantReport">
-			<id column="PLANT_REPORT_NO" property="plantReportNo"/>
-			<result column="TOP_PLANT_NO" property="topPlantNo"/>
-			<result column="PLANT_REPORT_CATEGORY_NO" property="plantReportcategoryNo"/>
-			<result column="REPORT_COMMENT" property="reportComment"/>
-			<result column="REPORT_DATE" property="reportDate"/>
-			
-			<result column="FILE_PATH" property="filePath"/>
-			<result column="UPDATE_NAME" property="updateName"/>
-		</collection>
+	</resultMap>
+	
+	
+	
+	<resultMap type="plant" id="PlantAndReportResultSet">
+		<result column="PLANT_NO" property="plantNo"/>
+		<result column="BLOG_NO" property="blogNo"/>
+		<result column="PLANT_NAME" property="plantName"/>
+		<result column="PLANT_NICKNAME" property="plantNickName"/>
+		<result column="PLANT_COMMENT" property="plantComment"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="STATUS" property="status"/>
+		<result column="VIEW" property="view "/>
+		<result column="PLANT_CATEGORY" property="plantCategory"/>
+		<result column="PLANT_LOG_DATE" property="plantLogDate"/>
+		
+		<result column="FILE_PATH_P" property="filePath"/>
+		<result column="UPDATE_NAME_P" property="updateName"/>
+	
+		<collection property="plantReport" resultMap="PlantReportResultSet" />
 	</resultMap>
 	
 	
@@ -344,43 +354,61 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<!-- 식물 조회 -->
-	<select id="selectBlogPlant" parameterType="_int" resultMap="PlantResultSet">
+	<select id="selectBlogPlant" parameterType="_int" resultMap="PlantAndReportResultSet">
 		SELECT
 				PLANT_NO,
-				BLOG_NO,
 				PLANT_NAME,
 				PLANT_NICKNAME,
 				PLANT_COMMENT,
-				CREATE_DATE,
 				PLANT_CATEGORY,
 				PLANT_LOG_DATE,
-			
-				FILE_PATH,
-				UPDATE_NAME
-		  FROM 
-		   		(
-		   		SELECT
-					PLANT_NO,
-					BLOG_NO,
-					PLANT_NAME,
-					PLANT_NICKNAME,
-					PLANT_COMMENT,
-					CREATE_DATE,
-					PLANT_CATEGORY,
-					TO_CHAR(PLANT_LOG_DATE, 'YYYY-MM-DD') PLANT_LOG_DATE,
-				
-					FILE_PATH,
-					UPDATE_NAME
-				FROM
-					TB_PLANT P
-				LEFT OUTER JOIN
-					TB_ATTACHMENT ON(REF_NO = PLANT_NO)
-				AND
-					REF_TYPE = 'plant'
-				)
-		WHERE
-			PLANT_NO = #{ plantNo }  
-        
+				PLANT.FILE_PATH AS FILE_PATH_P,
+				PLANT.UPDATE_NAME AS UPDATE_NAME_P,
+		
+				PLANT_REPORT_NO,
+				TOP_PLANT_NO,
+				CATEGORY_NAME,
+				REPORT_COMMENT,
+				TO_CHAR(REPORT_DATE, 'YYYY-MM-DD') REPORT_DATE,
+				REPORT.FILE_PATH,
+				REPORT.UPDATE_NAME
+		FROM
+				TB_PLANT
+		JOIN
+				TB_PLANT_REPORT
+		  ON 	
+		  		(PLANT_NO = TOP_PLANT_NO)
+		JOIN
+				TB_PLANT_REPORT_CATEGORY 
+		USING   
+				(PLANT_REPORT_CATEGORY_NO)
+		LEFT 
+		JOIN
+				(
+				SELECT FILE_PATH,
+						UPDATE_NAME,
+						REF_NO,
+						REF_TYPE
+						FROM TB_ATTACHMENT
+			     WHERE REF_TYPE = 'plant'
+				 ) AS PLANT
+		  ON    
+		  		(PLANT_NO = REF_NO)
+		LEFT 
+		JOIN
+				(SELECT FILE_PATH,
+						UPDATE_NAME,
+						REF_NO,
+						REF_TYPE
+						FROM TB_ATTACHMENT
+				WHERE   REF_TYPE = 'plantReport'
+				) AS REPORT
+		ON      
+				(PLANT_REPORT_NO = REPORT.REF_NO)
+		WHERE 	
+				TOP_PLANT_NO = #{ plantNo }
+		ORDER BY 
+				REPORT_DATE DESC
 	</select>
 
 	<update id="updateBlogPlant" parameterType="plant">

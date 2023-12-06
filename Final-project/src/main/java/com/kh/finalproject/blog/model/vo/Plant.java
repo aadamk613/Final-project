@@ -28,13 +28,4 @@ public class Plant {
 	
 	private List<PlantReport> plantReport;
 	
-	/*
-    public List<PlantReport> getPlantReport() {
-        return plantReport;
-    }
-
-    public void setPlantReport(List<PlantReport> plantReport) {
-        this.plantReport = plantReport;
-    }
-    */
 }

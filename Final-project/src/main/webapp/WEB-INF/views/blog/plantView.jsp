@@ -206,9 +206,8 @@ textarea{
 											value="${ plant.plantNo }"> <input type="hidden"
 											name="plantNickName" value="${ plant.plantNickName }">
 
-										<button type="submit" class="button forest"
-											id="plantReportButton">일지 추가</button>
-										<a id="plantCareButton" class="button forest">관리하기</a>
+										<button type="submit" class="button forest" id="plantReportButton">일지 추가</button>
+										<button id="plantCareButton" class="button forest">관리하기</button>
 									</form>
 								</li>
 
@@ -221,14 +220,20 @@ textarea{
 						<c:forEach var="r" items="${ plant.plantReport }" >
 						
 							<div id="plantReport">
-							<table>
-								<tr>${ r.categoryName }
-								</tr>
-								<tr>${ r.reportDate }
-								</tr>
-								<tr>${ r.reportComment }
-								</tr>
-							</table>
+							<div>
+								${ r.reportDate }
+							</div>
+							<div>
+								${ r.categoryName }
+							</div>
+							<div>
+								${ r.reportComment }
+							</div>
+							<c:if test="${ not empty r.filePath }" >
+							<div>
+								<img src="${ r.filePath }${ r.updateName }" class="files" />						
+							</div>
+							</c:if>
 						</div>
 						</c:forEach>
 
