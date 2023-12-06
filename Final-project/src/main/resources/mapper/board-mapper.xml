@@ -596,5 +596,48 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		      BOARD_COMMENT_NO = #{commentNo}
 	</update>
 	
+	<update id="updateBoardLike">
+		UPDATE
+		      TB_BOARD_LIKE
+		   SET
+		   	  BOARD_LIKE_STATUS = 'Y'
+		 WHERE
+			  MEM_NO = #{memNo} 
+		   AND
+		      BOARD_NO = #{boardNo}
+		   AND
+		      BOARD_LIKE_STATUS = 'N'
+	</update>
+	
+	<update id="deleteBoardLike">
+		UPDATE
+		      TB_BOARD_LIKE
+		   SET
+		   	  BOARD_LIKE_STATUS = 'N'
+		 WHERE
+			  MEM_NO = #{memNo} 
+		   AND
+		      BOARD_NO = #{boardNo}
+		   AND
+		      BOARD_LIKE_STATUS = 'Y'
+	</update>
+	
+	<update id="plusLikeCount">
+		UPDATE
+			  TB_BOARD
+		   SET
+		      LIKE_COUNT = LIKE_COUNT + 1
+		 WHERE
+		      BOARD_NO = #{boardNo}
+	</update>
+	
+	<update id="minusLikeCount">
+		UPDATE
+			  TB_BOARD
+		   SET
+		      LIKE_COUNT = LIKE_COUNT - 1
+		 WHERE
+		      BOARD_NO = #{boardNo}
+	</update>
 	
 </mapper>
