@@ -16,4 +16,7 @@ public interface CommonService {
 	// 첨부파일 삭제
 	int deleteFiles(Attachment file);
 	
+	// 첨부파일 수정
+	int updateAttachment(Attachment file);
+	
 }

@@ -89,6 +89,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   AND
 		   	   REF_TYPE = #{ refType }
 	</delete>
+	
+	
+	<update id="updateAttachment" parameterType="attachment">
+		
+		UPDATE
+			TB_ATTACHMENT
+		SET
+			ORIGINAL_NAME = #{ originalName },
+			UPDATE_NAME = #{ updateName }
+		WHERE
+			REF_TYPE = #{ refType }
+		AND
+			REF_NO = #{ refNo }
+			
+	</update>
 
 
 	

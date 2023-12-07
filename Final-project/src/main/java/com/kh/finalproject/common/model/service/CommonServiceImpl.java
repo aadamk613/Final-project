@@ -37,4 +37,10 @@ public class CommonServiceImpl implements CommonService{
 		return commonDao.deleteFiles(sqlSession, file);
 	}
 
+	// 첨부파일 수정
+	@Override
+	public int updateAttachment(Attachment file) {
+		return commonDao.updateAttachment(sqlSession, file);
+	}
+
 }

@@ -101,7 +101,15 @@ public class BlogServiceImpl implements BlogService{
 	}
 
 	@Override
-	public int updateBlogPlant(Plant plant, Attachment file) {
+	public int updateBlogPlant(Plant plant) {
+		int result = 0;
+		result = blogDao.updateBlogPlant(sqlSession, plant);
+		return result;
+	}
+
+	/*
+	 * 	@Override
+	public int updateBlogPlant(Plant plant, Attachment ) {
 		int result = 0;
 		result = blogDao.updateBlogPlant(sqlSession, plant);
 		if(file.getOriginalName() != null) {
@@ -109,7 +117,7 @@ public class BlogServiceImpl implements BlogService{
 		}
 		return result;
 	}
-
+	 */
 	@Override
 	public int selectListCountPlant(int blogNo) {
 		return blogDao.selectListCountPlant(sqlSession, blogNo);

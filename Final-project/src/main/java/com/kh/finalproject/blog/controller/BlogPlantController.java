@@ -138,6 +138,48 @@ public class BlogPlantController {
 	}
 	
 	// 식물 수정
+	/*
+	 * 사진이 원래 있었음
+		근데 수정 시 새로 사진을 추가함
+		그럼 원래 attchment를 바꿔줘야함
+		바꿀 정보 originalName updateName이 두개
+
+	 */
+	@PostMapping("update.bl_pl")
+	public ModelAndView updateBlogPlant(Plant plant,
+									    HttpSession session,
+									    MultipartFile upfile,
+							      		ModelAndView mv) {
+		Attachment file = new Attachment();
+		
+		if(upfile.getSize() > 0) { // 첨부한 파일이 있을 경우
+			System.out.println("수정할때 파일을 첨부함");
+			System.out.println(upfile);
+			if(plant.getUpdateName() != null) { // 기존에 첨부파일이 있을 경우
+				System.out.println("기존 파일 있음");
+				new File(session.getServletContext().getRealPath(plant.getUpdateName())).delete();
+			} 
+			// 새로 파일을 첨부했지만 기존 파일은 없었을 경우 바로 여기로
+			file = commonController.setFile(upfile, session, "plant");
+			file.setRefNo(plant.getPlantNo());
+			file.setRefType("plant");
+			commonService.updateAttachment(file);
+		}
+		if(blogService.updateBlogPlant(plant) > 0) { // 여기는 첨부파일 제외 나머지 정보 업데이트 함
+			Plant afterPlant = (Plant)blogService.selectBlogPlant(plant.getPlantNo());
+			mv.addObject("plant", afterPlant)
+			  .addObject("alertMsg", "식물 정보 수정에 성공하였습니다");
+		} else {
+			mv.addObject("alertMsg", "식물 정보 수정에 실패하였습니다");
+		}
+		mv.setViewName("blog/plantUpdateForm");
+		return mv;
+	}
+	
+	
+	
+	/*
+	 * 	// 식물 수정
 	@RequestMapping("update.bl_pl")
 	public ModelAndView updateBlogPlant(Plant plant,
 							      		HttpServletRequest request, 
@@ -176,7 +218,8 @@ public class BlogPlantController {
 		mv.setViewName("blog/plantUpdateForm");
 		return mv;
 	}
-	
+	 * 
+	 */
 	// 식물 삭제
 	@RequestMapping("delete.bl_pl")
 	public String deleteBlogPlant(int plantNo,
@@ -204,6 +247,31 @@ public class BlogPlantController {
 	}
 	
 	// 식물 일지 등록하기
+	@PostMapping("insert.bl_pr")
+	public String insertBlogPlantReport(PlantReport plantReport,
+										MultipartFile upfile,
+			 							HttpSession session) {
+		
+		Attachment file = new Attachment();
+		
+		if(upfile != null && !upfile.getOriginalFilename().equals("")) {
+			file = commonController.setFile(upfile, session, "plantReport");
+		}
+		
+		if(blogService.insertBlogPlantReport(plantReport, file) > 0) {
+			session.setAttribute("alertMsg", "일지 작성 성공");
+			return "redirect:select.bl_pl?plantNo=" + plantReport.getTopPlantNo();
+		} else {
+			session.setAttribute("errorMsg", "일지 작성 실패");
+			return "common/errorPage";
+		}
+		
+	}
+	
+	
+	
+	/*
+	 * 	// 식물 일지 등록하기
 	@RequestMapping("insert.bl_pr")
 	public String insertBlogPlantReport(PlantReport plantReport,
 			 							HttpServletRequest request, 
@@ -233,4 +301,5 @@ public class BlogPlantController {
 		
 		
 	}
+	 */
 }
