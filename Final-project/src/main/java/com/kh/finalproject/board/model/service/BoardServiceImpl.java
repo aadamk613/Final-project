@@ -138,7 +138,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public BoardLike selectList(BoardLike bl) {
+	public BoardLike selectLike(BoardLike bl) {
 		return boardDao.selectLike(sqlSession, bl);
 	}
 
