@@ -213,19 +213,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 첨부파일 등록 -->
 	<!-- insert면 expNo를 가져오지 못하기 때문에 refNo가 CURRVAL이고, 
 		 update면 CURRVAL이 안돼서 expNo를 꼭 가져와야만 하기 때문에 번호가 있음 -->	
+		 
+		 
 	<insert id="insertFiles" parameterType="arraylist" >
 		INSERT 
 		  INTO
-		  		TB_ATTACHMENT
-				(
-			     FILE_NO,
-			     REF_NO,
-		         ORIGINAL_NAME,
-		         UPDATE_NAME,
-		         FILE_PATH,
-		         REF_TYPE,
-		         FILE_ANNOTATION,
-		         UPLOAD_DATE
+		  	   TB_ATTACHMENT
+			   (
+			    FILE_NO,
+			    REF_NO,
+		        ORIGINAL_NAME,
+		        UPDATE_NAME,
+		        FILE_PATH,
+		        REF_TYPE,
+		        FILE_ANNOTATION,
+		        UPLOAD_DATE
 				)
 		SELECT 
 			   SEQ_ATTACHMENT_NO.NEXTVAL, 
@@ -234,13 +236,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  FROM (
 		<foreach item="item" collection="list" separator="UNION ALL ">
 		  	SELECT 
-				 	#{item.originalName},
-				 	#{item.updateName},
-				 	#{item.filePath},
-				 	#{item.refType},
-				 	#{item.fileAnnotation},
-				 	SYSDATE
-			   FROM DUAL
+				   #{item.originalName},
+				   #{item.updateName},
+				   #{item.filePath},
+				   #{item.refType},
+				   #{item.fileAnnotation},
+				   SYSDATE
+			  FROM DUAL
 		</foreach>
 		) AT
 	</insert>
@@ -425,16 +427,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  	   CONTACT,
 		  	   PAY_STATUS,
 		  	   TID,
-		  	   APPROVED_AT
+		  	   APPROVED_AT,
+		  	   QUANTITY,
+		  	   TOTAL_AMOUNT
 		  	   )
 		VALUES
 			   (
 			   #{ orderId },
 			   #{ userId },
+			   
 			   #{ contact },
 			   'N',
 			   #{ tid },
-			   SYSDATE
+			   SYSDATE,
+			   #{ quantity },
+			   #{ totalAmount }
 			   )
 	</insert>
 	
@@ -444,7 +451,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  	   USER_ID userId,
 		  	   CONTACT contact,
 		  	   PAY_STATUS payStatus,
-		  	   TID tid
+		  	   TID tid,
+		  	   QUANTITY quantity
 		  FROM
 		  	   TB_PAYMENT
 		 WHERE
@@ -453,6 +461,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   	   PAY_STATUS = 'N'
 	</select>
 	
+	<!-- 결제 성공 시 업데이트 -->
+	<update id="updatePayment" parameterType="payment">
+		UPDATE 
+			   TB_PAYMENT
+		   SET
+		   	   PAY_STATUS = 'Y',
+		   	   APPROVED_AT = #{ approvedAt }
+		 WHERE 
+		 	   USER_ID = #{ userId }
+		   AND
+		   	   ORDER_ID = #{ orderId }
+	</update>
 	
 	
 	
