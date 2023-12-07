@@ -43,10 +43,21 @@ input, select{
 }
 
 img{
-	width : 800px;
+	width : 100%;
 	height : 400px;
 	object-fit : contain;
 }
+
+.deleteFile{
+	width : 20%;
+	display : inline-block;
+}
+
+input[name=anno] {
+	width : 100%;
+	height : 50px;
+}
+
 
 </style>
 </head>
@@ -327,7 +338,7 @@ img{
 				const value = '<div>'
 							 +'<input type="file" name="upfiles" />'
 							 +'<img src="" class="file-img" />'
-							 +'<input type="text" name="anno" placeholder="사진첨부 후 작성해 주세요" readonly />'
+							 +'<textarea name="anno" placeholder="사진첨부 후 작성해 주세요." rows="5" readonly ></textarea>'
 							 +'<input type="hidden" name="" value="" />'
 							 +'<button onclick="deleteFile($(this));">삭제하기</button>'
 							 +'</div>';	
@@ -371,9 +382,9 @@ img{
 						<div>
 							<input type="file" name="upfiles" />
 							<img src="${ f.filePath }${ f.updateName }" class="file-img" />
-							<input type="text" name="anno" value="${ f.fileAnnotation }" placeholder="사진첨부 후 작성해 주세요" readonly />
+							<textarea name="anno" placeholder="사진첨부 후 작성해 주세요." rows="5" readonly  >${ f.fileAnnotation }</textarea>
 							<input type="hidden" name="" class="old" value="${ f.filePath }${ f.updateName }" />
-							<button onclick="deleteFile();">삭제하기</button>
+							<button class="deleteFile" onclick="deleteFile();">삭제하기</button>
 						</div>
 					</c:forEach>
 				</c:if>

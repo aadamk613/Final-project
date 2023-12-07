@@ -133,7 +133,7 @@ th, td{
 		<section id="pageSection">
 			<div class="container">
 				<!-- 작성자만 보이는 버튼 -->
-				<c:if test="${ sessionScope.loginUser.memId eq requestScope.exp.expWriter }">
+				<c:if test="${ loginUser.memId eq exp.expWriter }">
 					<div id="forWriter">
 						<!-- <a class="btn btn-primary" onclick="expSubmit(0);">수정하기</a> -->
 						<a class="btn btn-primary" onclick="expSubmit(0);">수정하기</a>
