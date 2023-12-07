@@ -198,8 +198,6 @@ public class NoticeController {
 	@ResponseBody
 	@RequestMapping(value="insertNoticeLike.do", produces="application/json; charset=UTF-8")
 	public String ajaxInsertLike(NoticeLike nl) {
-		System.out.println(nl.getMemNo());
-		System.out.println(nl.getNoticeNo());
 		noticeService.plusNoticeLikeCount(nl.getNoticeNo());
 		return new Gson().toJson(noticeService.insertNoticeLike(nl));
 	}
