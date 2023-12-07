@@ -95,6 +95,10 @@ public class ExperienceDao {
 	public Payment selectPayment(SqlSessionTemplate sqlSession, String userId) {
 		return sqlSession.selectOne("experienceMapper.selectPayment", userId);
 	}
+
+	public int updatePayment(SqlSessionTemplate sqlSession, Payment payment) {
+		return sqlSession.update("experienceMapper.updatePayment", payment);
+	}
 	
 
 }
