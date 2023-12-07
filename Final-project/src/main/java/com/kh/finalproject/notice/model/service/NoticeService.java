@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.notice.model.vo.Notice;
+import com.kh.finalproject.notice.model.vo.NoticeLike;
 
 public interface NoticeService {
 
@@ -48,4 +49,22 @@ public interface NoticeService {
 	// 파일 수정
 	int updateFiles(Attachment f);
 	
+	// 좋아요 검색
+    NoticeLike selectNoticeLike(NoticeLike nl);
+	
+	// 좋아요 삽입
+	int insertNoticeLike(NoticeLike nl);
+
+	// 좋아요 수정
+	int updateNoticeLike(NoticeLike nl);
+
+	// 좋아요 삭제
+	int deleteNoticeLike(NoticeLike nl);
+	
+	// 좋아요 수 증가
+	int plusNoticeLikeCount(int boardNo);
+	
+	// 종아요 수 감소
+	int minusNoticeLikeCount(int boardNo);
+
 }

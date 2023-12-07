@@ -1,9 +1,11 @@
 package com.kh.finalproject.notice.model.vo;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data @NoArgsConstructor
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class NoticeLike {
 
 	private int noticeLikeNo;
