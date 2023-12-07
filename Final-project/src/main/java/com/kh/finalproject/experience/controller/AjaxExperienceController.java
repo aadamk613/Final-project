@@ -130,7 +130,7 @@ public class AjaxExperienceController {
 	
 	// 결제
 	// 2. 결제 준비 창으로 이동
-	@GetMapping("yrreadyForPay.exp")
+	@GetMapping("readyForPay")
 	public String readyForPay(Payment payment, HttpSession session) throws IOException, ParseException  {
 		// 결제 준비 창으로 가기전 값들 보내줌
 		
@@ -147,8 +147,7 @@ public class AjaxExperienceController {
 		
 		//Payment payment = Payment.builder().contact(contact).quantity(quantity).build();
 		
-		String nextRedirectPcUrl = experienceService.readyForPay(map);
-		return nextRedirectPcUrl;
+		return experienceService.readyForPay(map);
 	}
 	
 	/*
@@ -160,6 +159,7 @@ public class AjaxExperienceController {
 		return "";
 	}
 	*/
+	
 	
 	
 	

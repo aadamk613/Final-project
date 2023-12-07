@@ -129,7 +129,7 @@ public class BoardController {
 					Member loginUser = (Member) session.getAttribute("loginUser");
 					bl.setMemNo(loginUser.getMemNo());
 					bl.setBoardNo(bno);
-					mv.addObject("like", (boardService.selectList(bl)));
+					mv.addObject("like", (boardService.selectLike(bl)));
 				}
 				//session.getAttribute(loginUser.memNo)
 				mv.addObject("br", boardService.selectBoardReport(bno))

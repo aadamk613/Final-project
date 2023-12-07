@@ -11,6 +11,7 @@ import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.notice.model.dao.NoticeDao;
 import com.kh.finalproject.notice.model.vo.Notice;
+import com.kh.finalproject.notice.model.vo.NoticeLike;
 
 @Service
 public class NoticeServiceImpl implements NoticeService{
@@ -86,6 +87,36 @@ public class NoticeServiceImpl implements NoticeService{
 	@Override
 	public int updateFiles(Attachment f) {
 		return noticeDao.updateFiles(sqlSession, f);
+	}
+
+	@Override
+	public NoticeLike selectNoticeLike(NoticeLike nl) {
+		return NoticeDao.selectLike(sqlSession, nl);
+	}
+
+	@Override
+	public int insertNoticeLike(NoticeLike nl) {
+		return NoticeDao.insertNoticeLike(sqlSession, nl);
+	}
+
+	@Override
+	public int updateNoticeLike(NoticeLike nl) {
+		return NoticeDao.updateNoticeLike(sqlSession, nl);
+	}
+
+	@Override
+	public int deleteNoticeLike(NoticeLike nl) {
+		return NoticeDao.deleteNoticeLike(sqlSession, nl);
+	}
+
+	@Override
+	public int plusNoticeLikeCount(int NoticeNo) {
+		return NoticeDao.plusNoticeLikeCount(sqlSession, NoticeNo);
+	}
+
+	@Override
+	public int minusNoticeLikeCount(int NoticeNo) {
+		return NoticeDao.minusNoticeLikeCount(sqlSession, NoticeNo);
 	}
 	
 }

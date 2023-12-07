@@ -26,108 +26,155 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="selectNoticeList" resultMap="noticeResultSet">
-	  SELECT
-		    *
-		FROM (
-		    SELECT
-                NOTICE_NO,
-		        NOTICE_TITLE,
-		        NOTICE_CONTENT,
-		        VIEWS,
-		        TO_CHAR(NOTICE_CREATE_DATE, 'YYYY-MM-DD HH:MI:SS') AS "NOTICE_CREATE_DATE",
-                'Best ' ||CATEGORY AS "CATEGORY",
-		        LIKE_COUNT,
-		        MEM_NICK
-		    FROM
-		        TB_NOTICE
-		    INNER JOIN
-		        TB_MEMBER ON (TB_NOTICE.MEM_NO = TB_MEMBER.MEM_NO)
-		    WHERE
-		        STATUS = 'Y'
-		        AND LIKE_COUNT &gt; 50
-		        AND CATEGORY = 2
-		    ORDER BY
-		        LIKE_COUNT DESC, NOTICE_NO DESC
-		)
-		WHERE
-		    ROWNUM BETWEEN 1 AND 5
-		
-		UNION 
-		
-		SELECT 
-		    *
-		FROM (
-		    SELECT
-		        NOTICE_NO,
-		        NOTICE_TITLE,
-		        NOTICE_CONTENT,
-		        VIEWS,
-		        TO_CHAR(NOTICE_CREATE_DATE, 'YYYY-MM-DD HH:MI:SS') AS "NOTICE_CREATE_DATE",
-                'Best ' ||CATEGORY AS "CATEGORY",
-		        LIKE_COUNT,
-		        MEM_NICK
-		    FROM
-		        TB_NOTICE
-		    INNER JOIN
-		        TB_MEMBER ON (TB_NOTICE.MEM_NO = TB_MEMBER.MEM_NO)
-		    WHERE
-		        STATUS = 'Y'
-		        AND CATEGORY = 1
-		        AND LIKE_COUNT &gt; 50
-		    ORDER BY
-		        LIKE_COUNT DESC, NOTICE_NO DESC
-		) b
-		WHERE 
-		    ROWNUM BETWEEN 1 AND 5
-		
-		UNION ALL
-		
-		SELECT
-		    NOTICE_NO,
-		    NOTICE_TITLE,
-		    NOTICE_CONTENT,
-		    VIEWS,
-		    TO_CHAR(NOTICE_CREATE_DATE, 'YYYY-MM-DD HH:MI:SS') AS "NOTICE_CREATE_DATE",
-		    CATEGORY AS "CATEGORY",
-		    LIKE_COUNT,
-		    MEM_NICK
-		FROM
-		    TB_NOTICE
-		INNER JOIN
-		    TB_MEMBER ON (TB_NOTICE.MEM_NO = TB_MEMBER.MEM_NO)
-		WHERE
-		    STATUS = 'Y'
-		    AND NOTICE_NO NOT IN (
-		        SELECT NOTICE_NO
-		        FROM (
-		            SELECT
-		                NOTICE_NO
-		            FROM
-		                TB_NOTICE
-		            WHERE
-		                STATUS = 'Y'
-		                AND CATEGORY = 2
-		                AND LIKE_COUNT &gt; 50
-		        ) b
-		        WHERE ROWNUM BETWEEN 1 AND 5
-                
-		        UNION 
-                
-		        SELECT
-		            NOTICE_NO
-		        FROM (
-		            SELECT
-		                NOTICE_NO
-		            FROM
-		                TB_NOTICE
-		            WHERE
-		                STATUS = 'Y'
-                        AND CATEGORY = 1
-		                AND LIKE_COUNT &gt; 50
-		        )
-		        WHERE ROWNUM BETWEEN 1 AND 5
-		    )
-            ORDER BY 6 DESC, 1 DESC
+SELECT
+        NOTICE_NO,
+        NOTICE_TITLE,
+        NOTICE_CONTENT,
+        VIEWS,
+        NOTICE_CREATE_DATE,
+        CATEGORY,
+        LIKE_COUNT,
+        MEM_NICK
+FROM (
+    SELECT
+        NOTICE_NO,
+        NOTICE_TITLE,
+        NOTICE_CONTENT,
+        VIEWS,
+        TO_CHAR(NOTICE_CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS "NOTICE_CREATE_DATE",
+        'Best ' || CATEGORY AS "CATEGORY",
+        LIKE_COUNT,
+        MEM_NICK
+    FROM
+        TB_NOTICE
+    INNER JOIN
+        TB_MEMBER ON (TB_NOTICE.MEM_NO = TB_MEMBER.MEM_NO)
+    WHERE
+        STATUS = 'Y'
+        AND LIKE_COUNT &gt; 50
+        AND CATEGORY = 2
+        AND ROWNUM BETWEEN 1 AND 5
+    ORDER BY
+        LIKE_COUNT DESC, NOTICE_NO DESC
+) 
+
+UNION ALL
+
+SELECT
+    NOTICE_NO,
+    NOTICE_TITLE,
+    NOTICE_CONTENT,
+    VIEWS,
+    NOTICE_CREATE_DATE, 
+    CATEGORY AS "CATEGORY",
+    LIKE_COUNT,
+    MEM_NICK
+FROM (
+    SELECT
+        NOTICE_NO,
+        NOTICE_TITLE,
+        NOTICE_CONTENT,
+        VIEWS,
+        TO_CHAR(NOTICE_CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS "NOTICE_CREATE_DATE",
+        'Best ' || CATEGORY AS "CATEGORY",
+        LIKE_COUNT,
+        MEM_NICK
+    FROM
+        TB_NOTICE
+    INNER JOIN
+        TB_MEMBER ON (TB_NOTICE.MEM_NO = TB_MEMBER.MEM_NO)
+    WHERE
+        STATUS = 'Y'
+        AND CATEGORY = 1
+        AND LIKE_COUNT &gt; 50
+        AND ROWNUM BETWEEN 1 AND 5
+    ORDER BY
+        LIKE_COUNT DESC, NOTICE_NO DESC
+) b
+
+UNION ALL
+
+SELECT
+    NOTICE_NO,
+    NOTICE_TITLE,
+    NOTICE_CONTENT,
+    VIEWS,
+    NOTICE_CREATE_DATE,
+    CATEGORY AS "CATEGORY",
+    LIKE_COUNT,
+    MEM_NICK
+    FROM(
+SELECT
+    NOTICE_NO,
+    NOTICE_TITLE,
+    NOTICE_CONTENT,
+    VIEWS,
+    TO_CHAR(NOTICE_CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS "NOTICE_CREATE_DATE",
+    CATEGORY AS "CATEGORY",
+    LIKE_COUNT,
+    MEM_NICK
+FROM
+    TB_NOTICE
+INNER JOIN
+    TB_MEMBER ON (TB_NOTICE.MEM_NO = TB_MEMBER.MEM_NO)
+WHERE
+    STATUS = 'Y'
+    AND CATEGORY = 2
+    AND NOTICE_NO NOT IN (
+        SELECT
+            NOTICE_NO
+        FROM
+            TB_NOTICE
+        WHERE
+            STATUS = 'Y'
+            AND CATEGORY = 2
+            AND LIKE_COUNT &gt; 50
+            AND ROWNUM BETWEEN 1 AND 5
+    )
+            ORDER BY NOTICE_NO DESC
+)
+
+UNION ALL
+
+SELECT
+    NOTICE_NO,
+    NOTICE_TITLE,
+    NOTICE_CONTENT,
+    VIEWS,
+    NOTICE_CREATE_DATE,
+    CATEGORY AS "CATEGORY",
+    LIKE_COUNT,
+    MEM_NICK
+    FROM(
+SELECT
+    NOTICE_NO,
+    NOTICE_TITLE,
+    NOTICE_CONTENT,
+    VIEWS,
+    TO_CHAR(NOTICE_CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS "NOTICE_CREATE_DATE",
+    CATEGORY AS "CATEGORY",
+    LIKE_COUNT,
+    MEM_NICK
+FROM
+    TB_NOTICE
+INNER JOIN
+    TB_MEMBER ON (TB_NOTICE.MEM_NO = TB_MEMBER.MEM_NO)
+WHERE
+    STATUS = 'Y'
+    AND CATEGORY = 1
+    AND NOTICE_NO NOT IN (
+        SELECT
+            NOTICE_NO
+        FROM
+            TB_NOTICE
+        WHERE
+            STATUS = 'Y'
+            AND CATEGORY = 1
+            AND LIKE_COUNT &gt; 50
+            AND ROWNUM BETWEEN 1 AND 5
+    )
+            ORDER BY NOTICE_NO DESC
+) 
 	</select>
 	<select id="selectBestNotice" resultMap="noticeResultSet">
           SELECT 
@@ -331,5 +378,80 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 WHERE
 		      FILE_NO = #{fileNo}
 	</update>
+	
+	<select id="selectLike" resultType="noticeLike" parameterType="noticeLike">
+		SELECT
+		      NOTICE_LIKE_STATUS noticeLikeStatus
+		  FROM
+		      TB_NOTICE_LIKE
+		 WHERE
+			  MEM_NO = #{memNo} 
+		   AND
+		      NOTICE_NO = #{noticeNo}
+	</select>
+	
+	<insert id="insertNoticeLike" parameterType="noticeLike">
+		INSERT
+		  INTO
+		      TB_NOTICE_LIKE
+		      (
+		      NOTICE_LIKE_NO
+		     ,NOTICE_LIKE_STATUS
+		     ,NOTICE_NO
+		     ,MEM_NO
+		      )
+		VALUES
+			  (
+			  SEQ_NOTICE_LIKE_NO.NEXTVAL
+			 ,'Y'
+			 ,#{noticeNo}
+			 ,#{memNo}
+			  )
+	</insert>
+	
+	<update id="updateNoticeLike">
+		UPDATE
+		      TB_NOTICE_LIKE
+		   SET
+		   	  NOTICE_LIKE_STATUS = 'Y'
+		 WHERE
+			  MEM_NO = #{memNo} 
+		   AND
+		      NOTICE_NO = #{noticeNo}
+		   AND
+		      NOTICE_LIKE_STATUS = 'N'
+	</update>
+	
+	<update id="deleteNoticeLike">
+		UPDATE
+		      TB_NOTICE_LIKE
+		   SET
+		   	  NOTICE_LIKE_STATUS = 'N'
+		 WHERE
+			  MEM_NO = #{memNo} 
+		   AND
+		      NOTICE_NO = #{noticeNo}
+		   AND
+		      NOTICE_LIKE_STATUS = 'Y'
+	</update>
+	
+	<update id="plusLikeCount">
+		UPDATE
+			  TB_NOTICE
+		   SET
+		      LIKE_COUNT = LIKE_COUNT + 1
+		 WHERE
+		      NOTICE_NO = #{noticeNo}
+	</update>
+	
+	<update id="minusLikeCount">
+		UPDATE
+			  TB_NOTICE
+		   SET
+		      LIKE_COUNT = LIKE_COUNT - 1
+		 WHERE
+		      NOTICE_NO = #{noticeNo}
+	</update>
+
 </mapper>
 

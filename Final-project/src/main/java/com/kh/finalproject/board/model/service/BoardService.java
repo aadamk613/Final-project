@@ -77,7 +77,7 @@ public interface BoardService {
 	ArrayList<Board> selectSearchBoardList(PageInfo pi,Search s);
 	
 	// 해당 게시글 좋아요 조회
-	BoardLike selectList(BoardLike bl);
+	BoardLike selectLike(BoardLike bl);
 	
 	// 좋아요 insert
 	int insertBoardLike(BoardLike bl);

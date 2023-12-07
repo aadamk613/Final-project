@@ -67,7 +67,7 @@ button {
 		
 		function kakaopay(){
 			$.ajax({
-				url : 'yrreadyForPay.exp',
+				url : 'readyForPay',
 				data : {
 					userId : '${loginUser.memId}',
 					contact : $('input[name=contact]').val(),
@@ -75,7 +75,13 @@ button {
 				},
 				success : result => {
 					// url을 보내면 성공url뒤에 쿼리스트링으로 pg_token을 넘겨줌
-					location.href=result;
+					if(result != 'error'){
+						location.href=result;
+					}
+					else{
+						// 결제 준비 insert 안되면
+						alert('결제에 실패하였습니다.');
+					}
 				},
 				error : () => {
 					console.log("결제 통신 오류");
