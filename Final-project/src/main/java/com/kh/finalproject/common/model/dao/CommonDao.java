@@ -24,7 +24,11 @@ public class CommonDao {
 		return sqlSession.insert("commonMapper.insertFiles", file);
 	}
 
-
+	// 첨부파일 등록 - 유담 사용
+	public int insertAttchment(SqlSessionTemplate sqlSession, Attachment attchment) {
+		return sqlSession.insert("commonMapper.insertAttchment", attchment);
+	}
+	
 	// 첨부파일 수정
 	public int updateFiles(SqlSessionTemplate sqlSession, Attachment file) {
 		return sqlSession.update("commonMapper.updateFiles", file);
@@ -40,5 +44,6 @@ public class CommonDao {
 	public int updateAttachment(SqlSessionTemplate sqlSession, Attachment file) {
 		return sqlSession.update("commonMapper.updateAttachment", file);
 	}
+
 
 }

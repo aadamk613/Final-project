@@ -49,9 +49,12 @@ public class CommonController {
 	 * @param savePathFolder : 자유게시판, 공지사항, 체험학습, 식물 각각의 게시판에 맞게 파일을 저장할 추가 경로
 	 * @return
 	 */
-	public Attachment setFile(MultipartFile upfile, HttpSession session, String savePathFolder) {
+	
+	public Attachment setFile(MultipartFile upfile, 
+							  HttpSession session, 
+							  String savePathFolder) {
 		
-		Attachment file = new Attachment();
+		Attachment attchment = new Attachment();
 
 		String originalName = upfile.getOriginalFilename();
 		
@@ -59,21 +62,22 @@ public class CommonController {
 		int ranNum = (int)(Math.random() * 9000) + 10000;
 		String ext = originalName.substring(originalName.lastIndexOf("."));
 		
-		String changeName = currentTime + ranNum + ext;
-		String savePath = session.getServletContext().getRealPath("resources/uploadFiles/" + savePathFolder + "/");
+		String updateName = currentTime + ranNum + ext;
+		String path = "resources/uploadFiles/" + savePathFolder + "/";
+		String savePath = session.getServletContext().getRealPath(path);
 		
 		try {
-			upfile.transferTo(new File(savePath + changeName));
+			upfile.transferTo(new File(savePath + updateName));
 		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();
 		}
 		
-		file.setFilePath("resources/uploadFiles/" + savePathFolder + "/");
-		file.setRefType(savePathFolder);
-		file.setOriginalName(originalName);
-		file.setUpdateName(changeName);
+		attchment.setOriginalName(originalName);
+		attchment.setUpdateName(updateName);
+		attchment.setFilePath(path);
+		attchment.setRefType(savePathFolder);
 
-		return file;
+		return attchment;
 	}
 	
 	/**

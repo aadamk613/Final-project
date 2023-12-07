@@ -417,6 +417,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				REPORT_DATE DESC
 	</select>
 
+	<!-- 식물 수정 -->
 	<update id="updateBlogPlant" parameterType="plant">
     
     	UPDATE 
@@ -429,8 +430,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  		PLANT_NO = #{ plantNo }			 
 		  		 
 	</update>
-
-
 
 	<!-- 식물 삭제하기 -->
 	<delete id="deleteBlogPlant" parameterType="_int">
@@ -494,7 +493,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	</select>
 
-	
 	<!-- 블로그 일반 게시글 작성 -->
 
 	<insert id="insertBlogBoard" parameterType="blogBoard">

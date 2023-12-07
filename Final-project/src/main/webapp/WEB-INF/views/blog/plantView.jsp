@@ -205,7 +205,7 @@ textarea{
 									</span> <clear="both">
 								</li>
 								<li id="plantNick">
-									<div>별명 : ${ plant.plantNickName }</div>
+									<div>애칭 : ${ plant.plantNickName }</div>
 								</li>
 								<li>
 									<div id="plantCreateDate">키우기 시작한 날짜 : ${ plant.plantLogDate }</div>
