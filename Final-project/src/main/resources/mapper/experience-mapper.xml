@@ -141,6 +141,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		               EXP_NO 
 		          FROM 
 		               TB_EXPERIENCE_REPLY 
+		         WHERE 
+		         	   REPLY_STATUS = 'Y'
 		         GROUP 
 		            BY 
 		               EXP_NO) 

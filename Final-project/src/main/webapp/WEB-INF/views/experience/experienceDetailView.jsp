@@ -305,15 +305,14 @@ th, td{
 					</div>
 					<!-- 댓글 AJAX처리 -->
 					<div>
-						댓글
+						<div>댓글</div>
 						<table id="reply">
 							<thead>
 								<tr>
-									<th>사진</th>
 									<th>아이디</th>
 									<th width="30px">내용</th>
 									<th>작성일</th>
-									<th>좋아요</th>
+									
 									<th>비밀글</th>
 									<th>비고</th>
 								</tr>
@@ -410,40 +409,36 @@ th, td{
 				});
 			};
 		
-			// 댓글 수 초기값
 			let replyCount = ${ exp.expReplyCount };
 			
-			// 댓글 작성기능
+			
+			console.log("이게 왜 길이가 ㅠㅠ");
+			console.log($('#secret'));
+			console.log($('#secret').length);
+			
 			function insertReply(){
-				
-				console.log($('#commentContentInsert').val() == '');
-				
 				if($('#commentContentInsert').val() == ''){
 					$('#submitWrapLabel').text('내용은 필수 입력 사항입니다.');
 					return;
 				}
-				
 				$('#submitWrapLabel').empty();
+				
 				const data = {
 						expNo : '${ exp.expNo }',
 						replyWriter : '${ loginUser.memId }',
 						replyContent : $('#commentContentInsert').val(),
-						replySecret : $('input[type=checkbox]:checked').length
+						replySecret : $('#secret').is('checked')
 				};
-				
 				$.ajax({
 					url : 'yrinsertExpReply.exp',
 					type : 'post',
 		            contentType: 'application/json; charset=utf-8',
 					data :JSON.stringify(data), 
 					success : result => {
-						console.log(result);
-						
 						if(result == 'success'){
 							// 댓글 수 증가
 							replyCount++;
 							$('#replyCount').text('댓글수 ' + replyCount);
-							
 							$('#commentContentInsert').val('');
 							$('input[type=checkbox]:checked').prop('checked', false);
 							selectReply();
@@ -463,7 +458,6 @@ th, td{
 			
 			
 			function selectReply(){
-				console.log("ㄹ하ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ");
 				$.ajax({
 					url : "yrselectExpReplyList.exp",
 					data : {expNo : '${ exp.expNo }'},
@@ -476,19 +470,18 @@ th, td{
 							if((result[i].replySecret == 'N') || 
 								((result[i].replySecret == 'Y') && ('${ loginUser.memId }' == result[i].replyWriter || ${ loginUser.memId eq exp.expWriter } ))) {
 									value += '<tr>'
-										   + '<td>' + '사진' + '</td>'
 										   + '<td>' + result[i].replyWriter + '</td>'
-										   + '<td>' + result[i].replyContent + '</td>'
+										   + '<td style="width : 500px">' + result[i].replyContent + '</td>'
 										   // 수정했다면 수정일 보여주기
 										   if(result[i].replyModifyDate != null){
-											   value += '<td>' + result[i].replyModifyDate + '수정됨 </td>'
+											   value += '<td style="width : 300px">' + result[i].replyModifyDate + '수정됨 </td>'
 										   } 
 										   else{
-											   value += '<td>' + result[i].replyCreateDate + '</td>'
+											   value += '<td style="width : 300px">' + result[i].replyCreateDate + '</td>'
 										   }
-										   value += '<td>' + '♥' + '</td>'
+										   // value += '<td>' + '♥' + '</td>'
 										   if(result[i].replySecret == 'Y'){
-											   value += '<td>' + '<input type="checkbox" disabled checked />' + '</td>';
+											   value += '<td><input type="checkbox" disabled checked /></td>';
 										   } 
 										   else{
 											   value += '<td></td>';
@@ -524,13 +517,15 @@ th, td{
 						type : 'post',
 						success : result => {
 							console.log(result);
+							replyCount--;
+							$('#replyCount').text('댓글수 ' + replyCount);
 						},
 						error : () => {
 							console.log("체험학습 댓글 삭제 오류");
 						}
 					});
 					alertify.success('삭제 완료');
-					selectReply()
+					selectReply();
 					
 				}, () => { alertify.error('삭제 취소') });
 			});

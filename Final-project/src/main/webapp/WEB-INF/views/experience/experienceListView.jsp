@@ -74,6 +74,8 @@ a {
 				</c:if>
 			</div>
 			
+			<c:remove var="exp" scope="session" />
+			
 			<div class="table-sm">
 			<table class="table table-bordered">
 			    <thead>
