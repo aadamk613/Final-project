@@ -10,13 +10,10 @@ import org.springframework.stereotype.Service;
 import com.kh.finalproject.board.model.dao.BoardDao;
 import com.kh.finalproject.board.model.vo.Board;
 import com.kh.finalproject.board.model.vo.BoardComment;
-
-import com.kh.finalproject.common.model.vo.Attachment;
-
+import com.kh.finalproject.board.model.vo.BoardLike;
 import com.kh.finalproject.board.model.vo.BoardReport;
 import com.kh.finalproject.board.model.vo.CommentReport;
-
-
+import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.model.vo.Search;
 
@@ -134,10 +131,55 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public ArrayList<Board> selectSearchBoardList(PageInfo pi) {
+	public ArrayList<Board> selectSearchBoardList(PageInfo pi,Search s) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		return boardDao.selectSearchBoardList(sqlSession, rowBounds);
+		return boardDao.selectSearchBoardList(sqlSession, rowBounds,s);
+	}
+
+	@Override
+	public BoardLike selectLike(BoardLike bl) {
+		return boardDao.selectLike(sqlSession, bl);
+	}
+
+	@Override
+	public int insertBoardLike(BoardLike bl) {
+		return boardDao.insertBoardLike(sqlSession, bl);
+	}
+
+	@Override
+	public int commentCount(int boardNo) {
+		return boardDao.commentCount(sqlSession, boardNo);
+	}
+
+	@Override
+	public int updateComment(BoardComment bc) {
+		return boardDao.updateComment(sqlSession, bc);
+	}
+
+	@Override
+	public int deleteComment(int commentNo) {
+		return boardDao.deleteComment(sqlSession, commentNo);
+	}
+
+	@Override
+	public int updateBoardLike(BoardLike bl) {
+		return boardDao.updateBoardLike(sqlSession, bl);
+	}
+
+	@Override
+	public int deleteBoardLike(BoardLike bl) {
+		return boardDao.deleteBoardLike(sqlSession, bl);
+	}
+
+	@Override
+	public int plusLikeCount(int boardNo) {
+		return boardDao.plusLikeCount(sqlSession, boardNo);
+	}
+
+	@Override
+	public int minusLikeCount(int boardNo) {
+		return boardDao.minusLikeCount(sqlSession, boardNo);
 	}
 	
 }

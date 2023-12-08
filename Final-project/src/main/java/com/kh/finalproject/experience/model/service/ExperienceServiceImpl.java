@@ -27,7 +27,9 @@ import com.kh.finalproject.experience.model.vo.ExperienceReply;
 import com.kh.finalproject.experience.model.vo.Payment;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ExperienceServiceImpl implements ExperienceService {
@@ -153,144 +155,85 @@ public class ExperienceServiceImpl implements ExperienceService {
 	
 	
 	
-	
+	// ---------------------------------------------------------------------------------------
 	
 	// 카카오페이
 	@Override
-	public String readyForPay() throws IOException, ParseException  {
+	public String readyForPay(HashMap map) throws IOException, ParseException  {
 		
 		String url = "https://kapi.kakao.com/v1/payment/ready";
-		// admin키
 		String authorization = "KakaoAK 1f372afd224bea9fbde198f021999cfb";
 		String contentType = "application/x-www-form-urlencoded;charset=utf-8";
 		
-		//StringBuilder sb = new StringBuilder();
-		//sb.append("https://kapi.kakao.com/v1/payment/ready?Authorization=");
-		//sb.append(serviceKey);
-		//sb.append("Content-type=application/x-www-form-urlencoded;charset=utf-8");
-		
-		//String url = sb.toString();
-		
 		URL requestUrl = new URL(url);
 		HttpURLConnection urlConnection = (HttpURLConnection)requestUrl.openConnection();
-		
-		//BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-		//String responseText = br.readLine();
-		
-		
 		urlConnection.setRequestMethod("POST");
-		
-		/*
-		Map<String, String> requestHeaders = new HashMap<>();
-		requestHeaders.put("Authorization", serviceKey);
-		requestHeaders.put("Content-type", contentType);
-		
-		for(Map.Entry<String, String> header : requestHeaders.entrySet()) {
-			urlConnection.setRequestProperty(header.getKey(), header.getValue());
-		}
-		*/
-		
-		// 헤더에 담음
 		urlConnection.setRequestProperty("Authorization", authorization);
 		urlConnection.setRequestProperty("Content-type", contentType);
-		
-		//urlConnection.setRequestProperty(key, value);
 		urlConnection.setDoOutput(true);
 		
-		/*
-		// 필수 본문 파라미터
-		가맹점 코드 : cid=TC0ONETIME
-		가맹점 주문번호 : partner_order_id=111111
-		가맹점 회원 id : partner_user_id=user01
-		상품명 : item_name=expitem
-		상품 수량 : quantity=1
-		상품 총액 : total_amount=10000
-		상품 비과세 금액 : tax_free_amount=10000
-		결제 성공 시 redirect url : approval_url=http://localhost:8001/final
-		결제 취소 시 redirect url : cancel_url=http://localhost:8001/final
-		결제 실패 시 redirect url : fail_url=http://localhost:8001/final
-		*/
+		Payment payment = (Payment)map.get("payment");
+		Experience exp = (Experience)map.get("exp");
 		
 		String cid = "TC0ONETIME"; // 고정
-		String partnerOrderId = "abcdef"; // 게시글 번호
-		String partnerUserId = "user01"; // 로그인유저 ID
-		String itemName = "expitem"; // 게시글 제목
-		Integer quantity = 1; // 고정
-		Integer totalAmount = 10000; // 게시글 가격
-		Integer taxFreeAmount = 10000; // 게시글 가격
-		String approvalUrl = "http://localhost:8001/final/yrsendPayment.exp";
-		String cancelUrl = "http://localhost:8001/final";
-		String failUrl = "http://localhost:8001/final";
+		String partnerOrderId = String.valueOf(exp.getExpNo()); // 게시글 번호
+		String partnerUserId = payment.getUserId(); // 로그인유저 ID
+		String itemName = exp.getExpTitle(); // 게시글 제목
+		Integer quantity = payment.getQuantity(); // 사용자가 선택한 수량
+		Integer totalAmount = quantity * exp.getExpPrice(); // 수량 * 게시글 가격
+		//Integer taxFreeAmount = 10000; // 게시글 가격
+		
+		String approvalUrl = "http://localhost:8001/final/sendPayment?userId=" + partnerUserId;
+		String cancelUrl = "http://localhost:8001/final/deletePayment?userId=" + partnerUserId;
+		String failUrl = "http://localhost:8001/final/deletePayment?userId=" + partnerUserId;
 		
 		StringBuilder sb = new StringBuilder();
 		
+		sb.append("cid=").append(cid);
+		sb.append("&partner_order_id=").append(partnerOrderId);
+		sb.append("&partner_user_id=").append(partnerUserId);
+		sb.append("&item_name=").append(itemName);
+		sb.append("&quantity=").append(quantity);
+		sb.append("&total_amount=").append(totalAmount);
+		sb.append("&tax_free_amount=").append(totalAmount);
+		sb.append("&approval_url=").append(approvalUrl);
+		sb.append("&cancel_url=").append(cancelUrl);
+		sb.append("&fail_url=").append(failUrl);
 		
-		sb.append("cid=" + cid);
-		sb.append("&partner_order_id=" + partnerOrderId);
-		sb.append("&partner_user_id=" + partnerUserId);
-		sb.append("&item_name=" + itemName);
-		sb.append("&quantity=" + quantity);
-		sb.append("&total_amount=" + totalAmount);
-		sb.append("&tax_free_amount=" + taxFreeAmount);
-		sb.append("&approval_url=" + approvalUrl);
-		sb.append("&cancel_url=" + cancelUrl);
-		sb.append("&fail_url=" + failUrl);
-		
-		System.out.println(sb.toString());
-		
-		// 요청
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream()));
 		bw.write(sb.toString());
 		bw.flush();
 		
-		System.out.println(urlConnection.getResponseCode());
-		
-		// 응답
 		BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
 		String line = "";
 		StringBuilder responseData = new StringBuilder();
 		while((line = br.readLine()) != null) {
 			responseData.append(line);
 		}
-		System.out.println(responseData.toString());
 		
 		JSONParser parser = new JSONParser();
 		JSONObject element = (JSONObject)parser.parse(responseData.toString());
 		
-		// DB저장밖에 답이 없다. (session은 유실되고, 쿼리스트링으로는 넘겨줄 방법이 없음)
 		String tid = element.get("tid").toString();
 		String nextRedirectPcUrl = element.get("next_redirect_pc_url").toString();
 		
-		Payment payment = Payment.builder().orderId(partnerOrderId)
-										   .userId(partnerUserId)
-										   .contact("01011111111")
-										   .tid(tid).build();
-		
-		// DB에 저장
-		int result = experienceDao.insertPayment(sqlSession, payment);
-		
-		System.out.println("여기로 결제");
-		System.out.println(nextRedirectPcUrl);
-		
-		// 임시 값 보내주기
-		// session으로 보내주던가 Map으로 보내주던가 객체로 보내주던가
-		//HashMap<String, Object> map = new HashMap<String, Object>();
-		//map.put("payUniqueNo", payUniqueNo); // tid
-		//map.put("nextRedirectPcUrl", nextRedirectPcUrl); // 결제 url 이쪽으로 url요청 보내야 함
+		payment.setOrderId(partnerOrderId);
+		payment.setTid(tid);
+		payment.setTotalAmount(totalAmount);
 		
 		br.close();
 		bw.close();
 		
-		return nextRedirectPcUrl;
+		if(experienceDao.insertPayment(sqlSession, payment) > 0) {
+			return nextRedirectPcUrl;
+		} else {
+			return "error";
+		}
 	}
 	
 	
 	// 결제 승인
-	public Payment payExp(String pg_token) throws IOException, ParseException {
-		System.out.println("준비완료");
-		//System.out.println(tid);
-		//T5699c3a122f0603ef95
-		
+	public Payment payExp(String pg_token, String userId) throws IOException, ParseException {
 		//next_redirect_pc_url":"https://online-pay.kakao.com/mockup/v1/e39df5dae0c17bee0b5ed834d30261ada5038849748e8ea7b41f51971c569b9d/info"
 		// 여기에서 결제를 성공해야 pg_token이 쿼리스트링으로 나옴
 		// 갸를 뽑아서 여기를 와야 함
@@ -302,22 +245,15 @@ public class ExperienceServiceImpl implements ExperienceService {
 		
 		String cid = "TC0ONETIME";
 		//String tid = "payUniqueNo";
-		String partnerOrderId = "abcdef"; // ready와 동일
-		String partnerUserId = "user01"; // ready와 동일
+		//String partnerOrderId = "abcdef"; // ready와 동일
+		//String partnerUserId = "user01"; // ready와 동일
 		//String pg_token = "dd";
 		
-		System.out.println("서비스");
-		HashMap map = new HashMap();
-		map.put("orderId", partnerOrderId);
-		map.put("userId", partnerUserId);
+		//HashMap map = new HashMap();
+		//map.put("orderId", partnerOrderId);
+		//map.put("userId", partnerUserId);
 		
-		System.out.println("맵");
-		System.out.println(map);
-		
-		Payment payment = experienceDao.selectPayment(sqlSession, map);
-		System.out.println(payment);
-		
-		System.out.println(payment.getTid());
+		Payment payment = experienceDao.selectPayment(sqlSession, userId);
 		
 		// 돌려주는거 next_pc_url,  pg_token, tid => 받아서 돌려줌
 		
@@ -336,15 +272,14 @@ public class ExperienceServiceImpl implements ExperienceService {
 		StringBuilder sb = new StringBuilder();
 		sb.append("cid=").append(cid)
 		  .append("&tid=").append(payment.getTid())
-		  .append("&partner_order_id=").append(partnerOrderId)
-		  .append("&partner_user_id=").append(partnerUserId)
+		  .append("&partner_order_id=").append(payment.getOrderId())
+		  .append("&partner_user_id=").append(payment.getUserId())
 		  .append("&pg_token=").append(pg_token);
 		
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream()));
 		bw.write(sb.toString());
 		bw.flush();
 		
-		System.out.println("여기까지 왔으면 대박");
 		BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
 		String line = "";
 		StringBuilder responseData = new StringBuilder();
@@ -352,24 +287,22 @@ public class ExperienceServiceImpl implements ExperienceService {
 			responseData.append(line);
 		}
 		
-		System.out.println("음치킨");
-		System.out.println(responseData);
-		
 		JSONParser parser = new JSONParser();
 		JSONObject element = (JSONObject)parser.parse(responseData.toString());
 		
-		// 여기서 업데이트하고 가져갈 데이터 가져가기
-		if(element.get("approvedat") != null) {
-			// experienceDao.updatePayment(map);
-			String approvedAt = element.get("approvedat").toString();
-			payment.setApprovedAt(approvedAt);
-		} 
+		String approvedAt = element.get("approved_at").toString();
+		payment.setApprovedAt(approvedAt);
 		
-		
-		
+		if(responseData != null) {
+			if(experienceDao.updatePayment(sqlSession, payment) > 0) {
+				log.info("업데이트 성공");
+			}
+		}
 		
 		return payment;
 	}
+	
+	
 
 
 	

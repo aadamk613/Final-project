@@ -377,6 +377,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			      MEM_NO = #{memNo}
 			   AND
 			      REF_BOARD_NO = #{refBoardNo}
+			   AND
 	</select>
 	<select id="selectReportedArticles" resultMap="boardReportResultSet">
 		SELECT
@@ -437,81 +438,206 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="selectSearchBoardList" resultMap="boardResultSet">
-		  SELECT
-		    *
-		FROM (
-		    SELECT
-               'Best ' || CATEGORY AS "CATEGORY",
-                BOARD_NO,
-		        BOARD_TITLE,
-		        BOARD_CONTENT,
-		        VIEWS,
-		        TO_CHAR(BOARD_CREATE_DATE, 'YYYY-MM-DD HH:MI:SS') AS "BOARD_CREATE_DATE",
-		        LIKE_COUNT,
-                COMMENT_COUNT,
-		        MEM_NICK
-		    FROM
-		        TB_BOARD
-		    INNER JOIN
-		        TB_MEMBER ON (TB_BOARD.MEM_NO = TB_MEMBER.MEM_NO)
-		    WHERE
-		        STATUS = 'Y'
-		        AND LIKE_COUNT &gt; 50
-		    ORDER BY
-		        LIKE_COUNT DESC, BOARD_NO DESC
-		)
-		WHERE
-		    ROWNUM BETWEEN 1 AND 5
-		UNION ALL
-    
 		SELECT
-                CATEGORY AS "CATEGORY",
-                BOARD_NO,
-		        BOARD_TITLE,
-		        BOARD_CONTENT,
-		        VIEWS,
-		        TO_CHAR(BOARD_CREATE_DATE, 'YYYY-MM-DD HH:MI:SS') AS "BOARD_CREATE_DATE",
-		        LIKE_COUNT,
-                COMMENT_COUNT,
-		        MEM_NICK
+		        *
 		FROM
-		    TB_BOARD
-		INNER JOIN
-		    TB_MEMBER ON (TB_BOARD.MEM_NO = TB_MEMBER.MEM_NO)
+		    (
+		        SELECT
+		            'Best ' || CATEGORY AS "CATEGORY",
+		            BOARD_NO,
+		            BOARD_TITLE,
+		            BOARD_CONTENT,
+		            VIEWS,
+		            TO_CHAR(BOARD_CREATE_DATE, 'YYYY-MM-DD HH:MI:SS') AS "BOARD_CREATE_DATE",
+		            LIKE_COUNT,
+		            COMMENT_COUNT,
+		            MEM_NICK
+		        FROM
+		            TB_BOARD
+		        INNER JOIN
+		            TB_MEMBER ON (TB_BOARD.MEM_NO = TB_MEMBER.MEM_NO)
+		        WHERE
+		            STATUS = 'Y'
+		         AND 
+		            LIKE_COUNT &gt; 50
+		         AND
+		      		IS_BLIND = 'N'
+		      	 AND
+		      	    ROWNUM BETWEEN 1 AND 5
+		        ORDER BY
+		            LIKE_COUNT DESC, BOARD_NO DESC
+		    )
 		WHERE
-		    STATUS = 'Y'
-		    AND BOARD_NO NOT IN (
-		        SELECT BOARD_NO
-		        FROM (
-		            SELECT
-		                BOARD_NO
-		            FROM
-		                TB_BOARD
-		            WHERE
-		                STATUS = 'Y'
-		                AND LIKE_COUNT &gt; 50
-		        ) 
-		        WHERE ROWNUM BETWEEN 1 AND 5
-		    )	
-		    AND
-		 <choose>
+		 	<choose>
 		 	<when test="condition == 'mem_no'">
 			  MEM_NICK LIKE '%' || #{keyword} || '%'
 		 	</when>
-		 	<when test="condition == board_title">
+		 	<when test="condition == 'board_title'">
 		      BOARD_TITLE like '%' || #{keyword} || '%'
 		    </when>
 		    <otherwise>
 		      BOARD_CONTENT like '%' || #{keyword} || '%'
 		    </otherwise> 
 		   </choose>
-		    AND
-		       STATUS = 'Y'
-		    AND
-		       IS_BLIND = 'N'
+		UNION ALL
+		
+		SELECT
+		    CATEGORY AS "CATEGORY",
+		    BOARD_NO,
+		    BOARD_TITLE,
+		    BOARD_CONTENT,
+		    VIEWS,
+		    TO_CHAR(BOARD_CREATE_DATE, 'YYYY-MM-DD HH:MI:SS') AS "BOARD_CREATE_DATE",
+		    LIKE_COUNT,
+		    COMMENT_COUNT,
+		    MEM_NICK
+		FROM
+		    (
+		        SELECT
+		        *
+		        FROM
+		            TB_BOARD
+		        INNER JOIN
+		            TB_MEMBER ON (TB_BOARD.MEM_NO = TB_MEMBER.MEM_NO)
+		        WHERE
+		            STATUS = 'Y'
+		            AND BOARD_NO NOT IN (
+		                SELECT BOARD_NO
+		                FROM (
+		                    SELECT
+		                        BOARD_NO
+		                    FROM
+		                        TB_BOARD
+		                    WHERE
+		                        STATUS = 'Y'
+		                      AND
+		      					IS_BLIND = 'N'
+		                      AND
+		                        LIKE_COUNT &gt; 50
+		                ) 
+		                WHERE ROWNUM BETWEEN 1 AND 5
+		            )
+		        ORDER BY
+		            BOARD_NO DESC
+		    )
+	   WHERE
+		 <choose>
+		 	<when test="condition == 'mem_no'">
+			  MEM_NICK LIKE '%' || #{keyword} || '%'
+		 	</when>
+		 	<when test="condition == 'board_title'">
+		      BOARD_TITLE like '%' || #{keyword} || '%'
+		    </when>
+		    <otherwise>
+		      BOARD_CONTENT like '%' || #{keyword} || '%'
+		    </otherwise> 
+		   </choose>
 	</select>
 	
+	<select id="selectLike" resultType="boardLike" parameterType="boardLike">
+		SELECT
+		      BOARD_LIKE_STATUS boardLikeStatus
+		  FROM
+		      TB_BOARD_LIKE
+		 WHERE
+			  MEM_NO = #{memNo} 
+		   AND
+		      BOARD_NO = #{boardNo}
+	</select>
 	
+	<insert id="insertBoardLike" parameterType="boardLike">
+		INSERT
+		  INTO
+		      TB_BOARD_LIKE
+		      (
+		      BOARD_LIKE_NO
+		     ,BOARD_LIKE_STATUS
+		     ,BOARD_NO
+		     ,MEM_NO
+		      )
+		VALUES
+			  (
+			  SEQ_BOARD_LIKE_NO.NEXTVAL
+			 ,'Y'
+			 ,#{boardNo}
+			 ,#{memNo}
+			  )
+	</insert>
 	
+	<update id="commentCount">
+		UPDATE
+		  	  TB_BOARD
+		   SET
+			  COMMENT_COUNT = COMMENT_COUNT + 1
+		 WHERE
+			  BOARD_NO = #{boardNo}
+	</update>
+	
+	<update id="updateComment">
+		UPDATE
+		      TB_BOARD_COMMENT
+		   SET
+		      BOARD_COMMENT_CONTENT = #{commentContent}
+		 WHERE
+		      BOARD_NO = #{boardNo}
+		   AND
+		      MEM_NO = #{memNo}
+		   AND
+		      BOARD_COMMENT_NO = #{commentNo}
+	</update>
+	
+
+	<update id="deleteComment">
+		UPDATE
+		      TB_BOARD_COMMENT
+		   SET
+		      BOARD_COMMENT_STATUS = 'N'
+		 WHERE
+		      BOARD_COMMENT_NO = #{commentNo}
+	</update>
+	
+	<update id="updateBoardLike">
+		UPDATE
+		      TB_BOARD_LIKE
+		   SET
+		   	  BOARD_LIKE_STATUS = 'Y'
+		 WHERE
+			  MEM_NO = #{memNo} 
+		   AND
+		      BOARD_NO = #{boardNo}
+		   AND
+		      BOARD_LIKE_STATUS = 'N'
+	</update>
+	
+	<update id="deleteBoardLike">
+		UPDATE
+		      TB_BOARD_LIKE
+		   SET
+		   	  BOARD_LIKE_STATUS = 'N'
+		 WHERE
+			  MEM_NO = #{memNo} 
+		   AND
+		      BOARD_NO = #{boardNo}
+		   AND
+		      BOARD_LIKE_STATUS = 'Y'
+	</update>
+	
+	<update id="plusLikeCount">
+		UPDATE
+			  TB_BOARD
+		   SET
+		      LIKE_COUNT = LIKE_COUNT + 1
+		 WHERE
+		      BOARD_NO = #{boardNo}
+	</update>
+	
+	<update id="minusLikeCount">
+		UPDATE
+			  TB_BOARD
+		   SET
+		      LIKE_COUNT = LIKE_COUNT - 1
+		 WHERE
+		      BOARD_NO = #{boardNo}
+	</update>
 	
 </mapper>

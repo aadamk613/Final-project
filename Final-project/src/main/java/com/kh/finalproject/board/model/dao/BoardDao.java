@@ -8,12 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.finalproject.board.model.vo.Board;
 import com.kh.finalproject.board.model.vo.BoardComment;
-
-import com.kh.finalproject.common.model.vo.Attachment;
-import com.kh.finalproject.common.model.vo.PageInfo;
-import com.kh.finalproject.common.model.vo.Search;
+import com.kh.finalproject.board.model.vo.BoardLike;
 import com.kh.finalproject.board.model.vo.BoardReport;
 import com.kh.finalproject.board.model.vo.CommentReport;
+import com.kh.finalproject.common.model.vo.Attachment;
+import com.kh.finalproject.common.model.vo.Search;
 
 @Repository
 public class BoardDao {
@@ -99,8 +98,44 @@ public class BoardDao {
 		return sqlSession.selectOne("boardMapper.selectSearchCount", s);
 	}
 
-	public ArrayList<Board> selectSearchBoardList(SqlSessionTemplate sqlSession, RowBounds rowBounds) {
-		return (ArrayList)sqlSession.selectList("boardMapper.selectSearchBoardList", null,  rowBounds);
+	public ArrayList<Board> selectSearchBoardList(SqlSessionTemplate sqlSession, RowBounds rowBounds,Search s) {
+		return (ArrayList)sqlSession.selectList("boardMapper.selectSearchBoardList", s,  rowBounds);
+	}
+
+	public BoardLike selectLike(SqlSessionTemplate sqlSession, BoardLike bl) {
+		return sqlSession.selectOne("boardMapper.selectLike", bl);
+	}
+
+	public int insertBoardLike(SqlSessionTemplate sqlSession, BoardLike bl) {
+		return sqlSession.insert("boardMapper.insertBoardLike", bl);
+	}
+
+	public int commentCount(SqlSessionTemplate sqlSession, int boardNo) {
+		return sqlSession.update("boardMapper.commentCount", boardNo);
+	}
+
+	public int updateComment(SqlSessionTemplate sqlSession, BoardComment bc) {
+		return sqlSession.update("boardMapper.updateComment", bc);
+	}
+
+	public int deleteComment(SqlSessionTemplate sqlSession, int commentNo) {
+		return sqlSession.update("boardMapper.deleteComment", commentNo);
+	}
+
+	public int updateBoardLike(SqlSessionTemplate sqlSession, BoardLike bl) {
+		return sqlSession.update("boardMapper.updateBoardLike", bl);
+	}
+
+	public int deleteBoardLike(SqlSessionTemplate sqlSession, BoardLike bl) {
+		return sqlSession.update("boardMapper.deleteBoardLike", bl);
+	}
+
+	public int plusLikeCount(SqlSessionTemplate sqlSession, int boardNo) {
+		return sqlSession.update("boardMapper.plusLikeCount", boardNo);
+	}
+
+	public int minusLikeCount(SqlSessionTemplate sqlSession, int boardNo) {
+		return sqlSession.update("boardMapper.minusLikeCount", boardNo);
 	}
 
 

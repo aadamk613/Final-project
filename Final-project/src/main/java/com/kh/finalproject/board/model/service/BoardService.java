@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.kh.finalproject.board.model.vo.Board;
 import com.kh.finalproject.board.model.vo.BoardComment;
+import com.kh.finalproject.board.model.vo.BoardLike;
 import com.kh.finalproject.board.model.vo.BoardReport;
 import com.kh.finalproject.board.model.vo.CommentReport;
 import com.kh.finalproject.common.model.vo.Attachment;
@@ -73,6 +74,32 @@ public interface BoardService {
 	int selectSearchCount(Search s);
 	
 	// 게시글 검색 리스트
-	ArrayList<Board> selectSearchBoardList(PageInfo pi);
+	ArrayList<Board> selectSearchBoardList(PageInfo pi,Search s);
 	
+	// 해당 게시글 좋아요 조회
+	BoardLike selectLike(BoardLike bl);
+	
+	// 좋아요 insert
+	int insertBoardLike(BoardLike bl);
+	
+	// 댓글 수 증가
+	int commentCount(int boardNo);
+	
+	// 댓글 수정
+	int updateComment(BoardComment bc);
+	
+	// 댓글 삭제
+	int deleteComment(int commentNo);
+	
+	// 좋아요 update
+	int updateBoardLike(BoardLike bl);
+	
+	// 좋아요 삭제 
+	int deleteBoardLike(BoardLike bl);
+	
+	// 좋아요 수 증가
+	int plusLikeCount(int boardNo);
+	
+	// 종아요 수 감소
+	int minusLikeCount(int boardNo);
 }

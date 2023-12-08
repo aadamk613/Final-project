@@ -7,7 +7,6 @@ import javax.servlet.http.HttpSession;
 
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -129,21 +128,26 @@ public class AjaxExperienceController {
 		}
 	}
 	
-	
-	
 	// 결제
 	// 2. 결제 준비 창으로 이동
-	@GetMapping("yrreadyForPay.exp" /*, produces="html/text; charset=UTF-8"*/)
-	public String readyForPay() throws IOException, ParseException  {
+	@GetMapping("readyForPay")
+	public String readyForPay(Payment payment, HttpSession session) throws IOException, ParseException  {
 		// 결제 준비 창으로 가기전 값들 보내줌
-		String nextRedirectPcUrl = experienceService.readyForPay();
 		
-		//session.setAttribute("map", map);
+		System.out.println("결제 가기전 값 가져오기");
+		System.out.println(payment.getContact());
+		System.out.println(payment.getQuantity());
+		System.out.println(payment.getUserId());
+		//System.out.println(payment.getOrderId());
+		System.out.println(session.getAttribute("exp"));
 		
-		// 결제 창으로 보내줄 url
-		//session.setAttribute("nextRedirectPcUrl", (String)map.get("nextRedirectPcUrl"));
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("payment", payment);
+		map.put("exp", session.getAttribute("exp"));
 		
-		return nextRedirectPcUrl;
+		//Payment payment = Payment.builder().contact(contact).quantity(quantity).build();
+		
+		return experienceService.readyForPay(map);
 	}
 	
 	/*
@@ -155,6 +159,7 @@ public class AjaxExperienceController {
 		return "";
 	}
 	*/
+	
 	
 	
 	

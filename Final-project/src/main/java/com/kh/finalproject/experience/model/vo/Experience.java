@@ -28,6 +28,7 @@ public class Experience {
 	private long expLikeCount;
 	private long expReplyCount;
 	private long expSupportCount;
+	private int expPrice;
 
 	
 

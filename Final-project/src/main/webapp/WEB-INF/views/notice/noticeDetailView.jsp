@@ -89,19 +89,19 @@
 						<c:choose>
 						<c:when test="${ loginUser ne null }" >
 							<c:choose>
-								<c:when test="${ b.likeMem eq 1 }">
-									<img src="resources/images/fullHeart.png" alt="하트" >
-									<a href="#" id="like" class="heart">좋아요</a>&nbsp;${ n.likeCount } 
+								<c:when test="${ like.noticeLikeStatus eq 'Y' }">
+									<a href="#" onclick="deleteLike();" class="like"><img class="heart" src="resources/images/fullHeart.png" alt="하트" ></a>&nbsp;${ n.likeCount } 
+								</c:when>
+								<c:when test="${ like.noticeLikeStatus eq 'N' }">
+									<a href="#" onclick="updateLike();" class="like"><img class="heart" src="resources/images/emptyHeart.png" alt="빈하트"></a>&nbsp;${ n.likeCount } 
 								</c:when>
 								<c:otherwise>
-									<img src="resources/images/emptyHeart.png" alt="빈하트">
-									<a href="#" id="like" class="heart">좋아요</a>&nbsp;${ n.likeCount } 
+									<a href="#" onclick="insertLike();" class="like"><img class="heart" src="resources/images/emptyHeart.png" alt="빈하트"></a>&nbsp;${ n.likeCount } 
 								</c:otherwise>
 							</c:choose>
 						</c:when>
 						<c:otherwise>
-							<img class="heart" src="resources/images/fullHeart.png" alt="빈하트">
-					 		<a href='#' onclick="alert('로그인 후 이용 가능한 기능입니다.');" id="like" class="like">좋아요</a>&nbsp;${ n.likeCount } 
+					 		<a href='#' onclick="alert('로그인 후 이용 가능한 기능입니다.');" id="like" class="like"><img class="heart" src="resources/images/emptyHeart.png" alt="빈하트"></a>&nbsp;${ b.likeCount } 
 						</c:otherwise>
 						</c:choose>
 						
@@ -138,6 +138,53 @@
 					else {
 						$('#postForm').attr('action', 'delete.no').submit();				
 					}
+				}
+			</script>
+			
+			<!-- 좋아요 update -->
+			<script>
+			function updateLike() {
+				  $.ajax({
+				    url: 'updateNoticeLike.do',
+				    data: {
+				      noticeNo: ${n.noticeNo},
+				      memNo: '${loginUser.memNo}'
+				    },
+				    success: function(response) {
+			              alert('좋아요 등록!');
+			              location.href = 'detail.no?bno=' + ${n.noticeNo};}
+				  });
+				}
+			</script>
+			<!-- 좋아요 delete -->
+			<script>
+			function deleteLike() {
+				  $.ajax({
+				    url: 'deleteNoticeLike.do',
+				    data: {
+				    	noticeNo : ${n.noticeNo},
+				      memNo: '${loginUser.memNo}'
+				    },
+				    success: function(response) {
+			              alert('좋아요 삭제!');
+			              location.href = 'detail.no?bno=' + ${n.noticeNo};}
+				  });
+				}
+			</script>
+						
+			<!-- 좋아요 insert -->
+			<script>
+			function insertLike() {
+				  $.ajax({
+				    url: 'insertNoticeLike.do',
+				    data: {
+				     noticeNo : ${n.noticeNo},
+				     memNo: '${loginUser.memNo}'
+				    },
+				    success: function(response) {
+			              alert('좋아요 등록!');
+			              location.href = 'detail.no?bno=' + ${n.noticeNo};}
+				  });
 				}
 			</script>
 		

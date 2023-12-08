@@ -14,6 +14,7 @@ import com.kh.finalproject.blog.model.vo.BlogBoard;
 import com.kh.finalproject.blog.model.vo.BlogCategorySetting;
 import com.kh.finalproject.blog.model.vo.BlogReply;
 import com.kh.finalproject.blog.model.vo.Plant;
+import com.kh.finalproject.blog.model.vo.PlantReport;
 import com.kh.finalproject.common.model.dao.CommonDao;
 import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
@@ -100,7 +101,15 @@ public class BlogServiceImpl implements BlogService{
 	}
 
 	@Override
-	public int updateBlogPlant(Plant plant, Attachment file) {
+	public int updateBlogPlant(Plant plant) {
+		int result = 0;
+		result = blogDao.updateBlogPlant(sqlSession, plant);
+		return result;
+	}
+
+	/*
+	 * 	@Override
+	public int updateBlogPlant(Plant plant, Attachment ) {
 		int result = 0;
 		result = blogDao.updateBlogPlant(sqlSession, plant);
 		if(file.getOriginalName() != null) {
@@ -108,7 +117,7 @@ public class BlogServiceImpl implements BlogService{
 		}
 		return result;
 	}
-
+	 */
 	@Override
 	public int selectListCountPlant(int blogNo) {
 		return blogDao.selectListCountPlant(sqlSession, blogNo);
@@ -130,6 +139,17 @@ public class BlogServiceImpl implements BlogService{
 	@Override
 	public int deleteBlogPlant(int plantNo) {
 		return blogDao.deleteBlogPlant(sqlSession, plantNo);
+	}
+	
+	// 식물 일지 -----------------------------------------
+	@Override
+	public int insertBlogPlantReport(PlantReport plantReport, Attachment file) {
+		
+		int result = blogDao.insertBlogPlantReport(sqlSession, plantReport);
+		if(file.getOriginalName() != null) {
+			return commonDao.insertFiles(sqlSession, file);
+		}
+		return result;
 	}
 	
 	// 게시판 -----------------------------------------
@@ -172,6 +192,11 @@ public class BlogServiceImpl implements BlogService{
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());  
 		return blogDao.selectListBlogReply(sqlSession, blogBoardNo, rowBounds);
+	}
+
+	@Override
+	public ArrayList<PlantReport> selectBlogPlantReport(int plantNo) {
+		return blogDao.selectBlogPlantReport(sqlSession, plantNo);
 	}
 	
 

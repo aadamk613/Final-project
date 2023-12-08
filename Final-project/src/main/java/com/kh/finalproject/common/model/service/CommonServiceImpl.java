@@ -25,6 +25,19 @@ public class CommonServiceImpl implements CommonService{
 		return commonDao.selectFiles(sqlSession, map);
 	}
 	
+	// 첨부파일 등록
+	@Override
+	public int insertFiles(Attachment file) {
+		return commonDao.insertFiles(sqlSession, file);
+	}
+	
+	// 첨부파일 등록 - 유담 사용
+	@Override
+	public int insertAttchment(Attachment attchment) {
+		return commonDao.insertAttchment(sqlSession, attchment);
+	}
+	
+	
 	// 첨부파일 업데이트
 	@Override
 	public int updateFiles(Attachment file) {
@@ -35,6 +48,12 @@ public class CommonServiceImpl implements CommonService{
 	@Override
 	public int deleteFiles(Attachment file) {
 		return commonDao.deleteFiles(sqlSession, file);
+	}
+
+	// 첨부파일 수정
+	@Override
+	public int updateAttachment(Attachment file) {
+		return commonDao.updateAttachment(sqlSession, file);
 	}
 
 }

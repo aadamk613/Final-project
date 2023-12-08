@@ -15,14 +15,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+import com.kh.finalproject.board.model.vo.BoardLike;
 import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
+import com.kh.finalproject.member.model.vo.Member;
 import com.kh.finalproject.notice.model.service.NoticeService;
 import com.kh.finalproject.notice.model.vo.Notice;
+import com.kh.finalproject.notice.model.vo.NoticeLike;
 
 @Controller
 public class NoticeController {
@@ -113,7 +118,7 @@ public class NoticeController {
 	
 	// 공지사항 상세조회
 	@GetMapping("detail.no")
-	public ModelAndView selectNotice(int bno, ModelAndView mv, Attachment f, MultipartFile upfile, HttpSession session)  {
+	public ModelAndView selectNotice(NoticeLike nl, int bno, ModelAndView mv, Attachment f, MultipartFile upfile, HttpSession session)  {
 		
 		if(noticeService.increaseCount(bno) > 0 ) {
 			
@@ -125,6 +130,13 @@ public class NoticeController {
 				}
 					mv.addObject("f", noticeService.selectFile(bno)).setViewName("notice/noticeDetailView");
 					mv.addObject("n", noticeService.selectNotice(bno)).setViewName("notice/noticeDetailView");
+			}
+			
+			if(session.getAttribute("loginUser") != null) {
+				Member loginUser = (Member) session.getAttribute("loginUser");
+				nl.setMemNo(loginUser.getMemNo());
+				nl.setNoticeNo(bno);
+				mv.addObject("like", (noticeService.selectNoticeLike(nl)));
 			}
 
 			mv.addObject("n", noticeService.selectNotice(bno)).setViewName("notice/noticeDetailView");
@@ -181,6 +193,33 @@ public class NoticeController {
 		}
 		
 	}
+	
+	// 좋아요 insert
+	@ResponseBody
+	@RequestMapping(value="insertNoticeLike.do", produces="application/json; charset=UTF-8")
+	public String ajaxInsertLike(NoticeLike nl) {
+		System.out.println(nl.getMemNo());
+		System.out.println(nl.getNoticeNo());
+		noticeService.plusNoticeLikeCount(nl.getNoticeNo());
+		return new Gson().toJson(noticeService.insertNoticeLike(nl));
+	}
+	
+	// 좋아요 delete
+	@ResponseBody
+	@RequestMapping(value="deleteNoticeLike.do", produces="application/json; charset=UTF-8")
+	public String ajaxDeleteLike(NoticeLike nl) {
+		noticeService.minusNoticeLikeCount(nl.getNoticeNo());
+		return new Gson().toJson(noticeService.deleteNoticeLike(nl));
+	}
+	
+	// 좋아요 update
+	@ResponseBody
+	@RequestMapping(value="updateNoticeLike.do", produces="application/json; charset=UTF-8")
+	public String ajaxUpdatetLike(NoticeLike nl) {
+		noticeService.plusNoticeLikeCount(nl.getNoticeNo());
+		return new Gson().toJson(noticeService.updateNoticeLike(nl));
+	}
+
 
 
 }

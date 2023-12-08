@@ -7,39 +7,40 @@ import com.kh.finalproject.member.model.vo.Member;
 import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.util.Arrays;
 import javax.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+@Slf4j
+@RequiredArgsConstructor
+@RequestMapping("/admin")
 @Controller
 public class AdminController {
   private final AdminService adminService;
   private final MemberService memberService;
 
-  @Autowired
-  public AdminController(AdminService adminService, MemberService memberService) {
-    this.adminService = adminService;
-    this.memberService = memberService;
-  }
-
   /**
    * @param mv
    * @return ModelAndView
    */
-  @GetMapping("main.admin")
+  @GetMapping("main")
   public ModelAndView mainView(ModelAndView mv) {
     mv.addObject("numTicket", adminService.getTicketNumber()).setViewName("admin/adminMainView");
     return mv;
   }
 
-  @GetMapping("ticket.admin")
+  @GetMapping("ticket")
   public ModelAndView ticketView(ModelAndView mv) {
     mv.addObject("list", adminService.getTicketListView()).setViewName("admin/adminTicketView");
     mv.addObject("numTicket", adminService.getTicketNumber());
+    log.trace(null);
     return mv;
   }
 
@@ -116,9 +117,9 @@ public class AdminController {
    * @param m the Model object to add message attributes
    * @return String the mapping value for redirection
    */
-  @PostMapping("deleteHashtags.admin")
+  @DeleteMapping("deleteHashtags.admin")
   public String deleteHashtag(int[] chk, Model m) {
-    System.out.println(Arrays.toString(chk));
+    log.info(Arrays.toString(chk));
     int result = 0;
     for (int i = 0; i < chk.length; i++) {
       Hashtag h = new Hashtag();
@@ -137,7 +138,6 @@ public class AdminController {
 
   @PostMapping("addHashtag.admin")
   public String addHashtag(Hashtag h, Model m) {
-    System.out.println(h);
     if (adminService.addHashtag(h) > 0) {
       m.addAttribute("alertMsg", "해시태그를 성공적으로 추가하였습니다!");
     } else {
@@ -148,7 +148,6 @@ public class AdminController {
 
   @PutMapping("editMember.admin")
   public ModelAndView editMember(Member m, ModelAndView mv, HttpSession session) {
-    System.out.println(m);
     mv.addObject("numTicket", adminService.getTicketNumber()).setViewName("admin/adminMemberView");
     if (memberService.editMember(m) > 0) {
       session.setAttribute("alertMsg", "회원 정보를 성공적으로 수정하였습니다!");

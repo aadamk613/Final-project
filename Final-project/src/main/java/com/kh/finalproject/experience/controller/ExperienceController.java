@@ -3,6 +3,7 @@ package com.kh.finalproject.experience.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -24,7 +25,9 @@ import com.kh.finalproject.experience.model.vo.Experience;
 import com.kh.finalproject.experience.model.vo.Payment;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class ExperienceController {
@@ -62,7 +65,9 @@ public class ExperienceController {
 		// 조회수 증가 성공 시 
 		if(experienceService.increaseCount(expNo) > 0 ) { 
 			// 게시글 상세조회
-			model.addAttribute("exp", experienceService.selectExperience(expNo));
+			//model.addAttribute("exp", experienceService.selectExperience(expNo));
+			// 결제때 필요해서 session에 담음
+			session.setAttribute("exp", experienceService.selectExperience(expNo));
 			
 			System.out.println("파일넘버 나와라");
 			System.out.println(model.getAttribute("exp"));
@@ -74,6 +79,7 @@ public class ExperienceController {
 			model.addAttribute("files", commonController.selectFiles(expNo, "experience"));
 			System.out.println("왜 아무것도 안나와");
 			System.out.println(model.getAttribute("files"));
+			
 			return "experience/experienceDetailView";
 		// 조회수 증가 실패 시	
 		} else {
@@ -107,19 +113,15 @@ public class ExperienceController {
 								   String[] anno, 
 								   HttpSession session) {
 		// for(MultipartFile upfile : upfiles) {
-//			System.out.println("인서트");
-//			System.out.println(upfiles);
-//			System.out.println(upfiles[0]);
-//			System.out.println(exp);
 		
-		System.out.println("갑자기 널?");
-		System.out.println(upfiles[0]);
-		System.out.println(anno[0]);
+		
+		
+		
 		
 		ArrayList<Attachment> fileList = new ArrayList();
 		for(int i = 0; i < upfiles.length; i++) {
 			
-			System.out.println(i);
+			log.info("파일이여~{}", upfiles[i]);
 			
 			if(!upfiles[i].getOriginalFilename().equals("")) {
 				
@@ -130,7 +132,7 @@ public class ExperienceController {
 				System.out.println("엥  여기 번호가 있음?????");
 				System.out.println(exp.getExpNo()); // 0
 				//file.setRefNo(exp.getExpNo());
-				System.out.println(anno[i]);
+				//System.out.println(anno[i]);
 				file.setFileAnnotation(anno[i]);
 				fileList.add(file);
 			} 
@@ -247,6 +249,9 @@ public class ExperienceController {
 	//결제
 	// AJAX도 있음
 	// 1. 결제하기 버튼 누르러가기
+	/**
+	 * @return : 지원하기 버튼을 누르면 결제 입력 양식 페이지로 이동
+	 */
 	@GetMapping("yrpayForm.exp")
 	public String payExperienceForm() {
 		return "experience/experiencePayView";
@@ -254,28 +259,26 @@ public class ExperienceController {
 	
 	// 결제 준비 성공 시 오는 곳
 	// http://localhost:8001/final/yrsendPayment.exp?pg_token=b63076e46d6b58fbbea6
-	@GetMapping("yrsendPayment.exp")
-	public String sendPayment(String pg_token, Model model) throws IOException, ParseException {
-		
-		System.out.println("결제창");
-		//System.out.println(session.getAttribute("nextRedirectPcUrl"));
-		System.out.println(pg_token);
-		
+	@GetMapping("sendPayment")
+	public String sendPayment(String pg_token, String userId, Model model) throws IOException, ParseException {
 		
 		// 결제 승인 보내기
-		Payment payment = experienceService.payExp(pg_token);
-		System.out.println("결제 승인 시각");
-		//System.out.println(approvedAt);
+		//HashMap map = (HashMap)ids;
+		//log.info("값이 잘 넘어왔을까={}", ids);
+		//log.info("userId={}", ids.get("userId"));
+		log.info("성공하면 어디까지?");
+		Payment payment = experienceService.payExp(pg_token, userId);
 		
 		model.addAttribute("payment", payment);
-		
 		
 		return "experience/experiencePaySuccess";
 	}
 	
 	
-	
-	
+	@GetMapping("deletePayment")
+	public void deletePayment(String userId) {
+		// 취소되거나 실패한 결제는 지워줘야 함
+	}
 	
 	
 
