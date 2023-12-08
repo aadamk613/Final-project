@@ -1,6 +1,5 @@
 package com.kh.finalproject.admin.model.service;
 
-import com.google.gson.JsonElement;
 import com.kh.finalproject.admin.model.vo.Hashtag;
 import com.kh.finalproject.board.model.vo.BoardReport;
 import com.kh.finalproject.ticket.model.vo.Ticket;

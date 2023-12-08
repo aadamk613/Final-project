@@ -79,6 +79,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 	)		  	
 	</insert>
 	
+		<!-- 첨부파일 등록  유담 사용 -->
+	<insert id="insertAttchment" parameterType="attachment" >
+		INSERT 
+		  INTO
+		  		TB_ATTACHMENT
+				(
+			     FILE_NO,
+		         ORIGINAL_NAME,
+		         UPDATE_NAME,
+		         FILE_PATH,
+		         REF_TYPE,
+		         REF_NO,
+		         FILE_ANNOTATION,
+		         UPLOAD_DATE
+				)
+			VALUES
+			 	(
+			 	SEQ_ATTACHMENT_NO.NEXTVAL,
+			 	#{ originalName },
+			 	#{ updateName },
+			 	#{ filePath },
+			 	#{ refType },
+			 	#{ refNo },
+			 	#{ fileAnnotation },
+			 	SYSDATE
+			 	)		  	
+	</insert>
+	
 
 	<delete id="deleteFiles" parameterType="attachment">
 		DELETE 
@@ -89,6 +117,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   AND
 		   	   REF_TYPE = #{ refType }
 	</delete>
+	
+	
+	<update id="updateAttachment" parameterType="attachment">
+		
+		UPDATE
+			TB_ATTACHMENT
+		SET
+			ORIGINAL_NAME = #{ originalName },
+			UPDATE_NAME = #{ updateName }
+		WHERE
+			REF_TYPE = #{ refType }
+		AND
+			REF_NO = #{ refNo }
+			
+	</update>
 
 
 	

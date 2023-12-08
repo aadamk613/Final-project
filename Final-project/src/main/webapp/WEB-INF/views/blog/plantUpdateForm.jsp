@@ -91,6 +91,7 @@ textarea{
     border: none;
 }
 
+#plantCare a{text-decoration: none;  color: white;}
 
 </style>
 <body>
@@ -113,6 +114,7 @@ textarea{
 					<form method="post" action="update.bl_pl" enctype="multipart/form-data">  
 					<input type="hidden" name="blogNo" value="${ blogNo }"/>
 					<input type="hidden" name="plantNo" value="${ plant.plantNo }"/>
+					<input type="hidden" name="updateName" value="${ plant.updateName }" />
                     <div id="plantInfoWrap">
                         <div id="plantImg"><input type="file" name="upfile" id="plantInput"/>
                         	<c:choose>
@@ -137,8 +139,8 @@ textarea{
                             </ul>
                         </div>
                         <div>
-                        	<button type="submit" id="plantCare" class="button forest">등록하기</button>
-                        	<a href="javascript:window.history.back();"><button id="plantCare" class="button forest">돌아가기</button></a>
+                        	<button type="submit" id="plantCare" class="button forest">수정하기</button>
+                        	<button id="plantCare" class="button forest"><a href="select.bl_pl?plantNo=${ plant.plantNo }">돌아가기</a></button>
                         </div>
                     </div>
                     

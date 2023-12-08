@@ -79,7 +79,6 @@ textarea{
     width: 99%;
     height: 100px;
     outline-color: #afdba3;
-    border: none;
 }
 
 
@@ -118,7 +117,7 @@ textarea{
 		<section id="pageSection">
 			
 			<div id="blogTitle">
-			   	식물 일지 리스트
+			   	식물 일지 추가
 			</div>
 			
 			<div id="content">
@@ -138,18 +137,6 @@ textarea{
 	                                <div>${ plant.plantNickName }의 기록입니다
 	                                </div>기록 일자: <div id="plantLogDate"><input type="date" name="reportDate"></div>
                                 </li>
-                                <!-- 
-                                <li>
-                                	<select name="plantReportCategoryName">
-                                		<option value="10">식물일지</option>
-                                		<option value="20">물주기</option>
-                                		<option value="30">물갈이하기</option>
-                                		<option value="40">가지치기</option>
-                                		<option value="50">영양관리</option>
-                                		<option value="60">분갈이하기</option>
-                                	</select>
-                                </li>
-                                 -->
                                 <li id="plantComment" >
                                 	<textarea placeholder="식물에 대한 기록을 작성해주세요. 최대  1000자 까지 작성할 수 있습니다. " name="reportComment" required></textarea>
                                 </li>
@@ -157,7 +144,7 @@ textarea{
                         </div>
                         <div>
                         	<button type="submit" id="plantCare" class="button forest">등록하기</button>
-                        	<button id="plantCare" class="button forest" >돌아가기</button>
+                        	<button id="plantCare" class="button forest">돌아가기</button>
                         </div>
                     </div>
                     

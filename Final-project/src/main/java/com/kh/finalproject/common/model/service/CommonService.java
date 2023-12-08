@@ -10,10 +10,19 @@ public interface CommonService {
 	// 첨부파일 조회
 	ArrayList<Attachment> selectFiles(HashMap map);
 	
+	// 첨부파일 등록
+	int insertFiles(Attachment file);
+	
+	// 첨부파일 등록 - 유담 사용
+	int insertAttchment(Attachment attchment);
+	
 	// 첨부파일 업데이트
 	int updateFiles(Attachment file);
 
 	// 첨부파일 삭제
 	int deleteFiles(Attachment file);
+	
+	// 첨부파일 수정
+	int updateAttachment(Attachment file);
 	
 }

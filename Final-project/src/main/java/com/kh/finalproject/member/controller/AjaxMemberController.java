@@ -21,8 +21,8 @@ public class AjaxMemberController {
     return new Gson().toJson(memberService.ajaxGetMemberList());
   }
 
-  @RequestMapping("idCheck.me")
-  public String idCheck(String checkId) {
+  @RequestMapping("idCheck2.me")
+  public String idCheck2(String checkId) {
     int count = memberService.idCheck(checkId);
     return count > 0 ? "NNNNN" : "NNNNY";
   }

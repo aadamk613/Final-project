@@ -26,15 +26,19 @@
 
 article{padding: 10px;}
 
+#content{width: 100%; height: auto; border: 1px solid #888; border-radius: 10px; }
+
 #plantInfoWrap > div{float: left;}
 
 #plantInfoWrap{width: 100%; height: auto;}
 
-#plantImg{width: 20%; height: 160px; float: middle;}
+#plantImg{width: 200px; height: 200px; float: middle;}
+
+#plantImg img{width: 100%; height: 100%; border-radius: 10px; }
 
 #plantInfo{width: 80%; height: 160px;}
 
-#plantReport{width: 100%; height: auto; padding: 20px;}
+#plantReport{width: 100%; height: auto; padding: 20px; border-bottom: 1px solid #888; padding-bottom: 10px;}
 
 #plantName{font-size: 20px; font-weight: bold; }
 
@@ -44,11 +48,22 @@ article{padding: 10px;}
 
 #plantNick{font-size: 17px; font-weight: bold; color: #448300;}
 
-#plantNick > div{display: inline; padding: 10px;}
+#plantNick > div{display: inline; }
 
 #plantCreateDate{font-size: 15px; color: #888;}
 
-#plantComment{width: 100%; height: 160px; padding: 10px;}
+#reportDate{width: 100%; height: 40px;}
+
+#plantCommentWrap{width: 100%; height: 160px; padding: 10px; border-radius: 10px; border: 1px solid #afdba3; margin-top: 20px; }
+
+
+#plantReportType span{margin-left: 20px; font-weight: bold; font-size: 20px;}
+
+#plantReportType img{width: 40px; height: 40px;}
+
+#reportImage{width: 100%; height: 100px;}
+
+#reportImage img{width: 100px; height: 100px;}
 
 #plantInfo ul{
 	list-style: none;
@@ -80,14 +95,15 @@ article{padding: 10px;}
 .beige{
     font-size: 20px;
     font-weight: bolder;
-    border-radius: 10px;
+    width: 60px;
+    border-radius: 30px;
     border:2px solid beige;
 	background-color: beige;
     color: rgb(83, 57, 32);
 }
 
 .delete{
-	width: 35px;
+	width: 60px;
  	border-radius: 30px;
     border:2px solid #FF9090;
 	background-color: #FF9090;
@@ -95,16 +111,8 @@ article{padding: 10px;}
 
 }
 
-#blogIntroduce a{
-    cursor: pointer;
-	display: inline-block;
-    font-size: 14px;
-    line-height: 17px;
-    text-decoration: none;
-    color: #888;
-	}
-	
-input[type=file]{display: none;}
+#line{border-top: 1px solid #888; width: 100%; margin: 10px 0px;}
+
 
 textarea{
     resize: none;
@@ -120,11 +128,14 @@ textarea{
 	padding: 20px;
 	text-align: center;
 }
+
 .visible{display: block !important;}
 #plantCareModal{background-color: white; z-index: 2; position:absolute; width:500px; height: 500px; display:none;}
 #plantCareWrap{ margin: 50px auto; padding: 20px; border-radius: 10px; border: 1px solid #888;}
 #plantCareWrap div{width: 400px; height: 50px;}
 #plantCareWrap div button{margin: 10px auto;}
+
+
 </style>
 <body>
 
@@ -139,7 +150,7 @@ textarea{
 		<section id="pageSection">
 			
 			<div id="blogTitle">
-			   	${ plant.plantName }
+			   	Plant Log...
 			</div>
 
 			<div id="content">
@@ -177,134 +188,84 @@ textarea{
 						<div id="plantImg">
 							<c:choose>
 								<c:when test="${ empty plant.filePath }">
-									<img width="100%" height="100%"
-										src="resources/images/defaultPlant.png" class="files" />
+									<img src="resources/images/defaultPlant.png" class="files" />
 								</c:when>
 								<c:otherwise>
-									<img width="100%" height="100%"
-										src="${ plant.filePath }${ plant.updateName }" class="files" />
+									<img src="${ plant.filePath }${ plant.updateName }" class="files" />
 								</c:otherwise>
 							</c:choose>
 						</div>
 						<div id="plantInfo">
 							<ul>
 								<li id="plantName">
-									<div>식물 이름 : ${ plant.plantName }</div>
-									<div id="deleteWrap">
-										<button class="button beige" onclick="plantManage('update');">수정하기</button>
-										<button class="button forest delete"
-											onclick="plantManage('del');">-</button>
-									</div> <clear="both">
+									<span>식물 이름 : ${ plant.plantName }</span>
+									<span id="deleteWrap">
+										<button class="button beige" onclick="plantManage('update');"><img src="resources/images/edit.png"/></button>
+										<button class="button forest delete" onclick="plantManage('del');"><img src="resources/images/delete.png"/></button>
+									</span> <clear="both">
 								</li>
 								<li id="plantNick">
-									<div>별명 : ${ plant.plantNickName }</div>
-									<div id="plantCreateDate">키우기 시작한 날짜: ${ plant.plantLogDate }</div>
+									<div>애칭 : ${ plant.plantNickName }</div>
+								</li>
+								<li>
+									<div id="plantCreateDate">키우기 시작한 날짜 : ${ plant.plantLogDate }</div>
 								</li>
 								<li id="plantButtonWrap">
-									<form action="insertForm.bl_pr" method="post" id="postForm">
-										<input type="hidden" id="plantNo" name="plantNo"
-											value="${ plant.plantNo }"> <input type="hidden"
-											name="plantNickName" value="${ plant.plantNickName }">
-
-										<button type="submit" class="button forest" id="plantReportButton">일지 추가</button>
-										<button id="plantCareButton" class="button forest">관리하기</button>
-									</form>
+									<button id="plantReportButton" class="button forest" value="${ plant.plantNo }">일지 추가</button>
+									<button id="plantCareButton" class="button forest">관리하기</button>
 								</li>
-
 							</ul>
 						</div>
-
-
-
-												
+						<div id="plantCommentWrap">
+							${ plant.plantComment }
+						</div>
+						<div id="line"> </div>
 						<c:forEach var="r" items="${ plant.plantReport }" >
-						
 							<div id="plantReport">
-							<div>
+							<div id="reportDate">
 								${ r.reportDate }
 							</div>
-							<div>
-								${ r.categoryName }
+							<div id="plantReportType">
+							
+							<c:choose>
+								<c:when test="${ '물주기' eq r.categoryName }">
+									<img src="resources/images/plantWatering.jpg"/>
+								</c:when>
+								<c:when test="${ '물갈이하기' eq r.categoryName }">
+									<img src="resources/images/plantWaterChange.jpg"/>
+								</c:when>
+								<c:when test="${ '가지치기' eq r.categoryName }">
+									<img src="resources/images/plantPruning.jpg"/>
+								</c:when>
+								<c:when test="${ '영양관리' eq  r.categoryName }">
+									<img src="resources/images/plantNutrition.jpg"/>
+								</c:when>
+								<c:when test="${ '분갈이하기' eq  r.categoryName }">
+									<img src="resources/images/plantRepot.jpg"/>
+								</c:when>
+								<c:otherwise>
+									<img src="resources/images/plantReport.jpg"/>
+								</c:otherwise>
+							</c:choose>
+							
+							
+							${ r.categoryName }<span>${ r.reportComment }</span>
 							</div>
-							<div>
-								${ r.reportComment }
-							</div>
+							<!-- 
 							<c:if test="${ not empty r.filePath }" >
-							<div>
+							<div id="reportImage">
 								<img src="${ r.filePath }${ r.updateName }" class="files" />						
 							</div>
 							</c:if>
+							 -->
 						</div>
 						</c:forEach>
 
-
 					</div>
 					<br clear="both">
-				</article>
-			</div>
-			<div><a href="javascript:window.history.back();"><button type="button" class="button beige" id="goBlogHome">돌아가기</button></a></div>
-
-			<script>
-			
-			// 식물 관리 모달 창 토글
-			$('#plantCareButton').on('click', (function(){
-				$('#plantCareModal').toggle('visible');
-				consloe.log($('#plantCareModal'));
+				<div><a href="javascript:window.history.back();"><button type="button" class="button beige" id="goBlogHome">&lt;</button></a></div>
 				
-			}));
-			
-			// 식물관리 모달 창 닫기
-			$('#backButton').on('click', function hideModal(){
-				$('#plantCareModal').hide();
-			});
-			
-			
-			
-			
-			
-				// 식물 관리하기
-	         	function plantCareModal(category){
-	            		
-	            		if(category == 10){ // 일지 추가 클릭 시
-	            			console.log($(arguments[0]).parent().children().find('input[plantNo]').val());
-	            			$(arguments[0]).parent().children().find('input[plantNo]').attr('value', ${ p.plantNo});
-	            			$('#postForm').attr('action', 'insertForm.bl_pr').submit();
-	            		
-	            		}
-	            		/*
-	            		else{ // 관리하기 클릭 시
-	            					
-	            			//입력할 값이 많지 않아서 모달 창 뜨는걸로 변경 예정
-	            			//console.log($(arguments[0]).parent().children().find('input[plantNo]').val());
-	            			$(arguments[0]).parent().children().find('input[plantNo]').attr('value', ${ p.plantNo});
-	            			
-	            			//$('#postForm').attr('action', 'insertForm.bl_pr').submit();
-	            		}
-	            		*/
-	            	}
-	         	
-	         		// 식물 수정하기(str == update), 삭제하기(str == del)
-		         	function plantManage(str){
-	         			
-						if(str == "update"){
-							location.href = "updateForm.bl_pl?plantNo=" + ${ plant.plantNo } + "&blogNo=" + ${ plant.blogNo };	
-						}	
-						else{
-			      			// console.log(${ plant.plantNo });
-		         			
-		         			if(confirm("해당 식물의 모든 정보와 일지를 삭제합니다. 식물을 삭제하시겠습니까?")){
-
-		         				location.href = "delete.bl_pl?plantNo=" + ${ plant.plantNo } + "&blogNo=" + ${ plant.blogNo };
-
-		         			}
-						}
-	   
-		         	}
-	         	
-			</script>
-
-
-			<div id="page">
+				<div id="page">
 				<c:if test="${ pi.currentPage ne 1 }">
 		        	<button class="btn btn-light" onclick="location.href='select.bl_pl?blogNo=${ blogNo }&currentPage=${ pi.currentPage - 1 }'">&lt;</button>
 		        </c:if> 
@@ -323,7 +284,49 @@ textarea{
 		        <c:if test="${ pi.currentPage ne pi.maxPage }">
 		        	<button class="btn btn-light" onclick="location.href='select.bl_pl?blogNo=${ blogNo }&currentPage=${ pi.currentPage + 1 }'">&gt;</button>
 		        </c:if>
+			</div>					
+				</article>
 			</div>
+
+			<script>
+			
+			// 식물 관리 모달 창 토글
+			$('#plantCareButton').on('click', function(){
+				$('#plantCareModal').toggle('visible');
+				consloe.log($('토글'));
+			})
+			
+			// 식물관리 모달 창 닫기
+			$('#backButton').on('click', function hideModal(){
+				$('#plantCareModal').hide();
+			});
+			
+			// 식물 관리하기
+	         $('#plantReportButton').on('click', function(e) {
+	            console.log($(arguments[0]).parent().children().find('input[plantNo]').val());
+	            location.href =  'insertForm.bl_pr?plantNo=' + ${ plant.plantNo};
+	            //$(arguments[0]).parent().children().find('input[plantNo]').attr('value', ${ p.plantNo});
+	            //$('#postForm').attr('action', 'insertForm.bl_pr').submit();
+	         });
+			
+	         // 식물 수정하기(str == update), 삭제하기(str == del)
+		     function plantManage(str){
+	         			
+				if(str == "update"){
+					location.href = "updateForm.bl_pl?plantNo=" + ${ plant.plantNo } + "&blogNo=" + ${ plant.blogNo };	
+				}	
+				else{
+			      	// console.log(${ plant.plantNo });
+		         	if(confirm("해당 식물의 모든 정보와 일지를 삭제합니다. 식물을 삭제하시겠습니까?")){
+		         		location.href = "delete.bl_pl?plantNo=" + ${ plant.plantNo } + "&blogNo=" + ${ plant.blogNo };
+		         	}
+				}
+		      }
+	         
+			</script>
+
+
+
 			
 		</section>
 

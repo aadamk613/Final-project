@@ -28,6 +28,13 @@
 		height:auto;
 	}
 	
+	.introduceMyself{
+		font-size: 16px;
+		line-height: 1.5;
+	}
+	input[name=file1]{display: none;}
+	
+	
     
 </style>
 </head>
@@ -53,12 +60,14 @@
 				
 				<br>  
 				
-				<form action="loadImg.me" method="post" id="profile">
+				<form action="updateMyPage" method="post" enctype="multipart/form-data" id="profile">
 				<table border="1" align="center">
 					<tr>
+						<!-- 마이페이지에서 이미지 표시 부분 -->
 						<td colspan="5" rowspan="6" width="250" height="140">
-							<img src="${sessionScope.loginUser.memImg}" id="myPhoto" width="300" height="400" readonly>
-							<input type="file" name="file1" id="file1" onchange="loadImg(this, 1)">
+						    <input type="file" name="file1" id="file1">
+						    <img src="<c:url value='/resources/uploadFiles/myPage'/>" id="upImage" name="upImage" width="300" height="400" onclick="loadImg(this);">
+						    <!-- console.log(upImage); -->
 						</td>
 						<td align="center">ID</td>
 						<td><input type="text" class="form-control" id="memId" value="${ sessionScope.loginUser.memId }" name="memId"  readonly></td>
@@ -75,7 +84,7 @@
 					</tr>
 					<tr>
 						<td height="200" align="center">자기소개</td>
-						<td colspan="3"><input type="text" class="introduceMyself"></td>
+						<td colspan="3"><textarea class="introduceMyself" rows="3" cols="50" ></textarea></td>
 					</tr>
 					</table>
 					<br>
@@ -88,35 +97,17 @@
 			</article>
 			
 				<script>
-					function loadImg(inputFile, num){
-						if(inputFile.files.length == 1) { // 파일 첨부
-                        // 선택된 파일을 읽어서 영역에 맞게 미리보기
-                        // 파일을 읽어들일 FileReader객체 생성
-                        let reader = new FileReader();
-                        // console.log(inputFile.files[0]);
-                        // FileReader객체로부터 파일을 읽어들이는 메소드를 호출
-                        reader.readAsDataURL(inputFile.files[0]);
-                        // 해당 파일을 읽어들이는 순간 파일만의 고유한 겁나긴 url이 부여됨
-                        // 해당 url을 src속성의 값으로 부여할 것 (attr)
-                        // 파일 읽기가 완료되면 실행할 익명함수를 정의
-                        reader.onload = function(e){
-							// e의 target => e.target => 이벤트 발생한 친구
-                            // console.log(e.target);
-                            // e.target.result에 파일의 url이 담긴다.
-                            // 각 영역에 맞춰서 이미지 미리보기
-
-							switch(num){
-								case 1 : $('#myPhoto').attr('src', e.target.result); break;
-							}
-						}
-					} else {
-                        const str = '';
-                        switch(num){
-                            case 1 : $('#myPhoto').attr('src', str); break;
-						}
-						}
+					function loadImg(){
+						$('input[name=file1]').click();
 					};
-
+					
+					$('input[name=file1]').on('change', function(inputFile){
+						let reader = new FileReader();
+						reader.readAsDataURL(inputFile.target.files[0]);
+						reader.onload = e => {
+							$('img[name=upImage]').attr('src', e.target.result);
+						}
+					});
 				</script>
 			</div>
 			

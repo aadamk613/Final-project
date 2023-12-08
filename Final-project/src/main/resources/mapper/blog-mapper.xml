@@ -360,11 +360,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 		SELECT
 				PLANT_NO,
+				BLOG_NO,
 				PLANT_NAME,
 				PLANT_NICKNAME,
 				PLANT_COMMENT,
 				PLANT_CATEGORY,
-				PLANT_LOG_DATE,
+				TO_CHAR(PLANT_LOG_DATE, 'YYYY-MM-DD') PLANT_LOG_DATE,
 				PLANT.FILE_PATH AS FILE_PATH_P,
 				PLANT.UPDATE_NAME AS UPDATE_NAME_P,
 		
@@ -377,11 +378,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				REPORT.UPDATE_NAME
 		FROM
 				TB_PLANT
-		JOIN
+		LEFT
+        JOIN
 				TB_PLANT_REPORT
 		  ON 	
 		  		(PLANT_NO = TOP_PLANT_NO)
-		JOIN
+		LEFT
+        JOIN
 				TB_PLANT_REPORT_CATEGORY 
 		USING   
 				(PLANT_REPORT_CATEGORY_NO)
@@ -409,11 +412,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ON      
 				(PLANT_REPORT_NO = REPORT.REF_NO)
 		WHERE 	
-				TOP_PLANT_NO = #{ plantNo }
+				PLANT_NO = #{ plantNo }
 		ORDER BY 
 				REPORT_DATE DESC
 	</select>
 
+	<!-- 식물 수정 -->
 	<update id="updateBlogPlant" parameterType="plant">
     
     	UPDATE 
@@ -426,8 +430,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  		PLANT_NO = #{ plantNo }			 
 		  		 
 	</update>
-
-
 
 	<!-- 식물 삭제하기 -->
 	<delete id="deleteBlogPlant" parameterType="_int">
@@ -491,7 +493,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	</select>
 
-	
 	<!-- 블로그 일반 게시글 작성 -->
 
 	<insert id="insertBlogBoard" parameterType="blogBoard">
