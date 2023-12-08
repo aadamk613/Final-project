@@ -1,28 +1,19 @@
 package com.kh.finalproject.member.controller;
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.gson.GsonFactory;
-import com.google.gson.Gson;
-import com.kh.finalproject.member.model.service.KakaoLoginService;
-import com.kh.finalproject.member.model.service.MemberService;
-import com.kh.finalproject.member.model.service.NaverLoginService;
-import com.kh.finalproject.member.model.vo.Member;
-import com.kh.finalproject.member.model.vo.NaverLogin;
-import com.kh.finalproject.ticket.model.vo.Ticket;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.servlet.http.HttpSession;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +25,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.gson.Gson;
+import com.kh.finalproject.common.model.vo.Attachment;
+import com.kh.finalproject.member.model.service.KakaoLoginService;
+import com.kh.finalproject.member.model.service.MemberService;
+import com.kh.finalproject.member.model.service.NaverLoginService;
+import com.kh.finalproject.member.model.vo.Member;
+import com.kh.finalproject.member.model.vo.NaverLogin;
+import com.kh.finalproject.ticket.model.vo.Ticket;
 
 @Controller
 public class MemberController {
@@ -172,30 +180,6 @@ public class MemberController {
     System.out.println(count);
     return count > 0 ? "NNNNN" : "NNNNY";
   }
-  @RequestMapping(
-      value = "checkBusinessNum",
-      produces = "application/json; charset=UTF-8") // 수정예정 공공API로 활용할 예정
-  public String businessPageCheck(int pageNo) throws IOException {
-
-    String url = "http://api.odcloud.kr/api/nts-businessman/v1/validate";
-    url +=
-        "?servicekey="
-            + "XSyDrKZA66etAyknXmiWPgDRU%2BSa7u6IkO2Oc%2B3%2Bcwmnwfwdsujh1OvosKadicupI74e88WjfDF4Q0DSh%2B3%2Fxw%3D%3D";
-    url += "&numOfRows=10";
-    url += "&resultType=json";
-    url += "&pageNo=" + pageNo;
-
-    URL requestUrl = new URL(url);
-    HttpURLConnection urlConnection = (HttpURLConnection) requestUrl.openConnection();
-    urlConnection.setRequestMethod("GET");
-    BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-
-    String responseText = br.readLine();
-    br.close();
-    urlConnection.disconnect();
-
-    return responseText;
-  }
 
   @RequestMapping("myPage.me")
   public ModelAndView myPage(ModelAndView mv, HttpSession session) {
@@ -205,58 +189,90 @@ public class MemberController {
     return mv;
   }
 
-  @RequestMapping("loadImg.me")
-  public String loadImg(String inputFile) {
-    int loadImg = memberService.loadImg(inputFile);
-    return "succes";
-  }
+  @PostMapping("/updateMyPage")
+  public String updateMyPage(Member m, HttpSession session, MultipartFile upfile) {
+      if (upfile != null && !upfile.isEmpty()) {
+          String updateName = saveFile(upfile, session);
+          if (updateName != null) {
+              m.setMemImg(updateName); // Member 객체에 이미지 경로 저장
 
-  @RequestMapping("update.me")
-  public String updateMember(Member m, Model model, HttpSession session) {
+              // 멤버 정보 업데이트
+              memberService.updateMember(m);
 
-    if (memberService.updateMember(m) > 0) {
+              // 세션 업데이트
+              session.setAttribute("loginUser", memberService.loginMember(m));
+              session.setAttribute("alertMsg", "정보수정 및 이미지 업로드에 성공했습니다");
 
-      session.setAttribute("loginUser", memberService.loginMember(m));
-
-      // session에 일회성 알라문구 띄워주기
-      session.setAttribute("alertMsg", "정보수정에 성공했습니다~~");
-
-      // 마이페이지 화면이 띄워지도록~  유지보수를 용이하게 하기 위해
-      return "redirect:myPage.me";
-
-    } else { // 수정 실패 => 에러문구를 담아서 에러페이지로 포워딩
-      model.addAttribute("errorMsg", "정보수정에 실패했습니다.");
-      // /WEB-INF/views/ 		common/errorPage		.jsp
-      return "common/errorPage";
-    }
-  }
-
-  @RequestMapping("delete.me")
-  public String deleteMember(String memPwd, HttpSession session) {
-
-    Member loginUser = ((Member) session.getAttribute("loginUser"));
-
-    String encPwd = ((Member) session.getAttribute("loginUser")).getMemPwd();
-    // 비밃먼호가 사용자가 입력한 평문으로 만든 암호문일 경우
-    if (bcryptPasswordEncoder.matches(memPwd, encPwd)) {
-
-      String memId = loginUser.getMemId();
-
-      if (memberService.deleteMember(memId) > 0) {
-        // 탈퇴처리 성공 => session에서 loginUser지움, alert문구 담기 => 메인페이지로 잘가라고~~~~
-        session.removeAttribute("loginUser");
-        session.setAttribute("alertMsg", "안녕히 가세요");
-        return "redirect:/";
+              return "redirect:/main";
+          } else {
+              session.setAttribute("errorMsg", "파일 저장에 실패했습니다.");
+              return "redirect:/errorPage";
+          }
       } else {
-        session.setAttribute("errorMsg", "탈퇴처리 실패");
-        return "common/errorPage";
+          // 파일이 비어있을 경우 처리
+          session.setAttribute("errorMsg", "파일이 비어 있습니다.");
+          return "redirect:/main";
       }
-
-    } else {
-      session.setAttribute("alertMsg", "비밀번호가 틀렸어요. 다시 확인해보세요~~~");
-      return "redirect:myPage.me";
-    }
   }
+
+  public String saveFile(MultipartFile upfile, HttpSession session) {
+      // 파일명 수정 작업 후 서버에 업로드("bono.jpg" => 2023110338292235923.jpg)
+      String originalName = upfile.getOriginalFilename();
+
+      // "20231103102244"(년월일시분초)
+      String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+
+      // 23432(5자리 랜덤값)
+      int ranNum = (int) (Math.random() * 90000) + 10000;
+
+      // 확장자
+      String ext = originalName.substring(originalName.lastIndexOf("."));
+
+      String updateName = currentTime + ranNum + ext;
+
+      String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/myPage/");
+
+      try {
+          // 파일 저장
+          File saveFile = new File(savePath + File.separator + updateName);
+          upfile.transferTo(saveFile);
+
+          // 여기서는 DB에 저장하지 않고 파일명만 리턴합니다.
+          return updateName;
+      } catch (IllegalStateException | IOException e) {
+          e.printStackTrace();
+          // 실패 시 null을 리턴하거나 적절한 예외 처리를 진행할 수 있습니다.
+          return null;
+      }
+  }
+
+
+		  @RequestMapping("delete.me")
+		  public String deleteMember(String memPwd, HttpSession session) {
+		
+		    Member loginUser = ((Member) session.getAttribute("loginUser"));
+		
+		    String encPwd = ((Member) session.getAttribute("loginUser")).getMemPwd();
+		    // 비밃먼호가 사용자가 입력한 평문으로 만든 암호문일 경우
+		    if (bcryptPasswordEncoder.matches(memPwd, encPwd)) {
+		
+		      String memId = loginUser.getMemId();
+		
+		      if (memberService.deleteMember(memId) > 0) {
+		        // 탈퇴처리 성공 => session에서 loginUser지움, alert문구 담기 => 메인페이지로 잘가라고~~~~
+		        session.removeAttribute("loginUser");
+		        session.setAttribute("alertMsg", "안녕히 가세요");
+		        return "redirect:/";
+		      } else {
+		        session.setAttribute("errorMsg", "탈퇴처리 실패");
+		        return "common/errorPage";
+		      }
+		
+		    } else {
+		      session.setAttribute("alertMsg", "비밀번호가 틀렸어요. 다시 확인해보세요~~~");
+		      return "redirect:myPage.me";
+		    }
+		  }
 
   @GetMapping("naverLogin.me")
   public String naverLogin() {

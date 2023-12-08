@@ -22,7 +22,7 @@ public class AjaxMemberController {
   }
 
   @RequestMapping("idCheck2.me")
-  public String idCheck(String checkId) {
+  public String idCheck2(String checkId) {
     int count = memberService.idCheck(checkId);
     return count > 0 ? "NNNNN" : "NNNNY";
   }
