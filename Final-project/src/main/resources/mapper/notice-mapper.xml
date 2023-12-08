@@ -45,7 +45,7 @@ SELECT
 			  CATEGORY,
 			  LIKE_COUNT,
 			  MEM_NICK,
-			  ROW_NUMBER() OVER (PARTITION BY CATEGORY ORDER BY CATEGORY DESC, LIKE_COUNT DESC, NOTICE_NO DESC) AS row_num
+			  ROW_NUMBER() OVER (PARTITION BY CATEGORY ORDER BY NULL) AS row_num
  		  FROM
     		  TB_NOTICE
     	 INNER 
@@ -54,10 +54,10 @@ SELECT
          WHERE
     	      STATUS = 'Y'
     		  AND LIKE_COUNT &gt; 50
-    		  AND CATEGORY IN (2, 1)
+    		  AND CATEGORY IN (1, 2)
          ORDER 
             BY
-              CATEGORY DESC
+              CATEGORY DESC, LIKE_COUNT DESC, NOTICE_NO DESC
        )
  WHERE
       row_num &lt;= 5
@@ -97,7 +97,7 @@ SELECT
 									 FROM (
 										   SELECT
 											     NOTICE_NO,
-											     ROW_NUMBER() OVER (PARTITION BY CATEGORY ORDER BY CATEGORY DESC, LIKE_COUNT DESC, NOTICE_NO DESC) AS row_num
+											     ROW_NUMBER() OVER (PARTITION BY CATEGORY ORDER BY NOTICE_NO DESC) AS row_num
 											 FROM
 											     TB_NOTICE
 											WHERE
@@ -105,14 +105,14 @@ SELECT
 											  AND 
 											     LIKE_COUNT &gt; 50
 											  AND 
-											     CATEGORY IN (2, 1)
+											     CATEGORY IN (1, 2)
 										   )
 									 WHERE
 										  row_num &lt;= 5       
 									)            
 		   ORDER 
 		      BY
-		        CATEGORY DESC, NOTICE_NO DESC
+		        CATEGORY DESC
 		  )
 	</select>
 	<select id="selectBestNotice" resultMap="noticeResultSet">

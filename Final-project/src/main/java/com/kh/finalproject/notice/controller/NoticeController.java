@@ -45,14 +45,13 @@ public class NoticeController {
 	@RequestMapping("list.no")
 	public String selectNoticeList(@RequestParam(value="cPage", defaultValue="1") int currentPage, Model model) {
 		
-		PageInfo pi = Pagination.getPageInfo(noticeService.selectNoticeListCount(),
-											 currentPage,
-											 10,
-											 5);
+		PageInfo pi = Pagination.getPageInfo(noticeService.selectNoticeListCount(), // 게시판의 총 개수
+											 currentPage,							// 현재 페이지
+											 10,									// 한 페이지에 보여줄 게시판의 개수
+											 5);									// 페이징버튼에 보여줄 개수의 크기
 
 		model.addAttribute("list", noticeService.selectNoticeList(pi))
 		     .addAttribute("pi", pi);
-			 //.addAttribute("best", noticeService.selectBestNoticeList())
 		
 		return "notice/noticeListView";
 	}
