@@ -170,6 +170,7 @@ img[name=imageThumbnail]{
                         <input type="hidden" name="blogNo" value="${ blog.blogNo }">
                         <input type="hidden" name="memNo" value="${ blog.memNo }">
                         <input type="hidden" name="updateName" value="${ blog.updateName }">
+                        <input type="hidden" name="filePath" value="${ blog.filePath }">
 							<table id="createForm">
 								<tr>
 									<th>블로그 이름</th>

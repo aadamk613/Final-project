@@ -17,6 +17,7 @@ public class BlogReply {
 	private String replySecret;
 	private String status;
 	
+	private String memId;
 	private String memNick;
 	
 }

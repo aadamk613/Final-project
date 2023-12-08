@@ -147,7 +147,6 @@ public class BlogPlantController {
 		근데 수정 시 새로 사진을 추가함
 		그럼 원래 attchment를 바꿔줘야함
 		바꿀 정보 originalName updateName이 두개
-
 	 */
 	
 	@PostMapping("update.bl_pl")
@@ -164,7 +163,7 @@ public class BlogPlantController {
 			
 			if (!plant.getUpdateName().equals("")) { 
 				new File(session.getServletContext().
-						getRealPath(plant.getUpdateName())).delete(); 
+						 getRealPath(plant.getFilePath() + plant.getUpdateName())).delete(); 
 				commonService.updateAttachment(attchment);
 				
 			} else {
@@ -184,9 +183,8 @@ public class BlogPlantController {
 	}
 	
 	
-	
-/*
- * 	@PostMapping("update.bl_pl")
+	/*
+  	@PostMapping("update.bl_pl")
 	public ModelAndView updateBlogPlant(Plant plant, 
 									    HttpSession session, 
 									    MultipartFile upfile, 
@@ -200,8 +198,9 @@ public class BlogPlantController {
 			if (!plant.getUpdateName().equals("")) { // 기존 파일 있었음 그럼 파일 삭제하고 디비파일 수정
 				System.out.println("여기는 기존 파일도 있어야 하고, 수정 파일도 있어야 함");
 				
+				System.out.println("삭제할 사진 이름 " + plant.getFilePath() + plant.getUpdateName());
 				new File(session.getServletContext().
-						getRealPath(plant.getUpdateName())).delete(); // 여기가 파일 삭제 근데 안되는 듯
+						getRealPath(plant.getFilePath() + plant.getUpdateName())).delete(); // 여기가 파일 삭제 근데 안되는 듯
 				
 				attchment = commonController.setFile(upfile, session, "plant");
 				//attchment.setRefType("plant"); 
@@ -232,7 +231,8 @@ public class BlogPlantController {
 		mv.setViewName("blog/plantUpdateForm");
 		return mv;
 	}
- */
+  	*/
+  	
 	// 식물 삭제
 	@RequestMapping("delete.bl_pl")
 	public String deleteBlogPlant(int plantNo,

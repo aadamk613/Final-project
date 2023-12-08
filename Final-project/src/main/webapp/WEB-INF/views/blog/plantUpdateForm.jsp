@@ -115,6 +115,7 @@ textarea{
 					<input type="hidden" name="blogNo" value="${ blogNo }"/>
 					<input type="hidden" name="plantNo" value="${ plant.plantNo }"/>
 					<input type="hidden" name="updateName" value="${ plant.updateName }" />
+					<input type="hidden" name="filePath" value="${ plant.filePath }" />
                     <div id="plantInfoWrap">
                         <div id="plantImg"><input type="file" name="upfile" id="plantInput"/>
                         	<c:choose>

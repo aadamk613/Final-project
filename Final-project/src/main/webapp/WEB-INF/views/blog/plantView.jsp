@@ -61,9 +61,9 @@ article{padding: 10px;}
 
 #plantReportType img{width: 40px; height: 40px;}
 
-#reportImage{width: 100%; height: 100px;}
+#reportImage{width: 100%; height: 150px;}
 
-#reportImage img{width: 100px; height: 100px;}
+#reportImage img{width: 150px; height: 150px;}
 
 #plantInfo ul{
 	list-style: none;
@@ -251,13 +251,11 @@ textarea{
 							
 							${ r.categoryName }<span>${ r.reportComment }</span>
 							</div>
-							<!-- 
 							<c:if test="${ not empty r.filePath }" >
 							<div id="reportImage">
 								<img src="${ r.filePath }${ r.updateName }" class="files" />						
 							</div>
 							</c:if>
-							 -->
 						</div>
 						</c:forEach>
 

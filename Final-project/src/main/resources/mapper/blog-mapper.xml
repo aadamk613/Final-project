@@ -107,7 +107,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="CREATE_DATE" property="createDate"/>
 		<result column="REPLY_SECRET" property="replySecret "/>
 		<result column="STATUS" property="status"/>
-		
+		<result column="MEM_ID" property="memId"/>
 		<result column="MEM_NICK" property="memNick"/>
 	</resultMap>
 	
@@ -634,6 +634,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			TOP_REPLY_NO,
 			BLOG_BOARD_NO,
 			BLOG_REPLY_CONTENT,
+			MEM_ID,
             MEM_NICK,
 			R.CREATE_DATE,
 			R.STATUS
@@ -645,6 +646,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			STATUS = 'Y'
 		AND
 			BLOG_BOARD_NO = #{ blogBoardNo }
+		ORDER BY
+			CREATE_DATE DESC
 
 	</select>
 

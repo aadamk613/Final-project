@@ -112,7 +112,7 @@ public class BlogController {
 			
 			// 기존의 첨부파일이 있을 경우 있던 첨부파일을 삭제해줌
 			if(beforeBlog.getUpdateName() != null) {
-				new File(session.getServletContext().getRealPath(beforeBlog.getUpdateName())).delete();
+				new File(session.getServletContext().getRealPath(beforeBlog.getFilePath() + beforeBlog.getUpdateName())).delete();
 				file.setRefType("blog");
 				file.setRefNo(beforeBlog.getBlogNo());
 				commonController.deleteFiles(file);

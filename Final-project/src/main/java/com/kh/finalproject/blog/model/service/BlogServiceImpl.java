@@ -6,6 +6,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.finalproject.blog.model.dao.BlogDao;
@@ -20,6 +21,7 @@ import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 
 @Service
+@EnableTransactionManagement
 public class BlogServiceImpl implements BlogService{
 
 	@Autowired
@@ -58,11 +60,8 @@ public class BlogServiceImpl implements BlogService{
 	@Transactional
 	@Override
 	public int updateBlog(Blog blog, Attachment file) {
-		int result = 0;
-		result = blogDao.updateBlog(sqlSession, blog);
-		if(file.getOriginalName() != null) {
-			result *= commonDao.insertFiles(sqlSession, file);
-		}
+		int result = blogDao.updateBlog(sqlSession, blog);
+		result *= file.getOriginalName() != null ? commonDao.insertFiles(sqlSession, file) : 1;
 		return result;
 	}
 	
@@ -89,12 +88,12 @@ public class BlogServiceImpl implements BlogService{
 	}
 	
 	// 식물 -----------------------------------------
-	@Transactional
+	@Transactional("transactionManager")
 	@Override
-
 	public int insertBlogPlant(Plant plant, Attachment file) {
 		int result = blogDao.insertBlogPlant(sqlSession, plant);
 		if(file.getOriginalName() != null) {
+			int result2 = commonDao.insertFiles(sqlSession, file);
 			return commonDao.insertFiles(sqlSession, file);
 		}
 		return result;
@@ -146,9 +145,7 @@ public class BlogServiceImpl implements BlogService{
 	public int insertBlogPlantReport(PlantReport plantReport, Attachment file) {
 		
 		int result = blogDao.insertBlogPlantReport(sqlSession, plantReport);
-		if(file.getOriginalName() != null) {
-			return commonDao.insertFiles(sqlSession, file);
-		}
+		result *= file.getOriginalName() != null ? commonDao.insertFiles(sqlSession, file) : 1;
 		return result;
 	}
 	

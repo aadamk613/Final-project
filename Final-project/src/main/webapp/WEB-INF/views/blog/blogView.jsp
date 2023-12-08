@@ -11,12 +11,12 @@
 </head>
 <style>
 
-
-* {
+<!--
+ {
     border: 1px solid skyblue;
 	box-sizing: border-box;
 }
-
+-->
 #pageAsideLeft{display: block; padding: 30px;}
 
 #pageAsideLeft div{
@@ -164,33 +164,35 @@ img[name=imageThumbnail]{
 }
 
 
-#commentWrap {width: 100%; height: auto; }
+#replyWrap {width: 100%; height: auto; }
 
-#commentWrap > div{float: left;}
+#replyWrap > div{float: left;}
 
-#commentOption{width:100%; height:auto; font-size: 18px; font-weight: 600; padding:0 10px;}
+#replyOption{width:100%; height:auto; font-size: 18px; font-weight: 600; padding:0 10px;}
 
-#commentOption > a{color : gray; font-size : 12px; padding:10px;}
+#replyOption > a{color : gray; font-size : 12px; padding:10px;}
 
-.commentContentBox{width: 100%; height: auto; display: none; padding:10px;}
+#replyContentBox{width: 100%; height: auto; display: none; padding:10px; display: none;}
 
-#commentContentBox > div{float: left; padding:5px; }
+#replyContentBox > div{float: left; padding:5px; }
 
-#commentWriteMemId{width: 100%; height: 30px; font-weight: bold; font-size: 14px; padding: 0 10px;}
+#replyWriteMemId{width: 100%; height: 30px; font-weight: bold; font-size: 14px; padding: 0 10px;}
 
-#commentContent{width: 100%; height: 30px; font-size: 13px; padding: 0 10px;}
+#replyContent{width: 100%; height: 30px; font-size: 13px; padding: 0 10px;}
 
-#commentCreateDate{width: 100%; height: 30px; font-size: 12px; color: gray; padding: 0 10px;}
+#replyCreateDate{width: 100%; height: 30px; font-size: 12px; color: gray; padding: 0 10px;}
 
-#commentCreateDate > a{color: gray;}
+#replyCreateDate > a{color: gray;}
 
-#commentInsertBox{width: 98%; height: 100px; border: 0.5px solid darkgray; border-radius: 10px; background-color: white; padding: 5px; height: 95%; margin: 10px; display: none;}
+#replyInsertBox{width: 98%; height: 100px; border: 0.5px solid darkgray; border-radius: 10px; background-color: white; padding: 5px; height: 95%; margin: 10px; display: none; }
 
-#commentWriter{width: 100%; height: 30px; font-size : 15px; font-weight: 600; padding:0 10px;}
+#replyWriter{width: 100%; height: 30px; font-size : 15px; font-weight: 600; padding:0 10px;}
 
-#commentContentInsert{width: 100%; height: 30px; background-color: transparent; resize: none; outline: 0; border: 0; padding:0 10px;}
+#replyContentInsert{width: 100%; height: 30px; background-color: transparent; resize: none; outline: 0; border: 0; padding:0 10px;}
 
 #clear{clear:both;}
+
+.visible{display: block !important;}
 
 </style>
 <body>
@@ -282,31 +284,150 @@ img[name=imageThumbnail]{
 					
 					<br clear="both">
 					
-					<div id="commentWrap" name="${ b.blogBoardNo }">
-						<div id="commentOption">
-							<button id="toggleButton" onclick="buttonClicked(this)">&or;댓글 18개</button> 좋아요 30
+					<div id="replyWrap" name="${ b.blogBoardNo }">
+						<div id="replyOption" name="${ b.blogBoardNo }">
+							<button id="toggleButton" name="${ b.blogBoardNo }" onclick="buttonClicked(this)">&or;댓글 18개</button> 좋아요 30
 						</div>
 						<!-- 
-						<div id="commentContentBox" name="toggleDiv" display="block"> 
-							<div id="commentWriteMemId">
+						<div id="replyContentBox"> 
+							<div id="replyWriteMemId">
 								댓글 단 유저 id
 							</div>
-							<div id="commentContent">
+							<div id="replyContent">
 								댓글 내용입니다
 							</div>
-							<div id="commentCreateDate">
+							<div id="replyCreateDate">
 								2023.10.17 13:14&nbsp;&nbsp;
 								<a href="#">답글 쓰기</a>
 							</div>
-						</div>	
-						-->				
-						<div id="commentInsertBox" name="toggleDiv">
-							<div id="commentWriter">유저ID</div>
-							<textarea id="commentContentInsert" placeholder="댓글을 남겨보세요"></textarea>
-							<div id="submitWrap"><a id="insertCommentButton" href='#' onclick="insertComment(this);" name="${ b.blogBoardNo }">등록</a></div>
+						</div>
+						 -->	
+						<div id="replyInsertBox" name="${ b.blogBoardNo }">
+							<div id="replyWriter">유저ID</div>
+							<textarea id="replyContentInsert" placeholder="댓글을 남겨보세요"></textarea>
+							<div id="submitWrap"><a id="insertReplyButton" href='#' onclick="insertReply(this);" name="${ b.blogBoardNo }">등록</a></div>
 						</div>
 					</div>
 					
+					<script>
+					// 댓글 작성
+					function insertReply(){
+						var blogBoardNo = $(arguments[0]).attr('name');
+						var contentDiv = $(arguments[0]).parent().parent().children().next();
+						//var aa = $(arguments[0]).parent().parent().parent().attr('name');
+						//console.log(aa);
+						//console.log(contentDiv.val())
+						var button = $(arguments[0]).parents().find('#replyOption').children();
+						console.log('댓글 작성 클릭 후 button')
+						console.log(button.attr('id'));	
+						
+						if('${ sessionScope.loginUser.memNo}' != ''){
+							$.ajax({
+								type: "POST",
+								url: 'blog/insert', 
+								data: {blogBoardNo : blogBoardNo, 
+									   writer: '${ sessionScope.loginUser.memNo}', 
+									   blogReplycontent: contentDiv.val()}, 
+								success: data => {
+									//alert('댓글 작성 성공');
+									contentDiv.val('');
+									selectReply(button);
+								}, 
+								error: () => {
+									console.log('댓글 입력 통신 실패');
+								}
+							});
+						}
+						else{
+							alert('로그인 후 이용 가능한 기능입니다.');
+						}
+					};
+					
+					// 토글 이벤트 실행 상태 
+					 var flag = false;
+					 console.log(flag);
+					 
+					// 댓글 영역 클릭 했을 시 토글 이벤트
+					function buttonClicked(button) {
+					  var replyWrap = $(button).parent().parent();
+					  var replyContentBox = replyWrap.find('#replyContentBox');
+					  var replyInsertBox = replyWrap.find('#replyInsertBox');
+					  var blogBoardNo = replyInsertBox.attr('name');
+					  
+					  //console.log(replyWrap.attr('id'));
+					  //console.log(replyContentBox.attr('id'));
+					  console.log(blogBoardNo);
+					  
+					  //$(replyContentBox).toggle('visible');
+					  //$(replyInsertBox).toggle('visible');
+					  $(arguments[0]).parent().siblings().toggle('visible');
+					  
+					  flag = !flag;
+					  console.log(flag);
+					  selectReply(button);
+					};
+					
+					//jQuery(document).ready(function(){});
+					
+					// 댓글 조회 
+						
+					
+					function selectReply(button){
+						
+						let replyWrap = $(button).closest('#replyWrap');
+						let replyContentBox = replyWrap.find('#replyContentBox');
+						let replyInsertBox = replyWrap.find('#replyInsertBox');
+						let blogBoardNo = replyInsertBox.attr('name');
+						 
+						$.ajax({
+							type: "GET",
+							url: 'blog/selectList',
+							data: {currentPage: 1,
+								   blogBoardNo: blogBoardNo}, 
+							success: data => {
+								
+								let replyOption = replyWrap.find('#replyOption');
+									
+								for(let i in data){
+								
+									const memId = data[i].memId;
+									const memNick = data[i].memNick;
+									const blogReplycontent = data[i].blogReplycontent;
+									const createDate = data[i].createDate;
+										
+									const writeMemIdDiv = document.createElement("div");
+									$(writeMemIdDiv).html('memNick')
+													.addClass('#replyWriteMemId');
+									const strMemNick = "<div id='replyWriteMemId'>" + memNick + "(" + memId + ")" + "</div>";
+										
+									const contentDiv = document.createElement("div");
+									$(contentDiv).html('replyContent')
+												 .addClass('#replyContent');
+									const strContent = "<div id='replyContent'>" + blogReplycontent + "</div>";
+										
+									const createDateDiv = document.createElement("div");
+									$(createDateDiv).html('createDate')
+													.addClass('#replyContent');
+									const strDate = "<div id='replyCreateDate'>" + createDate + "</div>";
+									
+									$(replyOption).append(strMemNick).append(strContent).append(strDate);
+							}
+
+							},
+							error: () => {
+								console.log('댓글 불러오기 통신 실패');
+							}
+						});
+						
+					}
+					// 식물 사진 클릭 시 식물 상세보기로 이동
+					 $('img[name=plantImg]').on('click', e => {
+						var plantNo = $(e.target).attr('value');
+						location.href = "select.bl_pl?plantNo=" + plantNo ; 
+					 });
+					
+					
+					</script>
 					<br clear="both">
 				</article>
 				</c:forEach>
@@ -320,143 +441,6 @@ img[name=imageThumbnail]{
 		
 	</main>
 	
-	
-	<script>
-
-		// 댓글 작성
-		function insertComment(){
-			var blogBoardNo = $(arguments[0]).attr('name');
-			var content = $(arguments[0]).parent().parent().children().next();
-			var aa = $(arguments[0]).parent().parent().parent().attr('name');
-			console.log(aa);
-			
-			if('${ sessionScope.loginUser.memNo}' != ''){
-				$.ajax({
-					type: "POST",
-					url: 'blog/insert.re', 
-					data: {blogBoardNo : blogBoardNo, 
-						   writer: '${ sessionScope.loginUser.memNo}', 
-						   blogReplycontent: content.val()}, 
-					success: data => {
-						console.log('댓글 입력 통신 성공');
-						alert('댓글 작성 성공');
-						content.val('');
-					}, 
-					error: () => {
-						console.log('댓글 입력 통신 실패');
-					}
-				});
-			}
-			else{
-				alert('로그인 후 이용 가능한 기능입니다.');
-			}
-		};
-
-	// 토글 이벤트 실행 상태 
-	 let flag = true;
-	
-	// 댓글 영역 클릭 했을 시 토글 이벤트
-	function buttonClicked(button) {
-	  //console.log($(arguments[0]).parent().parent().attr('name'));
-			
-	  var commentWrap = $(button.parentNode.nextElementSibling);
-	  if (commentWrap.style.display === 'none') {
-	    commentWrap.style.display = 'block';
-	  } else {
-	    commentWrap.style.display = 'none';
-	  }
-  			
-	
-	  selectReply(button);
-	  commentWrap = $(button);
-	  
-	  if (commentWrap.css('display') === 'none') {
-		    commentWrap.css('display', 'block');
-		  } else {
-		    commentWrap.css('display', 'none');
-		  }
-	  
-			const toggleButton = commentWrap.find('#toggleButton');
-			const commentInsertBox = commentWrap.find('#commentInsertBox');
-			const divElements = toggleButton.siblings().add(commentInsertBox);
-			//$(arguments[0]).parent().siblings().toggle('visible');
-			
-			divElements.toggle('visible');
-
-			  if (flag) {
-			  	flag = false; 
-			  } 
-			  else {
-			  	return; 
-			  }
-			
-			console.log(flag);
-	};
-	
-	
-	jQuery(document).ready(function(){});
-		
-	// 댓글 조회 
-	// 인자값: 어디서 실행 되는지 
-	function selectReply(button){
-		commentWrap = $(button.parentNode.nextElementSibling);
-		console.log(button);
-		console.log(commentWrap);
-		
-		$.ajax({
-			url: 'blog/selectList.re',
-			data: {currentPage: 1,
-				   blogBoardNo: commentWrap.attr('name')}, 
-			success: data => {
-				console.log('댓글 불러오기 통신 성공');
-				
-					const commentOption = commentWrap.find('#commentOption'); // commentWrap 내부에서 commentOption을 찾음
-					for(let i in data){
-				
-						const commentOption = $('#commentOption'); // 여기 밑에서부터 추가되어야 함
-						
-						var memNick = data[i].memNick;
-						var blogReplycontent = data[i].blogReplycontent;
-						var createDate = data[i].createDate;
-						
-						const commentWriteMemId = document.createElement("div");
-						$(commentWriteMemId).html('memNick')
-											.addClass('#commentWriteMemId');
-						var strMemId = "<div id='commentWriteMemId'>" + memNick + "</div>";
-						
-						const commentContent = document.createElement("div");
-						$(commentContent).html('commentContent')
-										 .addClass('#commentContent');
-						var strContent = "<div id='commentContent'>" + blogReplycontent + "</div>";
-						
-						
-						const commentCreateDate = document.createElement("div");
-						$(commentCreateDate).html('createDate')
-											.addClass('#commentContent');
-						var strDate = "<div id='commentCreateDate'>" + createDate + "</div>";
-						
-						$(commentOption).append(strMemId).append(strContent).append(strDate);
-					
-				}
-
-			},
-			error: () => {
-				console.log('댓글 불러오기 통신 실패');
-			}
-		});
-		
-		
-		
-	}		
-		
-	// 식물 사진 클릭 시 식물 상세보기로 이동
-	 $('img[name=plantImg]').on('click', e => {
-		var plantNo = $(e.target).attr('value');
-		location.href = "select.bl_pl?plantNo=" + plantNo ; 
-	 });
-	
-	</script>
-
 	<br clear="both">
 	
 	<footer id="pageFooter">
