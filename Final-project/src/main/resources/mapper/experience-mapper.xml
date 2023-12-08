@@ -141,6 +141,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		               EXP_NO 
 		          FROM 
 		               TB_EXPERIENCE_REPLY 
+		         WHERE 
+		         	   REPLY_STATUS = 'Y'
 		         GROUP 
 		            BY 
 		               EXP_NO) 
@@ -250,17 +252,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<insert id="updateFiles" parameterType="arraylist" >
 		INSERT 
 		  INTO
-		  		TB_ATTACHMENT
-				(
-			     FILE_NO,
-			     
-		         ORIGINAL_NAME,
-		         UPDATE_NAME,
-		         FILE_PATH,
-		         REF_TYPE,
-		         REF_NO,
-		         FILE_ANNOTATION,
-		         UPLOAD_DATE
+		  	   TB_ATTACHMENT
+			   (
+			    FILE_NO,
+			    
+		        ORIGINAL_NAME,
+		        UPDATE_NAME,
+		        FILE_PATH,
+		        REF_TYPE,
+		        REF_NO,
+		        FILE_ANNOTATION,
+		        UPLOAD_DATE
 				)
 		SELECT 
 			   SEQ_ATTACHMENT_NO.NEXTVAL, 
@@ -269,14 +271,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  FROM (
 		<foreach item="item" collection="list" separator="UNION ALL ">
 		  	SELECT 
-				 	#{item.originalName},
-				 	#{item.updateName},
-				 	#{item.filePath},
-				 	#{item.refType},
-				 	#{item.refNo},
-				 	#{item.fileAnnotation},
-				 	SYSDATE
-			   FROM DUAL
+				   #{item.originalName},
+				   #{item.updateName},
+				   #{item.filePath},
+				   #{item.refType},
+				   #{item.refNo},
+				   #{item.fileAnnotation},
+				   SYSDATE
+			  FROM DUAL
 		</foreach>
 		) AT
 	</insert>

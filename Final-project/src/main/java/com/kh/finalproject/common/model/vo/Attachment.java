@@ -1,5 +1,7 @@
 package com.kh.finalproject.common.model.vo;
 
+import java.util.Date;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,5 +19,5 @@ public class Attachment {
   private String refType;
   private int refNo;
   private String fileAnnotation;
-  private String uploadDate;
+  private Date uploadDate;
 }

@@ -106,17 +106,47 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	</select>
 
-	<update id="updateMember" parameterType="member">
-		UPDATE
-				TB_FILE,
-				TB_MEMBER
-		   SET
-				MEM_NICK = #{memNick},
-				EMAIL = #{email}
-		 WHERE
-		 		MEM_ID = #{memId}
-		   		
-	</update>
+		<!-- Attachment 테이블에 파일 정보 저장하는 쿼리 -->
+	<!-- 파일 정보를 TB_ATTACHMENT 테이블에 저장하는 쿼리 -->
+<insert id="saveAttachment" parameterType="Attachment">
+    INSERT INTO
+    TB_ATTACHMENT
+    (
+        FILE_NO,
+        REF_NO,
+        ORIGINAL_NAME,
+        UPDATE_NAME,
+        FILE_PATH,
+        REF_TYPE,
+        FILE_ANNOTATION
+    )
+    VALUES
+    (
+        SEQ_FILE_NO.NEXTVAL,
+        #{refNo},
+        #{originalName},
+        #{updateName},
+        #{filePath},
+        #{refType},
+        #{fileAnnotation}
+    )
+</insert>
+
+<!-- Member 정보를 업데이트하는 쿼리 -->
+<update id="updateMember" parameterType="Member">
+    UPDATE
+    TB_MEMBER
+    SET
+    MEM_NO = #{memNo},
+    MEM_NICK = #{memNick},
+    EMAIL = #{email},
+    MEM_IMG = #{memImg}, <!-- 추가된 부분: 멤버 이미지 정보 -->
+    REG_BUSINESS = #{regBusiness} <!-- 추가된 부분: 사업자등록증 경로 -->
+    WHERE
+    MEM_ID = #{memId}
+</update>
+
+
 
 	<update id="deleteMember" parameterType="string">
 		UPDATE
@@ -135,27 +165,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE 
 			MEM_NO = #{memNo}
 	</update>
-	<insert id="loadImg" parameterType="String">
-		INSERT
-		  INTO
-				TB_FILE
-				(
-				FILE_NO,
-				ORIGINAL_NAME,
-				UPDATE_NAME,
-				FILE_PATH,
-				REF_TYPE
-				)
-		VALUES
-				(
-				#{fileNo},
-				#{originalName},
-				#{updateName},
-				#{filePath},
-				#{refType}
-				)
-				
-	</insert>
 
 	<update id="editMember" parameterType="member">
 		UPDATE

@@ -18,9 +18,11 @@ import com.kh.finalproject.experience.model.vo.ExperienceReply;
 import com.kh.finalproject.experience.model.vo.Payment;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class AjaxExperienceController {
 	
 	private final ExperienceService experienceService;
@@ -33,8 +35,6 @@ public class AjaxExperienceController {
 	 */
 	@GetMapping(value="yrselectExpReplyList.exp", produces="application/json; charset=UTF-8")
 	public String selectExpReplyList(int expNo) {
-		System.out.println("하하");
-		System.out.println(experienceService.selectExpReplyList(expNo).toString());
 		return new Gson().toJson(experienceService.selectExpReplyList(expNo));
 	}
 	
@@ -47,11 +47,13 @@ public class AjaxExperienceController {
 	@PostMapping("yrinsertExpReply.exp")
 	public String insertExpReply(@RequestBody ExperienceReply newReply) throws ParseException {
 		
-		System.out.println("왜 이건 안들어가지");
-		newReply.setReplySecret((Integer.parseInt(newReply.getReplySecret()) > 0) ? "Y" : "N");
-		System.out.println(newReply.toString());
-		// {"expNo":"61","replyWriter":"user01","replyContent":"ㅁㄴㅇㄹ","replySecret":0}
 		
+		log.info("아...{}", newReply.getReplySecret());
+		log.info("아.2..{}", newReply.getReplySecret().equals("true"));
+		log.info("아.3..{}", newReply.getReplySecret().equals("false"));
+		
+		newReply.setReplySecret((newReply.getReplySecret().equals("true")) ? "Y" : "N");
+		// {"expNo":"61","replyWriter":"user01","replyContent":"ㅁㄴㅇㄹ","replySecret":0}
 		// 버전 2.8.6
 		//JsonObject jobj = JsonParser.parseString(expReply).getAsJsonObject();
 		// 버전 2.8.5
@@ -68,7 +70,6 @@ public class AjaxExperienceController {
 //			expReply.setReplyContent(jobj.get("replyContent").getAsString());
 //			expReply.setReplyWriter(jobj.get("replyWriter").getAsString());
 //			expReply.setReplySecret((jobj.get("replySecret").getAsInt() > 0) ? "Y" : "N");
-		
 		return (experienceService.insertExpReply(newReply) > 0) ? "success" : "fail";
 	}
 	
@@ -110,7 +111,7 @@ public class AjaxExperienceController {
 	 * @param memNo : 좋아요 누른 회원 번호
 	 * @return : 
 	 */
-	@GetMapping(value="yrexpLike")
+	@GetMapping("yrexpLike")
 	public int expLike(int expNo, int likeVal, int memNo) {
 		
 		HashMap map = new HashMap();
@@ -121,7 +122,6 @@ public class AjaxExperienceController {
 		if(likeVal > 0) {
 			// 좋아요 등록
 			return experienceService.insertExpLike(map);
-			
 		} else {
 			// 좋아요 취소
 			return experienceService.deleteExpLike(map);

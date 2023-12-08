@@ -3,27 +3,40 @@
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
 	<!-- Appenders -->
+	<!--전달된 로그를 출력할매체-->
 	<appender name="console" class="org.apache.log4j.ConsoleAppender">
 		<param name="Target" value="System.out" />
-		<layout class="org.apache.log4j.PatternLayout">
+		<!--name : appender이름  / class : 출력한 양식에 대한 값-->
+		<layout class="org.apache.log4j.PatternLayout">			<!--로그를 어떤식으로 출력할것인지 설정-->
 			<param name="ConversionPattern" value="%-5p: %c - %m%n" />
 		</layout>
 	</appender>
-	
+
+	<appender name="file-log" class="org.apache.log4j.FileAppender">
+		<param name="file" value="logfile.txt"/>
+		<param name="append" value="true"/>
+		<layout class="org.apache.log4j.PatternLayout">			<!--로그를 어떤식으로 출력할것인지 설정-->
+			<param name="ConversionPattern" value="%-5p: %c - %m%n" />
+		</layout>
+	</appender>
+	<!--
+		param name 속성: 저장할 파일의 경로를 작성할 때 사용 value="path(경로)"
+		-->
+
 	<!-- Application Loggers -->
 	<logger name="com.kh.finalproject">
 		<level value="info" />
 	</logger>
-	
+
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">
 		<level value="info" />
 	</logger>
-	
+
 	<logger name="org.springframework.beans">
 		<level value="info" />
 	</logger>
-	
+
 	<logger name="org.springframework.context">
 		<level value="info" />
 	</logger>
@@ -32,10 +45,14 @@
 		<level value="info" />
 	</logger>
 
+	<logger name="org.mybatis">
+		<level value="debug" />
+	</logger>
+
 	<!-- Root Logger -->
 	<root>
-		<priority value="warn" />
+		<priority value="debug" />
 		<appender-ref ref="console" />
 	</root>
-	
+
 </log4j:configuration>

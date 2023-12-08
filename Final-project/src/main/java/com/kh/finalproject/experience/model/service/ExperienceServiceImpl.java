@@ -16,6 +16,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.finalproject.common.model.dao.CommonDao;
@@ -31,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
+@EnableTransactionManagement
 @RequiredArgsConstructor
 public class ExperienceServiceImpl implements ExperienceService {
 	
@@ -62,15 +64,11 @@ public class ExperienceServiceImpl implements ExperienceService {
 	}
 
 	@Override
-	@Transactional
+	@Transactional("transactionManager")
 	public int insertExperience(Experience exp, ArrayList<Attachment> fileList) {
 		int result = experienceDao.insertExperience(sqlSession, exp);
-		/*
-		for(Attachment file : fileList) {
-			result *= commonDao.insertFiles(sqlSession, file);
-		}
-		*/
-		return experienceDao.insertFiles(sqlSession, fileList);
+		result *= !fileList.isEmpty() ? experienceDao.insertFiles(sqlSession, fileList) : 1;
+		return result;
 	}
 	
 	@Override

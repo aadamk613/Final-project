@@ -54,10 +54,10 @@ public class CommonController {
 							  HttpSession session, 
 							  String savePathFolder) {
 		
+
 		Attachment attchment = new Attachment();
 
 		String originalName = upfile.getOriginalFilename();
-		
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		int ranNum = (int)(Math.random() * 9000) + 10000;
 		String ext = originalName.substring(originalName.lastIndexOf("."));
