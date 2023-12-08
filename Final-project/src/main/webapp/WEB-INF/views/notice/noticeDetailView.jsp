@@ -101,7 +101,7 @@
 							</c:choose>
 						</c:when>
 						<c:otherwise>
-					 		<a href='#' onclick="alert('로그인 후 이용 가능한 기능입니다.');" id="like" class="like"><img class="heart" src="resources/images/emptyHeart.png" alt="빈하트"></a>&nbsp;${ b.likeCount } 
+					 		<a href='#' onclick="alert('로그인 후 이용 가능한 기능입니다.');" id="like" class="like"><img class="heart" src="resources/images/emptyHeart.png" alt="빈하트"></a>&nbsp;${ n.likeCount } 
 						</c:otherwise>
 						</c:choose>
 						

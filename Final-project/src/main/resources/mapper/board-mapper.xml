@@ -53,73 +53,98 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="selectBoardList" resultMap="boardResultSet">
 		SELECT
-		        *
-		FROM
-		    (
-		        SELECT
-		            'Best ' || CATEGORY AS "CATEGORY",
-		            BOARD_NO,
-		            BOARD_TITLE,
-		            BOARD_CONTENT,
-		            VIEWS,
-		            TO_CHAR(BOARD_CREATE_DATE, 'YYYY-MM-DD HH:MI:SS') AS "BOARD_CREATE_DATE",
-		            LIKE_COUNT,
-		            COMMENT_COUNT,
-		            MEM_NICK
-		        FROM
-		            TB_BOARD
-		        INNER JOIN
-		            TB_MEMBER ON (TB_BOARD.MEM_NO = TB_MEMBER.MEM_NO)
+		      'Best ' || CATEGORY AS "CATEGORY",
+		      BOARD_NO,
+		      BOARD_TITLE,
+		      BOARD_CONTENT,
+		      VIEWS,
+		      TO_CHAR(BOARD_CREATE_DATE, 'YYYY-MM-DD HH:MI:SS') AS "BOARD_CREATE_DATE",
+		      LIKE_COUNT,
+		      COMMENT_COUNT,
+		      MEM_NICK
+
+		  FROM
+		      (
+		       SELECT
+                     CATEGORY,
+		             BOARD_NO,
+		             BOARD_TITLE,
+		             BOARD_CONTENT,
+		             VIEWS,
+		             BOARD_CREATE_DATE,
+		             LIKE_COUNT,
+		             COMMENT_COUNT,
+		             MEM_NICK,
+                     ROW_NUMBER() OVER (ORDER BY LIKE_COUNT DESC, BOARD_NO DESC) AS row_num
+		         FROM
+		             TB_BOARD
+		        INNER
+                 JOIN
+		             TB_MEMBER ON (TB_BOARD.MEM_NO = TB_MEMBER.MEM_NO)
 		        WHERE
-		            STATUS = 'Y'
-		            AND LIKE_COUNT &gt; 50
-		        ORDER BY
-		            LIKE_COUNT DESC, BOARD_NO DESC
-		    )
-		WHERE
-		    ROWNUM BETWEEN 1 AND 5
-		
+		             STATUS = 'Y'
+		          AND 
+		             LIKE_COUNT &gt; 50
+		        ORDER
+		           BY
+		             LIKE_COUNT DESC, BOARD_NO DESC
+		      )
+	     WHERE
+		      row_num &lt;= 5
+
 		UNION ALL
 		
 		SELECT
-		    CATEGORY AS "CATEGORY",
-		    BOARD_NO,
-		    BOARD_TITLE,
-		    BOARD_CONTENT,
-		    VIEWS,
-		    TO_CHAR(BOARD_CREATE_DATE, 'YYYY-MM-DD HH:MI:SS') AS "BOARD_CREATE_DATE",
-		    LIKE_COUNT,
-		    COMMENT_COUNT,
-		    MEM_NICK
-		FROM
-		    (
-		        SELECT
-		        *
-		        FROM
-		            TB_BOARD
-		        INNER JOIN
-		            TB_MEMBER ON (TB_BOARD.MEM_NO = TB_MEMBER.MEM_NO)
-		        WHERE
-		            STATUS = 'Y'
-		            AND BOARD_NO NOT IN (
-		                SELECT BOARD_NO
-		                FROM (
-		                    SELECT
-		                        BOARD_NO
-		                    FROM
-		                        TB_BOARD
-		                    WHERE
-		                        STATUS = 'Y'
-		                        AND LIKE_COUNT &gt; 50
-		                ) 
-		                WHERE ROWNUM BETWEEN 1 AND 5
-		            )
-		            AND STATUS = 'Y'
-		            AND IS_BLIND = 'N'
-		        ORDER BY
-		            BOARD_NO DESC
-		    )
-
+			  CATEGORY,
+		      BOARD_NO,
+		      BOARD_TITLE,
+		      BOARD_CONTENT,
+		      VIEWS,
+		      BOARD_CREATE_DATE,
+		      LIKE_COUNT,
+		      COMMENT_COUNT,
+		      MEM_NICK
+          FROM
+              (
+               SELECT
+                     CATEGORY,
+		             BOARD_NO,
+		             BOARD_TITLE,
+		             BOARD_CONTENT,
+		             VIEWS,
+                     TO_CHAR(BOARD_CREATE_DATE, 'YYYY-MM-DD HH:MI:SS') AS "BOARD_CREATE_DATE",
+		             LIKE_COUNT,
+		             COMMENT_COUNT,
+		             MEM_NICK
+				 FROM
+    				 TB_BOARD
+		   		INNER 
+		   		 JOIN
+    				 TB_MEMBER ON (TB_BOARD.MEM_NO = TB_MEMBER.MEM_NO)
+                WHERE
+                     STATUS = 'Y'
+                  AND 
+                     BOARD_NO NOT IN (
+                                      SELECT
+								     	    BOARD_NO
+								                    FROM (
+												 	      SELECT
+															    BOARD_NO,
+															    ROW_NUMBER() OVER (ORDER BY LIKE_COUNT DESC, BOARD_NO DESC) AS row_num
+												  		    FROM
+												   				TB_BOARD
+												  		   WHERE
+												    			STATUS = 'Y'
+												    		 AND 
+												    		    LIKE_COUNT &gt; 50
+														  )
+												     WHERE
+												          row_num &lt;= 5       
+								      )            
+				 ORDER 
+				    BY 
+				      BOARD_NO DESC
+				)
 	</select>
 	
 <!-- 
