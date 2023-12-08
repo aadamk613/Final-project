@@ -52,9 +52,7 @@ public class CommonController {
 	public Attachment setFile(MultipartFile upfile, HttpSession session, String savePathFolder) {
 		
 		Attachment file = new Attachment();
-
 		String originalName = upfile.getOriginalFilename();
-		
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		int ranNum = (int)(Math.random() * 9000) + 10000;
 		String ext = originalName.substring(originalName.lastIndexOf("."));
@@ -67,7 +65,6 @@ public class CommonController {
 		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();
 		}
-		
 		file.setFilePath("resources/uploadFiles/" + savePathFolder + "/");
 		file.setRefType(savePathFolder);
 		file.setOriginalName(originalName);

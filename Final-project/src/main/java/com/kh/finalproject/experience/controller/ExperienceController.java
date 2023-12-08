@@ -94,7 +94,7 @@ public class ExperienceController {
 	/**
 	 * @return : 작성화면으로 이동
 	 */
-	@GetMapping("yrinsertExpForm.exp")
+	@GetMapping("insertExpForm")
 	public String insertExperienceoForm(HttpSession session) {
 		return "experience/experienceWrite";
 	}
@@ -107,43 +107,25 @@ public class ExperienceController {
 	 * @param session : Session객체
 	 * @return : 게시글 목록으로 이동
 	 */
-	@PostMapping("yrinsertExp.exp")
+	@PostMapping("insertExp")
 	public String insertExperience(Experience exp, 
 								   MultipartFile[] upfiles, 
 								   String[] anno, 
 								   HttpSession session) {
-		// for(MultipartFile upfile : upfiles) {
-		
-		
-		
-		System.out.println("나오자 좀");
-		
-		ArrayList<Attachment> fileList = new ArrayList();
+		ArrayList<Attachment> fileList = new ArrayList<>();
 		for(int i = 0; i < upfiles.length; i++) {
-			
-			
-			
 			if(!upfiles[i].getOriginalFilename().equals("")) {
-				
-				
-				System.out.println(upfiles[i]);
-				
 				Attachment file = commonController.setFile(upfiles[i], session, "experience");
-				System.out.println("엥  여기 번호가 있음?????");
-				System.out.println(exp.getExpNo()); // 0
-				//file.setRefNo(exp.getExpNo());
-				//System.out.println(anno[i]);
 				file.setFileAnnotation(anno[i]);
 				fileList.add(file);
 			} 
 		}
-		
 		if(experienceService.insertExperience(exp, fileList) > 0) {
 			session.setAttribute("alertMsg", "게시글이 등록되었습니다.");
 		} else {
 			session.setAttribute("alertMsg", "게시글 등록에 실패하셨습니다.");
 		}
-		return "redirect:yrlist.exp";
+		return "redirect:listExp";
 	}
 	
 	

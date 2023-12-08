@@ -77,7 +77,7 @@ input[name=anno] {
 		</aside>
 		
 		<section id="pageSection">
-			<form enctype="multipart/form-data" action="yrinsertExp.exp" method="post">
+			<form enctype="multipart/form-data" action="insertExp" method="post">
 			
 			<c:if test="${ not empty exp }" >
 				<input type="hidden" name="expNo" value="${ exp.expNo }" />
@@ -366,7 +366,7 @@ input[name=anno] {
 					$('form').attr('action', 'yrupdateExp.exp');
 				}
 				else{
-					$('form').attr('action', 'yrinsertExp.exp');
+					$('form').attr('action', 'insertExp');
 				}
 				
 			</script>

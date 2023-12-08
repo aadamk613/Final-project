@@ -15,7 +15,7 @@
 
 <style>
 * {
-    border: 1px solid skyblue;
+    
 	box-sizing: border-box;
 }
 
@@ -64,14 +64,32 @@ h1 {
 	object-fit : contain;
 }
 
-.summary{
-	
+.summaryContent {
+	width : auto;
+	padding : 50px 20px 20px 20px; 
+}
+
+.summary {
+	width : 100%;
+	height : 400px;
+	margin : 50px 0px;
+}
+
+.summary > div{
+	float : left;
 }
 
 .summary li {
 	list-style : none;
 	align : center;
 }
+
+#apply{
+	margin : 0px 0px 0px 250px;
+}
+
+
+
 
 <!-- 댓글 --!>
 #commentWrap {width: 100%; height: auto;}
@@ -213,14 +231,26 @@ th, td{
 						</ul>
 					</div>
 				</div>
-				<div>
-				
-					<div class="summary">
+				<div class="summary">
+					<div>
 						<c:if test="${ not empty files }">
 							<img src="${ files[0].filePath }/${ files[0].updateName }" id="thumb" />
 						</c:if>
 					</div>
+				
 					
+					
+					<div class="summaryContent">
+						<ul>
+							<li>카테고리 : ${ exp.expCategoryName }</li>
+							<li>체험학습일 : ${ exp.expWorkDate }, ${ exp.expWorkTime }시간</li>
+							<li>모집인원 : ${ exp.expSupportCount } / ${ exp.expPeople }명</li>
+							<li>지역 : ${ exp.expAddress }</li>
+							<li>모집마감일 : ${ exp.expEndDate }</li>
+							<li>가격 : ${ exp.expPrice }원</li>
+						</ul>
+						<button type="button" id="apply" class="btn btn-primary" onclick="location.href='yrpayForm.exp'">지원하기</button>
+					</div>
 					<div>
 						<c:choose>
 							<c:when test="${ empty loginUser }" >
@@ -232,21 +262,12 @@ th, td{
 						</c:choose>
 					</div>
 					
-					<div class="summary">
-						<ul>
-							<li>카테고리 : ${ exp.expCategoryName }</li>
-							<li>체험학습일 : ${ exp.expWorkDate }, ${ exp.expWorkTime }시간</li>
-							<li>모집인원 : ${ exp.expSupportCount } / ${ exp.expPeople }명</li>
-							<li>지역 : ${ exp.expAddress }</li>
-							<li>모집마감일 : ${ exp.expEndDate }</li>
-							<li>가격 : ${ exp.expPrice }</li>
-						</ul>
-						<button type="button" class="btn btn-primary" onclick="location.href='yrpayForm.exp'">지원하기</button>
-					</div>
 				</div>
-				<div>
+				
+				<div id="mainContent">
 					<p>${ exp.expContent }</p>
 				</div>
+				
 				<div id="content-div">
 					<c:if test="${ not empty requestScope.files }">
 						<c:forEach var="f" items="${ requestScope.files }"  begin="1">
@@ -328,11 +349,9 @@ th, td{
 			$('#likeCount').text('좋아요수 ' + likeCount);
 			
 			
-			
+			// 좋아요 여부 확인
 			$(() => {
-				
-				let userNo = 
-				
+				//let userNo = 
 				$.ajax({
 					url : 'yrexpLikeCheck',
 					data : {
@@ -350,7 +369,7 @@ th, td{
 					}
 				});
 			});
-		
+			
 			
 			// 좋아요 클릭
 			function likeClick(){
@@ -389,8 +408,6 @@ th, td{
 						console.log("체험학습 게시글 좋아요 통신오류")
 					}
 				});
-
-				
 			};
 		
 			// 댓글 수 초기값

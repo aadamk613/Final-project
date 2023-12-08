@@ -70,7 +70,7 @@ a {
 				<h1>체험학습</h1>
 				
 				<c:if test="${ not empty loginUser }">
-					<button type="button" class="btn btn-primary" id="insert-btn" onclick="location.href='yrinsertExpForm.exp'">작성하기</button>
+					<button type="button" class="btn btn-primary" id="insert-btn" onclick="location.href='insertExpForm'">작성하기</button>
 				</c:if>
 			</div>
 			
