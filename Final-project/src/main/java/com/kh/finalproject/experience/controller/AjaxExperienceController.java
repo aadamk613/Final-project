@@ -45,8 +45,26 @@ public class AjaxExperienceController {
 	 * @throws ParseException
 	 */
 	@PostMapping("insertExpReply")
-	public String insertExpReply(@RequestBody ExperienceReply newReply) {
+	public String insertExpReply(@RequestBody ExperienceReply newReply) throws ParseException {
+		
 		newReply.setReplySecret((newReply.getReplySecret().equals("true")) ? "Y" : "N");
+		// {"expNo":"61","replyWriter":"user01","replyContent":"ㅁㄴㅇㄹ","replySecret":0}
+		// 버전 2.8.6
+		//JsonObject jobj = JsonParser.parseString(expReply).getAsJsonObject();
+		// 버전 2.8.5
+		//JsonObject jobj = new JsonParser().parse(newReply).getAsJsonObject();
+		// System.out.println(jobj);
+		// {"expNo":"61","replyWriter":"user01","replyContent":"ㅁㄴㅇㄹ","replySecret":0}
+		
+		// System.out.println(jobj.get("expNo").getAsInt()); // 61
+		// System.out.println(jobj.get("replyContent")); // "ㅁㄴㅇㄹ"
+		
+		// set해서 넣어줄 수 밖에 없음 (null일수도 있으니까 이렇게 해주는게 맞음)
+//			ExperienceReply expReply = new ExperienceReply();
+//			expReply.setExpNo(jobj.get("expNo").getAsInt());
+//			expReply.setReplyContent(jobj.get("replyContent").getAsString());
+//			expReply.setReplyWriter(jobj.get("replyWriter").getAsString());
+//			expReply.setReplySecret((jobj.get("replySecret").getAsInt() > 0) ? "Y" : "N");
 		return (experienceService.insertExpReply(newReply) > 0) ? "success" : "fail";
 	}
 	
