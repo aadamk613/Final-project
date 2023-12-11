@@ -79,12 +79,12 @@ public class MemberController {
     // BCryptPasswordEncoder의 matches 메서드를 사용하면 된다. (rawpassword, encodedpassword) 를 넘기면 됨
     Member loginUser = memberService.loginMember(m);
     if (loginUser != null
-        && bcryptPasswordEncoder.matches(m.getMemPwd(), loginUser.getMemPwd())) { // 성공시 :
+        && bcryptPasswordEncoder.matches(m.getMemPwd(), loginUser.getMemPwd())) { 
       memberService.setLastLogin(loginUser);
       session.setAttribute("loginUser", loginUser);
       mv.setViewName("redirect:/");
     } else { // 실패시
-      mv.addObject("errorMsg", "로그인 실패....").setViewName("common/errorPage"); // mv 객체는 메소드 체이닝가능
+      mv.addObject("errorMsg", "로그인 실패....").setViewName("common/errorPage"); 
     }
     return mv;
   }
@@ -266,9 +266,7 @@ public class MemberController {
     String accessToken = kakaoLoginService.getToken(code);
     // 토큰으로 긁어온 유저 정보를 맵에 받아왔음
     Map<String, String> profileMap = kakaoLoginService.getUserInfo(accessToken);
-    System.out.println("printing map" + profileMap.toString());
     // 지금 로그인한 카카오톡 프로필이 DB에 없으면 DB에 추가.
-    // 네이버용으로 작성한 select문이지만 카카오 계정에도 적용가능.
     Member loginUser = memberService.selectSocialProfile(profileMap.get("id"));
     Member m = new Member();
     m.setMemId(profileMap.get("id"));
@@ -299,10 +297,8 @@ public class MemberController {
     GoogleIdToken idToken = verifier.verify(credential);
     if (idToken != null) {
       Payload payload = idToken.getPayload();
-
       // Print user identifier; userId = unique identifier
       String userId = payload.getSubject();
-
       // Get profile information from payload
       String email = payload.getEmail();
       String name = (String) payload.get("name");
