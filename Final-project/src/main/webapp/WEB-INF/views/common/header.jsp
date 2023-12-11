@@ -53,7 +53,7 @@
 					<li><a href="main.bl">블로그</a></li>
 					<c:choose>
 						<c:when test="${sessionScope.loginUser.memStatus eq 'A'}">
-							<li><a href="main.admin">관리자메뉴</a></li>	
+							<li><a href="admin/main">관리자메뉴</a></li>	
 						</c:when>
 						<c:otherwise>
 							<li><a href="myPage.me">마이페이지</a></li>
