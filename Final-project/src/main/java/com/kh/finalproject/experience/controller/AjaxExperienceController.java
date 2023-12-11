@@ -34,8 +34,8 @@ public class AjaxExperienceController {
 	 * @return : 댓글의 리스트 반환
 	 */
 	@GetMapping(value="yrselectExpReplyList.exp", produces="application/json; charset=UTF-8")
-	public String selectExpReplyList(int expNo) {
-		return new Gson().toJson(experienceService.selectExpReplyList(expNo));
+	public String selectExpReplyList(String expNo) {
+		return new Gson().toJson(experienceService.selectExpReplyList(Integer.parseInt(expNo)));
 	}
 	
 	// 댓글 작성
@@ -44,32 +44,9 @@ public class AjaxExperienceController {
 	 * @return : 댓글작성 성공여부
 	 * @throws ParseException
 	 */
-	@PostMapping("yrinsertExpReply.exp")
-	public String insertExpReply(@RequestBody ExperienceReply newReply) throws ParseException {
-		
-		
-		log.info("아...{}", newReply.getReplySecret());
-		log.info("아.2..{}", newReply.getReplySecret().equals("true"));
-		log.info("아.3..{}", newReply.getReplySecret().equals("false"));
-		
+	@PostMapping("insertExpReply")
+	public String insertExpReply(@RequestBody ExperienceReply newReply) {
 		newReply.setReplySecret((newReply.getReplySecret().equals("true")) ? "Y" : "N");
-		// {"expNo":"61","replyWriter":"user01","replyContent":"ㅁㄴㅇㄹ","replySecret":0}
-		// 버전 2.8.6
-		//JsonObject jobj = JsonParser.parseString(expReply).getAsJsonObject();
-		// 버전 2.8.5
-		//JsonObject jobj = new JsonParser().parse(newReply).getAsJsonObject();
-		// System.out.println(jobj);
-		// {"expNo":"61","replyWriter":"user01","replyContent":"ㅁㄴㅇㄹ","replySecret":0}
-		
-		// System.out.println(jobj.get("expNo").getAsInt()); // 61
-		// System.out.println(jobj.get("replyContent")); // "ㅁㄴㅇㄹ"
-		
-		// set해서 넣어줄 수 밖에 없음 (null일수도 있으니까 이렇게 해주는게 맞음)
-//			ExperienceReply expReply = new ExperienceReply();
-//			expReply.setExpNo(jobj.get("expNo").getAsInt());
-//			expReply.setReplyContent(jobj.get("replyContent").getAsString());
-//			expReply.setReplyWriter(jobj.get("replyWriter").getAsString());
-//			expReply.setReplySecret((jobj.get("replySecret").getAsInt() > 0) ? "Y" : "N");
 		return (experienceService.insertExpReply(newReply) > 0) ? "success" : "fail";
 	}
 	
@@ -95,8 +72,10 @@ public class AjaxExperienceController {
 	 * @return : 눌렀으면 1, 안눌렀으면 0반환
 	 */
 	@GetMapping("yrexpLikeCheck")
-	public int expLikeCheck(int expNo, int memNo) {
+	public int expLikeCheck(String expNo, String memNo) {
 		
+		// 자꾸 No없으면 AJAX안돼서 String으로 받았는데
+		// String int로 파싱안해도 되네????????
 		HashMap map = new HashMap();
 		map.put("expNo", expNo);
 		map.put("memNo", memNo);
