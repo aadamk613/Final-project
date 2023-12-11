@@ -101,11 +101,11 @@ textarea{
 			
 			<div id="content">
 				<article>
-					<form method="post" action="insert.bl_pl" enctype="multipart/form-data">  
+					<form method="post" action="blog/insert.pl" enctype="multipart/form-data">  
 					<input type="hidden" name="blogNo" value="${ blogNo }"/>
                     <div id="plantInfoWrap">
-                        <div id="plantImg"><input type="file" name="upfile" id="plantInput"/>
-                        	<img src="resources/images/defaultPlant.png" id="plantImgInput" name="plantThumbnail">
+                        <div id="plantImg"><input type="file" name="upfile"/>
+                        	<img src="/final/resources/images/defaultPlant.png" id="plantImgInput">
                         </div>
                         <div id="plantImfo">
                             <ul>
@@ -132,24 +132,18 @@ textarea{
 
 			<script>
 			
-				$(function(){
-					
 				// 식물 애칭 입력하지 않았을 시 식물 이름으로 설정	
-				var nickName = $('input[name=plantNickName]');
-				var plantName = $('input[name=plantName]');
 				
-				plantName.on('change', function(){
-					console.log(nickName.val());
+				$('#plantCare').on('click', function(){
+					var nickName = $('input[name=plantNickName]');
+					if(nickName.val() == ''){
+						var plantName = $('input[name=plantName]');
+						nickName.val(plantName.val());
+					}
 					
-				if(nickName.val() == ''){
-					consolo.log('닉네임없어');
-					nickName.val() = plantName.val();
-				}
-					
-				})
-				
+					//$('#content').children().find('form')
+					  //           .attr('action', '/final/blog/insert/plant')
 				});
-				
 				
 				// 현재 날짜를 알아낸 후 식물 등록 일자에서 현재 날짜 이후는 입력 불가
 				var nowDate = Date.now();
@@ -159,19 +153,18 @@ textarea{
 				
 				
 				// input type="file"을 숨긴 후 기본이미지 클릭 시 이벤트 수행되게
-			      plantImgInput.addEventListener('click', function(){
-			    	  plantInput.click();
-			      });
-			      
+			    plantImgInput.addEventListener('click', function(){
+			    	$('input[name=upfile]').click();
+			    });
 				
-	              // 이미지를 첨부했을 시 미리보기 가능하게
-	              $('input[name=upfile]').on('change', function(inputFile){
-				  	let reader = new FileReader();
+	            // 이미지를 첨부했을 시 미리보기 가능하게
+	            $('input[name=upfile]').on('change', function(inputFile){
+				 	const reader = new FileReader();
 					reader.readAsDataURL(inputFile.target.files[0]);
 					reader.onload = e => {
-					$('img[name=plantThumbnail]').attr('src', e.target.result);
-						}
-				  });
+				    	$('#plantImgInput').attr('src', e.target.result);
+					}
+				});
 			       
 			</script>
 

@@ -6,9 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>블로그 메인</title>
-<link rel="stylesheet" href="resources/css/common/template.css">
-
-</head>
 <style>
 
 <!--
@@ -195,6 +192,9 @@ img[name=imageThumbnail]{
 .visible{display: block !important;}
 
 </style>
+<link rel="stylesheet" href="/resources/css/common/template.css">
+</head>
+
 <body>
 
 	<header id="pageHeader">
@@ -205,14 +205,14 @@ img[name=imageThumbnail]{
             <div id="blogInfo">
                 <ul id="blogInfoUl">
                     <li id="blogImg">
-                    <div id="imageInputWrap"><img name="imageThumbnail" src="${ blog.filePath }${ blog.updateName }"/></div>
+                    <div id="imageInputWrap"><img name="imageThumbnail" src="/final/${ blog.filePath }${ blog.updateName }"/></div>
                     </li>
                     <li id="memId">${ blog.memNick }(${ blog.memId })</li>
                     <li id="blogIntroduce">${ blog.blogIntroduce }</li>
                     <li id="">
-	                    <a href="insertForm.bl_bo?blogNo=${ blog.blogNo }">글 쓰기</a>
-	                    <a href="updateForm.bl?blogNo=${ blog.blogNo }">블로그 관리</a>
-	                    <a href="updateForm.bl_ct?blogNo=${ blog.blogNo }">카테고리 관리</a>
+	                    <a href="final/blog/insertForm.bo/board?blogNo=${ blog.blogNo }">글 쓰기</a>
+	                    <a href="final/blog/updateForm.bl?blogNo=${ blog.blogNo }">블로그 관리</a>
+	                    <a href="final/blog/updateForm.ct/category?blogNo=${ blog.blogNo }">카테고리 관리</a>
                     </li>
                 </ul>
           
@@ -238,18 +238,18 @@ img[name=imageThumbnail]{
 			<div id="content">
                <div id="plantWrap">
                <div id="plantList" >
-                    <a href="selectList.bl_pl?blogNo=${ blog.blogNo }">식물 일지</a>
+                    <a href="/final/blog/selectList.pl?blogNo=${ blog.blogNo }">식물 일지</a>
                </div>
 				<div id="plantBox">
 					<c:forEach var="p" items="${ plantList }">
 						<div id="plantArticle">
 						<c:choose>
 							<c:when test="${ empty p.filePath }">
-							<div><img name="plantImg" src="resources/images/defaultPlant.png"
+							<div><img name="plantImg" src="/final/resources/images/defaultPlant.png"
 									value="${ p.plantNo }" /></div>
 							</c:when>
 							<c:otherwise>
-							<div><img name="plantImg" src="${ p.filePath }${ p.updateName }"
+							<div><img name="plantImg" src="/final/${ p.filePath }${ p.updateName }"
 										value="${ p.plantNo }" /></div>
 							</c:otherwise>
 						</c:choose>
@@ -258,7 +258,7 @@ img[name=imageThumbnail]{
 					</c:forEach>
 						
 					<div id="plantButtonWrap">
-						<a href="insertForm.bl_pl?blogNo=${ blog.blogNo }">
+						<a href="/final/blog/insertForm.pl?blogNo=${ blog.blogNo }">
 						<button class="button forest">+</button></a>
 					</div>
 					<br clear="both">
@@ -324,7 +324,7 @@ img[name=imageThumbnail]{
 						if('${ sessionScope.loginUser.memNo}' != ''){
 							$.ajax({
 								type: "POST",
-								url: 'blog/insert', 
+								url: 'blog/insert.re', 
 								data: {blogBoardNo : blogBoardNo, 
 									   writer: '${ sessionScope.loginUser.memNo}', 
 									   blogReplycontent: contentDiv.val()}, 
@@ -381,7 +381,7 @@ img[name=imageThumbnail]{
 						 
 						$.ajax({
 							type: "GET",
-							url: 'blog/selectList',
+							url: 'blog/selectList.re',
 							data: {currentPage: 1,
 								   blogBoardNo: blogBoardNo}, 
 							success: data => {
