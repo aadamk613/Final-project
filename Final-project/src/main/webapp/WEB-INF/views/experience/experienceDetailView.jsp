@@ -104,7 +104,7 @@ h1 {
 #commentCreateDate > a{color: gray;}
 #commentInsertBox{width: 100%; height: 100px; border: 0.5px solid darkgray; border-radius: 10px; background-color: white; padding: 5px; height: 95%; margin-top: 10px;}
 #commentWriter{width: 100%; height: 30px; font-size : 15px; font-weight: 600; padding:0 10px;}
-#commentContentInsert{width: 100%; height: 30px; background-color: transparent; resize: none; outline: 0; border: 0; padding:0 10px;}
+#replyContent{width: 100%; height: 30px; background-color: transparent; resize: none; outline: 0; border: 0; padding:0 10px;}
 #submitWrap{float: right; margin: -36px 10px -36px 0px;}
 #submitWrap > a{color : gray; font-size : 12px; padding:0 10px; z-index: 9; position: relative;}
 
@@ -289,12 +289,12 @@ th, td{
 							<div id="commentWriter">유저ID</div>
 						</div>
 						<div>
-							<textarea id="commentContentInsert" placeholder="댓글을 남겨보세요"></textarea>
+							<textarea id="replyContent" placeholder="댓글을 남겨보세요"></textarea>
 							<input type="checkbox" id="secret" />
 							<label for="secret">비밀댓글로 설정하기</label>
 						</div>
 						<c:choose>
-							<c:when test="${ loginUser eq null} && ">
+							<c:when test="${ loginUser eq null}">
 								<div id="submitWrap"><a onclick="alertify.alert('알림', '로그인 후 이용가능합니다.');">등록</a></div>
 							</c:when>
 							<c:otherwise>
@@ -354,8 +354,8 @@ th, td{
 				$.ajax({
 					url : 'yrexpLikeCheck',
 					data : {
-						expNo : ${ exp.expNo },
-						memNo : ${ loginUser.memNo }
+						expNo : '${ exp.expNo }',
+						memNo : '${ loginUser.memNo }'
 					},
 					success : result => {
 						console.log(result);
@@ -393,8 +393,8 @@ th, td{
 				$.ajax({
 					url : 'yrexpLike',
 					data : {
-						expNo : ${ exp.expNo },
-						memNo : ${ loginUser.memNo },
+						expNo : '${ exp.expNo }',
+						memNo : '${ loginUser.memNo }',
 						likeVal : likeValue
 					},
 					success : result => {
@@ -410,37 +410,28 @@ th, td{
 			};
 		
 			let replyCount = ${ exp.expReplyCount };
-			
-			
-			console.log("이게 왜 길이가 ㅠㅠ");
-			console.log($('#secret'));
-			console.log($('#secret').length);
-			
 			function insertReply(){
-				if($('#commentContentInsert').val() == ''){
+				if($('#replyContent').val() == ''){
 					$('#submitWrapLabel').text('내용은 필수 입력 사항입니다.');
 					return;
 				}
-				$('#submitWrapLabel').empty();
-				
 				const data = {
 						expNo : '${ exp.expNo }',
 						replyWriter : '${ loginUser.memId }',
-						replyContent : $('#commentContentInsert').val(),
-						replySecret : $('#secret').is('checked')
+						replyContent : $('#replyContent').val(),
+						replySecret : $('#secret').is(':checked')
 				};
 				$.ajax({
-					url : 'yrinsertExpReply.exp',
+					url : 'insertExpReply',
 					type : 'post',
 		            contentType: 'application/json; charset=utf-8',
 					data :JSON.stringify(data), 
 					success : result => {
 						if(result == 'success'){
-							// 댓글 수 증가
 							replyCount++;
 							$('#replyCount').text('댓글수 ' + replyCount);
-							$('#commentContentInsert').val('');
-							$('input[type=checkbox]:checked').prop('checked', false);
+							$('#replyContent').val('');
+							$('#secret').prop('checked', false);
 							selectReply();
 						}
 					},
