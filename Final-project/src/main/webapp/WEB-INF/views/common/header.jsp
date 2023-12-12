@@ -7,8 +7,8 @@
 <meta charset="UTF-8">
 <title>header</title>
 
-<link rel="stylesheet" href="resources/css/common/template.css">
-<link rel="stylesheet" href="resources/css/common/header.css">
+<link rel="stylesheet" href="/final/resources/css/common/header.css">
+<link rel="stylesheet" href="/final/resources/css/common/template.css">
 
 <!-- jQuery 라이브러리 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -34,7 +34,7 @@
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
 	<!-- Bootstrap theme -->
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
-
+	<link rel="stylesheet" href="/final/resources/css/common/template.css">
 </head>
 
 <body>
@@ -47,10 +47,10 @@
 			<div id="menubarWrap">
 				<ul>
 					<li><a href="#">스토어</a></li>
-					<li><a href="yrlist.exp">체험학습</a></li>
+					<li><a href="/final/yrlist.exp">체험학습</a></li>
 					<li><a href="#">일손모집</a></li>
-					<li><a href="main.co">커뮤니티</a></li>
-					<li><a href="main.bl">블로그</a></li>
+					<li><a href="/final/main.co">커뮤니티</a></li>
+					<li><a href="/final/blog/main.bl">블로그</a></li>
 					<c:choose>
 						<c:when test="${sessionScope.loginUser.memStatus eq 'A'}">
 							<li><a href="admin/main">관리자메뉴</a></li>	
@@ -65,14 +65,14 @@
 				<ul>
 					<c:choose>
 						<c:when test="${ empty sessionScope.loginUser }" >
-							<li><a id="login" href="loginForm.me">로그인</a></li>
+							<li><a id="login" href="/final/loginForm.me">로그인</a></li>
 						</c:when>
 						<c:otherwise>
-							<li><a id="login" href="logout.me">로그아웃</a></li>
+							<li><a id="login" href="/final/logout.me">로그아웃</a></li>
 						</c:otherwise>
 					</c:choose>
-					<li><a href="chatMain.ch"><img src="resources/images/comment.png" /></a></li>
-					<li><a href="#"><img src="resources/images//alarm.png" /></a></li>
+					<li><a href="chatMain.ch"><img src="/final/resources/images/comment.png" /></a></li>
+					<li><a href="#"><img src="/final/resources/images//alarm.png" /></a></li>
 				</ul>
 			</div>
 		</div>

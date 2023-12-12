@@ -16,20 +16,20 @@ import com.kh.finalproject.common.teplate.Pagination;
 
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/blog")
+@RequestMapping("blog")
 @RequiredArgsConstructor
 @RestController
 public class AjaxBlogController {
 	
 	private final BlogService blogService;
 
-	@PostMapping("/insert")
+	@PostMapping("/insert.re")
 	public String insertBlogReply(BlogReply blogReply) {
 		System.out.println("여기");
 		return (blogService.insertBlogReply(blogReply)) > 0 ? "success" : "fail" ;
 	}
 	
-	@GetMapping(value="/selectList", produces="application/json; charset=UTF-8")
+	@GetMapping(value="/selectList.re", produces="application/json; charset=UTF-8")
 	public String selectBlogReplyList(@RequestParam(value="currentPage", defaultValue="1")int currentPage, 
 									  int blogBoardNo) {
 		System.out.println("댓글 불러오기");

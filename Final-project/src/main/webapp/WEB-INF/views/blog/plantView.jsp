@@ -158,7 +158,7 @@ textarea{
 				<!-- 관리 모달 창 -->
 				<div id="plantCareModal">
 				<div id="plantCareWrap">
-					<form action="insert.bl_pr" method="post" enctype="multipart/form-data">
+					<form action="blog/insert.pr" method="post" enctype="multipart/form-data">
 					<input type="hidden" name="topPlantNo" value="${ plant.plantNo }"/>
 						<div>${ plant.plantNickName }관리하기</div>
 						<div>
@@ -229,22 +229,22 @@ textarea{
 							
 							<c:choose>
 								<c:when test="${ '물주기' eq r.categoryName }">
-									<img src="resources/images/plantWatering.jpg"/>
+									<img src="/final/resources/images/plantWatering.jpg"/>
 								</c:when>
 								<c:when test="${ '물갈이하기' eq r.categoryName }">
-									<img src="resources/images/plantWaterChange.jpg"/>
+									<img src="/final/resources/images/plantWaterChange.jpg"/>
 								</c:when>
 								<c:when test="${ '가지치기' eq r.categoryName }">
-									<img src="resources/images/plantPruning.jpg"/>
+									<img src="/final/resources/images/plantPruning.jpg"/>
 								</c:when>
 								<c:when test="${ '영양관리' eq  r.categoryName }">
-									<img src="resources/images/plantNutrition.jpg"/>
+									<img src="/final/resources/images/plantNutrition.jpg"/>
 								</c:when>
 								<c:when test="${ '분갈이하기' eq  r.categoryName }">
-									<img src="resources/images/plantRepot.jpg"/>
+									<img src="/final/resources/images/plantRepot.jpg"/>
 								</c:when>
 								<c:otherwise>
-									<img src="resources/images/plantReport.jpg"/>
+									<img src="/final/resources/images/plantReport.jpg"/>
 								</c:otherwise>
 							</c:choose>
 							
@@ -261,17 +261,17 @@ textarea{
 
 					</div>
 					<br clear="both">
-				<div><a href="javascript:window.history.back();"><button type="button" class="button beige" id="goBlogHome">&lt;</button></a></div>
+				<div><a href="blog/selectList.pl"><button type="button" class="button beige" id="goBlogHome">&lt;</button></a></div>
 				
 				<div id="page">
 				<c:if test="${ pi.currentPage ne 1 }">
-		        	<button class="btn btn-light" onclick="location.href='select.bl_pl?blogNo=${ blogNo }&currentPage=${ pi.currentPage - 1 }'">&lt;</button>
+		        	<button class="btn btn-light" onclick="location.href='blog/select.pl?blogNo=${ blogNo }&currentPage=${ pi.currentPage - 1 }'">&lt;</button>
 		        </c:if> 
 		       
 		        <c:forEach var="i" begin="${ pi.startPage }" end="${ pi.endPage }">
 		       		<c:choose>
 			       		<c:when test="${ pi.currentPage ne i }">
-			          		<button class="btn btn-forest" onclick="location.href='select.bl_pl?blogNo=${ blogNo }&currentPage=${ i }'">${ i }</button>
+			          		<button class="btn btn-forest" onclick="location.href='blog/select.pl?blogNo=${ blogNo }&currentPage=${ i }'">${ i }</button>
 			         	</c:when>
 			         	<c:otherwise>
 			         		<button disabled class="btn btn-default">${ i }</button>
@@ -280,7 +280,7 @@ textarea{
 		        </c:forEach>
 		        
 		        <c:if test="${ pi.currentPage ne pi.maxPage }">
-		        	<button class="btn btn-light" onclick="location.href='select.bl_pl?blogNo=${ blogNo }&currentPage=${ pi.currentPage + 1 }'">&gt;</button>
+		        	<button class="btn btn-light" onclick="location.href='/final/blog/select.pl?blogNo=${ blogNo }&currentPage=${ pi.currentPage + 1 }'">&gt;</button>
 		        </c:if>
 			</div>					
 				</article>
@@ -302,7 +302,7 @@ textarea{
 			// 식물 관리하기
 	         $('#plantReportButton').on('click', function(e) {
 	            console.log($(arguments[0]).parent().children().find('input[plantNo]').val());
-	            location.href =  'insertForm.bl_pr?plantNo=' + ${ plant.plantNo};
+	            location.href =  'blog/insertForm.pl?plantNo=' + ${ plant.plantNo};
 	            //$(arguments[0]).parent().children().find('input[plantNo]').attr('value', ${ p.plantNo});
 	            //$('#postForm').attr('action', 'insertForm.bl_pr').submit();
 	         });
@@ -311,12 +311,12 @@ textarea{
 		     function plantManage(str){
 	         			
 				if(str == "update"){
-					location.href = "updateForm.bl_pl?plantNo=" + ${ plant.plantNo } + "&blogNo=" + ${ plant.blogNo };	
+					location.href = "blog/updateForm.pl?plantNo=" + ${ plant.plantNo } + "&blogNo=" + ${ plant.blogNo };	
 				}	
 				else{
 			      	// console.log(${ plant.plantNo });
 		         	if(confirm("해당 식물의 모든 정보와 일지를 삭제합니다. 식물을 삭제하시겠습니까?")){
-		         		location.href = "delete.bl_pl?plantNo=" + ${ plant.plantNo } + "&blogNo=" + ${ plant.blogNo };
+		         		location.href = "blog/delete.pl?plantNo=" + ${ plant.plantNo } + "&blogNo=" + ${ plant.blogNo };
 		         	}
 				}
 		      }

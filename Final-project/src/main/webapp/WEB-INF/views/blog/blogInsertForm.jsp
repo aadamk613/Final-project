@@ -163,7 +163,7 @@ img[name=imageThumbnail]{
 				<article id="pageArticle">
 
 					<div id="createFormWrap">
-                        <form action="insert.bl" method="post" >
+                        <form action="blog/insert.bl" method="post" >
                         <input type="hidden" name="memNo" value="${ sessionScope.loginUser.memNo }">
                             <table id="createForm">
 								<tr>

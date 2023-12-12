@@ -68,7 +68,7 @@ article{width: 95%; height: auto; margin: 20px auto; border: 1px solid rgb(230, 
 						consolo.log(${ c.categoryMemName });
 					</script>
 				<article>
-					<form id="insertForm" action="" method="post">
+					<form id="insertForm.bl" action="" method="post">
 					<input type="hidden" name="writer" value="${ sessionScope.loginUser.memNo }">
 					<input type="hidden" name="blogNo" value="${ sessionScope.loginUser.blogNo }">
 					

@@ -298,11 +298,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				DEFAULT, 
 				#{ plantLogDate }
 				)
-	
+		
 	</insert>
 
 
 	<!-- 식물 전체 리스트 수 조회 -->
+	
 	<select id="selectListCountPlant" resultType="_int">
 	
 		SELECT 
