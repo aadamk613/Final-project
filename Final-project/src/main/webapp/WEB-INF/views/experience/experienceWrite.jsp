@@ -53,10 +53,11 @@ img{
 	display : inline-block;
 }
 
-input[name=anno] {
+textarea[name=anno] {
 	width : 100%;
-	height : 50px;
+	height : 100px;
 }
+
 
 
 </style>
