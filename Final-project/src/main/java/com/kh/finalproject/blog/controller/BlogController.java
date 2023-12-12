@@ -6,9 +6,12 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,33 +29,35 @@ import com.kh.finalproject.common.model.vo.Attachment;
 import com.kh.finalproject.common.model.vo.PageInfo;
 import com.kh.finalproject.common.teplate.Pagination;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@RequestMapping("/blog")
 @Controller
 public class BlogController {
 	
-	@Autowired
-	private BlogService blogService;
-	
-	@Autowired
-	private CommonController commonController;
+	private final BlogService blogService;
+
+	private final CommonController commonController;
 
 	// 블로그 메인 화면으로 이동
-	@RequestMapping("main.bl") 
+	@GetMapping("/main.bl") 
 	public String selectListBlog() {
 		return "blog/blogMainView";
 	}
 	
 	// 블로그 생성 화면으로 이동
-	@RequestMapping("insertForm.bl")
+	@GetMapping("/insertForm.bl")
 	public String insertFormBlog() {
 		return "blog/blogInsertForm";
 	}
 	
 	// 블로그 생성하기 + 기본 카테고리 생성하기
-	@RequestMapping("insert.bl") 
+	@PostMapping("/insert.bl") 
 	public String insertBlog(Blog b, HttpSession session) {
 		if(blogService.insertBlog(b) > 0) {
 			session.setAttribute("alertMsg", "블로그가 생성되었습니다");
-			return "blog/blogMainView";
+			return "/final/blog/blogMainView";
 		} else {
 			session.setAttribute("alertMsg", "블로그가 생성을 실패하였습니다");
 			return "blog/blogMainView";
@@ -63,7 +68,7 @@ public class BlogController {
 	// ---------- 블로그 기본 정보 관련 메서드 ---------- 
 	// 블로그 정보 불러오기
 	@ResponseBody
-	@RequestMapping(value="select.bl", produces="application/json; charset=UTF-8") 
+	@GetMapping(value="/select.bl", produces="application/json; charset=UTF-8") 
 	public ModelAndView selectBlog(int blogNo, ModelAndView mv, HttpSession session) {
 		System.out.println(session.getServletContext().getRealPath("blog/blogView"));
 		System.out.println(session.getServletContext().getRealPath("resources")); // 이거랑
@@ -92,7 +97,7 @@ public class BlogController {
 	}
 	
 	// 블로그 업데이트 화면으로 이동
-	@RequestMapping("updateForm.bl") 
+	@GetMapping("/updateForm.bl") 
 	public ModelAndView updateFormBlog(int blogNo, ModelAndView mv) {
 		Blog blog = (Blog)blogService.selectBlog(blogNo);
 		mv.addObject("blog", blog)
@@ -101,7 +106,7 @@ public class BlogController {
 	}
 	
 	// 블로그 업데이트하기
-	@RequestMapping("update.bl") 
+	@PutMapping("/update.bl") 
 	public ModelAndView updateBlog(Blog beforeBlog, 
 							       HttpServletRequest request, 
 							       HttpSession session,
@@ -135,7 +140,7 @@ public class BlogController {
 	
 	// ---------- 블로그 카테고리 관련 메서드 ---------- 
 	// 블로그 카테고리 관리 화면으로 이동
-	@RequestMapping("updateForm.bl_ct") 
+	@RequestMapping("/updateForm.ct") 
 	public ModelAndView categoryFormBlog(int blogNo, ModelAndView mv) {
 		mv.addObject("blogNo", blogNo)
 		  .setViewName("blog/blogCategoryView");
@@ -144,7 +149,7 @@ public class BlogController {
 	
 	// 블로그 카테고리 생성하기
 	@ResponseBody
-	@RequestMapping(value="insert.bl_ct", produces="application/json; charset=UTF-8") 
+	@PostMapping(value="/insert.ct", produces="application/json; charset=UTF-8") 
 	public String insertCategoryBlog(int blogNo, int categoryNo, ModelAndView mv) {
 		BlogCategorySetting blogCateSet = new BlogCategorySetting();
 		blogCateSet.setBlogNo(blogNo);
@@ -156,7 +161,7 @@ public class BlogController {
 	
 	// 블로그 카테고리 조회
 	@ResponseBody
-	@RequestMapping(value="select.bl_ct", produces="application/json; charset=UTF-8") 
+	@GetMapping(value="/select.ct", produces="application/json; charset=UTF-8") 
 	public String selectCatogoryBlog(int blogNo, ModelAndView mv) {
 		ArrayList<BlogCategorySetting> list = blogService.selectCatogory(blogNo);
 		//System.out.println("selectCatogory에서 list : " + list);
@@ -169,7 +174,7 @@ public class BlogController {
 	
 	// 블로그 카테고리 수정
 	@ResponseBody
-	@RequestMapping(value="update.bl_ct", produces="text/html; charset=UTF-8")
+	@PutMapping(value="/update.ct", produces="text/html; charset=UTF-8")
 	public String updateCategoryBlog(int blogNo, int categorySettingNo, 
 									 String categoryMemName) {
 		
@@ -184,14 +189,14 @@ public class BlogController {
 	
 	// 블로그 카테고리 삭제
 	@ResponseBody
-	@RequestMapping(value="delete.bl_ct", produces="text/html; charset=UTF-8")
+	@DeleteMapping(value="/delete.ct", produces="text/html; charset=UTF-8")
 	public String deleteCategoryBlog(int blogNo, int categorySettingNo, 
 									 ModelAndView mv) {
 		return (blogService.deleteCatogory(categorySettingNo) > 0) ? "카테고리 삭제 성공" : "카테고리 삭제 실패";
 	}
 	
 	// ---------- 블로그 게시글 관련 메서드 ----------
-	@RequestMapping("insertForm.bl_bo")
+	@RequestMapping("/insertForm.bo")
 	public String insertFormBlogBoard(int blogNo,
 									  Model model) {
 		ArrayList<BlogCategorySetting> list = blogService.selectCatogory(blogNo);
@@ -207,7 +212,7 @@ public class BlogController {
 	 * @param session
 	 * @return
 	 */
-	@RequestMapping("insert.bl_bo")
+	@RequestMapping("/insert.bo")
 	public String insertBlogBoard(BlogBoard blogBoard, 
 								  int blogNo,
 								  HttpSession session) {
@@ -219,11 +224,11 @@ public class BlogController {
 			session.setAttribute("alertMsg", "게시글 작성에 실패했습니다");
 		}
 		System.out.println(blogBoard);
-		return "redirect:select.bl?blogNo=" + blogNo;
+		return "redirect:/final/blog/select?blogNo=" + blogNo;
 	}
 	
 	// 블로그 일반 게시글 리스트 조회
-	@RequestMapping("selectList.bl_bo")
+	@GetMapping("/selectList.bo")
 	public ModelAndView selectBlogBoardList(@RequestParam(value="currentPage", defaultValue="1")int currentPage,
 											int blogNo, 
 										    ModelAndView mv) {
@@ -235,7 +240,7 @@ public class BlogController {
 	}
 	
 	// 블로그 일반 게시글 조회
-	@RequestMapping("select.bl_bo")
+	@RequestMapping("/select.bo")
 	public ModelAndView selectBlogBoard(int blogBoardNo, 
 										ModelAndView mv) {
 		BlogBoard blogBoard = blogService.selectBlogBoard(blogBoardNo);

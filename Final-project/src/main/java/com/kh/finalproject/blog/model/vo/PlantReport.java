@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Getter @Setter @NoArgsConstructor @ToString
+
 public class PlantReport {
 
 	private int plantReportNo;
@@ -22,5 +23,6 @@ public class PlantReport {
 	private String filePath;
 	private String updateName;
 	
-	
 }
+
+

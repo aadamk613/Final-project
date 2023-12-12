@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,8 +32,9 @@ import com.kh.finalproject.experience.model.service.ExperienceService;
 
 import lombok.RequiredArgsConstructor;
 
-@Controller
+@RequestMapping("/blog")
 @RequiredArgsConstructor
+@Controller
 public class BlogPlantController {
 	
 	private final BlogService blogService;
@@ -41,7 +43,7 @@ public class BlogPlantController {
 	
 	// ---------- 블로그 식물 관련 메서드 ---------- 
 	// 식물 전체 리스트로 이동
-	@RequestMapping("selectList.bl_pl")
+	@RequestMapping("/selectList.pl")
 	public ModelAndView selectListPlant(@RequestParam(value="currentPage", defaultValue="1")int currentPage, 
 									    int blogNo, 
 									    ModelAndView mv) {
@@ -60,7 +62,7 @@ public class BlogPlantController {
 	}
 	
 	// 식물 조회하기
-	@RequestMapping("select.bl_pl")
+	@RequestMapping("/select.pl")
 	public ModelAndView selectBlogPlant(int plantNo, ModelAndView mv) {
 		Plant plant = blogService.selectBlogPlant(plantNo);
 		System.out.println(plant);
@@ -70,7 +72,7 @@ public class BlogPlantController {
 	}
 	
 	// 식물 등록 페이지로 이동
-	@RequestMapping("insertForm.bl_pl")
+	@RequestMapping("/insertForm.pl")
 	public ModelAndView insertFormBlogPlant(int blogNo, ModelAndView mv) {
 		mv.addObject("blogNo", blogNo)
 		  .setViewName("blog/plantInsertForm");
@@ -78,7 +80,7 @@ public class BlogPlantController {
 	}
 	
 	// 식물 등록
-	@PostMapping("insert.bl_pl")
+	@PostMapping("/insert.pl")
 	public String insertBlogPlant(Plant plant, 
 								  @RequestParam(value="blogNo") int blogNo,
 								  HttpServletRequest request,
@@ -90,16 +92,16 @@ public class BlogPlantController {
 			file = commonController.setFile(upfile, session, "plant");
 		}
 		if(blogService.insertBlogPlant(plant, file) > 0) { 
-			return "redirect:selectList.bl_pl?blogNo=" + blogNo;
+			return "redirect:/final/blog/selectList/plant?blogNo=" + blogNo;
 		} else {
 			model.addAttribute("alertMsg", "식물 등록에 실패했습니다.");
-			return "common/errorPage";
+			return "/final/common/errorPage";
 		}
 	}
 	
 	/*
 	 * 	// 식물 등록
-	@RequestMapping("insert.bl_pl")
+	@RequestMapping("/insert.pl")
 	public String insertBlogPlant(Plant plant, 
 								  @RequestParam(value="blogNo") int blogNo,
 								  HttpServletRequest request,
@@ -131,7 +133,7 @@ public class BlogPlantController {
 	
 	
 	// 식물 수정 페이지로 이동
-	@RequestMapping("updateForm.bl_pl")
+	@RequestMapping("/updateForm.pl")
 	public ModelAndView updateBlogPlantForm(int plantNo,
 							      		int blogNo,
 							      		ModelAndView mv) {
@@ -149,7 +151,7 @@ public class BlogPlantController {
 		바꿀 정보 originalName updateName이 두개
 	 */
 	
-	@PostMapping("update.bl_pl")
+	@PostMapping("/update.pl")
 	public String updateBlogPlant(Plant plant, 
 							      HttpSession session, 
 							      MultipartFile upfile, 
@@ -178,13 +180,13 @@ public class BlogPlantController {
 		} else {
 			mv.addObject("alertMsg", "식물 정보 수정에 실패하였습니다");
 		}
-		mv.setViewName("blog/plantUpdateForm");
-		return "redirect:select.bl_pl?plantNo=" + plant.getPlantNo();
+		mv.setViewName("/final/blog/plantUpdateForm");
+		return "redirect:/final/blog/select/plant?plantNo=" + plant.getPlantNo();
 	}
 	
 	
 	/*
-  	@PostMapping("update.bl_pl")
+  	@PostMapping("/update.pl")
 	public ModelAndView updateBlogPlant(Plant plant, 
 									    HttpSession session, 
 									    MultipartFile upfile, 
@@ -234,20 +236,20 @@ public class BlogPlantController {
   	*/
   	
 	// 식물 삭제
-	@RequestMapping("delete.bl_pl")
+	@RequestMapping("/delete.pl")
 	public String deleteBlogPlant(int plantNo,
 							      int blogNo) {
 		
 		blogService.deleteBlogPlant(plantNo);
 		
-		return "redirect:selectList.bl_pl?blogNo=" + blogNo + "&currentPage=" + "1";
+		return "redirect:/final/blog/selectList/plant?blogNo=" + blogNo + "&currentPage=" + "1";
 		//return "redirect:select.bl_pl?blogNo=" + blogNo + "&currentPage=" + currentPage;
 	}
 	
 	
 	// ---------- 블로그 식물 일지 관련 메서드 ---------- 
 	// 식물 일지 등록 페이지로 이동
-	@RequestMapping("insertForm.bl_pr")
+	@RequestMapping("/insertForm.pr")
 	public ModelAndView insertFormPlantReport(int plantNo,
 								        String category,
 									    String plantNickName,
@@ -260,7 +262,7 @@ public class BlogPlantController {
 	}
 	
 	// 식물 일지 등록하기
-	@PostMapping("insert.bl_pr")
+	@PostMapping("/insert.pr")
 	public String insertBlogPlantReport(PlantReport plantReport,
 										MultipartFile upfile,
 			 							HttpSession session) {
@@ -273,7 +275,7 @@ public class BlogPlantController {
 		
 		if(blogService.insertBlogPlantReport(plantReport, file) > 0) {
 			session.setAttribute("alertMsg", "일지 작성 성공");
-			return "redirect:select.bl_pl?plantNo=" + plantReport.getTopPlantNo();
+			return "redirect:/final/blog/select/plant?plantNo=" + plantReport.getTopPlantNo();
 		} else {
 			session.setAttribute("errorMsg", "일지 작성 실패");
 			return "common/errorPage";
@@ -285,7 +287,7 @@ public class BlogPlantController {
 	
 	/*
 	 * 	// 식물 일지 등록하기
-	@RequestMapping("insert.bl_pr")
+	@RequestMapping("/insert.pr")
 	public String insertBlogPlantReport(PlantReport plantReport,
 			 							HttpServletRequest request, 
 			 							HttpSession session,

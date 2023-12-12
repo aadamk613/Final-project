@@ -34,8 +34,8 @@ public class AjaxExperienceController {
 	 * @return : 댓글의 리스트 반환
 	 */
 	@GetMapping(value="yrselectExpReplyList.exp", produces="application/json; charset=UTF-8")
-	public String selectExpReplyList(int expNo) {
-		return new Gson().toJson(experienceService.selectExpReplyList(expNo));
+	public String selectExpReplyList(String expNo) {
+		return new Gson().toJson(experienceService.selectExpReplyList(Integer.parseInt(expNo)));
 	}
 	
 	// 댓글 작성
@@ -44,13 +44,8 @@ public class AjaxExperienceController {
 	 * @return : 댓글작성 성공여부
 	 * @throws ParseException
 	 */
-	@PostMapping("yrinsertExpReply.exp")
+	@PostMapping("insertExpReply")
 	public String insertExpReply(@RequestBody ExperienceReply newReply) throws ParseException {
-		
-		
-		log.info("아...{}", newReply.getReplySecret());
-		log.info("아.2..{}", newReply.getReplySecret().equals("true"));
-		log.info("아.3..{}", newReply.getReplySecret().equals("false"));
 		
 		newReply.setReplySecret((newReply.getReplySecret().equals("true")) ? "Y" : "N");
 		// {"expNo":"61","replyWriter":"user01","replyContent":"ㅁㄴㅇㄹ","replySecret":0}
@@ -95,8 +90,10 @@ public class AjaxExperienceController {
 	 * @return : 눌렀으면 1, 안눌렀으면 0반환
 	 */
 	@GetMapping("yrexpLikeCheck")
-	public int expLikeCheck(int expNo, int memNo) {
+	public int expLikeCheck(String expNo, String memNo) {
 		
+		// 자꾸 No없으면 AJAX안돼서 String으로 받았는데
+		// String int로 파싱안해도 되네????????
 		HashMap map = new HashMap();
 		map.put("expNo", expNo);
 		map.put("memNo", memNo);

@@ -111,7 +111,7 @@ textarea{
 			
 			<div id="content">
 				<article>
-					<form method="post" action="update.bl_pl" enctype="multipart/form-data">  
+					<form method="post" action="blog/update.pl" enctype="multipart/form-data">  
 					<input type="hidden" name="blogNo" value="${ blogNo }"/>
 					<input type="hidden" name="plantNo" value="${ plant.plantNo }"/>
 					<input type="hidden" name="updateName" value="${ plant.updateName }" />
@@ -141,7 +141,7 @@ textarea{
                         </div>
                         <div>
                         	<button type="submit" id="plantCare" class="button forest">수정하기</button>
-                        	<button id="plantCare" class="button forest"><a href="select.bl_pl?plantNo=${ plant.plantNo }">돌아가기</a></button>
+                        	<button id="plantCare" class="button forest"><a href="/final/blog/select.pl?plantNo=${ plant.plantNo }">돌아가기</a></button>
                         </div>
                     </div>
                     

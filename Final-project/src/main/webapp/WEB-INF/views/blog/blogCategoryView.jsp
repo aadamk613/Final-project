@@ -139,7 +139,7 @@
 		
 		function selectBlogCategory(){
 			$.ajax({
-				url: 'select.bl_ct',
+				url: 'blog/select.ct',
 				data: {blogNo: ${ blogNo }},
 				success: data => {
 					//console.log(data);
@@ -205,7 +205,7 @@
 		function insertBlogCategory(cateNo){
 			
 			$.ajax({
-				url: 'insert.bl_ct',
+				url: 'blog/insert.ct',
 				data: {
 					blogNo : ${ blogNo}, 
 					categoryNo : cateNo
@@ -227,7 +227,7 @@
 			//console.log($(arguments[1]).parent().find('.rename').val());
 			const str = $(arguments[1]).parent().find('.rename').val();
 			$.ajax({
-				url: 'update.bl_ct',
+				url: 'blog/update.ct',
 				data: {categorySettingNo: cateNo,
 					   categoryMemName: str,
 					   blogNo : ${ blogNo }},
@@ -246,7 +246,7 @@
 			if(confirm("카테고리를 삭제하면 카테고리 안의 게시글도 삭제됩니다. 정말 삭제하시겠습니까??")){
 				
 				$.ajax({
-					url: 'delete.bl_ct',
+					url: 'blog/delete.ct',
 					data: {categorySettingNo: cateNo,
 						   blogNo : ${ blogNo }},
 					success : data => {

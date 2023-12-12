@@ -166,7 +166,7 @@ img[name=imageThumbnail]{
 				<article id="pageArticle">
 				
 					<div id="createFormWrap">
-                        <form action="update.bl" method="post" enctype="multipart/form-data">
+                        <form action="blog/update.bl" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="blogNo" value="${ blog.blogNo }">
                         <input type="hidden" name="memNo" value="${ blog.memNo }">
                         <input type="hidden" name="updateName" value="${ blog.updateName }">
@@ -242,7 +242,7 @@ img[name=imageThumbnail]{
 							</table>
 							<div id="blogButtonWrap">
                                 <div><button type="submit" class="button forest" id="blogUpdateButton">정보 수정</button></div>
-                                <div><a href="select.bl?blogNo=${ blog.blogNo }"><button type="button" class="button beige" id="goBlogHome">돌아가기</button></a></div>
+                                <div><a href="blog/select.bl?blogNo=${ blog.blogNo }"><button type="button" class="button beige" id="goBlogHome">돌아가기</button></a></div>
                             </div>
                             </form>
 					</div>

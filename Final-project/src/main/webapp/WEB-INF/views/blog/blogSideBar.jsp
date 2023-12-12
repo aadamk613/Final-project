@@ -45,7 +45,7 @@
         
 </style>
 
-<link rel="stylesheet" href="resources/css/common/template.css">
+<link rel="stylesheet" href="/final/resources/css/common/template.css">
 
 </head>
 <body>
@@ -61,7 +61,7 @@
 								<a href="javascript:alert('로그인 후 이용가능합니다.');">블로그 생성</a>
 							</c:when>
 							<c:otherwise>
-								<a href="insertForm.bl">블로그 생성</a>
+								<a href="/final/blog/insertForm.bl">블로그 생성</a>
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -70,7 +70,7 @@
 				<c:otherwise>
 					<div id="blogCreated" align="center" name="blogCreateWrap">
 						<div id="userProfile">
-							<img src="resources/images/defaultProfile.png" alt="회원사진"
+							<img src="/final/resources/images/defaultProfile.png" alt="회원사진"
 								id="user_photo">
 						</div>
 
@@ -79,7 +79,7 @@
 								환영합니다.</div>
 							<div id="loginOk">
 								<div id="myBlogButton">
-									<a href="select.bl?blogNo=${ loginUser.blogNo }">내 블로그</a>
+									<a href="/final/blog/select.bl?blogNo=${ loginUser.blogNo }">내 블로그</a>
 								</div>
 								<div id="writeButton">
 									<a href="#">글 쓰 기</a>
