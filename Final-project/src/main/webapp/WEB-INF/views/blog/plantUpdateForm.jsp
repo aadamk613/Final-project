@@ -111,7 +111,7 @@ textarea{
 			
 			<div id="content">
 				<article>
-					<form method="post" action="blog/update.pl" enctype="multipart/form-data">  
+					<form method="post" action="/final/blog/update.pl" enctype="multipart/form-data">  
 					<input type="hidden" name="blogNo" value="${ blogNo }"/>
 					<input type="hidden" name="plantNo" value="${ plant.plantNo }"/>
 					<input type="hidden" name="updateName" value="${ plant.updateName }" />
@@ -120,10 +120,10 @@ textarea{
                         <div id="plantImg"><input type="file" name="upfile" id="plantInput"/>
                         	<c:choose>
                         	<c:when test="${ empty plant.filePath }" >
-                        	<img src="resources/images/defaultPlant.png" id="plantImgInput" name="plantThumbnail">
+                        	<img src="/final/resources/images/defaultPlant.png" id="plantImgInput" name="plantThumbnail">
                         	</c:when>
                         	<c:otherwise>
-                        	<img src="${ plant.filePath }${ plant.updateName }" id="plantImgInput" name="plantThumbnail">
+                        	<img src="/final/${ plant.filePath }${ plant.updateName }" id="plantImgInput" name="plantThumbnail">
                         	</c:otherwise>
                         	</c:choose>
                         </div>
@@ -141,7 +141,7 @@ textarea{
                         </div>
                         <div>
                         	<button type="submit" id="plantCare" class="button forest">수정하기</button>
-                        	<button id="plantCare" class="button forest"><a href="/final/blog/select.pl?plantNo=${ plant.plantNo }">돌아가기</a></button>
+                        	<button id="plantCare" class="button forest"><a href="select.pl?plantNo=${ plant.plantNo }">돌아가기</a></button>
                         </div>
                     </div>
                     
@@ -179,6 +179,8 @@ textarea{
 					$('img[name=plantThumbnail]').attr('src', e.target.result);
 						}
 				  });
+	              
+					
 			       
 			</script>
 

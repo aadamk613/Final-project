@@ -400,7 +400,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			     WHERE REF_TYPE = 'plant'
 				 ) PLANT
 		  ON    
-		  		(PLANT_REPORT_NO = REF_NO)
+		  		(PLANT_NO = REF_NO)
 		LEFT 
 		JOIN
 				(SELECT FILE_PATH,

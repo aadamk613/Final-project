@@ -32,14 +32,16 @@
         }
         
         #MyBlogInfo{
-        	width: 100%; height: 100px;
-        }
-        
+        	width: 100%; height: 100px; 
+			display : flex;
+			justify-content: center;
+			align-items : center;
+		}	        
         
         .naviText{color: black;}
         
         #loginOk div{float: left;}
-        #myBlogButton, #writeButton{width: 50%; height:100%;}
+        #myBlogButton, #writeButton{width: 50%; height:100%; }
         
         .displayNone{display: none;}
         

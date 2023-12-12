@@ -77,6 +77,7 @@ public class BlogController {
 		
 		Blog blog = (Blog)blogService.selectBlog(blogNo);
 		ArrayList<BlogCategorySetting> list = blogService.selectCatogory(blogNo);
+		System.out.println(blog);
 		
 		PageInfo plantPi = Pagination.getPageInfo(blogService.selectListCountPlant(blogNo), 1, 5, 10);
 		ArrayList<Plant> plantList = blogService.selectListPlant(plantPi, blogNo);
@@ -106,7 +107,7 @@ public class BlogController {
 	}
 	
 	// 블로그 업데이트하기
-	@PutMapping("/update.bl") 
+	@PostMapping("/update.bl") 
 	public ModelAndView updateBlog(Blog beforeBlog, 
 							       HttpServletRequest request, 
 							       HttpSession session,

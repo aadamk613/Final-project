@@ -101,8 +101,8 @@ textarea{
 			
 			<div id="content">
 				<article>
-					<form method="post" action="blog/insert.pl" enctype="multipart/form-data">  
-					<input type="hidden" name="blogNo" value="${ blogNo }"/>
+					<form method="post" action="/final/blog/insert.pl" enctype="multipart/form-data">  
+					<input type="hidden" name="blogNo" value="${ plant.blogNo }"/>
                     <div id="plantInfoWrap">
                         <div id="plantImg"><input type="file" name="upfile"/>
                         	<img src="/final/resources/images/defaultPlant.png" id="plantImgInput">
@@ -165,7 +165,7 @@ textarea{
 				    	$('#plantImgInput').attr('src', e.target.result);
 					}
 				});
-			       
+
 			</script>
 
 		</section>

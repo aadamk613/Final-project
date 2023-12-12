@@ -69,6 +69,17 @@ main > div{float: none;}
 	cursor: pointer;
 }
 
+.beige{
+    margin: 0px;
+    font-size: 20px;
+    font-weight: bolder;
+    width: 150px;
+    border-radius: 10px;
+    border:2px solid beige;
+	background-color: beige;
+    color: rgb(83, 57, 32);
+}
+
 .forest{
     font-size: 20px;
     font-weight: bolder;
@@ -210,9 +221,9 @@ img[name=imageThumbnail]{
                     <li id="memId">${ blog.memNick }(${ blog.memId })</li>
                     <li id="blogIntroduce">${ blog.blogIntroduce }</li>
                     <li id="">
-	                    <a href="final/blog/insertForm.bo/board?blogNo=${ blog.blogNo }">글 쓰기</a>
-	                    <a href="final/blog/updateForm.bl?blogNo=${ blog.blogNo }">블로그 관리</a>
-	                    <a href="final/blog/updateForm.ct/category?blogNo=${ blog.blogNo }">카테고리 관리</a>
+	                    <a href="/final/blog/insertForm.bo?blogNo=${ blog.blogNo }">글 쓰기</a>
+	                    <a href="/final/blog/updateForm.bl?blogNo=${ blog.blogNo }">블로그 관리</a>
+	                    <a href="/final/blog/updateForm.ct?blogNo=${ blog.blogNo }">카테고리 관리</a>
                     </li>
                 </ul>
           
@@ -286,7 +297,8 @@ img[name=imageThumbnail]{
 					
 					<div id="replyWrap" name="${ b.blogBoardNo }">
 						<div id="replyOption" name="${ b.blogBoardNo }">
-							<button id="toggleButton" name="${ b.blogBoardNo }" onclick="buttonClicked(this)">&or;댓글 18개</button> 좋아요 30
+							<button id="toggleButton" class="button beige" name="${ b.blogBoardNo }" onclick="buttonClicked(this)">&or;댓글 18개</button> 
+							<button class="button beige" >&or;좋아요 30</button> 
 						</div>
 						<!-- 
 						<div id="replyContentBox"> 

@@ -12,10 +12,6 @@
 <style>
 
 
-* {
-    border: 1px solid skyblue;
-	box-sizing: border-box;
-}
 
 #blogTitle{
 	font-size: 25px; 
@@ -158,7 +154,7 @@ textarea{
 				<!-- 관리 모달 창 -->
 				<div id="plantCareModal">
 				<div id="plantCareWrap">
-					<form action="blog/insert.pr" method="post" enctype="multipart/form-data">
+					<form action="/final/blog/insert.pr" method="post" enctype="multipart/form-data">
 					<input type="hidden" name="topPlantNo" value="${ plant.plantNo }"/>
 						<div>${ plant.plantNickName }관리하기</div>
 						<div>
@@ -302,7 +298,7 @@ textarea{
 			// 식물 관리하기
 	         $('#plantReportButton').on('click', function(e) {
 	            console.log($(arguments[0]).parent().children().find('input[plantNo]').val());
-	            location.href =  '/final/blog/insertForm.pl?plantNo=' + ${ plant.plantNo};
+	            location.href =  '/final/blog/insertForm.pr?plantNo=' + ${ plant.plantNo};
 	            //$(arguments[0]).parent().children().find('input[plantNo]').attr('value', ${ p.plantNo});
 	            //$('#postForm').attr('action', 'insertForm.bl_pr').submit();
 	         });
@@ -316,7 +312,7 @@ textarea{
 				else{
 			      	// console.log(${ plant.plantNo });
 		         	if(confirm("해당 식물의 모든 정보와 일지를 삭제합니다. 식물을 삭제하시겠습니까?")){
-		         		location.href = "blog/delete.pl?plantNo=" + ${ plant.plantNo } + "&blogNo=" + ${ plant.blogNo };
+		         		location.href = "/final/blog/delete.pl?plantNo=" + ${ plant.plantNo } + "&blogNo=" + ${ plant.blogNo };
 		         	}
 				}
 		      }

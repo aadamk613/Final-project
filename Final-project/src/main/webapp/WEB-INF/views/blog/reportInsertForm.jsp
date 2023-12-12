@@ -98,8 +98,8 @@ textarea{
                     <li id="blogIntroduce">${ blog.blogIntroduce }</li>
                     <li id="">
 	                    <a href="">글 쓰기</a>
-	                    <a href="blog/updateForm?blogNo=${ blog.blogNo }">블로그 관리</a>
-	                    <a href="blog/updateForm/category?blogNo=${ blog.blogNo }">카테고리 관리</a>
+	                    <a href="/final/blog/updateForm?blogNo=${ blog.blogNo }">블로그 관리</a>
+	                    <a href="/final/blog/updateForm/category?blogNo=${ blog.blogNo }">카테고리 관리</a>
                     </li>
                 </ul>
           
@@ -122,7 +122,7 @@ textarea{
 			
 			<div id="content">
 				<article>
-					<form method="post" action="blog/insert/report" enctype="multipart/form-data" enctype="multipart/form-data">  
+					<form method="post" action="/final/blog/insert.pr" enctype="multipart/form-data" enctype="multipart/form-data">  
 					<input type="hidden" name="blogNo" value="${ plant.blogNo }"/>
 					<input type="hidden" name="topPlantNo" value="${ plant.plantNo }"/>
 					<input type="hidden" name="plantReportcategoryNo" value="10"/>

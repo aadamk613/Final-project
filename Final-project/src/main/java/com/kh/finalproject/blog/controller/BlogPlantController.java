@@ -92,10 +92,10 @@ public class BlogPlantController {
 			file = commonController.setFile(upfile, session, "plant");
 		}
 		if(blogService.insertBlogPlant(plant, file) > 0) { 
-			return "redirect:/final/blog/selectList/plant?blogNo=" + blogNo;
+			return "redirect:selectList/plant?blogNo=" + blogNo;
 		} else {
 			model.addAttribute("alertMsg", "식물 등록에 실패했습니다.");
-			return "/final/common/errorPage";
+			return "common/errorPage";
 		}
 	}
 	
@@ -251,9 +251,9 @@ public class BlogPlantController {
 	// 식물 일지 등록 페이지로 이동
 	@RequestMapping("/insertForm.pr")
 	public ModelAndView insertFormPlantReport(int plantNo,
-								        String category,
-									    String plantNickName,
-									    ModelAndView mv) {
+									          String category,
+									          String plantNickName,
+									          ModelAndView mv) {
 		Plant plant = blogService.selectBlogPlant(plantNo);
 		mv.addObject("plant", plant)
 		  .setViewName("blog/reportInsertForm");
@@ -275,7 +275,7 @@ public class BlogPlantController {
 		
 		if(blogService.insertBlogPlantReport(plantReport, file) > 0) {
 			session.setAttribute("alertMsg", "일지 작성 성공");
-			return "redirect:/final/blog/select/plant?plantNo=" + plantReport.getTopPlantNo();
+			return "redirect:select.pl?plantNo=" + plantReport.getTopPlantNo();
 		} else {
 			session.setAttribute("errorMsg", "일지 작성 실패");
 			return "common/errorPage";
