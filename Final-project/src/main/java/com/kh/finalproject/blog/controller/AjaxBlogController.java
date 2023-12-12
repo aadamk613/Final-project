@@ -29,14 +29,14 @@ public class AjaxBlogController {
 		return (blogService.insertBlogReply(blogReply)) > 0 ? "success" : "fail" ;
 	}
 	
-	@GetMapping(value="/selectList.re", produces="application/json; charset=UTF-8")
-	public String selectBlogReplyList(@RequestParam(value="currentPage", defaultValue="1")int currentPage, 
+	@GetMapping(value="/selectList.re", 
+			    produces="application/json; charset=UTF-8")
+	public String selectBlogReplyList(@RequestParam(value="currentPage", 
+	                                                defaultValue="1")int currentPage, 
 									  int blogBoardNo) {
-		System.out.println("댓글 불러오기");
-		PageInfo pi = Pagination.getPageInfo(blogService.selectListCountBlogReply(blogBoardNo), currentPage, 50, 10);
+		PageInfo pi = Pagination.getPageInfo(blogService.selectListCountBlogReply(blogBoardNo), 
+				                             currentPage, 50, 10);
 		ArrayList<BlogReply> list = blogService.seletListBlogReply(pi, blogBoardNo);
-		System.out.println("pi: " + pi);
-		System.out.println("댓글: " + list);
 		return new Gson().toJson(list);
 	}
 	

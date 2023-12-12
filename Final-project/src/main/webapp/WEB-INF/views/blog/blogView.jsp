@@ -324,7 +324,7 @@ img[name=imageThumbnail]{
 						if('${ sessionScope.loginUser.memNo}' != ''){
 							$.ajax({
 								type: "POST",
-								url: 'blog/insert.re', 
+								url: '/final/blog/insert.re', 
 								data: {blogBoardNo : blogBoardNo, 
 									   writer: '${ sessionScope.loginUser.memNo}', 
 									   blogReplycontent: contentDiv.val()}, 
@@ -381,7 +381,7 @@ img[name=imageThumbnail]{
 						 
 						$.ajax({
 							type: "GET",
-							url: 'blog/selectList.re',
+							url: '/final/blog/selectList.re',
 							data: {currentPage: 1,
 								   blogBoardNo: blogBoardNo}, 
 							success: data => {
@@ -423,7 +423,7 @@ img[name=imageThumbnail]{
 					// 식물 사진 클릭 시 식물 상세보기로 이동
 					 $('img[name=plantImg]').on('click', e => {
 						var plantNo = $(e.target).attr('value');
-						location.href = "select.bl_pl?plantNo=" + plantNo ; 
+						location.href = "/final/blog/select.pl?plantNo=" + plantNo ; 
 					 });
 					
 					

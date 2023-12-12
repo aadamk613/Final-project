@@ -136,10 +136,10 @@ textarea{
                         <div id="plantImg">
                         	<c:choose>
 	                        	<c:when test="${ empty p.filePath }" >
-	                        	<img width="100%" height="100%" src="resources/images/defaultPlant.png" class="files" name="plantImg" value="${ p.plantNo }"/>
+	                        	<img width="100%" height="100%" src="/final/resources/images/defaultPlant.png" class="files" name="plantImg" value="${ p.plantNo }"/>
 								</c:when>
 								<c:otherwise>
-								<img width="100%" height="100%" src="${ p.filePath }${ p.updateName }" class="files" name="plantImg" value="${ p.plantNo }"/>
+								<img width="100%" height="100%" src="/final/${ p.filePath }${ p.updateName }" class="files" name="plantImg" value="${ p.plantNo }"/>
 								</c:otherwise>
 							</c:choose>
 						</div>
@@ -181,13 +181,13 @@ textarea{
 	            		
 	            		if(category == 10){ // 일지 추가 클릭 시
 	            			console.log($(arguments[0]).parent().children().find('input[plantNo]').val());
-	            			$(arguments[0]).parent().children().find('input[plantNo]').attr('value', ${ p.plantNo})
+	            			$(arguments[0]).parent().children().find('input[plantNo]').attr('value', ${ p.plantNo});
 	            			$('#postForm').attr('action', 'blog/insertForm.pr').submit();
 	            		
 	            		}
 	            		else{ // 관리하기 클릭 시
 	            			console.log($(arguments[0]).parent().children().find('input[plantNo]').val());
-	            			$(arguments[0]).parent().children().find('input[plantNo]').attr('value', ${ p.plantNo})
+	            			$(arguments[0]).parent().children().find('input[plantNo]').attr('value', ${ p.plantNo});
 	            			
 	            			$('#postForm').attr('action', 'blog/insertForm.pr').submit();
 	            		}
@@ -218,7 +218,7 @@ textarea{
 		       	 $('img[name=plantImg]').on('click', function(e){
 		       		console.log($(e.target).attr('value'));
 		       		var plantNo = $(e.target).attr('value');
-		       		location.href = "blog/select.pl?plantNo=" + plantNo ; 
+		       		location.href = "/final/blog/select.pl?plantNo=" + plantNo ; 
 		       		 
 		       	 });
 		       	 
@@ -228,13 +228,13 @@ textarea{
 			
 			<div id="page">
 				<c:if test="${ pi.currentPage ne 1 }">
-		        	<button class="btn btn-light" onclick="location.href='blog/selectList.pl?blogNo=${ blogNo }&currentPage=${ pi.currentPage - 1 }'">&lt;</button>
+		        	<button class="btn btn-light" onclick="location.href='/final/blog/selectList.pl?blogNo=${ blogNo }&currentPage=${ pi.currentPage - 1 }'">&lt;</button>
 		        </c:if> 
 		       
 		        <c:forEach var="i" begin="${ pi.startPage }" end="${ pi.endPage }">
 		       		<c:choose>
 			       		<c:when test="${ pi.currentPage ne i }">
-			          		<button class="btn btn-forest" onclick="location.href='blog/selectList.pl?blogNo=${ blogNo }&currentPage=${ i }'">${ i }</button>
+			          		<button class="btn btn-forest" onclick="location.href='/final/blog/selectList.pl?blogNo=${ blogNo }&currentPage=${ i }'">${ i }</button>
 			         	</c:when>
 			         	<c:otherwise>
 			         		<button disabled class="btn btn-default">${ i }</button>
@@ -243,7 +243,7 @@ textarea{
 		        </c:forEach>
 		        
 		        <c:if test="${ pi.currentPage ne pi.maxPage }">
-		        	<button class="btn btn-light" onclick="location.href='blog/selectList.pl?blogNo=${ blogNo }&currentPage=${ pi.currentPage + 1 }'">&gt;</button>
+		        	<button class="btn btn-light" onclick="location.href='/final/blog/selectList.pl?blogNo=${ blogNo }&currentPage=${ pi.currentPage + 1 }'">&gt;</button>
 		        </c:if>
 			</div>
 			
