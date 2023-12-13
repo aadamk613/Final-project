@@ -11,11 +11,6 @@
 </head>
 <style>
 
-
-* {
-    border: 1px solid skyblue;
-	box-sizing: border-box;
-}
 article{
 	
 	height: 550px;

@@ -14,11 +14,6 @@
 
 <style>
 
-* {
-    border: 1px solid skyblue;
-	box-sizing: border-box;
-}
-
 #contentTitle{width : 100%; height : 100px; padding: 20px; font-size : 30px; font-weight: bold; line-height : 200%;}
 
 #content{width : 100%; height : auto;}
@@ -27,11 +22,11 @@ article{width: 95%; height: auto; margin: 20px auto; border: 1px solid rgb(230, 
 
 #boardCategoryWrap{width:100%; height:auto; padding: 5px;}
 
-#boardCategory{width:35%; height:30px;}
+#boardCategory{width:40%; height:30px;}
 
 #boardHeader {width: 100%; height: auto; font-size: 25px; font-weight : 600; padding: 5px;}
 
-#boardHeader > input{width: 40%; height: 40px;}
+#boardHeader > input{width: 100%; height: 40px;}
 
 #boardContent{width: 100%; height: auto; min-height: 400px; border: none; outline:none; padding:0px 5px; }
 
@@ -47,12 +42,6 @@ article{width: 95%; height: auto; margin: 20px auto; border: 1px solid rgb(230, 
 	</header> 
 	<main>
 		<aside id="pageAsideLeft" class="aside">
-            &lt;aside1&gt; <br>
-            id=pageAsideLeft <br>
-	            여기는 pageAsideLeft 공백공간 <br>
-	            사이드바 넣을 수도 있음 <br>
-	            필요하면 쓰세요 <br>
-	            중앙정렬되어있어요 <br>
 		</aside>
 		
 		<section id="pageSection">
@@ -75,7 +64,6 @@ article{width: 95%; height: auto; margin: 20px auto; border: 1px solid rgb(230, 
 						<div id="boardCategoryWrap">
 							게시판&nbsp;&nbsp;
 							
-					
 							<select name="cattegorySettingNo" id="boardCategory">
 								<c:forEach var="c" items="${ list }">
 									<option value="${ c.categorySettingNo }">${ c.categoryMemName }</option>
@@ -148,22 +136,20 @@ article{width: 95%; height: auto; margin: 20px auto; border: 1px solid rgb(230, 
 			        var str = editor.getHTML();
 			        console.log(str);
 					$('input[name=blogBoardContent]').val(str);
-					$('#insertForm').attr('action', 'insert.bl_bo');
+					$('#insertForm').attr('action', '/final/blog/insert.bo');
 					
 				});
 		        
 		        
-		        /* 클릭 했을 시 내용을 입력해주세요 없애려고 하는데 모르겠따 띵띵~
 		        $(function(){
 		        	document.querySelector('#contents').insertAdjacentHTML('afterbegin' ,editor.getHtml());
 		        	console.log(editor.getHtml());
 		        	
 		        	$('.ProseMirror').focusin(function(){
-		        		console.log($('.ProseMirror').children.eq(0));
-		        		$('.ProseMirror').children.eq(0).attr('value', '');
+		        		console.log($('.ProseMirror').children.eq(0).val());
+		        		$('.ProseMirror').children.eq(0).attr('val', 'asdf');
 		        	})
 		        })
-		        */
 		        
 		    </script>
 		

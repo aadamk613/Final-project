@@ -20,10 +20,6 @@
 </script>
 </head>
 <style>
-* {
-    border: 1px solid skyblue;
-	box-sizing: border-box;
-}
 
 #pageHeader{height: 200px;}
 

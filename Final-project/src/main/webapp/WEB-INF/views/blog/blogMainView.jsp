@@ -12,10 +12,6 @@
 <style>
 
 
-* {
-    border: 1px solid skyblue;
-	box-sizing: border-box;
-}
 
 </style>
 <body>
@@ -31,25 +27,16 @@
 		<section id="pageSection">
 			
 			<div id="contentTitle">
-                &lt;div&gt;
-                id=contentTitle 
-				제목(삭제해도 됨)
 			</div>
 			
 			<div id="content">
-                content
 				<article>
 
-					<p>
-                        여기는 article부분 <br>
-                    </p>
 
 				</article>
 			</div>
 			
 			<div id="pageArea">
-                &lt;div&gt; <br>
-                id=page
 			</div>
 		
 		</section>
