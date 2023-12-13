@@ -88,9 +88,10 @@ public class BlogPlantController {
 								  MultipartFile upfile,
 								  Model model) {
 		Attachment file = new Attachment();
-		if(!upfile.getOriginalFilename().equals("")) { 
+		if(!upfile.getOriginalFilename().equals("")) { // 첨부파일이 있을 경우
 			file = commonController.setFile(upfile, session, "plant");
 		}
+		// 첨부파일이 없을 경우
 		if(blogService.insertBlogPlant(plant, file) > 0) { 
 			return "redirect:selectList/plant?blogNo=" + blogNo;
 		} else {
@@ -98,39 +99,6 @@ public class BlogPlantController {
 			return "common/errorPage";
 		}
 	}
-	
-	/*
-	 * 	// 식물 등록
-	@RequestMapping("/insert.pl")
-	public String insertBlogPlant(Plant plant, 
-								  @RequestParam(value="blogNo") int blogNo,
-								  HttpServletRequest request,
-								  HttpSession session,
-								  MultipartFile upfile,
-								  Model model) {
-		Attachment file = new Attachment();
-		
-		if(!upfile.getOriginalFilename().equals("")) { // 첨부파일이 있을 경우
-			System.out.println("식물 등록 첨부파일 없을 경우");
-			file = commonController.setFile(upfile, session, "plant");
-			System.out.println(file);
-		}
-		System.out.println("식물 등록 첨부파일 있을 경우");
-		// 넘어온 첨부파일이 존재하지 않을 경우: plant(제목, 작성자, 내용)
-		// 넘어온 첨부파일이 존재할 경우: plant(제목, 작성자, 내용 ) 
-		//					   + file(originalName, updateName, filePath, refType, refNo, fileAnnotation)
-		
-		// 첨부파일이 없을 경우
-		if(blogService.insertBlogPlant(plant, file) > 0) { // 성공
-			session.setAttribute("alertMsg", "게시글 작성 성공");
-			return "redirect:selectList.bl_pl?blogNo=" + blogNo;
-		} else {
-			model.addAttribute("errorMsg", "게시글 작성 실패");
-			return "common/errorPage";
-		}
-	}
-	 */
-	
 	
 	// 식물 수정 페이지로 이동
 	@RequestMapping("/updateForm.pl")
@@ -144,13 +112,6 @@ public class BlogPlantController {
 	}
 	
 	// 식물 수정
-	/*
-	 * 사진이 원래 있었음
-		근데 수정 시 새로 사진을 추가함
-		그럼 원래 attchment를 바꿔줘야함
-		바꿀 정보 originalName updateName이 두개
-	 */
-	
 	@PostMapping("/update.pl")
 	public String updateBlogPlant(Plant plant, 
 							      HttpSession session, 
@@ -180,12 +141,12 @@ public class BlogPlantController {
 		} else {
 			mv.addObject("alertMsg", "식물 정보 수정에 실패하였습니다");
 		}
-		mv.setViewName("/final/blog/plantUpdateForm");
-		return "redirect:/final/blog/select/plant?plantNo=" + plant.getPlantNo();
+		mv.setViewName("blog/plantUpdateForm");
+		return "redirect:select.pl?plantNo=" + plant.getPlantNo();
 	}
 	
 	
-	/*
+	/* 수정중
   	@PostMapping("/update.pl")
 	public ModelAndView updateBlogPlant(Plant plant, 
 									    HttpSession session, 
@@ -242,8 +203,7 @@ public class BlogPlantController {
 		
 		blogService.deleteBlogPlant(plantNo);
 		
-		return "redirect:/final/blog/selectList/plant?blogNo=" + blogNo + "&currentPage=" + "1";
-		//return "redirect:select.bl_pl?blogNo=" + blogNo + "&currentPage=" + currentPage;
+		return "redirect:selectList.pl?blogNo=" + blogNo + "&currentPage=" + "1";
 	}
 	
 	

@@ -225,7 +225,7 @@ public class BlogController {
 			session.setAttribute("alertMsg", "게시글 작성에 실패했습니다");
 		}
 		System.out.println(blogBoard);
-		return "redirect:/final/blog/select?blogNo=" + blogNo;
+		return "redirect:select.bo?blogNo=" + blogNo;
 	}
 	
 	// 블로그 일반 게시글 리스트 조회

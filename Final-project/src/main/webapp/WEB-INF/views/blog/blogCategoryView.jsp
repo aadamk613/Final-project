@@ -11,21 +11,9 @@
 </head>
 <style>
 
-
-* {
-    border: 1px solid skyblue;
-	box-sizing: border-box;
-}
-
-
 #content{pagging: 20px;}
 
 #content div{padding: 10px;}
-
-
-
-
-
 
 #categoryInfo ul{
 	width: 100%;
@@ -139,7 +127,7 @@
 		
 		function selectBlogCategory(){
 			$.ajax({
-				url: 'blog/select.ct',
+				url: '/final/blog/select.ct',
 				data: {blogNo: ${ blogNo }},
 				success: data => {
 					//console.log(data);
@@ -205,7 +193,7 @@
 		function insertBlogCategory(cateNo){
 			
 			$.ajax({
-				url: 'blog/insert.ct',
+				url: '/final/blog/insert.ct',
 				data: {
 					blogNo : ${ blogNo}, 
 					categoryNo : cateNo
@@ -227,7 +215,7 @@
 			//console.log($(arguments[1]).parent().find('.rename').val());
 			const str = $(arguments[1]).parent().find('.rename').val();
 			$.ajax({
-				url: 'blog/update.ct',
+				url: '/final/blog/update.ct',
 				data: {categorySettingNo: cateNo,
 					   categoryMemName: str,
 					   blogNo : ${ blogNo }},
@@ -246,7 +234,7 @@
 			if(confirm("카테고리를 삭제하면 카테고리 안의 게시글도 삭제됩니다. 정말 삭제하시겠습니까??")){
 				
 				$.ajax({
-					url: 'blog/delete.ct',
+					url: '/final/blog/delete.ct',
 					data: {categorySettingNo: cateNo,
 						   blogNo : ${ blogNo }},
 					success : data => {

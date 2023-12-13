@@ -9,13 +9,21 @@
 <link rel="stylesheet" href="resources/css/common/template.css">
 
 <style>
-	#footerWrap{width: 100%; height:}
+	#footerWrap{
+	width: 100%; 
+	height: 200px; 
+	background-color: #afdba3;
+	color: white;
+	font-size: 30px;
+	padding: 20px;
+	}
 </style>
 
 </head>
 <body>
 	<div id="footerWrap">
-		푸터입니다 아직 없어요
+		finalProject<br>
+		싹 트 다<br>
 	</div>
 </body>
 </html>

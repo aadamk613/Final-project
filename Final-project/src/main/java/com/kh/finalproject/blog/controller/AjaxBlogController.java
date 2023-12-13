@@ -16,7 +16,7 @@ import com.kh.finalproject.common.teplate.Pagination;
 
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("blog")
+@RequestMapping("/blog")
 @RequiredArgsConstructor
 @RestController
 public class AjaxBlogController {

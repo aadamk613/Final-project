@@ -11,11 +11,6 @@
 </head>
 <style>
 
-
-* {
-    border: 1px solid skyblue;
-	box-sizing: border-box;
-}
 #blogTitle{
 	font-size: 25px; 
 	font-weight: bold; 
@@ -141,7 +136,7 @@ textarea{
                         </div>
                         <div>
                         	<button type="submit" id="plantCare" class="button forest">수정하기</button>
-                        	<button id="plantCare" class="button forest"><a href="select.pl?plantNo=${ plant.plantNo }">돌아가기</a></button>
+                        	<button id="plantCare" class="button forest"><a href="/final/blog/select.pl?plantNo=${ plant.plantNo }">돌아가기</a></button>
                         </div>
                     </div>
                     
@@ -187,7 +182,6 @@ textarea{
 		</section>
 		
 		<aside id="pageAsideRight" class="aside">
-		 달력 부분
 		</aside>
 		
 	</main>

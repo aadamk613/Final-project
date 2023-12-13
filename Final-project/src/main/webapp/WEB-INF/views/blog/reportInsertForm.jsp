@@ -11,12 +11,6 @@
 </head>
 <style>
 
-
-* {
-    border: 1px solid skyblue;
-	box-sizing: border-box;
-}
-
 #blogTitle{
 	font-size: 25px; 
 	font-weight: bold; 
@@ -81,7 +75,6 @@ textarea{
     outline-color: #afdba3;
 }
 
-
 </style>
 <body>
 
@@ -90,28 +83,6 @@ textarea{
 	</header> 
 	<main>
 		<aside id="pageAsideLeft" class="aside">
-            <div id="blogInfo">
-                <ul id="blogInfoUl">
-                    <li id="blogImg">
-                    <img src=""/>사진 공간</li>
-                    <li id="memId">닉네임(아이디)</li>
-                    <li id="blogIntroduce">${ blog.blogIntroduce }</li>
-                    <li id="">
-	                    <a href="">글 쓰기</a>
-	                    <a href="/final/blog/updateForm?blogNo=${ blog.blogNo }">블로그 관리</a>
-	                    <a href="/final/blog/updateForm/category?blogNo=${ blog.blogNo }">카테고리 관리</a>
-                    </li>
-                </ul>
-          
-            </div>
-            <div id="categoryWrap">
-                <ul>
-                	<c:forEach var="i" items="${ list }">
-                    	<li><a href="#" >${ i.categoryMemName }</a></li>
-                    </c:forEach>
-                   	
-                </ul>
-            </div>
 		</aside>
 		
 		<section id="pageSection">
@@ -129,7 +100,7 @@ textarea{
 					
                     <div id="plantInfoWrap">
                         <div id="plantImg"><input type="file" name="upfile" id="plantInput"/>
-                        	<img src="resources/images/defaultPlant.png" id="plantImgInput" name="plantThumbnail">
+                        	<img src="/final/resources/images/defaultPlant.png" id="plantImgInput" name="plantThumbnail">
                         </div>
                         <div id="plantImfo">
                             <ul>
