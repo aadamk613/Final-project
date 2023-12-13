@@ -201,13 +201,13 @@
             body: formData,
         }).then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error('네트워크 응답이 올바르지 않습니다');
             }
             return response.text();
         }).then(data => {
             console.log(data); // 서버 응답 데이터 확인
         }).catch(error => {
-            console.error('There has been a problem with your fetch operation:', error);
+            console.error('fetch 작업에 문제가 있었습니다:', error);
         });
     });
 </script>
