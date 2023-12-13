@@ -181,9 +181,9 @@ public class ExperienceServiceImpl implements ExperienceService {
 		Integer totalAmount = quantity * exp.getExpPrice(); // 수량 * 게시글 가격
 		//Integer taxFreeAmount = 10000; // 게시글 가격
 		
-		String approvalUrl = "http://localhost:8001/final/sendPayment?userId=" + partnerUserId;
-		String cancelUrl = "http://localhost:8001/final/deletePayment?userId=" + partnerUserId;
-		String failUrl = "http://localhost:8001/final/deletePayment?userId=" + partnerUserId;
+		String approvalUrl = "http://localhost:8001/final/sendPayment?pk=" + partnerOrderId + "," + partnerUserId;
+		String cancelUrl = "http://localhost:8001/final/deletePayment?pk=" + partnerOrderId + "," + partnerUserId;
+		String failUrl = "http://localhost:8001/final/deletePayment?pk=" + partnerOrderId + "," + partnerUserId;
 		
 		StringBuilder sb = new StringBuilder();
 		
@@ -231,7 +231,7 @@ public class ExperienceServiceImpl implements ExperienceService {
 	
 	
 	// 결제 승인
-	public Payment payExp(String pg_token, String userId) throws IOException, ParseException {
+	public Payment payExp(String pg_token, String pk) throws IOException, ParseException {
 		//next_redirect_pc_url":"https://online-pay.kakao.com/mockup/v1/e39df5dae0c17bee0b5ed834d30261ada5038849748e8ea7b41f51971c569b9d/info"
 		// 여기에서 결제를 성공해야 pg_token이 쿼리스트링으로 나옴
 		// 갸를 뽑아서 여기를 와야 함
@@ -251,7 +251,19 @@ public class ExperienceServiceImpl implements ExperienceService {
 		//map.put("orderId", partnerOrderId);
 		//map.put("userId", partnerUserId);
 		
-		Payment payment = experienceDao.selectPayment(sqlSession, userId);
+		String orderId = pk.substring(0, pk.indexOf(","));
+		String userId = pk.substring(pk.indexOf(",") + 1);
+		
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("orderId", orderId);
+		map.put("userId", userId);
+		
+		log.info("아아악!!!!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@{}{}@@@", orderId, userId);
+		log.info("네에에에에ㅔ에에에에에에에에ㅔ엥{}", map);
+		
+		
+		// payment null 예외처리 할것
+		Payment payment = experienceDao.selectPayment(sqlSession, map);
 		
 		// 돌려주는거 next_pc_url,  pg_token, tid => 받아서 돌려줌
 		
