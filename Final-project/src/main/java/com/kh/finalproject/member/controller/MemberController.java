@@ -131,10 +131,10 @@ public class MemberController {
     m.setMemPwd(encPwd); // 암호화된 비밀번호를 Member 객체에 저장하여 DB로 전송
 
     if (memberService.joinMember(m) > 0) {
-      if ("B".equals(m.getMemStatus())) { // memStatus가 "B"인지 확인
-        return "redirect:businessPage"; // businessPage.jsp로 리다이렉트
+      if ("B".equals(m.getMemStatus())) { 
+        return "redirect:businessPage"; 
       } else {
-        return "redirect:/"; // 그 외의 경우는 메인페이지로 리다이렉트
+        return "redirect:/"; 
       }
     } else {
       model.addAttribute("errorMsg", "회원가입 실패.");
@@ -144,20 +144,17 @@ public class MemberController {
   
   @RequestMapping("businessPage")
   public String goToBusinessPage() {
-    return "member/businessPage"; // businessPage.jsp로 리다이렉트
+    return "member/businessPage"; 
   }
 
   @ResponseBody
   @RequestMapping(value="businessPage.check", produces="application/json; charset=UTF-8") 
   public String businessPageChecking(int b_no) throws IOException {
-	  //console.log(b_no);
-	  System.out.println(b_no);
+	  
 	  String url = "http://api.odcloud.kr/api/nts-businessman/v1/validate";
-	  	//	 url += "?servicekey=" + SERVICEKEY;
+	  		 url += "?servicekey=" + SERVICEKEY;
 	  		 url += "&numOfRows=10";
 	  		 url += "&resultType=json";
-	  		 url += "&b_no=" + b_no;
-	  		 
 	  		 
   		URL requestUrl = new URL(url);
 		HttpURLConnection urlConnection = (HttpURLConnection)requestUrl.openConnection();
@@ -170,7 +167,7 @@ public class MemberController {
 		
 		return responseText;
 		}
-/*	  
+  
   @ResponseBody // 포워딩 해줄게 아니라서
   @RequestMapping("idCheck.me")
   public String idCheck(String checkId) {
@@ -179,19 +176,17 @@ public class MemberController {
     int count = memberService.idCheck(checkId);
     System.out.println(count);
     return count > 0 ? "NNNNN" : "NNNNY";
-    */
+  }
+  /*
   @RequestMapping(
       value = "checkBusinessNum",
       produces = "application/json; charset=UTF-8") // 수정예정 공공API로 활용할 예정
   public String businessPageCheck(int pageNo) throws IOException {
 
     String url = "http://api.odcloud.kr/api/nts-businessman/v1/validate";
-    url +=
-        "?servicekey="
-            + "XSyDrKZA66etAyknXmiWPgDRU%2BSa7u6IkO2Oc%2B3%2Bcwmnwfwdsujh1OvosKadicupI74e88WjfDF4Q0DSh%2B3%2Fxw%3D%3D";
-    url += "&numOfRows=10";
-    url += "&resultType=json";
-    url += "&pageNo=" + pageNo;
+    	   url += "?servicekey=" + "XSyDrKZA66etAyknXmiWPgDRU%2BSa7u6IkO2Oc%2B3%2Bcwmnwfwdsujh1OvosKadicupI74e88WjfDF4Q0DSh%2B3%2Fxw%3D%3D";
+    	   url += "&numOfRows=10";
+    	   url += "&resultType=json";
 
     URL requestUrl = new URL(url);
     HttpURLConnection urlConnection = (HttpURLConnection) requestUrl.openConnection();
@@ -204,6 +199,7 @@ public class MemberController {
 
     return responseText;
   }
+  */
 
   @RequestMapping("myPage.me")
   public ModelAndView myPage(ModelAndView mv, HttpSession session) {
@@ -218,12 +214,12 @@ public class MemberController {
       if (upfile != null && !upfile.isEmpty()) {
           String updateName = saveFile(upfile, session);
           if (updateName != null) {
-              m.setMemImg(updateName); // Member 객체에 이미지 경로 저장
+              m.setMemImg(updateName); 
 
-              // 멤버 정보 업데이트
+              
               memberService.updateMember(m);
 
-              // 세션 업데이트
+              
               session.setAttribute("loginUser", memberService.loginMember(m));
               session.setAttribute("alertMsg", "정보수정 및 이미지 업로드에 성공했습니다");
 
@@ -240,16 +236,12 @@ public class MemberController {
   }
 
   public String saveFile(MultipartFile upfile, HttpSession session) {
-      // 파일명 수정 작업 후 서버에 업로드("bono.jpg" => 2023110338292235923.jpg)
       String originalName = upfile.getOriginalFilename();
 
-      // "20231103102244"(년월일시분초)
       String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 
-      // 23432(5자리 랜덤값)
       int ranNum = (int) (Math.random() * 90000) + 10000;
 
-      // 확장자
       String ext = originalName.substring(originalName.lastIndexOf("."));
 
       String updateName = currentTime + ranNum + ext;
@@ -257,15 +249,12 @@ public class MemberController {
       String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/myPage/");
 
       try {
-          // 파일 저장
           File saveFile = new File(savePath + File.separator + updateName);
           upfile.transferTo(saveFile);
 
-          // 여기서는 DB에 저장하지 않고 파일명만 리턴합니다.
           return updateName;
       } catch (IllegalStateException | IOException e) {
           e.printStackTrace();
-          // 실패 시 null을 리턴하거나 적절한 예외 처리를 진행할 수 있습니다.
           return null;
       }
   }
