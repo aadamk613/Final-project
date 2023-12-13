@@ -247,14 +247,15 @@ public class ExperienceController {
 	// 결제 준비 성공 시 오는 곳
 	// http://localhost:8001/final/yrsendPayment.exp?pg_token=b63076e46d6b58fbbea6
 	@GetMapping("sendPayment")
-	public String sendPayment(String pg_token, String userId, Model model) throws IOException, ParseException {
+	public String sendPayment(String pg_token, String pk, Model model) throws IOException, ParseException {
 		
 		// 결제 승인 보내기
 		//HashMap map = (HashMap)ids;
 		//log.info("값이 잘 넘어왔을까={}", ids);
 		//log.info("userId={}", ids.get("userId"));
 		log.info("성공하면 어디까지?");
-		Payment payment = experienceService.payExp(pg_token, userId);
+		log.info("pkpkpkpkppkpkpk {}", pk);
+		Payment payment = experienceService.payExp(pg_token, pk);
 		
 		model.addAttribute("payment", payment);
 		

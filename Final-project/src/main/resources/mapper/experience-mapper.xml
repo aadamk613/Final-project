@@ -447,7 +447,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   )
 	</insert>
 	
-	<select id="selectPayment" parameterType="string" resultType="payment">
+	<select id="selectPayment" parameterType="hashmap" resultType="payment">
 		SELECT
 			   ORDER_ID orderId,
 		  	   USER_ID userId,
@@ -458,6 +458,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  FROM
 		  	   TB_PAYMENT
 		 WHERE
+		   	   ORDER_ID = #{ orderId }
+		   AND
 		   	   USER_ID = #{ userId }
 		   AND
 		   	   PAY_STATUS = 'N'
