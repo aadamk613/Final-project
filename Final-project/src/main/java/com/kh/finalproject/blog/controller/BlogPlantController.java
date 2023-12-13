@@ -87,13 +87,16 @@ public class BlogPlantController {
 								  HttpSession session,
 								  MultipartFile upfile,
 								  Model model) {
+		System.out.println("여기 오나?");
+		System.out.println(plant);
+		System.out.println(blogNo);
 		Attachment file = new Attachment();
 		if(!upfile.getOriginalFilename().equals("")) { // 첨부파일이 있을 경우
 			file = commonController.setFile(upfile, session, "plant");
 		}
 		// 첨부파일이 없을 경우
 		if(blogService.insertBlogPlant(plant, file) > 0) { 
-			return "redirect:selectList/plant?blogNo=" + blogNo;
+			return "redirect:selectList.pl?blogNo=" + blogNo;
 		} else {
 			model.addAttribute("alertMsg", "식물 등록에 실패했습니다.");
 			return "common/errorPage";

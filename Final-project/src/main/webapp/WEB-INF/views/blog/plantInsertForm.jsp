@@ -102,7 +102,7 @@ textarea{
 			<div id="content">
 				<article>
 					<form method="post" action="/final/blog/insert.pl" enctype="multipart/form-data">  
-					<input type="hidden" name="blogNo" value="${ plant.blogNo }"/>
+					<input type="hidden" name="blogNo" value="${ blogNo }"/>
                     <div id="plantInfoWrap">
                         <div id="plantImg"><input type="file" name="upfile"/>
                         	<img src="/final/resources/images/defaultPlant.png" id="plantImgInput">
@@ -131,34 +131,32 @@ textarea{
 			</div>
 
 			<script>
-			
 				// 식물 애칭 입력하지 않았을 시 식물 이름으로 설정	
 				
-				$('#plantCare').on('click', function(){
-					var nickName = $('input[name=plantNickName]');
+				$('#plantCare').on('click', () => {
+					const nickName = $('input[name=plantNickName]');
 					if(nickName.val() == ''){
-						var plantName = $('input[name=plantName]');
+						const plantName = $('input[name=plantName]');
 						nickName.val(plantName.val());
 					}
-					
-					//$('#content').children().find('form')
-					  //           .attr('action', '/final/blog/insert/plant')
 				});
 				
 				// 현재 날짜를 알아낸 후 식물 등록 일자에서 현재 날짜 이후는 입력 불가
-				var nowDate = Date.now();
-				var timeOff = new Date().getTimezoneOffset()*60000;
-				var today = new Date(nowDate-timeOff).toISOString().split("T")[0];
+				
+				const nowDate = Date.now();
+				const today = new Date(nowDate).toISOString().split("T")[0];
 				$('input[name=plantLogDate]').attr("max", today).val(today);
 				
+				//var timeOff = new Date().getTimezoneOffset()*60000;
+				//var today = new Date(nowDate-timeOff).toISOString().split("T")[0];
 				
 				// input type="file"을 숨긴 후 기본이미지 클릭 시 이벤트 수행되게
-			    plantImgInput.addEventListener('click', function(){
+			    plantImgInput.addEventListener('click',() => {
 			    	$('input[name=upfile]').click();
 			    });
 				
 	            // 이미지를 첨부했을 시 미리보기 가능하게
-	            $('input[name=upfile]').on('change', function(inputFile){
+	            $('input[name=upfile]').on('change', inputFile => {
 				 	const reader = new FileReader();
 					reader.readAsDataURL(inputFile.target.files[0]);
 					reader.onload = e => {
