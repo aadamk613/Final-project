@@ -10,6 +10,8 @@ import lombok.ToString;
 @Getter @Setter @ToString @NoArgsConstructor @AllArgsConstructor @Builder
 public class Payment {
 	
+	private int paymentNo;
+	
 	// 요청 값
 	private String userId;
 	private String orderId;

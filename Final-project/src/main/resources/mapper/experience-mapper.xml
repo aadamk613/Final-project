@@ -419,11 +419,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</delete>
 	
 	<!-- 결제 -->
+	<select id="selectPaymentNo" resultType="_int">
+		SELECT 
+			   SEQ_PAYMENT_NO.NEXTVAL
+		  FROM
+		  	   DUAL
+	</select>
+	
 	<insert id="insertPayment" parameterType="payment">
 		INSERT 
 		  INTO 
 		  	   TB_PAYMENT
 		  	   (
+		  	   PAYMENT_NO,
 		  	   ORDER_ID,
 		  	   USER_ID,
 		  	   CONTACT,
@@ -435,9 +443,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  	   )
 		VALUES
 			   (
+			   SEQ_PAYMENT_NO.CURRVAL,
 			   #{ orderId },
 			   #{ userId },
-			   
 			   #{ contact },
 			   'N',
 			   #{ tid },
@@ -447,8 +455,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   )
 	</insert>
 	
-	<select id="selectPayment" parameterType="hashmap" resultType="payment">
+	<select id="selectPayment" parameterType="_int" resultType="payment">
 		SELECT
+			   PAYMENT_NO paymentNo,
 			   ORDER_ID orderId,
 		  	   USER_ID userId,
 		  	   CONTACT contact,
@@ -458,9 +467,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  FROM
 		  	   TB_PAYMENT
 		 WHERE
-		   	   ORDER_ID = #{ orderId }
-		   AND
-		   	   USER_ID = #{ userId }
+		   	   PAYMENT_NO = #{ paymentNo }
 		   AND
 		   	   PAY_STATUS = 'N'
 	</select>
@@ -473,9 +480,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   	   PAY_STATUS = 'Y',
 		   	   APPROVED_AT = #{ approvedAt }
 		 WHERE 
-		 	   USER_ID = #{ userId }
-		   AND
-		   	   ORDER_ID = #{ orderId }
+		 	   PAYMENT_NO = #{ paymentNo }
 	</update>
 	
 	

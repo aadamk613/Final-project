@@ -3,7 +3,6 @@ package com.kh.finalproject.experience.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,8 +10,10 @@ import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -246,26 +247,35 @@ public class ExperienceController {
 	
 	// 결제 준비 성공 시 오는 곳
 	// http://localhost:8001/final/yrsendPayment.exp?pg_token=b63076e46d6b58fbbea6
-	@GetMapping("sendPayment")
-	public String sendPayment(String pg_token, String pk, Model model) throws IOException, ParseException {
+	@GetMapping("sendPayment/{paymentNo}")
+	public String sendPayment(@RequestParam("pg_token") String pg_token, 
+							  @PathVariable int paymentNo, Model model) throws IOException, ParseException {
 		
 		// 결제 승인 보내기
 		//HashMap map = (HashMap)ids;
 		//log.info("값이 잘 넘어왔을까={}", ids);
 		//log.info("userId={}", ids.get("userId"));
+		/*
 		log.info("성공하면 어디까지?");
 		log.info("pkpkpkpkppkpkpk {}", pk);
-		Payment payment = experienceService.payExp(pg_token, pk);
+		
+		log.info("세션에 아무것도 없을까 {}", session.getAttribute("exp"));
+		log.info("정말??? {}", session.getAttribute("loginUser"));
+		
+		log.info("여기는 되는거임?ㅋㅋㅋㅋ {}", session.getAttribute("url"));
+		*/
+		Payment payment = experienceService.payExp(pg_token, paymentNo);
 		
 		model.addAttribute("payment", payment);
 		
 		return "experience/experiencePaySuccess";
 	}
 	
-	
-	@GetMapping("deletePayment")
-	public void deletePayment(String userId) {
+	@GetMapping("deletePayment/{pk}")
+	public String deletePayment(@PathVariable String pk) {
 		// 취소되거나 실패한 결제는 지워줘야 함
+		log.info("여기는 취소하면 오는 곳잉요 {}", pk);
+		return "redirect:yrlist.exp";
 	}
 	
 	

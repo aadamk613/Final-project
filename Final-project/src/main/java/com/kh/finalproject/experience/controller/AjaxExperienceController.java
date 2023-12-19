@@ -144,7 +144,11 @@ public class AjaxExperienceController {
 		
 		//Payment payment = Payment.builder().contact(contact).quantity(quantity).build();
 		
-		return experienceService.readyForPay(map);
+		
+		String redirectUrl = experienceService.readyForPay(map);
+		session.setAttribute("url", redirectUrl);
+		
+		return redirectUrl;
 	}
 	
 	/*

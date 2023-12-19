@@ -88,12 +88,16 @@ public class ExperienceDao {
 
 	
 	// 결제
+	public int selectPaymentNo(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("experienceMapper.selectPaymentNo");
+	}
+	
 	public int insertPayment(SqlSessionTemplate sqlSession, Payment payment) {
 		return sqlSession.insert("experienceMapper.insertPayment", payment);
 	}
 
-	public Payment selectPayment(SqlSessionTemplate sqlSession, HashMap map) {
-		return sqlSession.selectOne("experienceMapper.selectPayment", map);
+	public Payment selectPayment(SqlSessionTemplate sqlSession, int paymentNo) {
+		return sqlSession.selectOne("experienceMapper.selectPayment", paymentNo);
 	}
 
 	public int updatePayment(SqlSessionTemplate sqlSession, Payment payment) {
